@@ -1,0 +1,8 @@
+#!/bin/bash
+source ~/.bashrc
+GIT_WORK_TREE=~/Desktop/apps/teachshares git checkout -f
+pushd ~/Desktop/apps/teachshares
+nvm use 7.2.0
+yarn
+yarn run build
+popd
