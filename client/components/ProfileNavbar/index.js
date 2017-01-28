@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
-import style from './style.css'
 import {Icon} from 'react-fa'
+import Statistics from '../Statistics'
 
-export default class Navbar extends Component {
+import style from './style.css'
+
+export default class ProfileNavbar extends Component {
   static propTypes = {
     avatar: PropTypes.string,
   }
@@ -34,23 +36,27 @@ export default class Navbar extends Component {
 
     return (
       <div className={classnames(style.container)}>
-        <div className={classnames(style.navItem)}>
-          <Icon name="plus"/>
-          <div>Game</div>
+        <div className={classnames(style.navBar)}>
+          <div className={classnames(style.navItem)}>
+            <Icon name="plus"/>
+            <div>Game</div>
+          </div>
+          <div className={classnames(style.navItem)}>
+            <Icon name="plus"/>
+            <div>Lorem</div>
+          </div>
+          <div className={classnames(style.navItem, style.avatar)} style={avatarDivStyle} />
+          <div className={classnames(style.navItem)}>
+            <Icon name="plus"/>
+            <div>Ipsum</div>
+          </div>
+          <div className={classnames(style.navItem)}>
+            <Icon name="plus"/>
+            <div>Play</div>
+          </div>
         </div>
-        <div className={classnames(style.navItem)}>
-          <Icon name="plus"/>
-          <div>Lorem</div>
-        </div>
-        <div className={classnames(style.navItem, style.avatar)} style={avatarDivStyle} />
-        <div className={classnames(style.navItem)}>
-          <Icon name="plus"/>
-          <div>Ipsum</div>
-        </div>
-        <div className={classnames(style.navItem)}>
-          <Icon name="plus"/>
-          <div>Play</div>
-        </div>
+
+        <Statistics />
       </div>
     )
   }

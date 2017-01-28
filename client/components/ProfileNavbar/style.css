@@ -1,6 +1,6 @@
 @import "../../constants/styles";
 
-.container{
+.navBar{
   display: flex;
   height: 5vh;
 }

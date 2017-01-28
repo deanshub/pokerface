@@ -1,0 +1,24 @@
+@import "../../constants/styles";
+.container{
+  margin: 2vh 15vw;
+  padding: 2vh 1vw;
+  display: flex;
+  align-items: center;
+  /*height: 35vh;*/
+  flex-direction: column;
+  background-color: $lightGreen50;
+}
+
+.image{
+  background-color: $gray;
+  width: 90%;
+  background-size: cover;
+  border-radius: 1vh 1vw;
+}
+.title{
+  align-self: flex-start;
+  /*flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;*/
+}
