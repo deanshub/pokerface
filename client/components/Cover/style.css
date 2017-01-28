@@ -1,0 +1,15 @@
+@import "../../constants/styles";
+
+.container{
+  height: 20vh;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $gray;
+}
+
+.title{
+  color: $titleColor;
+  font-size: 300%;
+}

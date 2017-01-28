@@ -3,15 +3,23 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
 import style from './style.css'
+import Cover from '../../components/Cover'
+import ProfileNavbar from '../../components/ProfileNavbar'
 // import * as BoardActions from '../../ducks/board'
 
 class Feed extends Component {
   render() {
-    // const { board, actions, children } = this.props
+    const { login } = this.props
 
     return (
       <div className={classnames(style.container)}>
-        Profile page
+        <Cover
+            image={login.user.coverImage}
+            title={login.user.displayName}
+        />
+      <ProfileNavbar
+          avatar={login.user.avatarImage}
+      />
       </div>
     )
   }
@@ -19,7 +27,7 @@ class Feed extends Component {
 
 function mapStateToProps(state) {
   return {
-    // board: state.board,
+    login: state.login,
   }
 }
 

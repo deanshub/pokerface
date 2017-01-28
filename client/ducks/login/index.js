@@ -1,8 +1,8 @@
 import { handleActions, createAction } from 'redux-actions'
-import { replace, push } from 'react-router-redux'
-import { browserHistory } from 'react-router'
+// import { replace, push } from 'react-router-redux'
+// import { browserHistory } from 'react-router'
 
-const initialState = {}
+import initialState from './loginInitialState'
 
 export default handleActions({
   // 'select pawn' (state, action) {

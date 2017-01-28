@@ -1,0 +1,20 @@
+@import "../../constants/styles";
+
+.container{
+  display: flex;
+  height: 5vh;
+}
+
+.navItem{
+  flex: 1;
+  text-align: center;
+  border: 1px solid $gray;
+}
+
+.avatar{
+  background-color: $gray;
+  background-size: cover;
+  position: relative;
+  top: -7vh;
+  height: 350%;
+}

@@ -1,15 +1,15 @@
-// let rucksack = require('rucksack-css')
+let rucksack = require('rucksack-css')
 let webpack = require('webpack')
 let path = require('path')
 
 let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 
 let plugins = [
-  new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}),
+  // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
   new webpack.DefinePlugin({
     'process.env': { NODE_ENV },
   }),
-  new webpack.NoEmitOnErrorsPlugin(),
+  new webpack.NoErrorsPlugin(),
 ]
 
 if (NODE_ENV!=='"development"'){
@@ -36,20 +36,18 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, './static'),
-    publicPath: '/',
     filename: '[name].js',
-    chunkFilename: '[id].[chunkhash].js',
   },
   module: {
-    rules: [
+    loaders: [
       {
         test: /\.html$/,
-        loader: 'file-loader?name=[name].[ext]',
+        loader: 'file?name=[name].[ext]',
       },
       {
         test: /\.css$/,
         include: /client/,
-        use: [
+        loaders: [
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[local]___[hash:base64:5]',
           'postcss-loader',
@@ -63,26 +61,27 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
+        loader:'babel-loader',
         loaders: [
-          'react-hot-loader',
+          'react-hot',
           'babel-loader',
         ],
       },
       {
         test: /\.svg(\?.*)?$/,
-        loader: 'url-loader?limit=10000&mimetype=image/svg+xml&name=images/[name].[ext]',
+        loader: 'url?limit=10000&mimetype=image/svg+xml',
         include: path.join(__dirname, 'client', 'assets'),
       }, {
         test: /\.png$/,
-        loader: 'url-loader?limit=8192&mimetype=image/png&name=images/[name].[ext]',
+        loader: 'url?limit=8192&mimetype=image/png',
         include: path.join(__dirname, 'client', 'assets'),
       }, {
         test: /\.gif$/,
-        loader: 'url-loader?limit=8192&mimetype=image/gif&name=images/[name].[ext]',
+        loader: 'url?limit=8192&mimetype=image/gif',
         include: path.join(__dirname, 'client', 'assets'),
       }, {
         test: /\.jpg$/,
-        loader: 'url-loader?limit=8192&mimetype=image/jpg&name=images/[name].[ext]',
+        loader: 'url?limit=8192&mimetype=image/jpg',
         include: path.join(__dirname, 'client', 'assets'),
       },
       {
@@ -96,13 +95,13 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['', '.js', '.jsx'],
   },
-  // postcss: [
-  //   rucksack({
-  //     autoprefixer: true,
-  //   }),
-  // ],
+  postcss: [
+    rucksack({
+      autoprefixer: true,
+    }),
+  ],
   plugins,
   devServer: {
     contentBase: './client',
