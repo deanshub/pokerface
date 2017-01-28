@@ -25,6 +25,7 @@ ReactDOM.render(
           <IndexRoute component={Feed}/>
 
           <Route path="/profile/:userId" component={Profile} />
+          <Route path="/profile" component={Profile} />
         </Route>
       </Router>
     </Provider>

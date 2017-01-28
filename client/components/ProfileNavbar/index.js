@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import style from './style.css'
+import {Icon} from 'react-fa'
 
 export default class Navbar extends Component {
   static propTypes = {
@@ -33,11 +34,23 @@ export default class Navbar extends Component {
 
     return (
       <div className={classnames(style.container)}>
-        <div className={classnames(style.navItem)} >Game</div>
-        <div className={classnames(style.navItem)} >Lorem</div>
+        <div className={classnames(style.navItem)}>
+          <Icon name="plus"/>
+          <div>Game</div>
+        </div>
+        <div className={classnames(style.navItem)}>
+          <Icon name="plus"/>
+          <div>Lorem</div>
+        </div>
         <div className={classnames(style.navItem, style.avatar)} style={avatarDivStyle} />
-        <div className={classnames(style.navItem)} >Ipsum</div>
-        <div className={classnames(style.navItem)} >Play</div>
+        <div className={classnames(style.navItem)}>
+          <Icon name="plus"/>
+          <div>Ipsum</div>
+        </div>
+        <div className={classnames(style.navItem)}>
+          <Icon name="plus"/>
+          <div>Play</div>
+        </div>
       </div>
     )
   }

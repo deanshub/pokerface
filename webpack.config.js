@@ -4,6 +4,7 @@ let path = require('path')
 
 let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 
+let devtool
 let plugins = [
   new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}),
   new webpack.DefinePlugin({
@@ -18,9 +19,12 @@ if (NODE_ENV!=='"development"'){
       warnings: false,
     },
   }))
+  plugins.push(new webpack.HotModuleReplacementPlugin())
+  plugins.push(new webpack.NamedModulesPlugin())
+  devtool = 'inline-source-map'
 }
 
-module.exports = {
+let config = {
   context: path.join(__dirname, './client'),
   entry: {
     bundle: './index.js',
@@ -48,7 +52,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: /client/,
+        include: /client\\client/,
         use: [
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[local]___[hash:base64:5]',
@@ -57,8 +61,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: /client/,
-        loader: 'style!css',
+        exclude: /client\\client/,
+        use: [{
+          loader:'style-loader',
+        },{
+          loader:'css-loader',
+        }],
       },
       {
         test: /\.(js|jsx)$/,
@@ -98,14 +106,13 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  // postcss: [
-  //   rucksack({
-  //     autoprefixer: true,
-  //   }),
-  // ],
   plugins,
+  devtool,
   devServer: {
     contentBase: './client',
     hot: true,
+    publicPath: '/',
   },
 }
+
+module.exports = config

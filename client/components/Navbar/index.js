@@ -8,7 +8,7 @@ export default class Navbar extends Component {
     return (
       <div className={classnames(style.container)}>
         <Link className={classnames(style.link)} to="/">feed</Link>
-        <Link className={classnames(style.link)} to="/profile/dean">profile</Link>
+        <Link className={classnames(style.link)} to="/profile">profile</Link>
         <Link className={classnames(style.link)} to="/login">sign out</Link>
       </div>
     )
