@@ -6,7 +6,7 @@
   align-items: center;
   /*height: 35vh;*/
   flex-direction: column;
-  background-color: $lightGreen50;
+  background-color: $titleColor;
 }
 
 .image{

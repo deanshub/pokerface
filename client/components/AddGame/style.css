@@ -1,15 +1,9 @@
 @import "../../constants/styles";
 .container{
-  margin: 1vh 0;
+  margin: 1vw 1vh;
+  margin-top: 8vh;
   display: flex;
   align-items: center;
-  height: 20vh;
   border-bottom: 1px solid $gray;
-}
-
-.widget{
-  flex: 1;
-  display: flex;
   flex-direction: column;
-  align-items: center;
 }
