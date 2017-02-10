@@ -16,12 +16,15 @@
 }
 
 .avatar{
+  top: -4vh;
+}
+/*.avatar{
   background-color: $gray;
   background-size: cover;
   position: relative;
   top: -7vh;
   height: 350%;
-}
+}*/
 
 .navItemActive{
   border-bottom: none;

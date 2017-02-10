@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import classnames from 'classnames'
-import style from './style.css'
+// import classnames from 'classnames'
+// import style from './style.css'
 // import * as BoardActions from '../../ducks/board'
 import Navbar from '../../components/Navbar'
 import 'semantic-ui-css/semantic.min.css'
@@ -17,9 +17,9 @@ class Navigation extends Component {
     const { children } = this.props
 
     return (
-      <div className={classnames(style.container)}>
+      <div>
         <Navbar />
-        <div className={classnames(style.mainContent)}>
+        <div>
           {children}
         </div>
       </div>

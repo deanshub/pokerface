@@ -1,54 +1,64 @@
 import React, { Component, PropTypes } from 'react'
-import classnames from 'classnames'
-import style from './style.css'
-import {Icon} from 'react-fa'
+// import classnames from 'classnames'
+// import style from './style.css'
+import { Grid, Statistic, Icon } from 'semantic-ui-react'
 
-export default class Navbar extends Component {
+const statisticalItems = [
+  { label: 'Games', value: '22' },
+  { label: 'Winings', value: '3,200' },
+  { label: 'Avarage Buy-ins', value: '250' },
+]
+
+export default class ProfileStatistic extends Component {
   static propTypes = {
-    // avatar: PropTypes.string,
   }
 
   constructor(props){
     super(props)
     this.state = {
-    //   avatarImage: undefined,
     }
   }
 
   componentDidMount(){
-    // const {avatar} = this.props
-    //
-    // System.import(`../../assets/images/${avatar}`).then(avatarImage=>{
-    //   this.setState({
-    //     avatarImage,
-    //   })
-    // })
   }
 
   render() {
-    // const {avatarImage} = this.state
-
     return (
-      <div className={classnames(style.container)}>
-        <div className={classnames(style.widget)}>
-          <div>
+      <Grid columns={3} >
+        <Grid.Row>
+          <Grid.Column>
             Chart
-          </div>
-        </div>
-        <div className={classnames(style.widget)}>
-          <div>
-            Winings
-          </div>
-          <div>
-            2,000$
-          </div>
-        </div>
-        <div className={classnames(style.widget)}>
-          <div>
+          </Grid.Column>
+          <Grid.Column>
+            <Statistic.Group widths="3">
+              <Statistic>
+                <Statistic.Value>
+                  <Icon name="game" />
+                  {statisticalItems[0].value}
+                </Statistic.Value>
+                <Statistic.Label>{statisticalItems[0].label}</Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value>
+                  {statisticalItems[1].value}
+                  <Icon name="dollar" />
+                </Statistic.Value>
+                <Statistic.Label>{statisticalItems[1].label}</Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value>
+                  {statisticalItems[2].value}
+                  <Icon name="dollar" />
+                </Statistic.Value>
+                <Statistic.Label>{statisticalItems[2].label}</Statistic.Label>
+              </Statistic>
+            </Statistic.Group>
+          </Grid.Column>
+          <Grid.Column>
             Something Else
-          </div>
-        </div>
-      </div>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     )
   }
 }

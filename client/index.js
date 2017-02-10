@@ -16,7 +16,7 @@ const store = configure()
 const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDOM.render(
-  <DocumentTitle title="TeachShares">
+  <DocumentTitle title="Pokerface.io">
     <Provider store={store}>
       <Router history={history}>
         <Route component={Login} path="/login"/>

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import style from './style.css'
+import { Header } from 'semantic-ui-react'
 
 export default class Navbar extends Component {
   static propTypes = {
@@ -33,9 +34,14 @@ export default class Navbar extends Component {
       coverDivStyle.backgroundImage=`url(${imageFile})`
     }
 
+    // <Image
+    //     className={classnames(style.coverImage)}
+    //     fluid
+    //     src={imageFile}
+    // />
     return (
       <div className={classnames(style.container)} style={coverDivStyle}>
-        <div className={classnames(style.title)} >{title}</div>
+        <Header size="huge" style={{color:'white'}}>{title}</Header>
       </div>
     )
   }
