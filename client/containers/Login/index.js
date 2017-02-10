@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 // import classnames from 'classnames'
 // import style from './style.css'
 import { browserHistory } from 'react-router'
-import { Grid, Header, Form, Segment, Button, Icon, Divider } from 'semantic-ui-react'
+import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'semantic-ui-react'
 
 import * as LoginActions from '../../ducks/login'
 
@@ -18,10 +18,12 @@ class Navigation extends Component {
     this.state = {
       loggingInPorgress: false,
       signingupInPorgress: false,
+      signingupSuccess: false,
     }
   }
 
-  handleLogin(){
+  handleLogin(event){
+    event.preventDefault()
     // const { actions2,actions, routing } = this.props
     this.setState({
       loggingInPorgress: true,
@@ -34,14 +36,21 @@ class Navigation extends Component {
     // })
   }
 
-  handleSignup(){
+  handleSignup(event){
+    event.preventDefault()
     this.setState({
       signingupInPorgress: true,
     })
+    setTimeout(()=>{
+      this.setState({
+        signingupInPorgress: false,
+        signingupSuccess: true,
+      })
+    },1000)
   }
 
   render() {
-    const {loggingInPorgress, signingupInPorgress} = this.state
+    const {loggingInPorgress, signingupInPorgress, signingupSuccess} = this.state
 
     return (
       <Grid divided="vertically">
@@ -85,12 +94,22 @@ class Navigation extends Component {
           <Divider vertical>Or</Divider>
           <Grid.Column >
             <Segment basic padded>
-              <Form loading={signingupInPorgress} onSubmit={::this.handleSignup}>
+              <Form
+                  loading={signingupInPorgress}
+                  onSubmit={::this.handleSignup}
+                  success={signingupSuccess}
+              >
                 <Header size="medium">Sign-Up</Header>
                 <Form.Input label="First Name"/>
                 <Form.Input label="Last Name"/>
                 <Form.Input label="E-mail" type="email"/>
                 <Button primary type="submit">Sign-Up</Button>
+
+                  <Message
+                      content="You're all signed up for Pokerface.io,  please check your email for further details"
+                      header="Welcome!"
+                      success
+                  />
               </Form>
             </Segment>
           </Grid.Column>
