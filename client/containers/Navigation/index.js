@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import style from './style.css'
 // import * as BoardActions from '../../ducks/board'
 import Navbar from '../../components/Navbar'
+import 'semantic-ui-css/semantic.min.css'
 
 class Navigation extends Component {
   static propTypes={

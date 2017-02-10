@@ -83,7 +83,7 @@ let config = {
       }, {
         test: /\.png$/,
         loader: 'url-loader?limit=8192&mimetype=image/png&name=images/[name].[ext]',
-        include: path.join(__dirname, 'client', 'assets'),
+        // include: path.join(__dirname, 'client', 'assets'),
       }, {
         test: /\.gif$/,
         loader: 'url-loader?limit=8192&mimetype=image/gif&name=images/[name].[ext]',

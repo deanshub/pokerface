@@ -45,6 +45,8 @@
   },
   "dependencies": {
     "react-document-title": "^2.0.2",
-    "react-fa": "^4.1.2"
+    "react-fa": "^4.1.2",
+    "semantic-ui-css": "^2.2.4",
+    "semantic-ui-react": "^0.64.7"
   }
 }
