@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 // import { Link } from 'react-router'
 import { Menu, Button, Input, Icon, Label } from 'semantic-ui-react'
 import { browserHistory } from 'react-router'
+import request from 'superagent'
 // import classnames from 'classnames'
 // import style from './style.css'
 
@@ -12,6 +13,15 @@ export default class Navbar extends Component {
 
   handleMenuItemClick(location){
     browserHistory.replace(location)
+  }
+
+  handleLogout(){
+    request.get('/logout').then(()=>{
+      browserHistory.replace('/login')
+    }).catch(err=>{
+      console.error(err)
+      browserHistory.replace('/login')
+    })
   }
 
   render() {
@@ -54,7 +64,7 @@ export default class Navbar extends Component {
                   transparent
               />
             </Menu.Item>
-            <Menu.Item onClick={()=>this.handleMenuItemClick('/login')}>
+            <Menu.Item onClick={this.handleLogout}>
               <Button>logout</Button>
             </Menu.Item>
           </Menu.Menu>

@@ -6,22 +6,24 @@ let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 
 let devtool
 let plugins = [
-  new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}),
   new webpack.DefinePlugin({
     'process.env': { NODE_ENV },
   }),
-  new webpack.NoEmitOnErrorsPlugin(),
 ]
 
-if (NODE_ENV!=='"development"'){
+if (NODE_ENV==='"development"'){
+  plugins.push(new webpack.NoEmitOnErrorsPlugin())
+  plugins.push(new webpack.HotModuleReplacementPlugin())
+  devtool = 'inline-source-map'
+  plugins.push(new webpack.NamedModulesPlugin())
+}else{
+  plugins.push(new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}))
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compressor: {
       warnings: false,
     },
   }))
-  plugins.push(new webpack.HotModuleReplacementPlugin())
-  plugins.push(new webpack.NamedModulesPlugin())
-  devtool = 'inline-source-map'
+
 }
 
 let config = {

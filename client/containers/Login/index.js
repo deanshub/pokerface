@@ -5,8 +5,14 @@ import { connect } from 'react-redux'
 // import style from './style.css'
 import { browserHistory } from 'react-router'
 import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'semantic-ui-react'
-
+import request from 'superagent'
+import R from 'ramda'
 import * as LoginActions from '../../ducks/login'
+
+const viewParam = (path, obj) => {
+  const lense = R.lensPath(path.split('.'))
+  return R.view(lense, obj)
+}
 
 class Navigation extends Component {
   static propTypes = {
@@ -17,23 +23,41 @@ class Navigation extends Component {
     super(props)
     this.state = {
       loggingInPorgress: false,
+      loggingInFail: false,
       signingupInPorgress: false,
       signingupSuccess: false,
+      loginFailMessage: null,
     }
   }
 
-  handleLogin(event){
+  handleLogin(event, {formData}){
     event.preventDefault()
     // const { actions2,actions, routing } = this.props
     this.setState({
       loggingInPorgress: true,
+      loggingInFail: false,
+      loginFailMessage: null,
     })
-    setTimeout(()=>{
-      this.setState({
-        loggingInPorgress: false,
+    request.post('/login')
+      .send({email:formData.email, password:formData.password})
+      .accept('json')
+      .type('json')
+      .then(() => {
+        this.setState({
+          loggingInPorgress: false,
+        })
+        browserHistory.replace('/')
+      }).catch((err)=>{
+        let loginFailMessage = viewParam('response.body.error', err)
+        if (!loginFailMessage){
+          loginFailMessage='An unknown error occurred, please try again later'
+        }
+        this.setState({
+          loggingInPorgress: false,
+          loggingInFail:true,
+          loginFailMessage,
+        })
       })
-      browserHistory.replace('/')
-    }, 1000)
 
     // actions.login({
     //   user:this.userInput.value,
@@ -41,7 +65,7 @@ class Navigation extends Component {
     // })
   }
 
-  handleSignup(event){
+  handleSignup(event, formData){
     event.preventDefault()
     this.setState({
       signingupInPorgress: true,
@@ -55,7 +79,13 @@ class Navigation extends Component {
   }
 
   render() {
-    const {loggingInPorgress, signingupInPorgress, signingupSuccess} = this.state
+    const {
+      loggingInPorgress,
+      signingupInPorgress,
+      signingupSuccess,
+      loggingInFail,
+      loginFailMessage,
+    } = this.state
 
     return (
       <Grid divided="vertically">
@@ -77,10 +107,23 @@ class Navigation extends Component {
 
           <Grid.Column >
             <Segment basic padded>
-              <Form loading={loggingInPorgress} onSubmit={::this.handleLogin}>
+              <Form
+                  error={loggingInFail}
+                  loading={loggingInPorgress}
+                  onSubmit={::this.handleLogin}
+              >
                 <Header size="medium">Login</Header>
-                <Form.Input focus label="Email" type="email"/>
-                <Form.Input label="Password" type="password" />
+                <Form.Input
+                    focus
+                    label="Email"
+                    name="email"
+                    type="email"
+                />
+                <Form.Input
+                    label="Password"
+                    name="password"
+                    type="password"
+                />
                 <Button primary type="submit">Login</Button>
 
                 <Divider horizontal>Or</Divider>
@@ -93,6 +136,12 @@ class Navigation extends Component {
                     <Icon name="google" /> Google
                   </Button>
                 </Form.Group>
+
+                <Message
+                    content={loginFailMessage}
+                    error
+                    header="Login Error!"
+                />
               </Form>
             </Segment>
           </Grid.Column>
