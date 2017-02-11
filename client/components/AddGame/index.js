@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 // import classnames from 'classnames'
 // import style from './style.css'
 // import {Icon} from 'react-fa'
-import { Grid, Icon, Dropdown, Input, Label, Header, List, Image, Card } from 'semantic-ui-react'
+import { Grid, Icon, Dropdown, Input, Label, Header, List, Image, Card, Button } from 'semantic-ui-react'
 
 const gameTypes = [{
   text: 'Texas Hold\'em',
@@ -61,9 +61,12 @@ export default class AddGame extends Component {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={3}>
-          <Grid.Column>
-            <Icon name="map" />
-            <Input placeholder="Location..." />
+          <Grid.Column stretched>
+            <Input
+                icon="map"
+                iconPosition="left"
+                placeholder="Location..."
+            />
           </Grid.Column>
           <Grid.Column stretched>
             <Input labelPosition="left" type="text" placeholder="Choose Start Date..." defaultValue={new Date()}>
@@ -78,9 +81,37 @@ export default class AddGame extends Component {
             </Input>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row columns={1}>
-          <Grid.Column>
+        <Grid.Row stretched verticalAlign="middle">
+          <Grid.Column width={2}>
             <Header>Players</Header>
+            {/*dropdown Search Selection*/}
+          </Grid.Column>
+          <Grid.Column width={3}>
+            <Input
+                icon="users"
+                iconPosition="left"
+                placeholder="Add Player..."
+                style={{marginBottom:2}}
+            />
+          </Grid.Column>
+          <Grid.Column width={11}>
+            <Grid.Row stretched verticalAlign="middle">
+              <Label image>
+                <img src="/images/dean2.jpg" />
+                  Dean
+                  <Icon name="delete" />
+              </Label>
+              <Label image>
+                <img src="http://semantic-ui.com/images/avatar/small/zoe.jpg" />
+                  Zoe
+                  <Icon name="delete" />
+              </Label>
+              <Label image>
+                <img src="http://semantic-ui.com/images/avatar/small/nan.jpg" />
+                  Nan
+                <Icon name="delete" />
+              </Label>
+            </Grid.Row>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
@@ -99,12 +130,12 @@ export default class AddGame extends Component {
             </Card>
           </Grid.Column>
 
-          <Grid.Column  width={10}>
+          <Grid.Column width={14}>
             <Grid.Row>
               <Icon name="money"/>
               <List horizontal>
                 <List.Item>
-                  <Input type="number" defaultValue={100}/>
+                  <Input defaultValue={100} type="number"/>
                 </List.Item>
                 <List.Item>
                   <Label>
@@ -127,18 +158,18 @@ export default class AddGame extends Component {
                 </List.Item>
               </List>
             </Grid.Row>
-            {/* <Grid>
-              <Grid.Column>
-              </Grid.Column>
-            </Grid> */}
           </Grid.Column>
         </Grid.Row>
-        {/* <Grid.Row columns={2}>
+        <Grid.Row textAlign="right">
           <Grid.Column>
+            <Button
+                content="Add The Game"
+                icon="add"
+                labelPosition="right"
+                primary
+            />
           </Grid.Column>
-          <Grid.Column>
-          </Grid.Column>
-        </Grid.Row> */}
+        </Grid.Row>
       </Grid>
     )
   }

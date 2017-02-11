@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 // import { Link } from 'react-router'
-import { Menu, Button, Input, Icon } from 'semantic-ui-react'
+import { Menu, Button, Input, Icon, Label } from 'semantic-ui-react'
 import { browserHistory } from 'react-router'
 // import classnames from 'classnames'
 // import style from './style.css'
@@ -40,6 +40,7 @@ export default class Navbar extends Component {
               onClick={()=>this.handleMenuItemClick('/pulse')}
           >
             <Icon name="heartbeat"/> Pulse
+            <Label size="mini" circular>1</Label>
           </Menu.Item>
 
 
