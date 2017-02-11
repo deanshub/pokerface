@@ -66,7 +66,8 @@ app.post('/login', (req, res, next) => {
     if (!user) { return res.redirect('/login') }
     req.logIn(user, (err) => {
       if (err) { return next(err) }
-      return res.redirect(`/profile/${user.username}`)
+      return res.redirect('/')
+      // return res.redirect(`/profile/${user.username}`)
     })
   })(req, res, next)
 })
