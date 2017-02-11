@@ -6,10 +6,13 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import expressSession from 'express-session'
 import compression from 'compression'
+import signup from './routes/signup'
+
 
 const app = express()
 const PORT = process.env.port || 9031
 const STATIC_FILES_DIRECTORY = path.join(__dirname,'../../client/static')
+const apiRoutes = signup
 
 app.use(compression())
 app.use(cookieParser())
@@ -95,6 +98,8 @@ app.get('/profile', isAuthenticated, (req, res)=>{
 app.get('/pulse', isAuthenticated, (req, res)=>{
   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
 })
+
+app.use('/api', apiRoutes)
 
 app.use('/', express.static(STATIC_FILES_DIRECTORY))
 app.get('*', function (req, res) {
