@@ -10,7 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.js",
     "build": "SET \"NODE_ENV=production\" && babel lib -d dist",
-    "serve": "SET \"NODE_ENV=production\" && node dist/index.js"
+    "serve": "SET \"NODE_ENV=production\" && node dist/index.js",
+    "build:linux": "NODE_ENV=production babel lib -d dist",
+    "serve:linux": "NODE_ENV=production node dist/index.js"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
