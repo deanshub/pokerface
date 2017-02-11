@@ -65,17 +65,35 @@ class Navigation extends Component {
     // })
   }
 
-  handleSignup(event, formData){
+  handleSignup(event, {formData}){
     event.preventDefault()
     this.setState({
       signingupInPorgress: true,
     })
-    setTimeout(()=>{
-      this.setState({
-        signingupInPorgress: false,
-        signingupSuccess: true,
+
+    request.post('/api/signup')
+      .send({
+        firstName:formData.firstName,
+        lastName:formData.lastName,
+        email:formData.email,
+      }).accept('json')
+      .type('json')
+      .then(() => {
+        this.setState({
+          signingupInPorgress: false,
+          signingupSuccess: true,
+        })
+      }).catch((err)=>{
+        console.error(err)
+        // let loginFailMessage = viewParam('response.body.error', err)
+        // if (!loginFailMessage){
+        //   loginFailMessage='An unknown error occurred, please try again later'
+        // }
+        this.setState({
+          signingupInPorgress: false,
+          signingupSuccess: true,
+        })
       })
-    },1000)
   }
 
   render() {
@@ -117,11 +135,13 @@ class Navigation extends Component {
                     focus
                     label="Email"
                     name="email"
+                    required
                     type="email"
                 />
                 <Form.Input
                     label="Password"
                     name="password"
+                    required
                     type="password"
                 />
                 <Button primary type="submit">Login</Button>
@@ -154,9 +174,22 @@ class Navigation extends Component {
                   success={signingupSuccess}
               >
                 <Header size="medium">Sign-Up</Header>
-                <Form.Input label="First Name" required/>
-                <Form.Input label="Last Name" required/>
-                <Form.Input label="E-mail" type="email" required/>
+                <Form.Input
+                    label="First Name"
+                    name="firstName"
+                    required
+                />
+                <Form.Input
+                    label="Last Name"
+                    name="lastName"
+                    required
+                />
+                <Form.Input
+                    label="E-mail"
+                    name="email"
+                    required
+                    type="email"
+                />
                 <Button primary type="submit">Sign-Up</Button>
 
                   <Message
