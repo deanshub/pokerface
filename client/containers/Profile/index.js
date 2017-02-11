@@ -5,10 +5,11 @@ import classnames from 'classnames'
 import style from './style.css'
 import Cover from '../../components/Cover'
 import ProfileNavbar from '../../components/ProfileNavbar'
-import Post from '../../components/Post'
+// import Post from '../../components/Post'
+import Feed from '../Feed'
 // import * as BoardActions from '../../ducks/board'
 
-class Feed extends Component {
+class Profile extends Component {
   static propTypes = {
     login: PropTypes.object.isRequired,
   }
@@ -47,7 +48,9 @@ class Feed extends Component {
         <ProfileNavbar
             avatar={login.user.avatarImage}
         />
-        {posts.map((post, index)=><Post key={index} {...post}/>)}
+
+        <Feed/>
+      {/*posts.map((post, index)=><Post key={index} {...post}/>)*/}
       </div>
     )
   }
@@ -68,4 +71,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Feed)
+)(Profile)

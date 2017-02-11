@@ -22,10 +22,9 @@ const events = [{
   date: '4 days ago',
   image: 'http://semantic-ui.com/images/avatar/small/helen.jpg',
   meta: '1 Like',
-  summary: 'Helen Troy added 2 new illustrations',
+  summary: 'Helen Troy added 1 new photo',
   extraImages: [
-    'http://semantic-ui.com/images/wireframe/image.png',
-    'http://semantic-ui.com/images/wireframe/image.png',
+    '/images/table.jpg',
   ],
 }, {
   date: '3 days ago',
@@ -50,7 +49,7 @@ class FeedContainer extends Component {
     // const { board, actions, children } = this.props
 
     return (
-      <Container text>
+      <Container style={{marginTop:20}} text>
         <Feed events={events} />
       </Container>
     )

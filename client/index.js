@@ -9,6 +9,7 @@ import Login from './containers/Login'
 import Navigation from './containers/Navigation'
 import Feed from './containers/Feed'
 import Profile from './containers/Profile'
+import Pulse from './containers/Pulse'
 
 import configure from './store'
 
@@ -24,8 +25,9 @@ ReactDOM.render(
         <Route component={Navigation} path="/">
           <IndexRoute component={Feed}/>
 
-          <Route path="/profile/:userId" component={Profile} />
-          <Route path="/profile" component={Profile} />
+          <Route component={Profile} path="/profile/:userId"/>
+          <Route component={Profile} path="/profile"/>
+          <Route component={Pulse} path="/pulse"/>
         </Route>
       </Router>
     </Provider>

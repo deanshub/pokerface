@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 // import { Link } from 'react-router'
-import { Menu, Button, Input } from 'semantic-ui-react'
+import { Menu, Button, Input, Icon } from 'semantic-ui-react'
 import { browserHistory } from 'react-router'
 // import classnames from 'classnames'
 // import style from './style.css'
@@ -17,26 +17,30 @@ export default class Navbar extends Component {
   render() {
     return (
         <Menu
+            fixed="top"
             pointing
             secondary
             size="large"
-            style={{marginBottom:0}}
+            style={{marginBottom:0, backgroundColor:'white'}}
         >
           <Menu.Item
               active={this.context.router.isActive('/', true)}
-              name="home"
               onClick={()=>this.handleMenuItemClick('/')}
-          />
+          >
+            <Icon name="home"/> Home
+          </Menu.Item>
           <Menu.Item
               active={this.context.router.isActive('/profile', true)}
-              name="profile"
               onClick={()=>this.handleMenuItemClick('/profile')}
-          />
+          >
+            <Icon name="user"/> Profile
+          </Menu.Item>
           <Menu.Item
               active={this.context.router.isActive('/pulse', true)}
-              name="pulse"
               onClick={()=>this.handleMenuItemClick('/pulse')}
-          />
+          >
+            <Icon name="heartbeat"/> Pulse
+          </Menu.Item>
 
 
           <Menu.Menu position="right">

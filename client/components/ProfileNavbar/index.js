@@ -1,13 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
-// import {Icon} from 'react-fa'
-import Statistics from '../Statistics'
-import * as ProfileConsts from '../../constants/profile'
 import { Menu, Segment, Icon, Image } from 'semantic-ui-react'
-
-
+import * as ProfileConsts from '../../constants/profile'
+import Statistics from '../Statistics'
 import AddGame from '../AddGame'
-
+import UnavailableSection from '../UnavailableSection'
 import style from './style.css'
 
 export default class ProfileNavbar extends Component {
@@ -38,8 +35,10 @@ export default class ProfileNavbar extends Component {
       return <Statistics />
     }else if (currentTab===ProfileConsts.ADD_GAME_TAB) {
       return <AddGame />
-    }else if (currentTab===ProfileConsts.ADD_PLAY_TAB) {
-      return null
+    }else if (currentTab===ProfileConsts.LEARN) {
+      return <UnavailableSection/>
+    }else{
+      return <UnavailableSection/>
     }
   }
 
@@ -67,14 +66,16 @@ export default class ProfileNavbar extends Component {
             Game
           </Menu.Item>
           <Menu.Item
-              active={currentTab===ProfileConsts.ADD_GAME_LOREM}
-              name="Lorem"
-              onClick={()=>::this.changeTab(ProfileConsts.ADD_GAME_LOREM)}
-          />
+              active={currentTab===ProfileConsts.LEARN}
+              onClick={()=>::this.changeTab(ProfileConsts.LEARN)}
+          >
+            <Icon name="student" />
+            Learn
+          </Menu.Item>
           <Menu.Item
               active={currentTab===ProfileConsts.STATISTICS_TAB}
               onClick={()=>::this.changeTab(ProfileConsts.STATISTICS_TAB)}
-              style={{maxHeight:'10vh'}}
+              style={{maxHeight:74}}
           >
             <Image
                 avatar
@@ -85,9 +86,11 @@ export default class ProfileNavbar extends Component {
           </Menu.Item>
           <Menu.Item
               active={currentTab===ProfileConsts.ADD_GAME_IPSUM}
-              name="Ipsum"
               onClick={()=>::this.changeTab(ProfileConsts.ADD_GAME_IPSUM)}
-          />
+          >
+            <Icon name="cube" />
+            Ipsum
+          </Menu.Item>
           <Menu.Item
               active={currentTab===ProfileConsts.ADD_PLAY_TAB}
               onClick={()=>::this.changeTab(ProfileConsts.ADD_PLAY_TAB)}
@@ -102,47 +105,4 @@ export default class ProfileNavbar extends Component {
       </div>
     )
   }
-  // render() {
-  //   const {avatarImage, currentTab} = this.state
-  //   let avatarDivStyle = {}
-  //   if (avatarImage){
-  //     avatarDivStyle.backgroundImage = `url(${avatarImage})`
-  //   }
-  //
-  //   return (
-  //     <div className={classnames(style.container)}>
-  //       <div className={classnames(style.navBar)}>
-  //         <div
-  //             className={classnames(style.navItem, {[style.navItemActive]:currentTab===ProfileConsts.ADD_GAME_TAB})}
-  //             onClick={()=>::this.changeTab(ProfileConsts.ADD_GAME_TAB)}
-  //         >
-  //           <Icon name="plus"/>
-  //           <div>Game</div>
-  //         </div>
-  //         <div className={classnames(style.navItem)}>
-  //           <Icon name="plus"/>
-  //           <div>Lorem</div>
-  //         </div>
-  //         <div
-  //             className={classnames(style.navItem, style.avatar, {[style.navItemActive]:currentTab===ProfileConsts.STATISTICS_TAB})}
-  //             onClick={()=>::this.changeTab(ProfileConsts.STATISTICS_TAB)}
-  //             style={avatarDivStyle}
-  //         />
-  //         <div className={classnames(style.navItem)}>
-  //           <Icon name="plus"/>
-  //           <div>Ipsum</div>
-  //         </div>
-  //         <div
-  //             className={classnames(style.navItem, {[style.navItemActive]:currentTab===ProfileConsts.ADD_PLAY_TAB})}
-  //             onClick={()=>::this.changeTab(ProfileConsts.ADD_PLAY_TAB)}
-  //         >
-  //           <Icon name="plus"/>
-  //           <div>Play</div>
-  //         </div>
-  //       </div>
-  //
-  //       {this.getCurrentTab(currentTab)}
-  //     </div>
-  //   )
-  // }
 }

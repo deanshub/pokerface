@@ -29,6 +29,7 @@ export default class ProfileStatistic extends Component {
           <Grid.Column>
             Chart
           </Grid.Column>
+
           <Grid.Column>
             <Statistic.Group widths="3">
               <Statistic>
@@ -54,6 +55,7 @@ export default class ProfileStatistic extends Component {
               </Statistic>
             </Statistic.Group>
           </Grid.Column>
+
           <Grid.Column>
             Something Else
           </Grid.Column>

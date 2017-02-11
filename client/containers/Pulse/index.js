@@ -1,28 +1,16 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+// import { Container } from 'semantic-ui-react'
+import UnavailableSection from '../../components/UnavailableSection'
 // import classnames from 'classnames'
 // import style from './style.css'
 // import * as BoardActions from '../../ducks/board'
-import Navbar from '../../components/Navbar'
-import 'semantic-ui-css/semantic.min.css'
 
-class Navigation extends Component {
-  static propTypes={
-    children: PropTypes.element,
-  }
-
+class Pulse extends Component {
   render() {
-    // const { board, actions, children } = this.props
-    const { children } = this.props
-
     return (
-      <div>
-        <Navbar />
-        <div style={{paddingTop: 51}}>
-          {children}
-        </div>
-      </div>
+      <UnavailableSection/>
     )
   }
 }
@@ -42,4 +30,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Navigation)
+)(Pulse)
