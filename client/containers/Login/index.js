@@ -28,7 +28,12 @@ class Navigation extends Component {
     this.setState({
       loggingInPorgress: true,
     })
-    browserHistory.replace('/')
+    setTimeout(()=>{
+      this.setState({
+        loggingInPorgress: false,
+      })
+      browserHistory.replace('/')
+    }, 1000)
 
     // actions.login({
     //   user:this.userInput.value,
@@ -100,9 +105,9 @@ class Navigation extends Component {
                   success={signingupSuccess}
               >
                 <Header size="medium">Sign-Up</Header>
-                <Form.Input label="First Name"/>
-                <Form.Input label="Last Name"/>
-                <Form.Input label="E-mail" type="email"/>
+                <Form.Input label="First Name" required/>
+                <Form.Input label="Last Name" required/>
+                <Form.Input label="E-mail" type="email" required/>
                 <Button primary type="submit">Sign-Up</Button>
 
                   <Message

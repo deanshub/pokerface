@@ -40,7 +40,7 @@ export default class Navbar extends Component {
               onClick={()=>this.handleMenuItemClick('/pulse')}
           >
             <Icon name="heartbeat"/> Pulse
-            <Label size="mini" circular>1</Label>
+            <Label circular size="mini">1</Label>
           </Menu.Item>
 
 
