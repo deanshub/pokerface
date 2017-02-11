@@ -5,5 +5,5 @@ pushd ~/Desktop/apps/pokerface/server
 nvm use 7.5.0
 yarn
 yarn run build:linux
-NODE_ENV=production GMAIL_USER=user GMAIL_PASSWORD=password pm2 start dist/index.js
+NODE_ENV=production GMAIL_USER=user GMAIL_PASSWORD=password pm2 start dist/index.js --name pokerface
 popd
