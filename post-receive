@@ -1,8 +1,10 @@
 #!/bin/bash
 source ~/.bashrc
+PATH=$PATH:~/.nvm/
+~/.nvm/nvm.sh
+nvm use 7.5.0
 GIT_WORK_TREE=~/Desktop/apps/pokerface/client git checkout -f
 pushd ~/Desktop/apps/pokerface/client
-nvm use 7.5.0
 yarn
 yarn run build:linux
 popd
