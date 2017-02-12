@@ -12,11 +12,11 @@ let plugins = [
 ]
 
 if (NODE_ENV==='"development"'){
-  plugins.push(new webpack.NoEmitOnErrorsPlugin())
+  plugins.push(new webpack.NamedModulesPlugin())
   plugins.push(new webpack.HotModuleReplacementPlugin())
   devtool = 'inline-source-map'
-  plugins.push(new webpack.NamedModulesPlugin())
 }else{
+  plugins.push(new webpack.NoEmitOnErrorsPlugin())
   plugins.push(new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}))
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compressor: {
@@ -54,7 +54,7 @@ let config = {
       },
       {
         test: /\.css$/,
-        include: /client\\client/,
+        include: new RegExp(`client${path.sep}client`),
         use: [
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[local]___[hash:base64:5]',
@@ -63,7 +63,7 @@ let config = {
       },
       {
         test: /\.css$/,
-        exclude: /client\\client/,
+        exclude: new RegExp(`client${path.sep}client`),
         use: [{
           loader:'style-loader',
         },{
