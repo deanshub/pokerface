@@ -1,7 +1,7 @@
 #!/bin/bash
 source ~/.bashrc
 PATH=$PATH:~/.nvm/
-./.nvm/nvm.sh
+./~/.nvm/nvm.sh
 nvm use 7.5.0
 pm2 delete pokerface
 GIT_WORK_TREE=~/Desktop/apps/pokerface/server git checkout -f
