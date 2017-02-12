@@ -1,8 +1,11 @@
 #!/bin/bash
 source ~/.bashrc
+PATH=$PATH:~/.nvm/
+./.nvm/nvm.sh
+nvm use 7.5.0
+pm2 delete pokerface
 GIT_WORK_TREE=~/Desktop/apps/pokerface/server git checkout -f
 pushd ~/Desktop/apps/pokerface/server
-nvm use 7.5.0
 yarn
 yarn run build:linux
 NODE_ENV=production GMAIL_USER=user GMAIL_PASSWORD=password pm2 start dist/index.js --name pokerface
