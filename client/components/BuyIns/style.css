@@ -1,1 +1,4 @@
 @import "../../constants/styles";
+.add{
+  cursor: pointer;
+}

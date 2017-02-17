@@ -10,7 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server -d --history-api-fallback --hot --inline --progress --colors --port 9037",
     "webpack": "webpack -d --env=dev --hot --progress --colors",
-    "watch:build": "SET \"NODE_ENV=production\" && webpack -p --env=prod --progress --colors --watch",
+    "watch:build:dev": "SET \"NODE_ENV=development\" && webpack -d --env=dev --progress --colors --watch",
+    "watch:build:prod": "SET \"NODE_ENV=production\" && webpack -p --env=prod --progress --colors --watch",
     "build": "SET \"NODE_ENV=production\" && webpack -p --env=prod --progress --colors",
     "build:linux": "NODE_ENV=production webpack -p --env=prod --progress --colors"
   },
@@ -47,7 +48,9 @@
     "webpack-hot-middleware": "^2.7.1"
   },
   "dependencies": {
+    "moment": "^2.17.1",
     "ramda": "^0.23.0",
+    "react-datepicker": "^0.41.1",
     "react-document-title": "^2.0.2",
     "semantic-ui-css": "^2.2.4",
     "semantic-ui-react": "^0.64.7",

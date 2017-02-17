@@ -1,8 +1,12 @@
 import React, { Component, PropTypes } from 'react'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import moment from 'moment'
+import { Grid, Icon, Dropdown, Input, Label, Header, Image, Card, Button } from 'semantic-ui-react'
 // import classnames from 'classnames'
 // import style from './style.css'
-// import {Icon} from 'react-fa'
-import { Grid, Icon, Dropdown, Input, Label, Header, List, Image, Card, Button } from 'semantic-ui-react'
+import BuyIns from '../BuyIns'
+import Winnings from '../Winnings'
 
 const gameTypes = [{
   text: 'Texas Hold\'em',
@@ -41,14 +45,62 @@ const gameSubTypes = [{
   value: 'Cash',
 }]
 
+const initialBuyIn=100
+const initialWin=0
+
 export default class AddGame extends Component {
   constructor(props){
     super(props)
     this.state = {
       players: [],
+      buyIns: [{value: initialBuyIn, key:Math.random()}],
+      winnings: [{value: initialWin, key:Math.random()}],
+      endDate: moment(),
+      startDate: moment(),
     }
   }
+
+  addBuyIn(){
+    const {buyIns} = this.state
+    this.setState({
+      buyIns: [...buyIns, {value: initialBuyIn, key:Math.random()}],
+    })
+  }
+  removeBuyIn(index){
+    const {buyIns} = this.state
+    this.setState({
+      buyIns: buyIns.slice(0,index).concat(buyIns.slice(index+1)),
+    })
+  }
+
+  addWin(){
+    const {winnings} = this.state
+    this.setState({
+      winnings: [...winnings, {value: initialWin, key:Math.random()}],
+    })
+  }
+  removeWin(index){
+    const {winnings} = this.state
+    this.setState({
+      winnings: winnings.slice(0,index).concat(winnings.slice(index+1)),
+    })
+  }
+
+  handleChangeStartDate(startDate){
+    this.setState({
+      startDate,
+      endDate: startDate,
+    })
+  }
+  handleChangeEndDate(endDate){
+    this.setState({
+      endDate,
+    })
+  }
+
   render() {
+    const {buyIns, winnings, startDate, endDate} = this.state
+
     return (
       <Grid container>
         <Grid.Row columns={2}>
@@ -60,28 +112,42 @@ export default class AddGame extends Component {
             <Dropdown placeholder="Select Game Sub-Type" selection options={gameSubTypes} />
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row columns={3}>
-          <Grid.Column stretched>
+
+        <Grid.Row>
+          <Grid.Column width={6} stretched>
             <Input
                 icon="map"
                 iconPosition="left"
                 placeholder="Location..."
             />
           </Grid.Column>
-          <Grid.Column stretched>
+          <Grid.Column width={5} stretched>
             <Input labelPosition="left" type="text" placeholder="Choose Start Date..." defaultValue={new Date()}>
               <Label basic>From</Label>
-              <input />
+              <DatePicker
+                  endDate={endDate}
+                  onChange={::this.handleChangeStartDate}
+                  selected={startDate}
+                  selectsStart
+                  startDate={startDate}
+              />
             </Input>
           </Grid.Column>
-          <Grid.Column stretched>
+          <Grid.Column width={5} stretched>
             <Input labelPosition="left" type="text" placeholder="Choose End Date..." defaultValue={new Date()}>
               <Label basic>To</Label>
-              <input />
+              <DatePicker
+                  endDate={endDate}
+                  onChange={::this.handleChangeEndDate}
+                  selected={endDate}
+                  selectsEnd
+                  startDate={startDate}
+              />
             </Input>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row stretched verticalAlign="middle">
+
+        <Grid.Row stretched>
           <Grid.Column width={2}>
             <Header>Players</Header>
             {/*dropdown Search Selection*/}
@@ -131,33 +197,16 @@ export default class AddGame extends Component {
           </Grid.Column>
 
           <Grid.Column width={14}>
-            <Grid.Row>
-              <Icon name="money"/>
-              <List horizontal>
-                <List.Item>
-                  <Input defaultValue={100} type="number"/>
-                </List.Item>
-                <List.Item>
-                  <Label>
-                    <Icon name="add" />
-                  </Label>
-                </List.Item>
-              </List>
-            </Grid.Row>
-
-            <Grid.Row>
-              <Icon name="trophy"/>
-              <List horizontal>
-                <List.Item>
-                  <Input defaultValue={0}/>
-                </List.Item>
-                <List.Item>
-                  <Label>
-                    <Icon name="add" />
-                  </Label>
-                </List.Item>
-              </List>
-            </Grid.Row>
+            <BuyIns
+                addBuyIn={::this.addBuyIn}
+                removeBuyIn={::this.removeBuyIn}
+                values={buyIns}
+            />
+            <Winnings
+                addWin={::this.addWin}
+                removeWin={::this.removeWin}
+                values={winnings}
+            />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row textAlign="right">

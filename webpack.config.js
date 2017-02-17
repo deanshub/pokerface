@@ -1,7 +1,6 @@
 // let rucksack = require('rucksack-css')
 let webpack = require('webpack')
 let path = require('path')
-
 let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 
 let devtool
@@ -54,7 +53,7 @@ let config = {
       },
       {
         test: /\.css$/,
-        include: new RegExp(`client${path.sep}client`),
+        include: path.join(__dirname, 'client'),
         use: [
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[local]___[hash:base64:5]',
@@ -63,7 +62,7 @@ let config = {
       },
       {
         test: /\.css$/,
-        exclude: new RegExp(`client${path.sep}client`),
+        exclude: path.join(__dirname, 'client'),
         use: [{
           loader:'style-loader',
         },{
