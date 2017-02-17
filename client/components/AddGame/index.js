@@ -5,8 +5,7 @@ import moment from 'moment'
 import { Grid, Icon, Dropdown, Input, Label, Header, Image, Card, Button } from 'semantic-ui-react'
 // import classnames from 'classnames'
 // import style from './style.css'
-import BuyIns from '../BuyIns'
-import Winnings from '../Winnings'
+import PlayerForm from '../PlayerForm'
 
 const gameTypes = [{
   text: 'Texas Hold\'em',
@@ -52,37 +51,74 @@ export default class AddGame extends Component {
   constructor(props){
     super(props)
     this.state = {
-      players: [],
-      buyIns: [{value: initialBuyIn, key:Math.random()}],
-      winnings: [{value: initialWin, key:Math.random()}],
+      players: {
+        deanshub: {
+          image: '/images/dean2.jpg',
+          name: 'Dean Shub',
+          buyIns: [{value: initialBuyIn, key:Math.random()}],
+          winnings: [{value: initialWin, key:Math.random()}],
+        },
+        zoeD: {
+          image: 'http://semantic-ui.com/images/avatar/small/zoe.jpg',
+          name: 'Zoe Dechannel',
+          buyIns: [{value: initialBuyIn, key:Math.random()}],
+          winnings: [{value: initialWin, key:Math.random()}],
+        },
+        nanWasa: {
+          image: 'http://semantic-ui.com/images/avatar/small/nan.jpg',
+          name: 'Nan Wasa',
+          buyIns: [{value: initialBuyIn, key:Math.random()}],
+          winnings: [{value: initialWin, key:Math.random()}],
+        },
+      },
       endDate: moment(),
       startDate: moment(),
     }
   }
 
-  addBuyIn(){
-    const {buyIns} = this.state
+  addBuyIn(player){
+    const {players} = this.state
+    const buyIns = players[player].buyIns
+    const updatedBuyIns = [...buyIns, {value: initialBuyIn, key:Math.random()}]
+    const updatedPlayer = Object.assign({}, players[player], {buyIns:updatedBuyIns})
+    const updatedPlayers = Object.assign({}, players, {[player]:updatedPlayer})
+
     this.setState({
-      buyIns: [...buyIns, {value: initialBuyIn, key:Math.random()}],
+      players: updatedPlayers,
     })
   }
-  removeBuyIn(index){
-    const {buyIns} = this.state
+  removeBuyIn(player, index){
+    const {players} = this.state
+    const buyIns = players[player].buyIns
+    const updatedBuyIns = buyIns.slice(0,index).concat(buyIns.slice(index+1))
+    const updatedPlayer = Object.assign({}, players[player], {buyIns:updatedBuyIns})
+    const updatedPlayers = Object.assign({}, players, {[player]:updatedPlayer})
+
     this.setState({
-      buyIns: buyIns.slice(0,index).concat(buyIns.slice(index+1)),
+      players: updatedPlayers,
     })
   }
 
-  addWin(){
-    const {winnings} = this.state
+  addWin(player){
+    const {players} = this.state
+    const winnings = players[player].winnings
+    const updatedWinnings = [...winnings, {value: initialWin, key:Math.random()}]
+    const updatedPlayer = Object.assign({}, players[player], {winnings:updatedWinnings})
+    const updatedPlayers = Object.assign({}, players, {[player]:updatedPlayer})
+
     this.setState({
-      winnings: [...winnings, {value: initialWin, key:Math.random()}],
+      players: updatedPlayers,
     })
   }
-  removeWin(index){
-    const {winnings} = this.state
+  removeWin(player, index){
+    const {players} = this.state
+    const winnings = players[player].winnings
+    const updatedWinnings = winnings.slice(0,index).concat(winnings.slice(index+1))
+    const updatedPlayer = Object.assign({}, players[player], {winnings:updatedWinnings})
+    const updatedPlayers = Object.assign({}, players, {[player]:updatedPlayer})
+
     this.setState({
-      winnings: winnings.slice(0,index).concat(winnings.slice(index+1)),
+      players: updatedPlayers,
     })
   }
 
@@ -98,8 +134,17 @@ export default class AddGame extends Component {
     })
   }
 
+  removePlayer(player){
+    const {players} = this.state
+    const {[player]:omit, ...updatedPlayers} = players
+
+    this.setState({
+      players: updatedPlayers,
+    })
+  }
+
   render() {
-    const {buyIns, winnings, startDate, endDate} = this.state
+    const {startDate, endDate, players} = this.state
 
     return (
       <Grid container>
@@ -162,53 +207,30 @@ export default class AddGame extends Component {
           </Grid.Column>
           <Grid.Column width={11}>
             <Grid.Row stretched verticalAlign="middle">
-              <Label image>
-                <img src="/images/dean2.jpg" />
-                  Dean
-                  <Icon name="delete" />
-              </Label>
-              <Label image>
-                <img src="http://semantic-ui.com/images/avatar/small/zoe.jpg" />
-                  Zoe
-                  <Icon name="delete" />
-              </Label>
-              <Label image>
-                <img src="http://semantic-ui.com/images/avatar/small/nan.jpg" />
-                  Nan
-                <Icon name="delete" />
-              </Label>
+              {Object.keys(players).map(user=>
+                <Label image key={user}>
+                  <img src={players[user].image} />
+                  {players[user].name}
+                  <Icon name="delete" onClick={()=>this.removePlayer(user)} />
+                </Label>
+              )}
             </Grid.Row>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={2}>
-            <Card>
-              <Image src={'/images/dean2.jpg'}/>
-              <Card.Content>
-                <Card.Header>
-                  Me
-                </Card.Header>
-                <Card.Content extra>
-                  <Icon name="user" />
-                  22 Friends
-                </Card.Content>
-              </Card.Content>
-            </Card>
-          </Grid.Column>
 
-          <Grid.Column width={14}>
-            <BuyIns
-                addBuyIn={::this.addBuyIn}
-                removeBuyIn={::this.removeBuyIn}
-                values={buyIns}
-            />
-            <Winnings
-                addWin={::this.addWin}
-                removeWin={::this.removeWin}
-                values={winnings}
-            />
-          </Grid.Column>
-        </Grid.Row>
+        {Object.keys(players).map(user=>
+          <PlayerForm
+              addBuyIn={()=>this.addBuyIn(user)}
+              addWin={()=>this.addWin(user)}
+              buyInValues={players[user].buyIns}
+              key={user}
+              removeBuyIn={(index)=>this.removeBuyIn(user, index)}
+              removeWin={(index)=>this.removeWin(user, index)}
+              user={players[user]}
+              winValues={players[user].winnings}
+          />
+        )}
+
         <Grid.Row textAlign="right">
           <Grid.Column>
             <Button

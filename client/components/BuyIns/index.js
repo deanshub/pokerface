@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import style from './style.css'
 // import {Icon} from 'react-fa'
-import { Grid, Icon, Input, Label, List, Button } from 'semantic-ui-react'
+import { Grid, Icon, Input, Button, List } from 'semantic-ui-react'
 
 export default class BuyIns extends Component {
   static propTypes ={
@@ -32,9 +32,13 @@ export default class BuyIns extends Component {
             </List.Item>
           )}
           <List.Item>
-            <Label className={classnames(style.add)} onClick={addBuyIn}>
+            <Button
+                icon
+                onClick={addBuyIn}
+                size="mini"
+            >
               <Icon name="add" />
-            </Label>
+            </Button>
           </List.Item>
         </List>
       </Grid.Row>
