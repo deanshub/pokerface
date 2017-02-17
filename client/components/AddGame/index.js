@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
-import { Grid, Icon, Dropdown, Input, Label, Header, Image, Card, Button } from 'semantic-ui-react'
+import { Grid, Icon, Dropdown, Input, Label, Header, Button } from 'semantic-ui-react'
 // import classnames from 'classnames'
 // import style from './style.css'
 import PlayerForm from '../PlayerForm'
@@ -46,6 +46,27 @@ const gameSubTypes = [{
 
 const initialBuyIn=100
 const initialWin=0
+
+const wholePlayers = {
+  deanshub: {
+    image: '/images/dean2.jpg',
+    name: 'Dean Shub',
+    buyIns: [{value: initialBuyIn, key:Math.random()}],
+    winnings: [{value: initialWin, key:Math.random()}],
+  },
+  zoeD: {
+    image: 'http://semantic-ui.com/images/avatar/small/zoe.jpg',
+    name: 'Zoe Dechannel',
+    buyIns: [{value: initialBuyIn, key:Math.random()}],
+    winnings: [{value: initialWin, key:Math.random()}],
+  },
+  nanWasa: {
+    image: 'http://semantic-ui.com/images/avatar/small/nan.jpg',
+    name: 'Nan Wasa',
+    buyIns: [{value: initialBuyIn, key:Math.random()}],
+    winnings: [{value: initialWin, key:Math.random()}],
+  },
+}
 
 export default class AddGame extends Component {
   constructor(props){
@@ -143,8 +164,23 @@ export default class AddGame extends Component {
     })
   }
 
+  addPlayer(player){
+    const {players} = this.state
+    this.setState({
+      players: Object.assign({}, players, {[player]: wholePlayers[player]}),
+    })
+  }
+
   render() {
     const {startDate, endDate, players} = this.state
+    const searchPlayerOptions = Object.keys(wholePlayers).map(player=>{
+      return {
+        text: wholePlayers[player].name,
+        value: player,
+        image: wholePlayers[player].image,
+        disabled: players[player]!==undefined,
+      }
+    })
 
     return (
       <Grid container>
@@ -195,14 +231,16 @@ export default class AddGame extends Component {
         <Grid.Row stretched>
           <Grid.Column width={2}>
             <Header>Players</Header>
-            {/*dropdown Search Selection*/}
           </Grid.Column>
           <Grid.Column width={3}>
-            <Input
-                icon="users"
-                iconPosition="left"
+            <Dropdown
+                fluid
+                options={searchPlayerOptions}
                 placeholder="Add Player..."
+                search
+                selection
                 style={{marginBottom:2}}
+                onChange={(ev, {value})=>this.addPlayer(value)}
             />
           </Grid.Column>
           <Grid.Column width={11}>
