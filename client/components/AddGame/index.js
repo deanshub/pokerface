@@ -79,18 +79,6 @@ export default class AddGame extends Component {
           buyIns: [{value: initialBuyIn, key:Math.random()}],
           winnings: [{value: initialWin, key:Math.random()}],
         },
-        zoeD: {
-          image: 'http://semantic-ui.com/images/avatar/small/zoe.jpg',
-          name: 'Zoe Dechannel',
-          buyIns: [{value: initialBuyIn, key:Math.random()}],
-          winnings: [{value: initialWin, key:Math.random()}],
-        },
-        nanWasa: {
-          image: 'http://semantic-ui.com/images/avatar/small/nan.jpg',
-          name: 'Nan Wasa',
-          buyIns: [{value: initialBuyIn, key:Math.random()}],
-          winnings: [{value: initialWin, key:Math.random()}],
-        },
       },
       endDate: moment(),
       startDate: moment(),

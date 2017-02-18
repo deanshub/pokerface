@@ -52,6 +52,7 @@
     "ramda": "^0.23.0",
     "react-datepicker": "^0.41.1",
     "react-document-title": "^2.0.2",
+    "recharts": "^0.20.8",
     "semantic-ui-css": "^2.2.4",
     "semantic-ui-react": "^0.64.7",
     "superagent": "^3.4.1"
