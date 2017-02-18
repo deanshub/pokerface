@@ -3,46 +3,11 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
 import { Grid, Icon, Dropdown, Input, Label, Header, Button } from 'semantic-ui-react'
+import { observer, inject } from 'mobx-react'
 // import classnames from 'classnames'
 // import style from './style.css'
 import PlayerForm from '../PlayerForm'
 
-const gameTypes = [{
-  text: 'Texas Hold\'em',
-  value: 'Texas Hold\'em',
-},{
-  text: 'Omaha High',
-  value: 'Omaha High',
-},{
-  text: 'Omaha Hi\\Lo',
-  value: 'Omaha Hi\\Lo',
-},{
-  text: 'Seven Card Stud',
-  value: 'Seven Card Stud',
-},{
-  text: 'Razz',
-  value: 'Razz',
-},{
-  text: 'Five Card Draw',
-  value: 'Five Card Draw',
-},{
-  text: 'Deuce to Seven Triple Draw',
-  value: 'Deuce to Seven Triple Draw',
-},{
-  text: 'Badugi',
-  value: 'Badugi',
-},{
-  text: 'H.O.R.S.E.',
-  value: 'H.O.R.S.E.',
-}]
-
-const gameSubTypes = [{
-  text: 'Tournement',
-  value: 'Tournement',
-},{
-  text: 'Cash',
-  value: 'Cash',
-}]
 
 const initialBuyIn=100
 const initialWin=0
@@ -68,6 +33,8 @@ const wholePlayers = {
   },
 }
 
+@inject('games')
+@observer
 export default class AddGame extends Component {
   constructor(props){
     super(props)
@@ -160,6 +127,7 @@ export default class AddGame extends Component {
   }
 
   render() {
+    const {games} = this.props
     const {startDate, endDate, players} = this.state
     const searchPlayerOptions = Object.keys(wholePlayers).map(player=>{
       return {
@@ -175,10 +143,10 @@ export default class AddGame extends Component {
         <Grid.Row columns={2}>
           <Grid.Column textAlign="right">
             <Icon name="game" />
-            <Dropdown placeholder="Select Game Type" selection options={gameTypes} />
+            <Dropdown placeholder="Select Game Type" selection options={games.gameTypes} />
           </Grid.Column>
           <Grid.Column>
-            <Dropdown placeholder="Select Game Sub-Type" selection options={gameSubTypes} />
+            <Dropdown placeholder="Select Game Sub-Type" selection options={games.gameSubTypes} />
           </Grid.Column>
         </Grid.Row>
 

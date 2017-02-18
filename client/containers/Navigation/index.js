@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 // import classnames from 'classnames'
 // import style from './style.css'
 // import * as BoardActions from '../../ducks/board'
+import DevTools from 'mobx-react-devtools'
 import Navbar from '../../components/Navbar'
 import 'semantic-ui-css/semantic.min.css'
 
-class Navigation extends Component {
+export default class Navigation extends Component {
   static propTypes={
     children: PropTypes.element,
   }
@@ -18,6 +17,9 @@ class Navigation extends Component {
 
     return (
       <div>
+        {
+          process.env.NODE_ENV==='development'?<DevTools/>:null
+        }
         <Navbar />
         <div style={{paddingTop: 51}}>
           {children}
@@ -26,20 +28,3 @@ class Navigation extends Component {
     )
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    // board: state.board,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    // actions: bindActionCreators(BoardActions, dispatch)
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Navigation)

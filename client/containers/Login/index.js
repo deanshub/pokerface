@@ -1,22 +1,20 @@
 import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 // import classnames from 'classnames'
 // import style from './style.css'
 import { browserHistory } from 'react-router'
 import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'semantic-ui-react'
 import request from 'superagent'
 import R from 'ramda'
-import * as LoginActions from '../../ducks/login'
+// import * as LoginActions from '../../ducks/login'
 
 const viewParam = (path, obj) => {
   const lense = R.lensPath(path.split('.'))
   return R.view(lense, obj)
 }
 
-class Navigation extends Component {
+export default class Navigation extends Component {
   static propTypes = {
-    actions: PropTypes.object.isRequired,
+    // actions: PropTypes.object.isRequired,
   }
 
   constructor(props){
@@ -207,20 +205,3 @@ class Navigation extends Component {
     )
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    // routing: state.routing,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(LoginActions, dispatch),
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Navigation)

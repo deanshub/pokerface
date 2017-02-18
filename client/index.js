@@ -1,6 +1,6 @@
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
-import { Provider } from 'react-redux'
+import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
+import { Provider } from 'mobx-react'
 import ReactDOM from 'react-dom'
 import React from 'react'
 import DocumentTitle from 'react-document-title'
@@ -11,14 +11,20 @@ import Feed from './containers/Feed'
 import Profile from './containers/Profile'
 import Pulse from './containers/Pulse'
 
-import configure from './store'
+import {AuthStore} from './store/AuthStore'
+import {GameStore} from './store/GameStore'
 
-const store = configure()
-const history = syncHistoryWithStore(browserHistory, store)
+const routingStore = new RouterStore()
+const stores = {
+  routing: routingStore,
+  auth: new AuthStore(),
+  games: new GameStore(),
+}
+const history = syncHistoryWithStore(browserHistory, routingStore)
 
 ReactDOM.render(
   <DocumentTitle title="Pokerface.io">
-    <Provider store={store}>
+    <Provider {...stores}>
       <Router history={history}>
         <Route component={Login} path="/login"/>
 

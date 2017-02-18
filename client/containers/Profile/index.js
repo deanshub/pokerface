@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import classnames from 'classnames'
 import style from './style.css'
 import Cover from '../../components/Cover'
@@ -8,10 +6,13 @@ import ProfileNavbar from '../../components/ProfileNavbar'
 // import Post from '../../components/Post'
 import Feed from '../Feed'
 // import * as BoardActions from '../../ducks/board'
+import { observer, inject } from 'mobx-react'
 
-class Profile extends Component {
+@inject('auth')
+@observer
+export default class Profile extends Component {
   static propTypes = {
-    login: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
   }
   constructor(props){
     super(props)
@@ -36,17 +37,17 @@ class Profile extends Component {
   }
 
   render() {
-    const { login } = this.props
+    const { auth } = this.props
     const { posts } = this.state
 
     return (
       <div className={classnames(style.container)}>
         <Cover
-            image={login.user.coverImage}
-            title={login.user.displayName}
+            image={auth.user.coverImage}
+            title={auth.user.displayName}
         />
         <ProfileNavbar
-            avatar={login.user.avatarImage}
+            avatar={auth.user.avatarImage}
         />
 
         <Feed/>
@@ -55,20 +56,3 @@ class Profile extends Component {
     )
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    login: state.login,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    // actions: bindActionCreators(BoardActions, dispatch)
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Profile)

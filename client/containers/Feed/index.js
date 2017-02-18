@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 // import classnames from 'classnames'
 // import style from './style.css'
 import { Feed, Container } from 'semantic-ui-react'
@@ -44,7 +42,7 @@ const events = [{
   ],
 }]
 
-class FeedContainer extends Component {
+export default class FeedContainer extends Component {
   render() {
     // const { board, actions, children } = this.props
 
@@ -55,20 +53,3 @@ class FeedContainer extends Component {
     )
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    // board: state.board,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    // actions: bindActionCreators(BoardActions, dispatch)
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FeedContainer)
