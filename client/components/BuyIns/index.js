@@ -1,28 +1,25 @@
 import React, { Component, PropTypes } from 'react'
-import classnames from 'classnames'
-import style from './style.css'
-// import {Icon} from 'react-fa'
 import { Grid, Icon, Input, Button, List } from 'semantic-ui-react'
+import { observer, inject } from 'mobx-react'
 
+@inject('players')
+@observer
 export default class BuyIns extends Component {
   static propTypes ={
-    addBuyIn: PropTypes.func,
-    removeBuyIn: PropTypes.func,
-    values: PropTypes.array,
   }
 
   render() {
-    const {values, addBuyIn, removeBuyIn} = this.props
+    const {user, players} = this.props
     return (
       <Grid.Row>
         <List horizontal>
           <List.Item>
             <Icon name="money"/>
           </List.Item>
-          {values.map((buyIn, index)=>
+          {user.buyIns.map((buyIn, index)=>
             <List.Item key={buyIn.key}>
               <Input
-                  action={<Button icon="remove" onClick={()=>{removeBuyIn(index)}}/>}
+                  action={<Button icon="remove" onClick={()=>{players.removeBuyIn(user.user, index)}}/>}
                   actionPosition="left"
                   defaultValue={buyIn.value}
                   placeholder="0"
@@ -34,7 +31,7 @@ export default class BuyIns extends Component {
           <List.Item>
             <Button
                 icon
-                onClick={addBuyIn}
+                onClick={()=>players.addBuyIn(user.user)}
                 size="mini"
             >
               <Icon name="add" />

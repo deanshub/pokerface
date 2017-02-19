@@ -3,7 +3,6 @@ import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
 import { Provider } from 'mobx-react'
 import ReactDOM from 'react-dom'
 import React from 'react'
-import DocumentTitle from 'react-document-title'
 
 import Login from './containers/Login'
 import Navigation from './containers/Navigation'
@@ -13,31 +12,33 @@ import Pulse from './containers/Pulse'
 
 import {AuthStore} from './store/AuthStore'
 import {GameStore} from './store/GameStore'
+import {PlayersStore} from './store/PlayersStore'
+import {ProfileStore} from './store/ProfileStore'
 
 const routingStore = new RouterStore()
 const stores = {
   routing: routingStore,
   auth: new AuthStore(),
-  games: new GameStore(),
+  game: new GameStore(),
+  players: new PlayersStore(),
+  profile: new ProfileStore(),
 }
 const history = syncHistoryWithStore(browserHistory, routingStore)
 
 ReactDOM.render(
-  <DocumentTitle title="Pokerface.io">
-    <Provider {...stores}>
-      <Router history={history}>
-        <Route component={Login} path="/login"/>
+  <Provider {...stores}>
+    <Router history={history}>
+      <Route component={Login} path="/login"/>
 
-        <Route component={Navigation} path="/">
-          <IndexRoute component={Feed}/>
+      <Route component={Navigation} path="/">
+        <IndexRoute component={Feed}/>
 
-          <Route component={Profile} path="/profile/:userId"/>
-          <Route component={Profile} path="/profile"/>
-          <Route component={Pulse} path="/pulse"/>
-        </Route>
-      </Router>
-    </Provider>
-  </DocumentTitle>
+        <Route component={Profile} path="/profile/:userId"/>
+        <Route component={Profile} path="/profile"/>
+        <Route component={Pulse} path="/pulse"/>
+      </Route>
+    </Router>
+  </Provider>
   ,
   document.getElementById('root')
 )

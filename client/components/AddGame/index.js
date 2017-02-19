@@ -7,175 +7,93 @@ import { observer, inject } from 'mobx-react'
 // import classnames from 'classnames'
 // import style from './style.css'
 import PlayerForm from '../PlayerForm'
+import UserLabel from '../UserLabel'
 
-
-const initialBuyIn=100
-const initialWin=0
-
-const wholePlayers = {
-  deanshub: {
-    image: '/images/dean2.jpg',
-    name: 'Dean Shub',
-    buyIns: [{value: initialBuyIn, key:Math.random()}],
-    winnings: [{value: initialWin, key:Math.random()}],
-  },
-  zoeD: {
-    image: 'http://semantic-ui.com/images/avatar/small/zoe.jpg',
-    name: 'Zoe Dechannel',
-    buyIns: [{value: initialBuyIn, key:Math.random()}],
-    winnings: [{value: initialWin, key:Math.random()}],
-  },
-  nanWasa: {
-    image: 'http://semantic-ui.com/images/avatar/small/nan.jpg',
-    name: 'Nan Wasa',
-    buyIns: [{value: initialBuyIn, key:Math.random()}],
-    winnings: [{value: initialWin, key:Math.random()}],
-  },
-}
-
-@inject('games')
+@inject('players')
+@inject('game')
 @observer
 export default class AddGame extends Component {
   constructor(props){
     super(props)
     this.state = {
-      players: {
-        deanshub: {
-          image: '/images/dean2.jpg',
-          name: 'Dean Shub',
-          buyIns: [{value: initialBuyIn, key:Math.random()}],
-          winnings: [{value: initialWin, key:Math.random()}],
-        },
-      },
       endDate: moment(),
       startDate: moment(),
     }
   }
 
-  addBuyIn(player){
-    const {players} = this.state
-    const buyIns = players[player].buyIns
-    const updatedBuyIns = [...buyIns, {value: initialBuyIn, key:Math.random()}]
-    const updatedPlayer = Object.assign({}, players[player], {buyIns:updatedBuyIns})
-    const updatedPlayers = Object.assign({}, players, {[player]:updatedPlayer})
-
-    this.setState({
-      players: updatedPlayers,
-    })
-  }
-  removeBuyIn(player, index){
-    const {players} = this.state
-    const buyIns = players[player].buyIns
-    const updatedBuyIns = buyIns.slice(0,index).concat(buyIns.slice(index+1))
-    const updatedPlayer = Object.assign({}, players[player], {buyIns:updatedBuyIns})
-    const updatedPlayers = Object.assign({}, players, {[player]:updatedPlayer})
-
-    this.setState({
-      players: updatedPlayers,
-    })
-  }
-
-  addWin(player){
-    const {players} = this.state
-    const winnings = players[player].winnings
-    const updatedWinnings = [...winnings, {value: initialWin, key:Math.random()}]
-    const updatedPlayer = Object.assign({}, players[player], {winnings:updatedWinnings})
-    const updatedPlayers = Object.assign({}, players, {[player]:updatedPlayer})
-
-    this.setState({
-      players: updatedPlayers,
-    })
-  }
-  removeWin(player, index){
-    const {players} = this.state
-    const winnings = players[player].winnings
-    const updatedWinnings = winnings.slice(0,index).concat(winnings.slice(index+1))
-    const updatedPlayer = Object.assign({}, players[player], {winnings:updatedWinnings})
-    const updatedPlayers = Object.assign({}, players, {[player]:updatedPlayer})
-
-    this.setState({
-      players: updatedPlayers,
-    })
-  }
-
-  handleChangeStartDate(startDate){
-    this.setState({
-      startDate,
-      endDate: startDate,
-    })
-  }
-  handleChangeEndDate(endDate){
-    this.setState({
-      endDate,
-    })
-  }
-
-  removePlayer(player){
-    const {players} = this.state
-    const {[player]:omit, ...updatedPlayers} = players
-
-    this.setState({
-      players: updatedPlayers,
-    })
-  }
-
-  addPlayer(player){
-    const {players} = this.state
-    this.setState({
-      players: Object.assign({}, players, {[player]: wholePlayers[player]}),
-    })
-  }
-
   render() {
-    const {games} = this.props
-    const {startDate, endDate, players} = this.state
-    const searchPlayerOptions = Object.keys(wholePlayers).map(player=>{
+    const {game, players} = this.props
+
+    const startDate = game.currentGame.get('startDate')
+    const endDate = game.currentGame.get('endDate')
+
+    const searchPlayerOptions = players.searchePlayers.keys().map(username=>{
+      const player = players.searchePlayers.get(username)
       return {
-        text: wholePlayers[player].name,
-        value: player,
-        image: wholePlayers[player].image,
-        disabled: players[player]!==undefined,
+        text: player.name,
+        value: username,
+        image: player.image,
+        disabled: players.currentPlayers.has(username),
       }
     })
+
 
     return (
       <Grid container>
         <Grid.Row columns={2}>
           <Grid.Column textAlign="right">
             <Icon name="game" />
-            <Dropdown placeholder="Select Game Type" selection options={games.gameTypes} />
+            <Dropdown
+                options={game.gameTypes}
+                placeholder="Select Game Type"
+                selection
+            />
           </Grid.Column>
           <Grid.Column>
-            <Dropdown placeholder="Select Game Sub-Type" selection options={games.gameSubTypes} />
+            <Dropdown
+                options={game.gameSubTypes}
+                placeholder="Select Game Sub-Type"
+                selection
+            />
           </Grid.Column>
         </Grid.Row>
 
         <Grid.Row>
-          <Grid.Column width={6} stretched>
+          <Grid.Column stretched width={6}>
             <Input
                 icon="map"
                 iconPosition="left"
                 placeholder="Location..."
             />
           </Grid.Column>
-          <Grid.Column width={5} stretched>
-            <Input labelPosition="left" type="text" placeholder="Choose Start Date..." defaultValue={new Date()}>
+          <Grid.Column stretched width={5}>
+            <Input
+                defaultValue={new Date()}
+                labelPosition="left"
+                placeholder="Choose Start Date..."
+                type="text"
+            >
               <Label basic>From</Label>
               <DatePicker
                   endDate={endDate}
-                  onChange={::this.handleChangeStartDate}
+                  onChange={(startDate)=>game.handleChangeStartDate(startDate)}
                   selected={startDate}
                   selectsStart
                   startDate={startDate}
               />
             </Input>
           </Grid.Column>
-          <Grid.Column width={5} stretched>
-            <Input labelPosition="left" type="text" placeholder="Choose End Date..." defaultValue={new Date()}>
+          <Grid.Column stretched width={5}>
+            <Input
+                defaultValue={new Date()}
+                labelPosition="left"
+                placeholder="Choose End Date..."
+                type="text"
+            >
               <Label basic>To</Label>
               <DatePicker
                   endDate={endDate}
-                  onChange={::this.handleChangeEndDate}
+                  onChange={(endDate)=>game.handleChangeEndDate(endDate)}
                   selected={endDate}
                   selectsEnd
                   startDate={startDate}
@@ -191,38 +109,25 @@ export default class AddGame extends Component {
           <Grid.Column width={3}>
             <Dropdown
                 fluid
+                onChange={(ev, {value})=>players.addPlayer(value)}
                 options={searchPlayerOptions}
                 placeholder="Add Player..."
                 search
                 selection
                 style={{marginBottom:2}}
-                onChange={(ev, {value})=>this.addPlayer(value)}
             />
           </Grid.Column>
           <Grid.Column width={11}>
             <Grid.Row stretched verticalAlign="middle">
-              {Object.keys(players).map(user=>
-                <Label image key={user}>
-                  <img src={players[user].image} />
-                  {players[user].name}
-                  <Icon name="delete" onClick={()=>this.removePlayer(user)} />
-                </Label>
+              {players.currentPlayers.keys().map(user=>
+                <UserLabel key={user} user={players.currentPlayers.get(user)} />
               )}
             </Grid.Row>
           </Grid.Column>
         </Grid.Row>
 
-        {Object.keys(players).map(user=>
-          <PlayerForm
-              addBuyIn={()=>this.addBuyIn(user)}
-              addWin={()=>this.addWin(user)}
-              buyInValues={players[user].buyIns}
-              key={user}
-              removeBuyIn={(index)=>this.removeBuyIn(user, index)}
-              removeWin={(index)=>this.removeWin(user, index)}
-              user={players[user]}
-              winValues={players[user].winnings}
-          />
+        {players.currentPlayers.keys().map(user=>
+          <PlayerForm key={user} user={players.currentPlayers.get(user)} />
         )}
 
         <Grid.Row textAlign="right">
@@ -231,6 +136,7 @@ export default class AddGame extends Component {
                 content="Add The Game"
                 icon="add"
                 labelPosition="right"
+                onClick={()=>game.addGame()}
                 primary
             />
           </Grid.Column>

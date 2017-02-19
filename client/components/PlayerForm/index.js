@@ -1,31 +1,19 @@
 import React, { Component, PropTypes } from 'react'
-// import {Icon} from 'react-fa'
+import { observer } from 'mobx-react'
+import { Grid, Icon, Card, Image } from 'semantic-ui-react'
+
 import BuyIns from '../BuyIns'
 import Winnings from '../Winnings'
 
-import { Grid, Icon, Card, Image } from 'semantic-ui-react'
-
+@observer
 export default class PlayerForm extends Component {
   static propTypes ={
-    addBuyIn: PropTypes.func,
-    addWin: PropTypes.func,
-    buyInValues: PropTypes.array,
-    removeBuyIn: PropTypes.func,
-    removeWin: PropTypes.func,
-    winValues: PropTypes.array,
     user: PropTypes.object,
   }
 
   render() {
-    const {
-      addBuyIn,
-      addWin,
-      buyInValues,
-      winValues,
-      user,
-      removeBuyIn,
-      removeWin,
-    } = this.props
+    const { user } = this.props
+
     return (
       <Grid.Row>
         <Grid.Column width={2}>
@@ -44,16 +32,8 @@ export default class PlayerForm extends Component {
         </Grid.Column>
 
         <Grid.Column width={14}>
-          <BuyIns
-              addBuyIn={addBuyIn}
-              removeBuyIn={removeBuyIn}
-              values={buyInValues}
-          />
-          <Winnings
-              addWin={addWin}
-              removeWin={removeWin}
-              values={winValues}
-          />
+          <BuyIns user={user}/>
+          <Winnings user={user}/>
         </Grid.Column>
       </Grid.Row>
     )

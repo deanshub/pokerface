@@ -1,12 +1,16 @@
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import { Menu, Segment, Icon, Image } from 'semantic-ui-react'
+import { observer, inject } from 'mobx-react'
+
 import * as ProfileConsts from '../../constants/profile'
 import Statistics from '../Statistics'
 import AddGame from '../AddGame'
 import UnavailableSection from '../UnavailableSection'
 import style from './style.css'
 
+@inject('profile')
+@observer
 export default class ProfileNavbar extends Component {
   static propTypes = {
     avatar: PropTypes.string,
@@ -16,7 +20,6 @@ export default class ProfileNavbar extends Component {
     super(props)
     this.state = {
       avatarImage: undefined,
-      currentTab: ProfileConsts.STATISTICS_TAB,
     }
   }
 
@@ -42,14 +45,11 @@ export default class ProfileNavbar extends Component {
     }
   }
 
-  changeTab(tab){
-    this.setState({
-      currentTab: tab,
-    })
-  }
-
   render() {
-    const {avatarImage, currentTab} = this.state
+    const {profile} = this.props
+    const {avatarImage} = this.state
+    const {currentTab} = profile
+
     return (
       <div>
         <Menu
@@ -60,21 +60,21 @@ export default class ProfileNavbar extends Component {
         >
           <Menu.Item
               active={currentTab===ProfileConsts.ADD_GAME_TAB}
-              onClick={()=>::this.changeTab(ProfileConsts.ADD_GAME_TAB)}
+              onClick={()=>profile.changeTab(ProfileConsts.ADD_GAME_TAB)}
           >
             <Icon name="gamepad" />
             Game
           </Menu.Item>
           <Menu.Item
               active={currentTab===ProfileConsts.LEARN}
-              onClick={()=>::this.changeTab(ProfileConsts.LEARN)}
+              onClick={()=>profile.changeTab(ProfileConsts.LEARN)}
           >
             <Icon name="student" />
             Learn
           </Menu.Item>
           <Menu.Item
               active={currentTab===ProfileConsts.STATISTICS_TAB}
-              onClick={()=>::this.changeTab(ProfileConsts.STATISTICS_TAB)}
+              onClick={()=>profile.changeTab(ProfileConsts.STATISTICS_TAB)}
               style={{maxHeight:74}}
           >
             <Image
@@ -86,14 +86,14 @@ export default class ProfileNavbar extends Component {
           </Menu.Item>
           <Menu.Item
               active={currentTab===ProfileConsts.ADD_GAME_IPSUM}
-              onClick={()=>::this.changeTab(ProfileConsts.ADD_GAME_IPSUM)}
+              onClick={()=>profile.changeTab(ProfileConsts.ADD_GAME_IPSUM)}
           >
-            <Icon name="cube" />
-            Ipsum
+            <Icon name="clock" />
+            Blinds Timer
           </Menu.Item>
           <Menu.Item
               active={currentTab===ProfileConsts.ADD_PLAY_TAB}
-              onClick={()=>::this.changeTab(ProfileConsts.ADD_PLAY_TAB)}
+              onClick={()=>profile.changeTab(ProfileConsts.ADD_PLAY_TAB)}
           >
             <Icon name="video play" />
             Play

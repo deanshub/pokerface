@@ -1,7 +1,15 @@
-// import { observable, action } from 'mobx'
+import { observable, action } from 'mobx'
+import moment from 'moment'
 
 export class GameStore {
+  @observable currentGame
+
   constructor(){
+    this.currentGame = observable.map({
+      startDate: moment(),
+      endDate: moment(),
+    })
+
     this.gameTypes = [{
       text: 'Texas Hold\'em',
       value: 'Texas Hold\'em',
@@ -38,5 +46,17 @@ export class GameStore {
       text: 'Cash',
       value: 'Cash',
     }]
+  }
+
+  @action handleChangeStartDate(startDate){
+    this.currentGame.set('startDate', startDate)
+    this.currentGame.set('endDate', startDate)
+  }
+  @action handleChangeEndDate(endDate){
+    this.currentGame.set('endDate', endDate)
+  }
+
+  @action addGame(){
+    console.log(this.currentGame);
   }
 }
