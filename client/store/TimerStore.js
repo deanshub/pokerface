@@ -78,12 +78,20 @@ export class TimerStore {
     this.rounds.push({type:'break', time:10, key:Math.random()})
   }
 
-  getTimeLeft(){
+  @action getTimeLeft(){
     if (this.endTime!==undefined){
       const diff = this.endTime - new Date()
 
-      const minutes = diff<0?0:Math.floor(diff/1000/60)
-      const seconds = diff<0?0:Math.floor(diff/1000%60)
+      if (diff<0){
+        if (this.round<this.rounds.length){
+          this.round++
+          this.start()
+        }
+        return '00:00'
+      }
+
+      const minutes = Math.floor(diff/1000/60)
+      const seconds = Math.floor(diff/1000%60)
 
       const parsedMinutes = minutes>9?`${minutes}`:`0${minutes}`
       const parsedSeconds = seconds>9?`${seconds}`:`0${seconds}`
@@ -105,24 +113,36 @@ export class TimerStore {
 
   @computed get ante(){
     const currentRound = this.rounds[this.round-1]
+    if (currentRound.type==='break'){
+      return 'Break'
+    }
     const currentAnte = `${currentRound.ante}`
     return currentAnte
   }
   @computed get nextAnte(){
-    const nextRound = this.rounds[this.round]
-    if (nextRound){
+    if (this.round<this.rounds.length){
+      const nextRound = this.rounds[this.round]
+      if (nextRound.type==='break'){
+        return 'Break'
+      }
       return `Next ${nextRound.ante}`
     }
   }
 
   @computed get blinds(){
     const currentRound = this.rounds[this.round-1]
+    if (currentRound.type==='break'){
+      return 'Break'
+    }
     const currentBlinds = `${currentRound.smallBlind}/${currentRound.bigBlind}`
     return currentBlinds
   }
   @computed get nextBlinds(){
-    const nextRound = this.rounds[this.round]
-    if (nextRound){
+    if (this.round<this.rounds.length){
+      const nextRound = this.rounds[this.round]
+      if (nextRound.type==='break'){
+        return 'Break'
+      }
       return `Next ${nextRound.smallBlind}/${nextRound.bigBlind}`
     }
   }
