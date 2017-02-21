@@ -14,6 +14,7 @@ import {AuthStore} from './store/AuthStore'
 import {GameStore} from './store/GameStore'
 import {PlayersStore} from './store/PlayersStore'
 import {ProfileStore} from './store/ProfileStore'
+import {TimerStore} from './store/TimerStore'
 
 const routingStore = new RouterStore()
 const stores = {
@@ -22,6 +23,7 @@ const stores = {
   game: new GameStore(),
   players: new PlayersStore(),
   profile: new ProfileStore(),
+  timer: new TimerStore(),
 }
 const history = syncHistoryWithStore(browserHistory, routingStore)
 

@@ -6,6 +6,7 @@ import { observer, inject } from 'mobx-react'
 import * as ProfileConsts from '../../constants/profile'
 import Statistics from '../Statistics'
 import AddGame from '../AddGame'
+import BlindsTimer from '../BlindsTimer'
 import UnavailableSection from '../UnavailableSection'
 import style from './style.css'
 
@@ -40,6 +41,8 @@ export default class ProfileNavbar extends Component {
       return <AddGame />
     }else if (currentTab===ProfileConsts.LEARN) {
       return <UnavailableSection/>
+    }else if (currentTab===ProfileConsts.BLINDS_TIMER) {
+      return <BlindsTimer/>
     }else{
       return <UnavailableSection/>
     }
@@ -85,8 +88,8 @@ export default class ProfileNavbar extends Component {
             />
           </Menu.Item>
           <Menu.Item
-              active={currentTab===ProfileConsts.ADD_GAME_IPSUM}
-              onClick={()=>profile.changeTab(ProfileConsts.ADD_GAME_IPSUM)}
+              active={currentTab===ProfileConsts.BLINDS_TIMER}
+              onClick={()=>profile.changeTab(ProfileConsts.BLINDS_TIMER)}
           >
             <Icon name="clock" />
             Blinds Timer
