@@ -47,6 +47,14 @@ export class TimerStore {
     this.paused = false
   }
 
+  @action startOrResume(){
+    if (this.endTime===undefined){
+      this.start()
+    }else{
+      this.resume()
+    }
+  }
+
   @action pause(){
     this.offset = this.endTime - new Date()
     this.paused = true
@@ -74,8 +82,8 @@ export class TimerStore {
     if (this.endTime!==undefined){
       const diff = this.endTime - new Date()
 
-      const minutes = Math.floor(diff/1000/60)
-      const seconds = Math.floor(diff/1000%60)
+      const minutes = diff<0?0:Math.floor(diff/1000/60)
+      const seconds = diff<0?0:Math.floor(diff/1000%60)
 
       const parsedMinutes = minutes>9?`${minutes}`:`0${minutes}`
       const parsedSeconds = seconds>9?`${seconds}`:`0${seconds}`

@@ -43,7 +43,7 @@ export default class BlindsTimer extends Component {
   resumeTimer(){
     const {timer} = this.props
     clearInterval(this.interval)
-    timer.resume()
+    timer.startOrResume()
     this.interval = setInterval(()=>{
       this.forceUpdate()
     }, 1000)
