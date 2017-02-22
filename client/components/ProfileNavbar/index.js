@@ -6,6 +6,7 @@ import { observer, inject } from 'mobx-react'
 import * as ProfileConsts from '../../constants/profile'
 import Statistics from '../Statistics'
 import AddGame from '../AddGame'
+import AddPlay from '../AddPlay'
 import BlindsTimer from '../BlindsTimer'
 import UnavailableSection from '../UnavailableSection'
 import style from './style.css'
@@ -43,6 +44,8 @@ export default class ProfileNavbar extends Component {
       return <UnavailableSection/>
     }else if (currentTab===ProfileConsts.BLINDS_TIMER) {
       return <BlindsTimer/>
+    }else if (currentTab===ProfileConsts.ADD_PLAY_TAB) {
+      return <AddPlay />
     }else{
       return <UnavailableSection/>
     }
