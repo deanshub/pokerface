@@ -101,8 +101,8 @@ export default class ProfileNavbar extends Component {
               active={currentTab===ProfileConsts.ADD_PLAY_TAB}
               onClick={()=>profile.changeTab(ProfileConsts.ADD_PLAY_TAB)}
           >
-            <Icon name="video play" />
-            Play
+            <Icon name="share alternate" />
+            Post
           </Menu.Item>
         </Menu>
         <Segment attached="bottom">

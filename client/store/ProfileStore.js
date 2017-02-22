@@ -5,7 +5,7 @@ export class ProfileStore {
   @observable currentTab
 
   constructor(){
-    this.currentTab = ProfileConsts.STATISTICS_TAB
+    this.currentTab = ProfileConsts.ADD_PLAY_TAB
   }
 
   @action changeTab(tab){
