@@ -3,6 +3,7 @@ import { observable, action, computed } from 'mobx'
 export class TimerStore {
   @observable rounds
 
+  @observable currentTime
   @observable endTime
   @observable offset
   @observable round
@@ -39,12 +40,19 @@ export class TimerStore {
 
   @action start(){
     this.paused = false
-    this.endTime = new Date((new Date()).getTime() + this.rounds[this.round-1].time * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET)
+    this.updateTimer()
+    this.endTime = new Date(this.currentTime.getTime() + this.rounds[this.round-1].time * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET)
   }
 
   @action resume(){
     this.endTime = new Date(new Date().getTime() + this.offset)
+    this.updateTimer()
     this.paused = false
+  }
+
+  @action updateTimer(){
+    this.currentTime = new Date()
+    return this.endTime-this.currentTime>0
   }
 
   @action startOrResume(){
@@ -78,9 +86,10 @@ export class TimerStore {
     this.rounds.push({type:'break', time:10, key:Math.random()})
   }
 
-  @action getTimeLeft(){
+  @computed
+  get timeLeft(){
     if (this.endTime!==undefined){
-      const diff = this.endTime - new Date()
+      const diff = this.endTime - this.currentTime
 
       if (diff<0){
         if (this.round<this.rounds.length){
@@ -104,8 +113,9 @@ export class TimerStore {
     }
   }
 
-  getPrecentageComplete(){
-    const timePassed = this.paused ? this.offset : this.endTime - new Date()
+  @computed
+  get precentageComplete(){
+    const timePassed = this.paused ? this.offset : this.endTime - this.currentTime
     const roundTime = this.rounds[this.round-1].time * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET
     const percentageComplete = 100 - (timePassed/roundTime*100)
     return percentageComplete

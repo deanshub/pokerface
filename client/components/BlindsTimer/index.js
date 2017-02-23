@@ -13,8 +13,6 @@ export default class BlindsTimer extends Component {
   static propTypes ={
   }
 
-  // componentDidMount(){
-  // }
   componentWillUnmount(){
     this.pauseTimer()
   }
@@ -30,7 +28,7 @@ export default class BlindsTimer extends Component {
     clearInterval(this.interval)
     timer.start()
     this.interval = setInterval(()=>{
-      this.forceUpdate()
+      timer.updateTimer()
     }, 1000)
   }
 
@@ -45,7 +43,7 @@ export default class BlindsTimer extends Component {
     clearInterval(this.interval)
     timer.startOrResume()
     this.interval = setInterval(()=>{
-      this.forceUpdate()
+      timer.updateTimer()
     }, 1000)
   }
 
@@ -92,7 +90,7 @@ export default class BlindsTimer extends Component {
           </Grid.Column>
 
           <Grid.Column textAlign="center" width={16}>
-            <Header inverted style={{fontSize:'22em', margin:0}}>{timer.getTimeLeft()}</Header>
+            <Header inverted style={{fontSize:'22em', margin:0}}>{timer.TimeLeft}</Header>
           </Grid.Column>
 
           <Grid.Column
@@ -103,7 +101,7 @@ export default class BlindsTimer extends Component {
             <Progress
                 color="red"
                 inverted
-                percent={timer.getPrecentageComplete()}
+                percent={timer.precentageComplete}
                 size="tiny"
             />
           </Grid.Column>
