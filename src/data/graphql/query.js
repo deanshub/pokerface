@@ -1,8 +1,8 @@
 import {
-  GraphQLObjectType, GraphQLString, GraphQLList, GraphQLSchema,
+  GraphQLObjectType, GraphQLString, GraphQLList,
 } from 'graphql'
 
-import Db from './db'
+import Db from '../db'
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
 
@@ -35,8 +35,4 @@ const Query =  new GraphQLObjectType({
   },
 })
 
-const Schema = new GraphQLSchema({
-  query: Query,
-})
-
-export default Schema
+export default Query
