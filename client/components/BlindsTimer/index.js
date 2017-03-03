@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
 import './fullscreen-api-polyfill.min'
-import BlindsTimerSettingsModal from '../BlindsTimerSettingsModal'
+import BlindsTimerSettingsModal from './BlindsTimerSettingsModal'
 
 @inject('timer')
 @observer
@@ -90,7 +90,7 @@ export default class BlindsTimer extends Component {
           </Grid.Column>
 
           <Grid.Column textAlign="center" width={16}>
-            <Header inverted style={{fontSize:'22em', margin:0}}>{timer.TimeLeft}</Header>
+            <Header inverted style={{fontSize:'22em', margin:0}}>{timer.timeLeft}</Header>
           </Grid.Column>
 
           <Grid.Column
