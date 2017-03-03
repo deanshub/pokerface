@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router'
 import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'semantic-ui-react'
 import request from 'superagent'
 import R from 'ramda'
-// import * as LoginActions from '../../ducks/login'
+import Footer from './Footer'
 
 const viewParam = (path, obj) => {
   const lense = R.lensPath(path.split('.'))
@@ -198,10 +198,9 @@ export default class Navigation extends Component {
               </Form>
             </Segment>
           </Grid.Column>
-
         </Grid.Row>
+        <Footer/>
       </Grid>
-
     )
   }
 }
