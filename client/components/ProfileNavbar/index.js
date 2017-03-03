@@ -8,6 +8,7 @@ import Statistics from '../Statistics'
 import AddGame from '../AddGame'
 import AddPlay from '../AddPlay'
 import BlindsTimer from '../BlindsTimer'
+import Lern from '../Lern'
 import UnavailableSection from '../UnavailableSection'
 import style from './style.css'
 
@@ -41,7 +42,7 @@ export default class ProfileNavbar extends Component {
     }else if (currentTab===ProfileConsts.ADD_GAME_TAB) {
       return <AddGame />
     }else if (currentTab===ProfileConsts.LEARN) {
-      return <UnavailableSection/>
+      return <Lern/>
     }else if (currentTab===ProfileConsts.BLINDS_TIMER) {
       return <BlindsTimer/>
     }else if (currentTab===ProfileConsts.ADD_PLAY_TAB) {

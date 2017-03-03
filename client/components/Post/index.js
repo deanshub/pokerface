@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import style from './style.css'
-// import {Icon} from 'react-fa'
 
 export default class Navbar extends Component {
   static propTypes = {
