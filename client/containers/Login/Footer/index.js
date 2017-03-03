@@ -21,7 +21,10 @@ export default class Navigation extends Component {
             Ⓒ Pokerface.io
           </Header>
         </Grid.Column>
-        <Grid.Column textAlign="right" width={13}>
+        <Grid.Column textAlign="center" width={8}>
+          We support Open Source! Here's a List of open source software that we use
+        </Grid.Column>
+        <Grid.Column textAlign="right" width={5}>
           <Header size="tiny">
             Any issues or suggestion can be sent to <a href="mailto:support@pokerface.io?subject=Pokerface I have a suggestion&body=Hi Pokerface, I enjoy you very much, ">Support@pokerface.io</a>
           </Header>

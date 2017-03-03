@@ -4,6 +4,8 @@ let path = require('path')
 let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 
 let devtool
+let hotloaderEntries=[]
+let babelHotloader=[]
 let plugins = [
   new webpack.DefinePlugin({
     'process.env': { NODE_ENV },
@@ -14,23 +16,32 @@ if (NODE_ENV==='"development"'){
   plugins.push(new webpack.NamedModulesPlugin())
   plugins.push(new webpack.HotModuleReplacementPlugin())
   devtool = 'inline-source-map'
-}else{
+  hotloaderEntries = [
+    'react-hot-loader/patch',
+    'webpack-hot-middleware/client',
+  ]
   plugins.push(new webpack.NoEmitOnErrorsPlugin())
-  plugins.push(new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}))
+  babelHotloader = ['react-hot-loader/webpack']
+}else{
+  // plugins.push(new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}))
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compressor: {
       warnings: false,
     },
   }))
-
+  plugins.push(new webpack.optimize.AggressiveMergingPlugin())
 }
 
-let config = {
+const config = {
   context: path.join(__dirname, './client'),
   entry: {
-    bundle: './index.js',
+    bundle: [
+      ...hotloaderEntries,
+      './index.js',
+    ],
     html: './index.html',
     vendor: [
+      ...hotloaderEntries,
       'react',
       'react-dom',
       'react-router',
@@ -70,7 +81,8 @@ let config = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loaders: [
-          'react-hot-loader',
+          // 'react-hot-loader',
+          ...babelHotloader,
           'babel-loader',
         ],
       },
