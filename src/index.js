@@ -8,6 +8,7 @@ import expressSession from 'express-session'
 import compression from 'compression'
 import apiRoutes from './routes'
 import graphql from './data/graphql'
+import {devMiddleware, hotMiddleware} from './routes/webpack.js'
 
 
 const app = express()
@@ -27,6 +28,13 @@ app.use(expressSession({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
+
+
+if (process.env.NODE_ENV==='development'){
+  app.use(devMiddleware())
+  app.use(hotMiddleware())
+}
+
 
 passport.serializeUser((user, done) => {
   done(null, user.email)
@@ -88,7 +96,6 @@ function isAuthenticated(req, res, next) {
   res.redirect('/login')
 }
 
-// app.get('/profile', passport.authenticate('local', {failureRedirect:'/login'}), (req, res)=>{
 app.get('/', isAuthenticated, (req, res)=>{
   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
 })
@@ -96,6 +103,9 @@ app.get('/profile', isAuthenticated, (req, res)=>{
   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
 })
 app.get('/pulse', isAuthenticated, (req, res)=>{
+  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
+})
+app.get('/login', (req, res)=>{
   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
 })
 
