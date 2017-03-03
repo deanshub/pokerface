@@ -5,8 +5,8 @@ import CreatePostModel from './dbModels/Post'
 
 const Conn = new Sequelize(
   'pokerface',
-  'postgres',
-  'admin',
+  process.env.POSTGRES_USER,
+  process.env.POSTGRES_PASSWORD,
   {
     dialect: 'postgres',
     host: 'localhost',
