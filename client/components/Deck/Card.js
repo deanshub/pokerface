@@ -15,7 +15,7 @@ export default class Card extends Component {
     return (
       <li>
         <a className={classnames(style.simpleCards, style.card, style[`rank-${rank}`], style[suit])}>
-          <span className={classnames(style.rank)}>{rank}</span>
+          <span className={classnames(style.rank)}>{rank.toUpperCase()}</span>
           <span className={classnames(style.suit)}>{SUITES[suit]}</span>
         </a>
       </li>
