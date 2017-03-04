@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 // import classnames from 'classnames'
 // import style from './style.css'
@@ -6,6 +8,7 @@ import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'sem
 import request from 'superagent'
 import R from 'ramda'
 import Footer from './Footer'
+import OpensourceModal from './OpensourceModal'
 
 const viewParam = (path, obj) => {
   const lense = R.lensPath(path.split('.'))
@@ -200,6 +203,7 @@ export default class Navigation extends Component {
           </Grid.Column>
         </Grid.Row>
         <Footer/>
+        <OpensourceModal/>
       </Grid>
     )
   }

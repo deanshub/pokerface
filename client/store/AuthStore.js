@@ -1,7 +1,10 @@
-import { observable, action } from 'mobx'
+// @flow
+
+import { observable } from 'mobx'
 
 export class AuthStore {
   @observable user
+  @observable opensourceModalOpen: boolean
 
   constructor(){
     this.user = {
@@ -10,5 +13,6 @@ export class AuthStore {
       coverImage: 'cover.jpg',
       avatarImage: 'dean2.jpg',
     }
+    this.opensourceModalOpen = false
   }
 }

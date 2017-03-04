@@ -1,7 +1,10 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 // import classnames from 'classnames'
 // import style from './style.css'
 import { Grid, Header} from 'semantic-ui-react'
+import { observer, inject } from 'mobx-react'
 
 const footerStyle = {
   position:'absolute',
@@ -9,8 +12,12 @@ const footerStyle = {
   margin: '0 10px',
 }
 
-export default class Navigation extends Component {
+@inject('auth')
+@observer
+export default class Footer extends Component {
   render() {
+    const {auth} = this.props
+
     return (
       <Grid.Row stretched style={footerStyle}>
         <Grid.Column width={3}>
@@ -22,7 +29,9 @@ export default class Navigation extends Component {
           </Header>
         </Grid.Column>
         <Grid.Column textAlign="center" width={8}>
-          We support Open Source! Here's a List of open source software that we use
+          <Header size="tiny">
+            We support Open Source! <a href="#" onClick={()=>{auth.opensourceModalOpen=true}}>Here</a>'s a List of opensource software that we use
+          </Header>
         </Grid.Column>
         <Grid.Column textAlign="right" width={5}>
           <Header size="tiny">

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import { Menu, Segment, Icon, Image } from 'semantic-ui-react'
@@ -19,24 +21,27 @@ export default class ProfileNavbar extends Component {
     avatar: PropTypes.string,
   }
 
-  constructor(props){
+  constructor(props: Object){
     super(props)
     this.state = {
       avatarImage: undefined,
     }
   }
 
+  state: { avatarImage?: string }
+
   componentDidMount(){
     const {avatar} = this.props
 
-    System.import(`../../assets/images/${avatar}`).then(avatarImage=>{
+    // System.import(`../../assets/images/${avatar}`).then(avatarImage=>{
+    import(`../../assets/images/${avatar}`).then(avatarImage=>{
       this.setState({
         avatarImage,
       })
     })
   }
 
-  getCurrentTab(currentTab){
+  getCurrentTab(currentTab: string){
     if (currentTab===ProfileConsts.STATISTICS_TAB){
       return <Statistics />
     }else if (currentTab===ProfileConsts.ADD_GAME_TAB) {
@@ -54,7 +59,7 @@ export default class ProfileNavbar extends Component {
 
   render() {
     const {profile} = this.props
-    const {avatarImage} = this.state
+    const {avatarImage}: {avatarImage?: string} = this.state
     const {currentTab} = profile
 
     return (
