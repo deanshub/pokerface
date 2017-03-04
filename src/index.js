@@ -1,3 +1,5 @@
+// @flow
+
 import express from 'express'
 import path from 'path'
 import passport from 'passport'
@@ -117,10 +119,10 @@ apiRoutes.then(routes=>{
 })
 
 app.use('/', express.static(STATIC_FILES_DIRECTORY))
-app.get('*', function (req, res) {
-  // and drop 'public' in the middle of here
-  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-})
+// app.get('*', function (req, res) {
+//   // and drop 'public' in the middle of here
+//   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
+// })
 
 app.listen(PORT, ()=>{
   console.log(`Pokerface server listening on port ${PORT}`)
