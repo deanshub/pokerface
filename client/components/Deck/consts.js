@@ -1,3 +1,5 @@
+// @flow
+
 export const SUITES = {
   hearts: '♥',
   diams: '♦',
@@ -5,16 +7,16 @@ export const SUITES = {
   clubs: '♣',
 }
 
-export const RANKS = ['2','3','4','5','6','7','8','9','10','j','q','k','a']
+export const RANKS: string[] = ['2','3','4','5','6','7','8','9','10','j','q','k','a']
 
 const suitesKeys = Object.keys(SUITES)
 
-export const randomSuit = ()=>{
-  const randomIndex = Math.floor(Math.random() * suitesKeys.length)
+export const randomSuit: Function = (): string=>{
+  const randomIndex: number = Math.floor(Math.random() * suitesKeys.length)
   return suitesKeys[randomIndex]
 }
 
-export const randomRank = ()=>{
-  const randomIndex = Math.floor(Math.random() * RANKS.length)
+export const randomRank: Function = (): string=>{
+  const randomIndex: number = Math.floor(Math.random() * RANKS.length)
   return RANKS[randomIndex]
 }
