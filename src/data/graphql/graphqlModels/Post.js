@@ -1,5 +1,6 @@
 import {
   GraphQLObjectType, GraphQLInt, GraphQLString,
+  GraphQLList,
 } from 'graphql'
 import Player from './Player'
 
@@ -24,6 +25,18 @@ const Post = new GraphQLObjectType({
         type: GraphQLString,
         resolve(post){
           return post.content
+        },
+      },
+      photos:{
+        type: new GraphQLList(GraphQLString),
+        resolve(post){
+          return post.photos
+        },
+      },
+      likes: {
+        type: GraphQLInt,
+        resolve(post){
+          return post.likes
         },
       },
       player: {

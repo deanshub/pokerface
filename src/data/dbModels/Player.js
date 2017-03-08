@@ -22,6 +22,14 @@ const createModel = (Conn)=>{
         isEmail: true,
       },
     },
+    avatar: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    coverImage: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    }
   },{
     getterMethods: {
       fullName(){ return `${this.firstName} ${this.lastName}` },

@@ -11,6 +11,14 @@ const createModel = (Conn)=>{
       type: Sequelize.TEXT,
       allowNull: false,
     },
+    photos:{
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: false,
+    },
+    likes : {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+    },
   },{
     updatedAt: 'updated',
     createdAt: 'created',
