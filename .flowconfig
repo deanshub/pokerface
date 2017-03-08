@@ -15,3 +15,4 @@ module.name_mapper='.*\(.png\)' -> 'PNGModule'
 module.name_mapper='.*\(.gif\)' -> 'PNGModule'
 module.name_mapper='.*\(.txt\)' -> 'TXTModule'
 module.name_mapper='\(mobx\)' ->  '\1/lib/mobx'
+unsafe.enable_getters_and_setters=true

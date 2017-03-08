@@ -44,6 +44,7 @@ export default class Footer extends Component {
               <List.Item href="https://hacker0x01.github.io/react-datepicker/" target="_blank" >React Datepicker</List.Item>
               <List.Item href="http://recharts.org/" target="_blank" >Recharts</List.Item>
               <List.Item href="http://react.semantic-ui.com/introduction" target="_blank" >react.semantic-ui</List.Item>
+              <List.Item href="http://selfthinker.github.io/CSS-Playing-Cards/" target="_blank" >css playing cards</List.Item>
               <List.Item href="http://visionmedia.github.io/superagent/" target="_blank" >SuperAgent</List.Item>
               <List.Item href="http://graphql.org/" target="_blank" >GraphQL</List.Item>
               <List.Item href="https://expressjs.com/" target="_blank" >Express</List.Item>
@@ -52,7 +53,11 @@ export default class Footer extends Component {
               <List.Item href="https://nodemon.io/" target="_blank" >nodemon</List.Item>
               <List.Item href="http://passportjs.org/" target="_blank" >Passport</List.Item>
               <List.Item href="http://docs.sequelizejs.com/en/v3/" target="_blank" >sequelize</List.Item>
+              <List.Item href="https://github.com/halt-hammerzeit/javascript-time-ago" target="_blank" >javascript-time-ago</List.Item>
               <List.Item href="https://github.com/marak/Faker.js/" target="_blank" >faker.js</List.Item>
+              <List.Item href="https://github.com/kadirahq/lokka" target="_blank" >lokka</List.Item>
+
+
             </List>
           </Modal.Description>
         </Modal.Content>
