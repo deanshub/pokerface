@@ -4,6 +4,23 @@ import { observable, computed, action, toJS } from 'mobx'
 import {Lokka} from 'lokka'
 import {Transport} from 'lokka-transport-http'
 
+const postsQuery = `
+    {
+      posts {
+        id
+        createdAt
+        content
+        photos
+        likes
+        player{
+          username
+          fullName
+          avatar
+        }
+      }
+    }
+`
+
 export class FeedStore {
   @observable posts: Object[]
 
@@ -21,22 +38,11 @@ export class FeedStore {
 
   @action
   fetchEvents(): void{
-    this.client.query(`
-        {
-          posts {
-            id
-            createdAt
-            content
-            photos
-            likes
-            player{
-              username
-              fullName
-              avatar
-            }
-          }
-        }
-    `).then(result => {
+    this.client.watchQuery(postsQuery, {}, (err, result) => {
+      if (err){
+        console.error(err.message)
+        return
+      }
       this.posts = result.posts
     })
   }
