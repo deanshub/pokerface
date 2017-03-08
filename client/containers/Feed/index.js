@@ -3,7 +3,8 @@ import { observer, inject } from 'mobx-react'
 // import classnames from 'classnames'
 // import style from './style.css'
 import { Feed, Container } from 'semantic-ui-react'
-import Post from './post'
+import Post from './Post'
+import PhotoGallery from './PhotoGallery'
 
 @inject('feed')
 @observer
@@ -21,6 +22,7 @@ export default class FeedContainer extends Component {
         <Feed>
           {feed.events.map(post=><Post key={post.id} post={post}/>)}
         </Feed>
+        <PhotoGallery/>
       </Container>
     )
   }

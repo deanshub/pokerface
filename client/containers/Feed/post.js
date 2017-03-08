@@ -8,6 +8,7 @@ import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 TimeAgo.locale(timeAgoEnLocale)
 
 @inject('feed')
+@inject('photoGallery')
 @observer
 export default class Post extends Component {
   constructor(props){
@@ -33,6 +34,12 @@ export default class Post extends Component {
       )
     }
   }
+
+  openModal(photo){
+    const { photoGallery } = this.props
+    photoGallery.openModal([photo])
+  }
+
   render() {
     const { post } = this.props
 
@@ -45,7 +52,7 @@ export default class Post extends Component {
             {post.content}
           </Feed.Extra>
           <Feed.Extra images>
-            {post.photos.map(photo=><a key={Math.random()}><img src={photo} /></a>)}
+            {post.photos.map(photo=><a onClick={()=>this.openModal(photo)} key={Math.random()}><img src={photo} /></a>)}
           </Feed.Extra>
           <Feed.Meta>
             <Feed.Like>
