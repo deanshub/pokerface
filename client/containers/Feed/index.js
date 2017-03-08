@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-// import classnames from 'classnames'
-// import style from './style.css'
 import { Feed, Container } from 'semantic-ui-react'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'

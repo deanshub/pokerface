@@ -9,6 +9,7 @@ TimeAgo.locale(timeAgoEnLocale)
 
 @inject('feed')
 @inject('photoGallery')
+@inject('routing')
 @observer
 export default class Post extends Component {
   constructor(props){
@@ -16,12 +17,17 @@ export default class Post extends Component {
     this.timeAgo = new TimeAgo('en-US')
   }
 
+  goto(){
+    const {post, routing} = this.props
+    routing.push(`/profile/${post.player.username}`)
+  }
+
   getFeedSummary(){
     const { post } = this.props
     if (post.photos.length>0) {
       return (
         <Feed.Summary>
-          <Feed.User>{post.player.fullName}</Feed.User> added <a>{post.photos.length} new photos</a>
+          <Feed.User onClick={::this.goto}>{post.player.fullName}</Feed.User> added <a onClick={()=>this.openModal()}>{post.photos.length} new photos</a>
           <Feed.Date>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
         </Feed.Summary>
       )
@@ -35,9 +41,9 @@ export default class Post extends Component {
     }
   }
 
-  openModal(photo){
-    const { photoGallery } = this.props
-    photoGallery.openModal([photo])
+  openModal(index){
+    const { photoGallery, post } = this.props
+    photoGallery.openModal(post.photos, index)
   }
 
   render() {
@@ -52,7 +58,7 @@ export default class Post extends Component {
             {post.content}
           </Feed.Extra>
           <Feed.Extra images>
-            {post.photos.map(photo=><a onClick={()=>this.openModal(photo)} key={Math.random()}><img src={photo} /></a>)}
+            {post.photos.map((photo, index)=><a onClick={()=>this.openModal(index)} key={Math.random()}><img src={photo} /></a>)}
           </Feed.Extra>
           <Feed.Meta>
             <Feed.Like>
