@@ -13,17 +13,54 @@ export default class PlayingChart extends Component {
     data: [],
   }
 
+  constructor(props){
+    super(props)
+    this.state = {
+      height:150,
+      cy:100,
+      width:600,
+      cx:300,
+      outerRadius:75,
+    }
+  }
+
+  resizeChart(){
+    const height = this.container.height
+    const cy = height-50
+    const width = this.container.width
+    const cx = width/2
+    const outerRadius = cx/2
+    this.setState({
+      height,
+      cy,
+      width,
+      cx,
+      outerRadius,
+    })
+  }
+
+  componentDidMount(){
+    this.resizeChart()
+  }
+
   render() {
     const {data, player} = this.props
-    // <ResponsiveContainer>
+    const {
+      height,
+      cy,
+      width,
+      cx,
+      outerRadius,
+    }=this.state
     return (
+      <ResponsiveContainer ref={(container)=>this.container=container}>
         <RadarChart
-            cx={300}
-            cy={170}
+            cx={cx}
+            cy={cy}
             data={data}
-            height={350}
-            outerRadius={150}
-            width={600}
+            height={height}
+            outerRadius={outerRadius}
+            width={width}
         >
           <Radar name={player.name} dataKey="A" stroke="#DB2828" fill="#DB2828" fillOpacity={0.6}/>
           <PolarGrid />
@@ -31,7 +68,7 @@ export default class PlayingChart extends Component {
           <PolarRadiusAxis/>
           <Tooltip />
         </RadarChart>
+      </ResponsiveContainer>
     )
-  // </ResponsiveContainer>
   }
 }

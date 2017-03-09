@@ -9,6 +9,8 @@ const statisticalItems = [
   { label: 'Games', value: '22' },
   { label: 'Winings', value: '3,200' },
   { label: 'Avarage Buy-ins', value: '250' },
+  { label: 'Avarage Win', value: '250' },
+  { label: 'Position', value: '2' },
 ]
 
 const winningsChartData = [{
@@ -85,7 +87,7 @@ export default class ProfileStatistic extends Component {
           </Grid.Column>
 
           <Grid.Column>
-            <Statistic.Group widths="3">
+            <Statistic.Group widths="2">
               <Statistic>
                 <Statistic.Value>
                   <Icon name="game" />
@@ -106,6 +108,20 @@ export default class ProfileStatistic extends Component {
                   <Icon name="dollar" />
                 </Statistic.Value>
                 <Statistic.Label>{statisticalItems[2].label}</Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value>
+                  {statisticalItems[3].value}
+                  <Icon name="dollar" />
+                </Statistic.Value>
+                <Statistic.Label>{statisticalItems[3].label}</Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value>
+                  {statisticalItems[4].value}
+                  <Icon name="child" />
+                </Statistic.Value>
+                <Statistic.Label>{statisticalItems[4].label}</Statistic.Label>
               </Statistic>
             </Statistic.Group>
           </Grid.Column>
