@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import Datetime from 'react-datetime'
+import 'react-datetime/css/react-datetime.css'
+
 import moment from 'moment'
 import { Grid, Icon, Dropdown, Input, Label, Header, Button } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
@@ -74,12 +75,16 @@ export default class AddGame extends Component {
                 type="text"
             >
               <Label basic>From</Label>
-              <DatePicker
+              {/* <DatePicker
                   endDate={endDate}
                   onChange={(startDate)=>game.handleChangeStartDate(startDate)}
                   selected={startDate}
                   selectsStart
                   startDate={startDate}
+              /> */}
+              <Datetime
+                  onChange={(startDate)=>game.handleChangeStartDate(startDate)}
+                  value={startDate}
               />
             </Input>
           </Grid.Column>
@@ -91,12 +96,16 @@ export default class AddGame extends Component {
                 type="text"
             >
               <Label basic>To</Label>
-              <DatePicker
+              {/* <DatePicker
                   endDate={endDate}
                   onChange={(endDate)=>game.handleChangeEndDate(endDate)}
                   selected={endDate}
                   selectsEnd
                   startDate={startDate}
+              /> */}
+              <Datetime
+                  onChange={(endDate)=>game.handleChangeEndDate(endDate)}
+                  value={endDate}
               />
             </Input>
           </Grid.Column>

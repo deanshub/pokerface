@@ -41,7 +41,7 @@ export default class Footer extends Component {
               <List.Item href="https://reacttraining.com/react-router/" target="_blank" >React Router</List.Item>
               <List.Item href="https://momentjs.com/" target="_blank" >Moment</List.Item>
               <List.Item href="http://ramdajs.com/" target="_blank" >Ramda</List.Item>
-              <List.Item href="https://hacker0x01.github.io/react-datepicker/" target="_blank" >React Datepicker</List.Item>
+              <List.Item href="https://github.com/YouCanBookMe/react-datetime" target="_blank" >React Datetime</List.Item>
               <List.Item href="http://recharts.org/" target="_blank" >Recharts</List.Item>
               <List.Item href="http://react.semantic-ui.com/introduction" target="_blank" >react.semantic-ui</List.Item>
               <List.Item href="http://selfthinker.github.io/CSS-Playing-Cards/" target="_blank" >css playing cards</List.Item>
@@ -56,7 +56,6 @@ export default class Footer extends Component {
               <List.Item href="https://github.com/halt-hammerzeit/javascript-time-ago" target="_blank" >javascript-time-ago</List.Item>
               <List.Item href="https://github.com/marak/Faker.js/" target="_blank" >faker.js</List.Item>
               <List.Item href="https://github.com/kadirahq/lokka" target="_blank" >lokka</List.Item>
-
 
             </List>
           </Modal.Description>
