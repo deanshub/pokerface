@@ -14,15 +14,31 @@ const Query =  new GraphQLObjectType({
       players: {
         type: new GraphQLList(Player),
         args: {
-          username: {
-            type: GraphQLString,
-          },
-          email: {
+          phrase: {
             type: GraphQLString,
           },
         },
         resolve(root, args){
-          return Db.models.player.findAll({where: args})
+          const where = args.phrase?{
+            $or:[{
+              username: {
+                $ilike: `%${args.phrase}%`,
+              },
+            },{
+              firstName: {
+                $ilike: `%${args.phrase}%`,
+              },
+            },{
+              lastName: {
+                $ilike: `%${args.phrase}%`,
+              },
+            }],
+          }:{}
+
+          return Db.models.player.findAll({
+            where,
+            limit: 6
+          })
         },
       },
       posts: {
