@@ -1,4 +1,6 @@
-import { observable, action } from 'mobx'
+// @flow
+
+import { observable, action, computed, toJS } from 'mobx'
 
 export class PlayersStore {
   @observable currentPlayers
@@ -37,12 +39,18 @@ export class PlayersStore {
     })
   }
 
-  @action addPlayer(user){
-    this.currentPlayers.set(user, this.searchePlayers.get(user))
+  @action
+  setPlayer(users){
+    const players = users.reduce((res, user)=>{
+      res[user] = this.searchePlayers.get(user)
+      return res
+    },{})
+    this.currentPlayers.replace(players)
   }
 
-  @action removePlayer(user){
-    this.currentPlayers.delete(user)
+  @computed
+  get currentPlayersArray(){
+    return this.currentPlayers.keys()
   }
 
   @action addBuyIn(user){

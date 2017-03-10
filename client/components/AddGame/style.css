@@ -1,1 +1,5 @@
 @import "../../constants/styles";
+.playerLabel>img{
+  display: inline-block !important;
+  margin-right: 5px;
+}

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 import Datetime from 'react-datetime'
 import 'react-datetime/css/react-datetime.css'
@@ -5,10 +7,9 @@ import 'react-datetime/css/react-datetime.css'
 import moment from 'moment'
 import { Grid, Icon, Dropdown, Input, Label, Header, Button } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
-// import classnames from 'classnames'
-// import style from './style.css'
+import classnames from 'classnames'
+import style from './style.css'
 import PlayerForm from '../PlayerForm'
-import UserLabel from '../UserLabel'
 
 @inject('players')
 @inject('game')
@@ -19,6 +20,15 @@ export default class AddGame extends Component {
     this.state = {
       endDate: moment(),
       startDate: moment(),
+    }
+  }
+
+  renderLabel(label: Object){
+    return {
+      key: label.value,
+      image:label.image,
+      content:label.text,
+      className: classnames(style.playerLabel),
     }
   }
 
@@ -115,23 +125,20 @@ export default class AddGame extends Component {
           <Grid.Column width={2}>
             <Header>Players</Header>
           </Grid.Column>
-          <Grid.Column width={3}>
+          <Grid.Column width={14}>
             <Dropdown
                 fluid
-                onChange={(ev, {value})=>players.addPlayer(value)}
+                multiple
+                noResultsMessage="No players found"
+                onChange={(ev, {value})=>players.setPlayer(value)}
                 options={searchPlayerOptions}
                 placeholder="Add Player..."
+                renderLabel={this.renderLabel}
                 search
                 selection
                 style={{marginBottom:2}}
+                value={players.currentPlayersArray}
             />
-          </Grid.Column>
-          <Grid.Column width={11}>
-            <Grid.Row stretched verticalAlign="middle">
-              {players.currentPlayers.keys().map(user=>
-                <UserLabel key={user} user={players.currentPlayers.get(user)} />
-              )}
-            </Grid.Row>
           </Grid.Column>
         </Grid.Row>
 
