@@ -16,6 +16,7 @@ import {ProfileStore} from '../../store/ProfileStore'
 import {TimerStore} from '../../store/TimerStore'
 import {FeedStore} from '../../store/FeedStore'
 import {PhotoGalleryStore} from '../../store/PhotoGalleryStore'
+import {PlayersSearchStore} from '../../store/PlayersSearchStore'
 
 
 const routingStore = new RouterStore()
@@ -28,6 +29,7 @@ const stores = {
   timer: new TimerStore(),
   feed: new FeedStore(),
   photoGallery: new PhotoGalleryStore(),
+  playersSearch: new PlayersSearchStore(),
 }
 const history = syncHistoryWithStore(browserHistory, routingStore)
 

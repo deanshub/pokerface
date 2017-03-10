@@ -1,11 +1,18 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 // import { Link } from 'react-router'
-import { Menu, Button, Input, Icon, Label } from 'semantic-ui-react'
+import { Menu, Button, Input, Icon, Label, Search } from 'semantic-ui-react'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
+import { observer, inject } from 'mobx-react'
 // import classnames from 'classnames'
 // import style from './style.css'
+import PlayerSearchResult from './PlayerSearchResult'
 
+@inject('playersSearch')
+@inject('routing')
+@observer
 export default class Navbar extends Component {
   static contextTypes = {
     router: PropTypes.object,
@@ -24,7 +31,26 @@ export default class Navbar extends Component {
     })
   }
 
+  handleResultSelect(e, selected){
+    const {routing, playersSearch} = this.props
+    playersSearch.searchValue = ''
+    routing.push(`/profile/${selected.username}`)
+  }
+
+  resultRenderer({username, fullName, avatar}){
+    return (
+      <PlayerSearchResult
+          avatar={avatar}
+          childKey={username}
+          name={fullName}
+          username={username}
+      />
+    )
+  }
+
   render() {
+    const {playersSearch} = this.props
+
     return (
         <Menu
             fixed="top"
@@ -56,12 +82,19 @@ export default class Navbar extends Component {
 
           <Menu.Menu position="right">
             <Menu.Item>
-              {/*dropdown Search Selection*/}
-              <Input
+              <Search
+                  as={Input}
                   icon={{ name: 'search', link: true }}
+                  loading={playersSearch.loading}
+                  noResultsMessage="No players found"
+                  onResultSelect={::this.handleResultSelect}
+                  onSearchChange={(e, value)=>playersSearch.search(value)}
                   placeholder="Search Users..."
+                  resultRenderer={::this.resultRenderer}
+                  results={playersSearch.availablePlayers}
                   style={{marginBottom:2}}
                   transparent
+                  value={playersSearch.searchValue}
               />
             </Menu.Item>
             <Menu.Item onClick={this.handleLogout}>

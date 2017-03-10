@@ -1,8 +1,7 @@
 // @flow
 
 import { observable, computed, action, toJS } from 'mobx'
-import {Lokka} from 'lokka'
-import {Transport} from 'lokka-transport-http'
+import lokkaClient from './lokkaClient'
 
 const postsQuery = `
     {
@@ -26,9 +25,6 @@ export class FeedStore {
 
   constructor(){
     this.posts = []
-    this.client = new Lokka({
-      transport: new Transport('http://localhost:9031/graphql'),
-    })
   }
 
   @computed
@@ -38,7 +34,7 @@ export class FeedStore {
 
   @action
   fetchEvents(): void{
-    this.client.watchQuery(postsQuery, {}, (err, result) => {
+    lokkaClient.watchQuery(postsQuery, {}, (err, result) => {
       if (err){
         console.error(err.message)
         return
