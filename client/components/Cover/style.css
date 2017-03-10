@@ -3,6 +3,7 @@
 .container{
   height: 20vh;
   background-size: cover;
+  background-position: 50%;
   display: flex;
   justify-content: center;
   align-items: center;

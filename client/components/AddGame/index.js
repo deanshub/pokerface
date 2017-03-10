@@ -15,7 +15,7 @@ import PlayerForm from '../PlayerForm'
 @inject('game')
 @observer
 export default class AddGame extends Component {
-  constructor(props){
+  constructor(props: Object){
     super(props)
     this.state = {
       endDate: moment(),
@@ -30,6 +30,10 @@ export default class AddGame extends Component {
       content:label.text,
       className: classnames(style.playerLabel),
     }
+  }
+
+  scrollToPlayer(e: Object, player: Object){
+    console.log(player);
   }
 
   render() {
@@ -127,14 +131,17 @@ export default class AddGame extends Component {
           </Grid.Column>
           <Grid.Column width={14}>
             <Dropdown
+                allowAdditions
                 fluid
                 multiple
                 noResultsMessage="No players found"
                 onChange={(ev, {value})=>players.setPlayer(value)}
+                onLabelClick={this.scrollToPlayer}
                 options={searchPlayerOptions}
                 placeholder="Add Player..."
                 renderLabel={this.renderLabel}
                 search
+                selectOnBlur={false}
                 selection
                 style={{marginBottom:2}}
                 value={players.currentPlayersArray}

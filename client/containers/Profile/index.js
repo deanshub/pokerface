@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -14,31 +16,9 @@ export default class Profile extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
   }
-  constructor(props){
-    super(props)
-    this.state = {
-      posts: [],
-    }
-  }
-
-  componentDidMount(){
-    this.setState({
-      posts: [{
-        by: 'Dean Shub',
-        date: new Date(),
-        title:'Winning 100$ with Ad and 2h',
-      },{
-        by: 'Dean Shub',
-        date: new Date(),
-        title:'Here comes the shark',
-        image:'table.jpg',
-      }],
-    })
-  }
 
   render() {
     const { auth } = this.props
-    const { posts } = this.state
 
     return (
       <div className={classnames(style.container)}>
@@ -51,7 +31,6 @@ export default class Profile extends Component {
         />
 
         <Feed/>
-      {/*posts.map((post, index)=><Post key={index} {...post}/>)*/}
       </div>
     )
   }

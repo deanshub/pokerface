@@ -1,6 +1,7 @@
 // @flow
 
 import { observable, action, computed, toJS } from 'mobx'
+import avatarImage from '../assets/images/avatar.png'
 
 export class PlayersStore {
   @observable currentPlayers
@@ -39,12 +40,29 @@ export class PlayersStore {
     })
   }
 
+  getPlayer(user){
+    let player = this.searchePlayers.get(user)
+    if (player===undefined){
+      player = {
+        user,
+        name:user,
+        image: avatarImage,
+        buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+        winnings: [{value: this.initialWin, key:Math.random()}],
+      }
+      this.searchePlayers.set(user, player)
+    }
+    return player
+  }
+
   @action
   setPlayer(users){
     const players = users.reduce((res, user)=>{
-      res[user] = this.searchePlayers.get(user)
+
+      res[user] = this.getPlayer(user)
       return res
     },{})
+
     this.currentPlayers.replace(players)
   }
 

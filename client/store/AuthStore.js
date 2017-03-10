@@ -7,10 +7,13 @@ export class AuthStore {
   @observable opensourceModalOpen: boolean
 
   constructor(){
+    const coverImage = 'poker-1999643.jpg'
+
     this.user = {
       user:'deanshub',
       displayName: 'Dean Shub',
-      coverImage: 'cover.jpg',
+      coverImage,
+      // coverImage: 'cover.jpg',
       avatarImage: 'dean2.jpg',
     }
     this.opensourceModalOpen = false
