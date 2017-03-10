@@ -48,6 +48,11 @@ export default class Navbar extends Component {
     )
   }
 
+  isActive(path){
+    const {routing} = this.props
+    return routing.location.pathname===path
+  }
+
   render() {
     const {playersSearch} = this.props
 
@@ -60,19 +65,19 @@ export default class Navbar extends Component {
             style={{marginBottom:0, backgroundColor:'white'}}
         >
           <Menu.Item
-              active={this.context.router.isActive('/', true)}
+              active={this.isActive('/', true)}
               onClick={()=>this.handleMenuItemClick('/')}
           >
             <Icon name="home"/> Home
           </Menu.Item>
           <Menu.Item
-              active={this.context.router.isActive('/profile', true)}
+              active={this.isActive('/profile', true)}
               onClick={()=>this.handleMenuItemClick('/profile')}
           >
             <Icon name="user"/> Profile
           </Menu.Item>
           <Menu.Item
-              active={this.context.router.isActive('/pulse', true)}
+              active={this.isActive('/pulse', true)}
               onClick={()=>this.handleMenuItemClick('/pulse')}
           >
             <Icon name="heartbeat"/> Pulse
