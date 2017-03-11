@@ -106,8 +106,7 @@ export default class BlindsTimer extends Component {
             />
           </Grid.Column>
 
-          <Grid.Column width={3}/>
-          <Grid.Column textAlign="center" width={3}>
+          <Grid.Column textAlign="center" width={6}>
             <Header color="grey" inverted>Blinds</Header>
             <Header inverted style={{fontSize:'7em', margin:0}}>{timer.blinds}</Header>
             <Header inverted>{timer.nextBlinds}</Header>
@@ -144,13 +143,11 @@ export default class BlindsTimer extends Component {
               <Button onClick={::this.resetTimer}>Reset</Button>
             */}
           </Grid.Column>
-          <Grid.Column width={1}/>
-          <Grid.Column textAlign="center" width={3}>
+          <Grid.Column textAlign="center" width={6}>
             <Header color="grey" inverted>Ante</Header>
             <Header inverted style={{fontSize:'7em', margin:0}}>{timer.ante}</Header>
             <Header inverted>{timer.nextAnte}</Header>
           </Grid.Column>
-          <Grid.Column width={2}/>
           <Grid.Column
               textAlign="right"
               verticalAlign="bottom"
