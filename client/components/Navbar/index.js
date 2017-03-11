@@ -10,7 +10,7 @@ import { observer, inject } from 'mobx-react'
 // import style from './style.css'
 import PlayerSearchResult from './PlayerSearchResult'
 
-@inject('playersSearch')
+@inject('globalPlayersSearch')
 @inject('routing')
 @observer
 export default class Navbar extends Component {
@@ -32,8 +32,8 @@ export default class Navbar extends Component {
   }
 
   handleResultSelect(e, selected){
-    const {routing, playersSearch} = this.props
-    playersSearch.searchValue = ''
+    const {routing, globalPlayersSearch} = this.props
+    globalPlayersSearch.searchValue = ''
     routing.push(`/profile/${selected.username}`)
   }
 
@@ -54,7 +54,7 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {playersSearch} = this.props
+    const {globalPlayersSearch} = this.props
 
     return (
         <Menu
@@ -90,16 +90,16 @@ export default class Navbar extends Component {
               <Search
                   as={Input}
                   icon={{ name: 'search', link: true }}
-                  loading={playersSearch.loading}
+                  loading={globalPlayersSearch.loading}
                   noResultsMessage="No players found"
                   onResultSelect={::this.handleResultSelect}
-                  onSearchChange={(e, value)=>playersSearch.search(value)}
+                  onSearchChange={(e, value)=>globalPlayersSearch.search(value)}
                   placeholder="Search Users..."
                   resultRenderer={::this.resultRenderer}
-                  results={playersSearch.availablePlayers}
+                  results={globalPlayersSearch.availablePlayers}
                   style={{marginBottom:2}}
                   transparent
-                  value={playersSearch.searchValue}
+                  value={globalPlayersSearch.searchValue}
               />
             </Menu.Item>
             <Menu.Item onClick={this.handleLogout}>

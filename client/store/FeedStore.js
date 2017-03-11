@@ -3,22 +3,7 @@
 import { observable, computed, action, toJS } from 'mobx'
 import lokkaClient from './lokkaClient'
 
-const postsQuery = `
-    {
-      posts {
-        id
-        createdAt
-        content
-        photos
-        likes
-        player{
-          username
-          fullName
-          avatar
-        }
-      }
-    }
-`
+import {postsQuery} from './queries/posts'
 
 export class FeedStore {
   @observable posts: Object[]

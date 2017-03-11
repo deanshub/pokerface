@@ -29,7 +29,7 @@ const stores = {
   timer: new TimerStore(),
   feed: new FeedStore(),
   photoGallery: new PhotoGalleryStore(),
-  playersSearch: new PlayersSearchStore(),
+  globalPlayersSearch: new PlayersSearchStore(),
 }
 const history = syncHistoryWithStore(browserHistory, routingStore)
 

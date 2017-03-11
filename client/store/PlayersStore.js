@@ -2,55 +2,61 @@
 
 import { observable, action, computed, toJS } from 'mobx'
 import avatarImage from '../assets/images/avatar.png'
+import lokkaClient from './lokkaClient'
+import {playersQuery} from './queries/players'
 
 export class PlayersStore {
   @observable currentPlayers
-  @observable searchePlayers
+  @observable searchPlayers
 
   initialBuyIn=100
   initialWin=0
 
   constructor(){
     this.currentUser = {
-      user:'deanshub',
-      image: '/images/dean2.jpg',
-      name: 'Dean Shub',
+      username:'deanshub',
+      fullName: 'Dean Shub',
+      avatar: '/images/dean2.jpg',
       buyIns: [{value: this.initialBuyIn, key:Math.random()}],
       winnings: [{value: this.initialWin, key:Math.random()}],
     }
 
-    this.currentPlayers = observable.map({[this.currentUser.user]: this.currentUser})
+    this.currentPlayers = observable.map({[this.currentUser.username]: this.currentUser})
+    this.searchPlayers = observable.map({[this.currentUser.username]: this.currentUser})
+    this.searchLoading = false
+  }
 
-    this.searchePlayers = observable.map({
-      [this.currentUser.user]: this.currentUser,
-      zoeD: {
-        user:'zoeD',
-        image: 'http://semantic-ui.com/images/avatar/small/zoe.jpg',
-        name: 'Zoe Dechannel',
-        buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-        winnings: [{value: this.initialWin, key:Math.random()}],
-      },
-      nanWasa: {
-        user:'nanWasa',
-        image: 'http://semantic-ui.com/images/avatar/small/nan.jpg',
-        name: 'Nan Wasa',
-        buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-        winnings: [{value: this.initialWin, key:Math.random()}],
-      },
+  @action
+  search(phrase){
+    this.searchLoading = true
+    this.searchValue = phrase
+    lokkaClient.query(playersQuery, {phrase}).then((result)=>{
+      const playersObj = result.players.reduce((res, player)=>{
+        res[player.username] = Object.assign({},player,{
+          buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+          winnings: [{value: this.initialWin, key:Math.random()}],
+        })
+        return res
+      },{})
+
+      this.searchPlayers.replace(Object.assign({},playersObj, toJS(this.currentPlayers)))
+      this.searchLoading = false
+    }).catch((err)=>{
+      console.error(err)
     })
   }
 
-  getPlayer(user){
-    let player = this.searchePlayers.get(user)
+  getPlayer(username){
+    let player = this.searchPlayers.get(username)
     if (player===undefined){
       player = {
-        user,
-        name:user,
-        image: avatarImage,
+        username,
+        fullName:username,
+        avatar: avatarImage,
         buyIns: [{value: this.initialBuyIn, key:Math.random()}],
         winnings: [{value: this.initialWin, key:Math.random()}],
       }
-      this.searchePlayers.set(user, player)
+      this.searchPlayers.set(username, player)
     }
     return player
   }
@@ -71,18 +77,22 @@ export class PlayersStore {
     return this.currentPlayers.keys()
   }
 
-  @action addBuyIn(user){
+  @action
+  addBuyIn(user){
     this.currentPlayers.get(user).buyIns.push({value: this.initialBuyIn, key:Math.random()})
   }
-  @action removeBuyIn(user, index){
+  @action
+  removeBuyIn(user, index){
     const {buyIns} = this.currentPlayers.get(user)
     buyIns.splice(index, 1)
   }
 
-  @action addWin(user){
+  @action
+  addWin(user){
     this.currentPlayers.get(user).winnings.push({value: this.initialWin, key:Math.random()})
   }
-  @action removeWin(user, index){
+  @action
+  removeWin(user, index){
     const {winnings} = this.currentPlayers.get(user)
     winnings.splice(index, 1)
   }

@@ -18,10 +18,10 @@ export default class PlayerForm extends Component {
       <Grid.Row>
         <Grid.Column width={2}>
           <Card>
-            <Image src={user.image}/>
+            <Image src={user.avatar}/>
             <Card.Content>
               <Card.Header>
-                {user.name}
+                {user.fullName}
               </Card.Header>
               <Card.Content extra>
                 <Icon name="user" />

@@ -3,19 +3,11 @@
 import { observable, action } from 'mobx'
 import lokkaClient from './lokkaClient'
 
-const playersQuery = `query _($phrase: String)
-    {
-      players(phrase: $phrase){
-        username
-        fullName
-        avatar
-      }
-    }
-`
+import {playersQuery} from './queries/players'
 
 
 export class PlayersSearchStore {
-  @observable availablePlayers: object[]
+  @observable availablePlayers
   @observable searchValue: string
   @observable loading: boolean
 

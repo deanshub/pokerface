@@ -36,18 +36,23 @@ export default class AddGame extends Component {
     console.log(player);
   }
 
+  searchChange(e: Object, phrase: string){
+    const {players} = this.props
+    players.search(phrase)
+  }
+
   render() {
     const {game, players} = this.props
 
     const startDate = game.currentGame.get('startDate')
     const endDate = game.currentGame.get('endDate')
 
-    const searchPlayerOptions = players.searchePlayers.keys().map(username=>{
-      const player = players.searchePlayers.get(username)
+    const searchPlayerOptions = players.searchPlayers.keys().map(username=>{
+      const player = players.searchPlayers.get(username)
       return {
-        text: player.name,
+        text: player.fullName,
         value: username,
-        image: player.image,
+        image: player.avatar,
         disabled: players.currentPlayers.has(username),
       }
     })
@@ -131,12 +136,14 @@ export default class AddGame extends Component {
           </Grid.Column>
           <Grid.Column width={14}>
             <Dropdown
+                additionPosition="bottom"
                 allowAdditions
                 fluid
                 multiple
                 noResultsMessage="No players found"
                 onChange={(ev, {value})=>players.setPlayer(value)}
                 onLabelClick={this.scrollToPlayer}
+                onSearchChange={::this.searchChange}
                 options={searchPlayerOptions}
                 placeholder="Add Player..."
                 renderLabel={this.renderLabel}
