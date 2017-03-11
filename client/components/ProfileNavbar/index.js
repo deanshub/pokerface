@@ -23,22 +23,43 @@ export default class ProfileNavbar extends Component {
 
   constructor(props: Object){
     super(props)
+    this.checkStaticNavbarActivation = this.checkStaticNavbarActivation.bind(this)
     this.state = {
       avatarImage: undefined,
+      activateFixedNavbar: false,
     }
   }
 
-  state: { avatarImage?: string }
+  state: { avatarImage?: string, activateFixedNavbar: boolean }
 
   componentDidMount(){
     const {avatar} = this.props
 
-    // System.import(`../../assets/images/${avatar}`).then(avatarImage=>{
+    window.addEventListener('scroll', this.checkStaticNavbarActivation)
+
     import(`../../assets/images/${avatar}`).then(avatarImage=>{
       this.setState({
         avatarImage,
       })
     })
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener('scroll', this.checkStaticNavbarActivation)
+  }
+
+  checkStaticNavbarActivation(){
+    const {activateFixedNavbar} = this.state
+    console.log(activateFixedNavbar, document.body.scrollTop);
+    if (document.body.scrollTop>190 && !activateFixedNavbar){
+      this.setState({
+        activateFixedNavbar: true,
+      })
+    }else if (document.body.scrollTop<=190 && activateFixedNavbar){
+      this.setState({
+        activateFixedNavbar: false,
+      })
+    }
   }
 
   getCurrentTab(currentTab: string){
@@ -59,14 +80,15 @@ export default class ProfileNavbar extends Component {
 
   render() {
     const {profile} = this.props
-    const {avatarImage}: {avatarImage?: string} = this.state
+    const {avatarImage, activateFixedNavbar}: {avatarImage?: string, activateFixedNavbar: boolean} = this.state
     const {currentTab} = profile
 
     return (
       <div>
         <Menu
-            attached="top"
+            className={classnames({[style.fixedNavbar]:activateFixedNavbar})}
             icon="labeled"
+            style={{backgroundColor:'white'}}
             tabular
             widths={5}
         >

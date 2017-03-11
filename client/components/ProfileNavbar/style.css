@@ -1,32 +1,12 @@
 @import "../../constants/styles.css";
 
-.navBar{
-  display: flex;
-  height: 5vh;
-}
-
-.navItem{
-  flex: 1;
-  text-align: center;
-  border: 1px solid $gray;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  cursor: pointer;
-}
-
 .avatar{
   top: -4vh;
-  z-index: 2;
+  z-index: 103;
 }
-/*.avatar{
-  background-color: $gray;
-  background-size: cover;
-  position: relative;
-  top: -7vh;
-  height: 350%;
-}*/
 
-.navItemActive{
-  border-bottom: none;
+.fixedNavbar{
+  position: fixed;
+  top: 50px;
+  z-index: 102;
 }
