@@ -1,9 +1,11 @@
 // @flow
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Feed, Icon } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
+import classnames from 'classnames'
+import style from './style.css'
 
 TimeAgo.locale(timeAgoEnLocale)
 
@@ -15,6 +17,10 @@ export default class Post extends Component {
   constructor(props){
     super(props)
     this.timeAgo = new TimeAgo('en-US')
+  }
+
+  static propTypes = {
+    post: PropTypes.object,
   }
 
   goto(){
@@ -57,12 +63,16 @@ export default class Post extends Component {
           <Feed.Extra text>
             {post.content}
           </Feed.Extra>
-          <Feed.Extra images>
-            {post.photos.map((photo, index)=><a onClick={()=>this.openModal(index)} key={Math.random()}><img src={photo} /></a>)}
+          <Feed.Extra className={classnames(style.unselectable)} images>
+            {post.photos.map((photo, index)=>
+              <a key={Math.random()} onClick={()=>this.openModal(index)}>
+                <img draggable={false} src={photo} />
+              </a>
+            )}
           </Feed.Extra>
           <Feed.Meta>
-            <Feed.Like>
-              <Icon name='like' />
+            <Feed.Like className={classnames(style.unselectable)}>
+              <Icon name="like" />
               {post.likes||0} Likes
             </Feed.Like>
           </Feed.Meta>

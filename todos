@@ -1,0 +1,22 @@
+GAME
+-------
+owner - who created the game
+location
+from
+to
+game type and subtype
+players
+  buyins
+  winnings
+creation time
+
+creation of a game should also create a post
+
+
+POST
+---------
+change likes to strings of usernames then you can implement the like mutation
+
+PROFILE
+-------
+implement the profile of other usres

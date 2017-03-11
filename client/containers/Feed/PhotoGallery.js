@@ -20,9 +20,10 @@ export default class PhotoGallery extends Component {
       >
         <Image
             className={classnames(style.clickable)}
+            draggable={false}
             fluid
-            src={photoGallery.photos[photoGallery.photoIndex]}
             onClick={()=>photoGallery.nextPhoto()}
+            src={photoGallery.photos[photoGallery.photoIndex]}
         />
       </Modal>
     )

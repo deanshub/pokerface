@@ -50,7 +50,6 @@ export default class ProfileNavbar extends Component {
 
   checkStaticNavbarActivation(){
     const {activateFixedNavbar} = this.state
-    console.log(activateFixedNavbar, document.body.scrollTop);
     if (document.body.scrollTop>190 && !activateFixedNavbar){
       this.setState({
         activateFixedNavbar: true,
