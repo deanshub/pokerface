@@ -53,12 +53,14 @@ export class PlayersStore {
         username,
         fullName:username,
         avatar: avatarImage,
-        buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-        winnings: [{value: this.initialWin, key:Math.random()}],
       }
       this.searchPlayers.set(username, player)
     }
-    return player
+
+    return Object.assign({},player,{
+      buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+      winnings: [{value: this.initialWin, key:Math.random()}],
+    })
   }
 
   @action

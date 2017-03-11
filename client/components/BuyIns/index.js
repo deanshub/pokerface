@@ -19,7 +19,7 @@ export default class BuyIns extends Component {
           {user.buyIns.map((buyIn, index)=>
             <List.Item key={buyIn.key}>
               <Input
-                  action={<Button icon="remove" onClick={()=>{players.removeBuyIn(user.user, index)}}/>}
+                  action={<Button icon="remove" onClick={()=>{players.removeBuyIn(user.username, index)}}/>}
                   actionPosition="left"
                   defaultValue={buyIn.value}
                   placeholder="0"
@@ -31,7 +31,7 @@ export default class BuyIns extends Component {
           <List.Item>
             <Button
                 icon
-                onClick={()=>players.addBuyIn(user.user)}
+                onClick={()=>players.addBuyIn(user.username)}
                 size="mini"
             >
               <Icon name="add" />

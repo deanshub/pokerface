@@ -19,7 +19,7 @@ export default class Winnings extends Component {
           {user.winnings.map((win, index)=>
             <List.Item key={win.key}>
               <Input
-                  action={<Button icon="remove" onClick={()=>players.removeWin(user.user, index)}/>}
+                  action={<Button icon="remove" onClick={()=>players.removeWin(user.username, index)}/>}
                   actionPosition="left"
                   defaultValue={win.value}
                   placeholder="0"
@@ -30,7 +30,7 @@ export default class Winnings extends Component {
           <List.Item>
             <Button
                 icon
-                onClick={()=>players.addWin(user.user)}
+                onClick={()=>players.addWin(user.username)}
                 size="mini"
             >
               <Icon name="add" />
