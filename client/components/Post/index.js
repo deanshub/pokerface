@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -18,7 +20,7 @@ export default class Navbar extends Component {
   componentDidMount(){
     const {image} = this.props
     if (image){
-      System.import(`../../assets/images/${image}`).then(postImage=>{
+      import(`../../assets/images/${image}`).then(postImage=>{
         this.setState({
           postImage,
         })

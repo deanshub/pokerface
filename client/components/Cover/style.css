@@ -8,6 +8,24 @@
   justify-content: center;
   align-items: center;
   background-color: $gray;
+  position: relative;
+}
+
+.loading::before{
+  display: block;
+  position: absolute;
+  content: "";
+  width: 30vw;
+  height: 100%;
+  background: linear-gradient(to right, #dfdfdf, white, #dfdfdf);
+  animation: loading 2s linear infinite;
+  z-index: 1;
+}
+
+@keyframes loading {
+  from {left: -30vw;}
+  70% { left: 50%;}
+  to {left: 120%;}
 }
 
 /*.title{

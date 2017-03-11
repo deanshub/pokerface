@@ -17,6 +17,7 @@
 
 .avatar{
   top: -4vh;
+  z-index: 2;
 }
 /*.avatar{
   background-color: $gray;
