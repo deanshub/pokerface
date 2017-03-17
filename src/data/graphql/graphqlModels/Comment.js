@@ -2,12 +2,13 @@ import {
   GraphQLObjectType, GraphQLInt, GraphQLString,
   GraphQLList,
 } from 'graphql'
-import Player from './Player'
-import Comment from './Comment'
 
-const Post = new GraphQLObjectType({
-  name: 'Post',
-  description: 'Represents a player\'s post',
+import Player from './Player'
+import Post from './Post'
+
+const Comment = new GraphQLObjectType({
+  name: 'Comment',
+  description: 'Represents a player\'s comment to a post',
   fields: ()=>{
     return {
       id: {
@@ -28,12 +29,12 @@ const Post = new GraphQLObjectType({
           return post.content
         },
       },
-      photos:{
-        type: new GraphQLList(GraphQLString),
-        resolve(post){
-          return post.photos
-        },
-      },
+      // photos:{
+      //   type: new GraphQLList(GraphQLString),
+      //   resolve(post){
+      //     return post.photos
+      //   },
+      // },
       likes: {
         type: new GraphQLList(GraphQLString),
         resolve(post){
@@ -42,18 +43,18 @@ const Post = new GraphQLObjectType({
       },
       player: {
         type: Player,
-        resolve(post){
-          return post.getPlayer()
+        resolve(comment){
+          return comment.getPlayer()
         },
       },
-      comments: {
-        type: new GraphQLList(Comment),
-        resolve(post){
-          return post.getComments()
+      post: {
+        type: Post,
+        resolve(comment){
+          return comment.getPost()
         },
-      },
+      }
     }
   },
 })
 
-export default Post
+export default Comment

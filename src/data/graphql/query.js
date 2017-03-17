@@ -5,6 +5,7 @@ import {
 import Db from '../db'
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
+import Comment from './graphqlModels/Comment'
 
 const Query =  new GraphQLObjectType({
   name: 'Query',
@@ -47,6 +48,12 @@ const Query =  new GraphQLObjectType({
           return Db.models.post.findAll({where: args})
         },
       },
+      comments: {
+        type: new GraphQLList(Comment),
+        resolve(root, args){
+          return Db.models.comment.findAll({where: args})
+        },
+      }
     }
   },
 })

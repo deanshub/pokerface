@@ -2,6 +2,7 @@ import {
   GraphQLObjectType, GraphQLString, GraphQLList,
 } from 'graphql'
 import Post from './Post'
+import Comment from './Comment'
 
 const Player = new GraphQLObjectType({
   name: 'Player',
@@ -56,6 +57,12 @@ const Player = new GraphQLObjectType({
           return player.getPosts()
         },
       },
+      comments:{
+        type: new GraphQLList(Comment),
+        resolve(player){
+          return player.getComments()
+        },
+      }
     }
   },
 })
