@@ -40,7 +40,7 @@ Conn.sync({force: true}).then(()=>{
         return player.createPost({
           content: faker.lorem.paragraph(),
           photos: generateRandomArray(5).map(()=>faker.random.image()),
-          likes: faker.random.number(),
+          likes: generateRandomArray(10).map(()=>faker.internet.userName()),
         })
       }))
     })

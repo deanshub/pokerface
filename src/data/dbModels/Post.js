@@ -16,7 +16,7 @@ const createModel = (Conn)=>{
       allowNull: false,
     },
     likes : {
-      type: Sequelize.INTEGER,
+      type: Sequelize.ARRAY(Sequelize.STRING),
       allowNull: true,
     },
   },{

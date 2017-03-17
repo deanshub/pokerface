@@ -34,7 +34,7 @@ const Post = new GraphQLObjectType({
         },
       },
       likes: {
-        type: GraphQLInt,
+        type: new GraphQLList(GraphQLString),
         resolve(post){
           return post.likes
         },
