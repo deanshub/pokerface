@@ -69,7 +69,7 @@ Conn
   faker.seed(123)
   Promise.all(generateRandomArray(20).map(createPlayer))
   .then(players=>{
-    return Promise.all(generateRandomArray(50).map(createPost)).then((posts)=>{
+    return Promise.all(generateRandomArray(150).map(createPost)).then((posts)=>{
       return {players,posts}
     })
   })

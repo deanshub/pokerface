@@ -1,5 +1,6 @@
 import {
   GraphQLObjectType, GraphQLString, GraphQLList,
+  GraphQLInt,
 } from 'graphql'
 
 import Db from '../db'
@@ -34,7 +35,7 @@ const Query =  new GraphQLObjectType({
                 $ilike: `%${args.phrase}%`,
               },
             }],
-          }:{}
+          }:undefined
 
           return Db.models.player.findAll({
             where,
@@ -44,8 +45,37 @@ const Query =  new GraphQLObjectType({
       },
       posts: {
         type: new GraphQLList(Post),
+        args: {
+          username: {
+            type: GraphQLString,
+          },
+          offset: {
+            type: GraphQLInt,
+          },
+        },
         resolve(root, args){
-          return Db.models.post.findAll({where: args})
+          const where = args.username?{
+            $or:[
+              {playerUsername: args.username},
+              {'$comments.playerUsername$': args.username},
+            ],
+          }:undefined
+
+          return Db.models.post.findAll({
+            where,
+            include: [{
+              model: Db.models.comment,
+              as: 'comments',
+              // where:{'playerUsername': args.username},
+              // required: false,
+              // separate: true,
+              // limit: 6,
+              duplicating: false,
+            }],
+            limit: 20,
+            offset: args.offset,
+            order: [['created', 'DESC']],
+          })
         },
       },
       comments: {
