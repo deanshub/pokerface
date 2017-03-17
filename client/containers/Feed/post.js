@@ -73,7 +73,7 @@ export default class Post extends Component {
           <Feed.Meta>
             <Feed.Like className={classnames(style.unselectable)}>
               <Icon name="like" />
-              {post.likes||0} Likes
+              {(post.likes&&post.likes.length)||0} Likes
             </Feed.Like>
           </Feed.Meta>
         </Feed.Content>
