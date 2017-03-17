@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import { Feed, Icon } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
+import Comments from './Comments'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -54,9 +55,8 @@ export default class Post extends Component {
 
   render() {
     const { post } = this.props
-
     return (
-      <Feed.Event>
+      <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf'}}>
         <Feed.Label image={post.avatar} />
         <Feed.Content>
             {this.getFeedSummary()}
@@ -75,7 +75,20 @@ export default class Post extends Component {
               <Icon name="like" />
               {(post.likes&&post.likes.length)||0} Likes
             </Feed.Like>
+            <Feed.Like className={classnames(style.unselectable)}>
+              <Icon name="reply" />
+              Reply
+            </Feed.Like>
+            <Feed.Like className={classnames(style.unselectable)}>
+              <Icon name="share" />
+              Share
+            </Feed.Like>
           </Feed.Meta>
+          <Feed.Extra>
+            <Comments
+                comments={post.comments}
+            />
+          </Feed.Extra>
         </Feed.Content>
       </Feed.Event>
     )

@@ -6,6 +6,16 @@ export const postsQuery = `
         content
         photos
         likes
+        comments{
+          id
+          likes
+          content
+          player{
+            username
+            fullName
+            avatar
+          }
+        }
         player{
           username
           fullName

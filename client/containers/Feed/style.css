@@ -5,3 +5,8 @@
 .unselectable{
   user-select: none;
 }
+
+.post{
+  box-shadow: 1px 1px #dfdfdf;
+  border-radius: 2px;
+}
