@@ -6,10 +6,6 @@ import PostComment from './PostComment'
 
 @observer
 export default class Comments extends Component {
-  static propTypes = {
-    comments: PropTypes.array,
-  }
-
   render() {
     const { comments } = this.props
     return (

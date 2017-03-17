@@ -17,6 +17,10 @@ export default class Profile extends Component {
     auth: PropTypes.object.isRequired,
   }
 
+  componentDidMount(){
+    document.body.scrollTop = 0
+  }
+
   render() {
     const { auth } = this.props
 
@@ -30,7 +34,7 @@ export default class Profile extends Component {
             avatar={auth.user.avatarImage}
         />
 
-        <Feed/>
+        <Feed username={auth.user.user}/>
       </div>
     )
   }

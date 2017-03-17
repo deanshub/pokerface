@@ -1,6 +1,6 @@
-export const postsQuery = `
+export const postsQuery = `query _($username: String, $offset: Int)
     {
-      posts {
+      posts(username: $username, offset: $offset) {
         id
         createdAt
         content
