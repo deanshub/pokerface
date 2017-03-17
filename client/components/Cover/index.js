@@ -25,7 +25,12 @@ export default class Navbar extends Component {
     import(`../../assets/images/${image}`).then(imageFile=>{
       this.setState({
         imageFile,
-        loading: false,
+      },()=>{
+        setTimeout(()=>{
+          this.setState({
+            loading: false,
+          })
+        },500)
       })
     })
   }

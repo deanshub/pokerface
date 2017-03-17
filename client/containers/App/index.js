@@ -1,3 +1,5 @@
+// @flow
+
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
 import { Provider } from 'mobx-react'
