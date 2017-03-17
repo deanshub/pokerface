@@ -16,7 +16,9 @@ creation of a game should also create a post
 POST
 ---------
 change likes to strings of usernames then you can implement the like mutation
+allow comments on posts
 
 PROFILE
 -------
 implement the profile of other usres
+make post queries by the user

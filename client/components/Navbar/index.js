@@ -86,6 +86,21 @@ export default class Navbar extends Component {
 
 
           <Menu.Menu position="right">
+            <Menu.Item
+                active={this.isActive('/smart', true)}
+                onClick={()=>this.handleMenuItemClick('/smart')}
+            >
+              <Icon name="student"/> Get Smarter
+            </Menu.Item>
+            <Menu.Item
+                active={this.isActive('/timer', true)}
+                onClick={()=>this.handleMenuItemClick('/timer')}
+            >
+              <Icon name="clock"/> Blinds Timer
+            </Menu.Item>
+            <Menu.Item onClick={this.handleLogout}>
+              <Button>logout</Button>
+            </Menu.Item>
             <Menu.Item>
               <Search
                   as={Input}
@@ -101,9 +116,6 @@ export default class Navbar extends Component {
                   transparent
                   value={globalPlayersSearch.searchValue}
               />
-            </Menu.Item>
-            <Menu.Item onClick={this.handleLogout}>
-              <Button>logout</Button>
             </Menu.Item>
           </Menu.Menu>
         </Menu>

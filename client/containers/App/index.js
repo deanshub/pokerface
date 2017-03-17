@@ -8,6 +8,8 @@ import Navigation from '../Navigation'
 import Feed from '../Feed'
 import Profile from '../Profile'
 import Pulse from '../Pulse'
+import BlindsTimer from '../../components/BlindsTimer'
+import Lern from '../../components/Lern'
 
 import {AuthStore} from '../../store/AuthStore'
 import {GameStore} from '../../store/GameStore'
@@ -46,6 +48,9 @@ export default class App extends Component {
           <Route component={Profile} path="/profile/:userId"/>
           <Route component={Profile} path="/profile"/>
           <Route component={Pulse} path="/pulse"/>
+          <Route component={BlindsTimer} path="/timer"/>
+          <Route component={Lern} path="/smart"/>
+
         </Route>
       </Router>
     </Provider>
