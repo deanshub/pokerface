@@ -20,17 +20,21 @@ export default class PostComment extends Component {
   }
 
   goto(){
-    const {post, routing} = this.props
-    routing.push(`/profile/${post.player.username}`)
+    const {comment, routing} = this.props
+    routing.push(`/profile/${comment.player.username}`)
   }
 
   render() {
     const { comment } = this.props
     return (
       <Comment>
-        <Comment.Avatar as="a" src={comment.player.avatar} />
+        <Comment.Avatar
+            as="a"
+            onClick={::this.goto}
+            src={comment.player.avatar}
+        />
         <Comment.Content>
-          <Comment.Author as="a">{comment.player.fullName}</Comment.Author>
+          <Comment.Author as="a" onClick={::this.goto}>{comment.player.fullName}</Comment.Author>
           <Comment.Metadata>
             <div>{this.timeAgo.format(new Date(comment.createdAt))}</div>
           </Comment.Metadata>
