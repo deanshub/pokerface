@@ -90,7 +90,7 @@ export default class BlindsTimer extends Component {
           </Grid.Column>
 
           <Grid.Column textAlign="center" width={16}>
-            <Header inverted style={{fontSize:'22em', margin:0}}>{timer.timeLeft}</Header>
+            <Header inverted style={{fontSize:'25vw', margin:0}}>{timer.timeLeft}</Header>
           </Grid.Column>
 
           <Grid.Column
@@ -108,7 +108,7 @@ export default class BlindsTimer extends Component {
 
           <Grid.Column textAlign="center" width={6}>
             <Header color="grey" inverted>Blinds</Header>
-            <Header inverted style={{fontSize:'7em', margin:0}}>{timer.blinds}</Header>
+            <Header inverted style={{fontSize:'9vw', margin:0}}>{timer.blinds}</Header>
             <Header inverted>{timer.nextBlinds}</Header>
           </Grid.Column>
           <Grid.Column width={1}/>
@@ -145,7 +145,7 @@ export default class BlindsTimer extends Component {
           </Grid.Column>
           <Grid.Column textAlign="center" width={6}>
             <Header color="grey" inverted>Ante</Header>
-            <Header inverted style={{fontSize:'7em', margin:0}}>{timer.ante}</Header>
+            <Header inverted style={{fontSize:'9vw', margin:0}}>{timer.ante}</Header>
             <Header inverted>{timer.nextAnte}</Header>
           </Grid.Column>
           <Grid.Column
