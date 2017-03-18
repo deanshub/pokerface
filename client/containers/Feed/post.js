@@ -6,6 +6,7 @@ import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import Comments from './Comments'
 import Reply from './Reply'
+import PostImage from './PostImage'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -82,9 +83,11 @@ export default class Post extends Component {
           </Feed.Extra>
           <Feed.Extra className={classnames(style.unselectable)} images>
             {post.photos.map((photo, index)=>
-              <a key={Math.random()} onClick={()=>this.openModal(index)}>
-                <img draggable={false} src={photo} />
-              </a>
+              <PostImage
+                  key={Math.random()}
+                  onClick={()=>this.openModal(index)}
+                  photo={photo}
+              />
             )}
           </Feed.Extra>
           <Feed.Meta>
