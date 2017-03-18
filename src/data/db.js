@@ -35,6 +35,10 @@ Conn
     return Array.from(Array(Math.floor(Math.random()*num)))
   }
 
+  function generateArray(num){
+    return Array.from(Array(num))
+  }
+
   function getRandomItem(arr){
     return arr[Math.floor(Math.random()*arr.length)]
   }
@@ -67,14 +71,14 @@ Conn
   }
 
   faker.seed(123)
-  Promise.all(generateRandomArray(20).map(createPlayer))
+  Promise.all(generateArray(20).map(createPlayer))
   .then(players=>{
-    return Promise.all(generateRandomArray(150).map(createPost)).then((posts)=>{
+    return Promise.all(generateArray(150).map(createPost)).then((posts)=>{
       return {players,posts}
     })
   })
   .then(({players,posts})=>{
-    return Promise.all(generateRandomArray(60).map(createComment)).then((comments)=>{
+    return Promise.all(generateArray(60).map(createComment)).then((comments)=>{
       return {players,posts,comments}
     })
   })
