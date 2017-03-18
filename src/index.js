@@ -104,6 +104,12 @@ app.get('/', isAuthenticated, (req, res)=>{
 app.get('/profile', isAuthenticated, (req, res)=>{
   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
 })
+app.get('/timer', isAuthenticated, (req, res)=>{
+  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
+})
+app.get('/smart', isAuthenticated, (req, res)=>{
+  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
+})
 app.get('/profile/:username', isAuthenticated, (req, res)=>{
   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
 })
