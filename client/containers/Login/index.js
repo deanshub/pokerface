@@ -1,8 +1,8 @@
 // @flow
 
 import React, { Component, PropTypes } from 'react'
-// import classnames from 'classnames'
-// import style from './style.css'
+import classnames from 'classnames'
+import style from './style.css'
 import { browserHistory } from 'react-router'
 import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'semantic-ui-react'
 import request from 'superagent'

@@ -1,8 +1,4 @@
 @import "../../constants/styles";
-
-html,
-body {
-  margin: 0;
-  padding: 0;
+.container{
   background-color: #f2f2f2;
 }

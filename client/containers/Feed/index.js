@@ -3,6 +3,8 @@ import { observer, inject } from 'mobx-react'
 import { Feed, Container, Loader } from 'semantic-ui-react'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
+// import classnames from 'classnames'
+// import style from './style.css'
 
 @inject('feed')
 @observer
@@ -33,7 +35,10 @@ export default class FeedContainer extends Component {
     const { feed } = this.props
 
     return (
-      <Container style={{marginTop:20}} text>
+      <Container
+          style={{marginTop:20}}
+          text
+      >
         <Feed>
           {feed.events.map(post=><Post key={post.id} post={post}/>)}
           {feed.loading?
