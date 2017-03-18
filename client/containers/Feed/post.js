@@ -5,6 +5,7 @@ import { Feed, Icon } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import Comments from './Comments'
+import Reply from './Reply'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -18,6 +19,9 @@ export default class Post extends Component {
   constructor(props){
     super(props)
     this.timeAgo = new TimeAgo('en-US')
+    this.state = {
+      replying: false,
+    }
   }
 
   static propTypes = {
@@ -53,11 +57,24 @@ export default class Post extends Component {
     photoGallery.openModal(post.photos, index)
   }
 
+  addReply(){
+    this.setState({
+      replying: true,
+    })
+  }
+
+  removeReply(){
+    this.setState({
+      replying: false,
+    })
+  }
+
   render() {
     const { post } = this.props
+    const {replying} = this.state
     return (
-      <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf'}}>
-        <Feed.Label image={post.avatar} />
+      <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10}}>
+        <Feed.Label image={post.player.avatar}/>
         <Feed.Content>
             {this.getFeedSummary()}
           <Feed.Extra text>
@@ -75,7 +92,7 @@ export default class Post extends Component {
               <Icon name="like" />
               {(post.likes&&post.likes.length)||0} Likes
             </Feed.Like>
-            <Feed.Like className={classnames(style.unselectable)}>
+            <Feed.Like className={classnames(style.unselectable)} onClick={::this.addReply}>
               <Icon name="reply" />
               Reply
             </Feed.Like>
@@ -88,6 +105,7 @@ export default class Post extends Component {
             <Comments
                 comments={post.comments}
             />
+            {replying&&<Reply post={post} removeReply={::this.removeReply}/>}
           </Feed.Extra>
         </Feed.Content>
       </Feed.Event>
