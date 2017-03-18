@@ -74,7 +74,7 @@ export default class Post extends Component {
     const { post } = this.props
     const {replying} = this.state
     return (
-      <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10}}>
+      <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10, backgroundColor:'#ffffff'}}>
         <Feed.Label image={post.player.avatar}/>
         <Feed.Content>
             {this.getFeedSummary()}

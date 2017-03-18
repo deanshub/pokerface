@@ -3,6 +3,7 @@ import DocumentTitle from 'react-document-title'
 import DevTools from 'mobx-react-devtools'
 import Navbar from '../../components/Navbar'
 import 'semantic-ui-css/semantic.min.css'
+import './style.css'
 
 export default class Navigation extends Component {
   static propTypes={

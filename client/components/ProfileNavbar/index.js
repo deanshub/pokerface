@@ -77,7 +77,7 @@ export default class ProfileNavbar extends Component {
     const {currentTab} = profile
 
     return (
-      <div>
+      <div className={classnames(style.profileSection)}>
         <Menu
             className={classnames({[style.fixedNavbar]:activateFixedNavbar})}
             icon="labeled"
