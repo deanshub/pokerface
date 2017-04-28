@@ -39,7 +39,7 @@ export default class AddGame extends Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row stretched>
-            <Grid.Column width={5}>
+            <Grid.Column width={3}>
               <Button
                   content="Photo"
                   icon="add"
@@ -47,9 +47,17 @@ export default class AddGame extends Component {
                   onClick={::this.addPhoto}
               />
             </Grid.Column>
-            <Grid.Column width={1}/>
-            <Grid.Column width={5}>
-              <Header>
+            <Grid.Column width={3}>
+              <Button
+                content="Tag friends"
+                icon="users"
+                labelPosition="left"
+                onClick={::this.addPhoto}
+              />
+            </Grid.Column>
+            <Grid.Column width={4}/>
+            <Grid.Column width={3}>
+              <Header size="small" floated="right" textAlign="right">
                 <Icon name="world" />
                 <Header.Content>
                   <Dropdown
@@ -61,12 +69,13 @@ export default class AddGame extends Component {
                 </Header.Content>
               </Header>
             </Grid.Column>
-            <Grid.Column width={5}>
+            <Grid.Column width={3}>
               <Button
-                  content="Tag friends"
-                  icon="users"
-                  labelPosition="right"
-                  onClick={::this.addPhoto}
+                primary
+                content="Post"
+                icon="share alternate"
+                labelPosition="left"
+                onClick={::this.addPhoto}
               />
             </Grid.Column>
           </Grid.Row>
