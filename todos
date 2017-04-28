@@ -18,6 +18,16 @@ POST
 change likes to strings of usernames then you can implement the like mutation
 allow comments on posts
 
+POST CREATION - ADD GAME
+-------------------------
+draft.js based
+have rich text header and selection toolbar
+  allow bold, link, add images (with preview), friend tagging, youtube\url embedding
+        italic, emojis, hashtag, linkify
+allow cards as text, once in show preview in other div
+
+
+
 PROFILE
 -------
 implement the profile of other usres

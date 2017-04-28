@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import { Grid, Form, TextArea, Button, Icon, Dropdown, Header } from 'semantic-ui-react'
+import { Grid, Form, Button, Icon, Dropdown, Header } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
+import PostEditor from '../PostEditor'
 
 const shareWithOptions = [{
   key: 'everyone',
@@ -35,13 +36,13 @@ export default class AddGame extends Component {
         <Grid container>
           <Grid.Row stretched>
             <Grid.Column>
-              <TextArea placeholder="Share a post" />
+              <PostEditor/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row stretched>
             <Grid.Column width={3}>
               <Button
-                  content="Photo"
+                  content="Add Photos"
                   icon="add"
                   labelPosition="left"
                   onClick={::this.addPhoto}
@@ -49,15 +50,15 @@ export default class AddGame extends Component {
             </Grid.Column>
             <Grid.Column width={3}>
               <Button
-                content="Tag friends"
-                icon="users"
-                labelPosition="left"
-                onClick={::this.addPhoto}
+                  content="Tag friends"
+                  icon="users"
+                  labelPosition="left"
+                  onClick={::this.addPhoto}
               />
             </Grid.Column>
             <Grid.Column width={4}/>
             <Grid.Column width={3}>
-              <Header size="small" floated="right" textAlign="right">
+              <Header size="small" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
                 <Icon name="world" />
                 <Header.Content>
                   <Dropdown
@@ -71,11 +72,11 @@ export default class AddGame extends Component {
             </Grid.Column>
             <Grid.Column width={3}>
               <Button
-                primary
-                content="Post"
-                icon="share alternate"
-                labelPosition="left"
-                onClick={::this.addPhoto}
+                  content="Post"
+                  icon="share alternate"
+                  labelPosition="left"
+                  onClick={::this.addPhoto}
+                  primary
               />
             </Grid.Column>
           </Grid.Row>
