@@ -2,7 +2,7 @@
   "restartable": "rs",
   "verbose": true,
   "watch": ["src/"],
-  "delay": "1000",
+  "delay": "500",
   "execMap": {
      "js": "babel-node"
   },

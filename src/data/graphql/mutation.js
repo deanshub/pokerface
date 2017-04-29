@@ -1,5 +1,5 @@
 import {
-  GraphQLObjectType, GraphQLString, GraphQLNonNull,
+  GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLList,
 } from 'graphql'
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
@@ -44,14 +44,19 @@ const Mutation = new GraphQLObjectType({
           content:{
             type: new GraphQLNonNull(GraphQLString),
           },
-          username:{
+          username:{ //TODO: get username out of authentication
             type: new GraphQLNonNull(GraphQLString),
+          },
+          photos:{
+            type: new GraphQLList(GraphQLString),
           },
         },
         resolve(_, args){
           return Db.models.post.create({
             content: args.content,
-            username: args.username,
+            playerUsername: args.username,
+            photos: args.photos||[],
+            likes:[],
           })
         },
       },

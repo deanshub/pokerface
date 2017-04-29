@@ -53,6 +53,16 @@ Conn
       coverImage: faker.image.image(),
     })
   }
+  function createDemoPlayer(){
+    return Player.create({
+      username: 'deanshub',
+      firstName: 'Dean',
+      lastName: 'Shub',
+      email: 'dean@pokerface.io',
+      avatar: 'dean2.jpg',
+      coverImage: 'poker-1999643.jpg',
+    })
+  }
 
   function createPost(){
     return Post.create({
@@ -71,7 +81,10 @@ Conn
   }
 
   faker.seed(123)
-  Promise.all(generateArray(20).map(createPlayer))
+  let playersCreatetion = generateArray(20).map(createPlayer)
+  playersCreatetion.push(createDemoPlayer())
+
+  Promise.all(playersCreatetion)
   .then(players=>{
     return Promise.all(generateArray(150).map(createPost)).then((posts)=>{
       return {players,posts}
