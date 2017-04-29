@@ -30,7 +30,7 @@ export default class Navbar extends Component {
           this.setState({
             loading: false,
           })
-        },500)
+        },100)
       })
     })
   }
