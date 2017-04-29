@@ -1,3 +1,17 @@
+FOR GA ONLY!!!
+--------------
+user profiles
+add post with authentication
+add comments, likes (with authentication)
+add user (with temp until verified)
+
+
+
+
+
+
+switch to cros-env for npm scripts
+
 GAME
 -------
 owner - who created the game
