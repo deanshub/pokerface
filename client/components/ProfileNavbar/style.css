@@ -14,3 +14,10 @@
 .profileSection{
   background-color: #ffffff;
 }
+
+.hidden{
+  visibility: hidden;
+}
+.invisible{
+  display: none !important;
+}

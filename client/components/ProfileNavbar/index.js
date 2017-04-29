@@ -71,47 +71,60 @@ export default class ProfileNavbar extends Component {
     }
   }
 
+  getMenu(fixed){
+    const {profile} = this.props
+    const {currentTab} = profile
+    const {avatarImage, activateFixedNavbar}: {avatarImage?: string, activateFixedNavbar: boolean} = this.state
+
+    return (
+      <Menu
+          className={classnames({
+            [style.fixedNavbar]:fixed,
+            [style.hidden]:(!fixed&&activateFixedNavbar),
+            [style.invisible]:(fixed&&!activateFixedNavbar)})}
+          icon="labeled"
+          style={{backgroundColor:'white', marginTop:0}}
+          tabular
+          widths={5}
+      >
+        <Menu.Item
+            active={currentTab===ProfileConsts.ADD_GAME_TAB}
+            onClick={()=>profile.changeTab(ProfileConsts.ADD_GAME_TAB)}
+        >
+          <Icon name="gamepad" />
+          Game
+        </Menu.Item>
+        <Menu.Item
+            active={currentTab===ProfileConsts.STATISTICS_TAB}
+            onClick={()=>profile.changeTab(ProfileConsts.STATISTICS_TAB)}
+            style={{maxHeight:74}}
+        >
+          <Image
+              avatar
+              className={classnames(style.avatar)}
+              size="tiny"
+              src={avatarImage}
+          />
+        </Menu.Item>
+        <Menu.Item
+            active={currentTab===ProfileConsts.ADD_PLAY_TAB}
+            onClick={()=>profile.changeTab(ProfileConsts.ADD_PLAY_TAB)}
+        >
+          <Icon name="share alternate" />
+          Post
+        </Menu.Item>
+      </Menu>
+    )
+  }
+
   render() {
     const {profile} = this.props
-    const {avatarImage, activateFixedNavbar}: {avatarImage?: string, activateFixedNavbar: boolean} = this.state
     const {currentTab} = profile
 
     return (
       <div className={classnames(style.profileSection)}>
-        <Menu
-            className={classnames({[style.fixedNavbar]:activateFixedNavbar})}
-            icon="labeled"
-            style={{backgroundColor:'white'}}
-            tabular
-            widths={5}
-        >
-          <Menu.Item
-              active={currentTab===ProfileConsts.ADD_GAME_TAB}
-              onClick={()=>profile.changeTab(ProfileConsts.ADD_GAME_TAB)}
-          >
-            <Icon name="gamepad" />
-            Game
-          </Menu.Item>
-          <Menu.Item
-              active={currentTab===ProfileConsts.STATISTICS_TAB}
-              onClick={()=>profile.changeTab(ProfileConsts.STATISTICS_TAB)}
-              style={{maxHeight:74}}
-          >
-            <Image
-                avatar
-                className={classnames(style.avatar)}
-                size="tiny"
-                src={avatarImage}
-            />
-          </Menu.Item>
-          <Menu.Item
-              active={currentTab===ProfileConsts.ADD_PLAY_TAB}
-              onClick={()=>profile.changeTab(ProfileConsts.ADD_PLAY_TAB)}
-          >
-            <Icon name="share alternate" />
-            Post
-          </Menu.Item>
-        </Menu>
+        {this.getMenu(false)}
+        {this.getMenu(true)}
         <Segment attached="bottom">
           {this.getCurrentTab(currentTab)}
         </Segment>
