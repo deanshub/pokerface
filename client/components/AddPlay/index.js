@@ -40,11 +40,10 @@ export default class AddGame extends Component {
       <Form>
         <Grid container>
           <Grid.Row stretched>
-            <Grid.Column>
+            <Grid.Column width={16}>
               <PostEditor/>
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row stretched>
+
             <Grid.Column width={3}>
               <Button
                   content="Add Photos"
@@ -61,7 +60,15 @@ export default class AddGame extends Component {
                   onClick={::this.addPhoto}
               />
             </Grid.Column>
-            <Grid.Column width={4}/>
+            <Grid.Column width={3}>
+              <Button
+                  content="Insert Card"
+                  icon="empty heart"
+                  labelPosition="left"
+                  onClick={::this.addPhoto}
+              />
+            </Grid.Column>
+            <Grid.Column width={1}/>
             <Grid.Column width={3}>
               <Header size="small" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
                 <Icon name="world" />

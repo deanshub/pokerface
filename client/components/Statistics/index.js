@@ -87,7 +87,16 @@ export default class ProfileStatistic extends Component {
           </Grid.Column>
 
           <Grid.Column>
-            <Statistic.Group widths="2">
+            <Statistic.Group widths={1}>
+              <Statistic size="large">
+                <Statistic.Value>
+                  {statisticalItems[4].value}
+                  <Icon name="child" />
+                </Statistic.Value>
+                <Statistic.Label>{statisticalItems[4].label}</Statistic.Label>
+              </Statistic>
+            </Statistic.Group>
+            <Statistic.Group widths={2}>
               <Statistic>
                 <Statistic.Value>
                   <Icon name="game" />
@@ -115,13 +124,6 @@ export default class ProfileStatistic extends Component {
                   <Icon name="dollar" />
                 </Statistic.Value>
                 <Statistic.Label>{statisticalItems[3].label}</Statistic.Label>
-              </Statistic>
-              <Statistic>
-                <Statistic.Value>
-                  {statisticalItems[4].value}
-                  <Icon name="child" />
-                </Statistic.Value>
-                <Statistic.Label>{statisticalItems[4].label}</Statistic.Label>
               </Statistic>
             </Statistic.Group>
           </Grid.Column>
