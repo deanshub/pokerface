@@ -10,7 +10,7 @@ export default class CardBlock extends Component {
       offsetKey,
       getEditorState,
       setEditorState,
-      ...props,
+      ...props
     } = this.props
     return(
       <span className={style.cardBlock} {...props} />

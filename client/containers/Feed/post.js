@@ -15,6 +15,7 @@ TimeAgo.locale(timeAgoEnLocale)
 @inject('feed')
 @inject('photoGallery')
 @inject('routing')
+@inject('auth')
 @observer
 export default class Post extends Component {
   constructor(props){
@@ -30,8 +31,21 @@ export default class Post extends Component {
   }
 
   goto(){
-    const {post, routing} = this.props
-    routing.push(`/profile/${post.player.username}`)
+    const {post, routing, auth} = this.props
+    if (post.player.username===auth.user.user){
+      routing.push('/profile')
+    }else{
+      routing.push(`/profile/${post.player.username}`)
+    }
+  }
+
+  getUserFullName(){
+    const { post, auth } = this.props
+    return post.player.username===auth.user.user?'You':post.player.fullName
+  }
+  getUserImageUrl(){
+    const { post } = this.props
+    return post.player.avatar.includes('http')?post.player.avatar:`images/${post.player.avatar}`
   }
 
   getFeedSummary(){
@@ -39,14 +53,14 @@ export default class Post extends Component {
     if (post.photos.length>0) {
       return (
         <Feed.Summary>
-          <Feed.User onClick={::this.goto}>{post.player.fullName}</Feed.User> added <a onClick={()=>this.openModal()}>{post.photos.length} new photos</a>
+          <Feed.User onClick={::this.goto}>{this.getUserFullName()}</Feed.User> added <a onClick={()=>this.openModal()}>{post.photos.length} new photos</a>
           <Feed.Date>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
         </Feed.Summary>
       )
     }else{
       return (
         <Feed.Summary>
-          <Feed.User>{post.player.fullName}</Feed.User> shared a post
+          <Feed.User onClick={::this.goto}>{this.getUserFullName()}</Feed.User> shared a post
           <Feed.Date>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
         </Feed.Summary>
       )
@@ -75,7 +89,7 @@ export default class Post extends Component {
     const {replying} = this.state
     return (
       <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10, backgroundColor:'#ffffff'}}>
-        <Feed.Label image={post.player.avatar}/>
+        <Feed.Label image={this.getUserImageUrl()}  onClick={::this.goto}/>
         <Feed.Content>
             {this.getFeedSummary()}
           <Feed.Extra text>

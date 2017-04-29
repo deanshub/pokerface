@@ -23,11 +23,16 @@ const shareWithOptions = [{
   icon: 'user',
 }]
 
-// @inject('game')
-// @observer
+@inject('feed')
+@observer
 export default class AddGame extends Component {
   addPhoto(event){
     event.preventDefault()
+  }
+
+  addPost(event){
+    event.preventDefault()
+    this.props.feed.addPost()
   }
 
   render() {
@@ -75,7 +80,7 @@ export default class AddGame extends Component {
                   content="Post"
                   icon="share alternate"
                   labelPosition="left"
-                  onClick={::this.addPhoto}
+                  onClick={::this.addPost}
                   primary
               />
             </Grid.Column>

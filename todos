@@ -25,7 +25,7 @@ have rich text header and selection toolbar
   allow bold, link, add images (with preview), friend tagging, youtube\url embedding
         italic, emojis, hashtag, linkify
 allow cards as text, once in show preview in other div
-
+use authenticated connection to know who created the post (instead of taking it from the mutation)
 
 
 PROFILE

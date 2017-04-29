@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react'
 import { Feed, Container, Loader } from 'semantic-ui-react'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
+import moment from 'moment'
 // import classnames from 'classnames'
 // import style from './style.css'
 
@@ -40,7 +41,9 @@ export default class FeedContainer extends Component {
           text
       >
         <Feed>
-          {feed.events.map(post=><Post key={post.id} post={post}/>)}
+          {feed.events.sort((a,b)=>{
+            return moment(b.createdAt).diff(moment(a.createdAt))
+          }).map(post=><Post key={post.id} post={post}/>)}
           {feed.loading?
             <Feed.Event>
                <Loader active inline="centered">Loading</Loader>

@@ -8,6 +8,7 @@ import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 TimeAgo.locale(timeAgoEnLocale)
 
 @inject('routing')
+@inject('auth')
 @observer
 export default class PostComment extends Component {
   static propTypes = {
@@ -20,8 +21,21 @@ export default class PostComment extends Component {
   }
 
   goto(){
-    const {comment, routing} = this.props
-    routing.push(`/profile/${comment.player.username}`)
+    const {comment, routing, auth} = this.props
+    if (comment.player.username===auth.user.user){
+      routing.push('/profile')
+    }else{
+      routing.push(`/profile/${comment.player.username}`)
+    }
+  }
+
+  getUserFullName(){
+    const { comment, auth } = this.props
+    return comment.player.username===auth.user.user?'You':comment.player.fullName
+  }
+  getUserImageUrl(){
+    const { comment } = this.props
+    return comment.player.avatar.includes('http')?comment.player.avatar:`images/${comment.player.avatar}`
   }
 
   render() {
@@ -31,10 +45,10 @@ export default class PostComment extends Component {
         <Comment.Avatar
             as="a"
             onClick={::this.goto}
-            src={comment.player.avatar}
+            src={this.getUserImageUrl()}
         />
         <Comment.Content>
-          <Comment.Author as="a" onClick={::this.goto}>{comment.player.fullName}</Comment.Author>
+          <Comment.Author as="a" onClick={::this.goto}>{this.getUserFullName()}</Comment.Author>
           <Comment.Metadata>
             <div>{this.timeAgo.format(new Date(comment.createdAt))}</div>
           </Comment.Metadata>
