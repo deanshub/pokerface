@@ -7,6 +7,6 @@ pm2 delete pokerface
 GIT_WORK_TREE=~/Desktop/apps/pokerface/server git checkout -f
 pushd ~/Desktop/apps/pokerface/server
 yarn
-yarn run build:linux
+yarn run build
 NODE_ENV=production GMAIL_USER=user GMAIL_PASSWORD=password POSTGRES_USER=user POSTGRES_PASSWORD=password pm2 start dist/index.js --name pokerface
 popd
