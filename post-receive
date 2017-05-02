@@ -6,5 +6,5 @@ nvm use 7.5.0
 GIT_WORK_TREE=~/Desktop/apps/pokerface/client git checkout -f
 pushd ~/Desktop/apps/pokerface/client
 yarn
-yarn run build:linux
+yarn run build
 popd
