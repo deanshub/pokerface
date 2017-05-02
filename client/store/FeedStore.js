@@ -5,17 +5,20 @@ import { EditorState } from 'draft-js'
 import lokkaClient from './lokkaClient'
 import {postsQuery} from './queries/posts'
 import {postCreate} from './mutations/posts'
+import {commentCreate} from './mutations/comments'
 
 export class FeedStore {
   @observable posts: Object
   @observable editorState: Object
   @observable loading: boolean
+  @observable commentDrafts: Object
   currentUser: Object
   noMorePosts: boolean
 
 
   constructor(){
     this.posts = observable.map({})
+    this.commentDrafts = observable.map({})
     this.loading = false
     this.noMorePosts = false
     this.editorState = EditorState.createEmpty()
@@ -38,7 +41,8 @@ export class FeedStore {
       // if post mutation succeded add id
       .then(newPost=>{
         console.log('success',newPost);
-        this.posts.set(newPostTempId, newPost.createPost)
+        this.posts.delete(newPostTempId)
+        this.posts.set(newPost.createPost.id, newPost.createPost)
       })
       // if post mutation failed remove it
       .catch(err=>{
@@ -46,6 +50,7 @@ export class FeedStore {
         this.posts.delete(newPostTempId)
       })
 
+      // add post anyway
       this.posts.set(newPostTempId, {
         id: newPostTempId,
         createdAt: Date.now(),
@@ -59,7 +64,49 @@ export class FeedStore {
           avatar: 'dean2.jpg',
         },
       })
-      // add post anyway
+    }
+  }
+
+  @action
+  addComment(postId){
+    const content = this.commentDrafts.get(postId).getCurrentContent()
+    if (content.hasText()){
+      const commentText = content.getPlainText()
+      this.updateComment(postId, EditorState.createEmpty())
+
+      const newCommentTempId = 9999999999+Math.floor(Math.random()*10000)
+      lokkaClient.mutate(commentCreate, {username: this.currentUser, comment:commentText, post:postId})
+      // if post mutation succeded add id
+      .then(newComment=>{
+        console.log('success',newComment);
+        this.posts.set(newComment.addComment.post.id, newComment.addComment.post)
+      })
+      // if post mutation failed remove it
+      .catch(err=>{
+        console.error(err);
+        const commentedPost = this.posts.get(postId)
+        const tempComment = commentedPost.comments.filter(comment=>comment.id===newCommentTempId)[0]
+        const tempCommentIndex = commentedPost.comments.indexOf(tempComment)
+        if (tempCommentIndex!==-1){
+          commentedPost.comments = commentedPost.comments.splice(tempCommentIndex-1, 1)
+        }
+      })
+
+      // add comment anyway
+      const commentedPost = this.posts.get(postId)
+      commentedPost.comments.push({
+        id: newCommentTempId,
+        postId,
+        createdAt: Date.now(),
+        content: commentText,
+        photos:[],
+        likes:[],
+        player:{
+          username: this.currentUser,
+          fullName: 'Dean Shub',
+          avatar: 'dean2.jpg',
+        },
+      })
     }
   }
 
@@ -71,6 +118,15 @@ export class FeedStore {
   @computed
   get rawEditorState(): Object{
     return toJS(this.editorState)
+  }
+
+  @action
+  updateComment(postId, editorState=EditorState.createEmpty()){
+    this.commentDrafts.set(postId, editorState)
+  }
+  @computed
+  get rawComments(): Object{
+    return toJS(this.commentDrafts)
   }
 
   @action

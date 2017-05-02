@@ -35,13 +35,24 @@ export default class AddGame extends Component {
     this.props.feed.addPost()
   }
 
+  onPostChange(editorState){
+    const {feed} = this.props
+    feed.updatePost(editorState)
+  }
+
   render() {
+    const {feed} = this.props
+
     return (
       <Form>
         <Grid container>
           <Grid.Row stretched>
             <Grid.Column width={16}>
-              <PostEditor/>
+              <PostEditor
+                  editorState={feed.rawEditorState}
+                  onChange={::this.onPostChange}
+                  postEditor
+              />
             </Grid.Column>
 
             <Grid.Column width={3}>

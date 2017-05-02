@@ -10,7 +10,7 @@ export default class Comments extends Component {
     const { comments } = this.props
     return (
       <Comment.Group>
-        {comments.map(comment=><PostComment key={comment.id} comment={comment}/>)}
+        {comments.map(comment=><PostComment comment={comment} key={comment.id}/>)}
       </Comment.Group>
     )
   }

@@ -2,8 +2,10 @@
 import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Form, Button, Image, Divider } from 'semantic-ui-react'
+import PostEditor from '../../components/PostEditor'
 
 @inject('auth')
+@inject('feed')
 @observer
 export default class Comments extends Component {
   constructor(props: Object){
@@ -22,8 +24,22 @@ export default class Comments extends Component {
     })
   }
 
+  addComment(){
+    const { post, feed } = this.props
+    feed.addComment(post.id)
+  }
+  updateComment(editorState){
+    const { post, feed } = this.props
+    feed.updateComment(post.id, editorState)
+  }
+  removeReply(){
+    const { feed, post, removeReply } = this.props
+    feed.updateComment(post.id)
+    removeReply()
+  }
+
   render() {
-    const { post, auth, removeReply } = this.props
+    const { feed, post, auth } = this.props
     const {avatarImage} = this.state
 
     return (
@@ -38,24 +54,26 @@ export default class Comments extends Component {
                 src={avatarImage}
             />
           </Form.Field>
-          <Form.TextArea
-              autoHeight
-              placeholder="Comment here"
-              width={15}
-          />
+          <Form.Field width={15}>
+            <PostEditor
+                editorState={feed.rawComments[post.id]}
+                onChange={::this.updateComment}
+            />
+          </Form.Field>
         </Form.Group>
         <Button
             content="Add Reply"
             icon="edit"
             labelPosition="left"
+            onClick={::this.addComment}
             primary
             size="tiny"
         />
         <Button
-            content="Remove Reply"
+            content="Cancel"
             icon="remove"
             labelPosition="left"
-            onClick={removeReply}
+            onClick={::this.removeReply}
             size="tiny"
         />
       </Form>

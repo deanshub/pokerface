@@ -12,7 +12,6 @@ import style from './style.css'
 
 TimeAgo.locale(timeAgoEnLocale)
 
-@inject('feed')
 @inject('photoGallery')
 @inject('routing')
 @inject('auth')

@@ -1,16 +1,15 @@
 FOR GA ONLY!!!
 --------------
-user profiles
-add post with authentication
 add comments, likes (with authentication)
 add user (with temp until verified)
+user profiles
+add post with authentication
 
 
 
+-------------------------------------------------------------------------------
 
-
-
-switch to cros-env for npm scripts
+add server side defaults when adding posts or comments (photos, likes,...)
 
 GAME
 -------

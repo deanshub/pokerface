@@ -2,8 +2,9 @@
 
 import React, { Component, PropTypes } from 'react'
 import { fromJS } from 'immutable'
-import { observer, inject } from 'mobx-react'
+import classnames from 'classnames'
 
+import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin'
@@ -73,9 +74,12 @@ let mentions = fromJS([
   },
 ])
 
-@inject('feed')
-@observer
 export default class PostEditor extends Component {
+  static defaultProps = {
+    editorState: EditorState.createEmpty(),
+    postEditor: false,
+  }
+
   constructor(props){
     super(props)
     this.state = {
@@ -85,10 +89,6 @@ export default class PostEditor extends Component {
 
   focus() {
     this.editor.focus()
-  }
-
-  onChange(editorState){
-    this.props.feed.updatePost(editorState)
   }
 
   onSearchChange = ({ value }) => {
@@ -102,16 +102,19 @@ export default class PostEditor extends Component {
   }
 
   render(){
-    const { feed } = this.props
+    const { editorState, onChange, postEditor } = this.props
     const { suggestions } = this.state
     return (
       <div
-          className={style.editor}
+          className={classnames({
+            [style.editor]: true,
+            [style.post]: postEditor,
+          })}
           onFocus={::this.focus}
       >
         <Editor
-            editorState={feed.rawEditorState}
-            onChange={::this.onChange}
+            editorState={editorState}
+            onChange={onChange}
             plugins={plugins}
             ref={(element) => { this.editor = element }}
         />
