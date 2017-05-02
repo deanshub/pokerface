@@ -3,6 +3,7 @@ import {
 } from 'graphql'
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
+import Comment from './graphqlModels/Comment'
 import Db from '../db'
 
 
@@ -55,6 +56,34 @@ const Mutation = new GraphQLObjectType({
           return Db.models.post.create({
             content: args.content,
             playerUsername: args.username,
+            photos: args.photos||[],
+            likes:[],
+          })
+        },
+      },
+
+      addComment: {
+        type: Comment,
+        args:{
+          content:{
+            type: new GraphQLNonNull(GraphQLString),
+          },
+          username:{ //TODO: get username out of authentication
+            type: new GraphQLNonNull(GraphQLString),
+          },
+          photos:{
+            type: new GraphQLList(GraphQLString),
+          },
+          post:{
+            type: new GraphQLNonNull(GraphQLString),
+          },
+        },
+        resolve(_, args){
+          console.log({_,args});
+          return Db.models.comment.create({
+            content: args.content,
+            playerUsername: args.username,
+            postId: args.post,
             photos: args.photos||[],
             likes:[],
           })

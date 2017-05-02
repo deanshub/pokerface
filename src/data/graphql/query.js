@@ -39,13 +39,16 @@ const Query =  new GraphQLObjectType({
 
           return Db.models.player.findAll({
             where,
-            limit: 6
+            limit: 6,
           })
         },
       },
       posts: {
         type: new GraphQLList(Post),
         args: {
+          id: {
+            type: GraphQLString,
+          },
           username: {
             type: GraphQLString,
           },
@@ -54,12 +57,19 @@ const Query =  new GraphQLObjectType({
           },
         },
         resolve(root, args){
-          const where = args.username?{
-            $or:[
-              {playerUsername: args.username},
-              {'$comments.playerUsername$': args.username},
-            ],
-          }:undefined
+          let where
+          if (args.id!==undefined){
+            where = {
+              id: args.id,
+            }
+          }else if (args.username!==undefined) {
+            where = {
+              $or:[
+                {playerUsername: args.username},
+                {'$comments.playerUsername$': args.username},
+              ],
+            }
+          }
 
           return Db.models.post.findAll({
             where,
@@ -83,7 +93,7 @@ const Query =  new GraphQLObjectType({
         resolve(root, args){
           return Db.models.comment.findAll({where: args})
         },
-      }
+      },
     }
   },
 })

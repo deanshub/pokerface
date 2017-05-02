@@ -52,7 +52,7 @@ const Comment = new GraphQLObjectType({
         resolve(comment){
           return comment.getPost()
         },
-      }
+      },
     }
   },
 })

@@ -7,12 +7,10 @@
   "repository": "https://gitlab.com/teachshares/server.git",
   "author": "Dean Shub (dean@shubapp.com)",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "nodemon src/index.js",
-    "build": "SET \"NODE_ENV=production\" && babel src -d dist",
-    "serve": "SET \"NODE_ENV=production\" && node dist/index.js",
-    "build:linux": "NODE_ENV=production babel src -d dist",
-    "serve:linux": "NODE_ENV=production node dist/index.js"
+    "build": "cross-env NODE_ENV=production babel src -d dist",
+    "serve": "cross-env NODE_ENV=production node dist/index.js"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
@@ -37,6 +35,7 @@
     "babel-plugin-transform-import-commonjs": "^1.0.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0",
+    "cross-env": "^4.0.0",
     "eslint": "^3.15.0",
     "faker": "^4.1.0",
     "graphiql": "^0.9.3",
