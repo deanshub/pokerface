@@ -58,6 +58,7 @@ export default class Comments extends Component {
             <PostEditor
                 editorState={feed.rawComments[post.id]}
                 onChange={::this.updateComment}
+                placeholder="Add comment"
             />
           </Form.Field>
         </Form.Group>

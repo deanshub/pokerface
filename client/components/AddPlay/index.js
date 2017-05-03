@@ -51,6 +51,7 @@ export default class AddGame extends Component {
               <PostEditor
                   editorState={feed.rawEditorState}
                   onChange={::this.onPostChange}
+                  placeholder="Share a post"
                   postEditor
               />
             </Grid.Column>

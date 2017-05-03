@@ -14,6 +14,7 @@ import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import createCardsPlugin from './CardsPlugin'
 
 import style from './style.css'
+import 'draft-js/dist/Draft.css'
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
 import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
@@ -102,7 +103,7 @@ export default class PostEditor extends Component {
   }
 
   render(){
-    const { editorState, onChange, postEditor } = this.props
+    const { editorState, onChange, postEditor, placeholder } = this.props
     const { suggestions } = this.state
     return (
       <div
@@ -115,6 +116,7 @@ export default class PostEditor extends Component {
         <Editor
             editorState={editorState}
             onChange={onChange}
+            placeholder={placeholder}
             plugins={plugins}
             ref={(element) => { this.editor = element }}
         />
