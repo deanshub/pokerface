@@ -1,5 +1,6 @@
 import {
   GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLList,
+  GraphQLBoolean,
 } from 'graphql'
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
@@ -79,7 +80,6 @@ const Mutation = new GraphQLObjectType({
           },
         },
         resolve(_, args){
-          console.log({_,args});
           return Db.models.comment.create({
             content: args.content,
             playerUsername: args.username,
@@ -87,6 +87,64 @@ const Mutation = new GraphQLObjectType({
             photos: args.photos||[],
             likes:[],
           })
+        },
+      },
+
+      setCommentLike: {
+        type: Comment,
+        args:{
+          content:{
+            type: new GraphQLNonNull(GraphQLBoolean),
+          },
+          username:{ //TODO: get username out of authentication
+            type: new GraphQLNonNull(GraphQLString),
+          },
+          comment:{
+            type: new GraphQLNonNull(GraphQLString),
+          },
+        },
+        resolve(_, args){
+          return Db.models.comment.findById(args.comment)
+            .then((comment)=>{
+              let likes = comment.get('likes')
+              if (args.content&&!likes.includes(args.username)){
+                likes.push(args.username)
+              }else if (!args.content&&likes.includes(args.username)){
+                likes = likes.filter(user=>user!==args.username)
+              }
+
+              comment.set('likes', likes)
+              return comment.save()
+            })
+        },
+      },
+
+      setPostLike: {
+        type: Post,
+        args:{
+          content:{
+            type: new GraphQLNonNull(GraphQLBoolean),
+          },
+          username:{ //TODO: get username out of authentication
+            type: new GraphQLNonNull(GraphQLString),
+          },
+          post:{
+            type: new GraphQLNonNull(GraphQLString),
+          },
+        },
+        resolve(_, args){
+          return Db.models.post.findById(args.post)
+            .then((post)=>{
+              let likes = post.get('likes')
+              if (args.content&&!likes.includes(args.username)){
+                likes.push(args.username)
+              }else if (!args.content&&likes.includes(args.username)){
+                likes = likes.filter(user=>user!==args.username)
+              }
+
+              post.set('likes', likes)
+              return post.save()
+            })
         },
       },
 
