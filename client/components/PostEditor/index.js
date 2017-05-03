@@ -88,6 +88,9 @@ export default class PostEditor extends Component {
     }
   }
 
+  componentDidMount(){
+    this.focus()
+  }
   focus() {
     this.editor.focus()
   }
