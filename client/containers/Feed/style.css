@@ -10,3 +10,10 @@
   box-shadow: 1px 1px #dfdfdf;
   border-radius: 2px;
 }
+
+.blackIcons:hover .icon{
+  color: black !important;
+}
+.active .icon{
+  color: #FF2733 !important;
+}

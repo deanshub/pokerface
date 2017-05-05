@@ -83,9 +83,15 @@ export default class Post extends Component {
     })
   }
 
+  setLike(){
+    console.log(this.props.post);
+  }
+
   render() {
-    const { post } = this.props
-    const {replying} = this.state
+    const { post, auth } = this.props
+    const { replying } = this.state
+    const activeLike = post.likes.includes(auth.user.user)
+
     return (
       <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10, backgroundColor:'#ffffff'}}>
         <Feed.Label image={this.getUserImageUrl()}  onClick={::this.goto}/>
@@ -104,16 +110,21 @@ export default class Post extends Component {
             )}
           </Feed.Extra>
           <Feed.Meta>
-            <Feed.Like className={classnames(style.unselectable)}>
-              <Icon name="like" />
+            <Feed.Like
+                className={classnames(style.unselectable, style.blackIcons, {
+                  [style.active]: activeLike,
+                })}
+                onClick={::this.setLike}
+            >
+              <Icon className={classnames(style.icon)} name="like"/>
               {(post.likes&&post.likes.length)||0} Likes
             </Feed.Like>
-            <Feed.Like className={classnames(style.unselectable)} onClick={::this.addReply}>
-              <Icon name="reply" />
+            <Feed.Like className={classnames(style.unselectable, style.blackIcons)} onClick={::this.addReply}>
+              <Icon className={classnames(style.icon)} name="reply" />
               Reply
             </Feed.Like>
-            <Feed.Like className={classnames(style.unselectable)}>
-              <Icon name="share" />
+            <Feed.Like className={classnames(style.unselectable, style.blackIcons)}>
+              <Icon className={classnames(style.icon)} name="share" />
               Share
             </Feed.Like>
           </Feed.Meta>
