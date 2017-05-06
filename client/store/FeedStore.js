@@ -125,7 +125,11 @@ export class FeedStore {
 
   @action
   updateComment(postId, editorState=EditorState.createEmpty()){
-    this.commentDrafts.set(postId, editorState)
+    if (this.commentDrafts.get(postId) === editorState){
+      this.commentDrafts.set(postId, EditorState.forceSelection(editorState, editorState.getSelection()))
+    }else{
+      this.commentDrafts.set(postId, editorState)
+    }
   }
   @computed
   get rawComments(): Object{
