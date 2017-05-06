@@ -15,6 +15,7 @@ TimeAgo.locale(timeAgoEnLocale)
 @inject('photoGallery')
 @inject('routing')
 @inject('auth')
+@inject('feed')
 @observer
 export default class Post extends Component {
   constructor(props){
@@ -84,7 +85,9 @@ export default class Post extends Component {
   }
 
   setLike(){
-    console.log(this.props.post);
+    const { feed, auth, post } = this.props
+    const activeLike = post.likes.includes(auth.user.user)
+    feed.setPostLike(post.id, !activeLike, auth.user.user)
   }
 
   render() {

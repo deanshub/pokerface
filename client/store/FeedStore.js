@@ -4,7 +4,7 @@ import { observable, computed, action, toJS } from 'mobx'
 import { EditorState } from 'draft-js'
 import lokkaClient from './lokkaClient'
 import {postsQuery} from './queries/posts'
-import {postCreate} from './mutations/posts'
+import {postCreate, setPostLike} from './mutations/posts'
 import {commentCreate} from './mutations/comments'
 
 export class FeedStore {
@@ -160,5 +160,29 @@ export class FeedStore {
         this.loading = false
       },1000)
     })
+  }
+
+  @action
+  setPostLike(postId, like, user){
+    lokkaClient.mutate(setPostLike, {username: user, post:postId, like})
+    .then(newPost=>{
+      this.posts.set(postId, newPost.setPostLike)
+    })
+    .catch(err=>{
+      console.error(err);
+      if (like){
+        this.posts.get(postId).likes = this.posts.get(postId).likes
+        .filter(username=>username!==user)
+      }else{
+        this.posts.get(postId).likes.push(user)
+      }
+    })
+
+    if (like){
+      this.posts.get(postId).likes.push(user)
+    }else{
+      this.posts.get(postId).likes = this.posts.get(postId).likes
+        .filter(username=>username!==user)
+    }
   }
 }

@@ -22,3 +22,28 @@ export const postCreate = `($username: String!, $post: String!){
     }
   }
 }`
+
+export const setPostLike = `($username: String!, $post: String!, $like: Boolean!){
+  setPostLike(content:$like, username:$username, post:$post){
+    id
+    createdAt
+    content
+    photos
+    likes
+    comments{
+      id
+      likes
+      content
+      player{
+        username
+        fullName
+        avatar
+      }
+    }
+    player{
+      username
+      fullName
+      avatar
+    }
+  }
+}`
