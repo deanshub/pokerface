@@ -4,11 +4,15 @@ import { observer, inject } from 'mobx-react'
 import { Comment, Icon } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
+import classnames from 'classnames'
+import style from './style.css'
+
 
 TimeAgo.locale(timeAgoEnLocale)
 
 @inject('routing')
 @inject('auth')
+@inject('feed')
 @observer
 export default class PostComment extends Component {
   static propTypes = {
@@ -38,8 +42,15 @@ export default class PostComment extends Component {
     return comment.player.avatar.includes('http')?comment.player.avatar:`images/${comment.player.avatar}`
   }
 
+  setLike(){
+    const { feed, auth, comment } = this.props
+    const activeLike = comment.likes.includes(auth.user.user)
+    feed.setCommentLike(comment.post.id, comment.id, !activeLike, auth.user.user)
+  }
+
   render() {
-    const { comment } = this.props
+    const { comment, auth } = this.props
+    const activeLike = comment.likes.includes(auth.user.user)
     return (
       <Comment>
         <Comment.Avatar
@@ -55,9 +66,9 @@ export default class PostComment extends Component {
           <Comment.Text>
             {comment.content}
           </Comment.Text>
-          <Comment.Actions>
-            <Comment.Action>
-              <Icon name="like" />
+          <Comment.Actions onClick={::this.setLike}>
+            <Comment.Action className={classnames({[style.active]: activeLike})}>
+              <Icon className={classnames(style.icon)} name="like"/>
               {comment.likes.length} Likes
             </Comment.Action>
           </Comment.Actions>

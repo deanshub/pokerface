@@ -15,6 +15,9 @@ export const postsQuery = `query _($username: String, $offset: Int)
             fullName
             avatar
           }
+          post{
+            id
+          }
         }
         player{
           username

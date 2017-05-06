@@ -7,6 +7,9 @@ export const postCreate = `($username: String!, $post: String!){
     likes
     comments{
       id
+      post{
+        id
+      }
       likes
       content
       player{
@@ -32,6 +35,9 @@ export const setPostLike = `($username: String!, $post: String!, $like: Boolean!
     likes
     comments{
       id
+      post{
+        id
+      }
       likes
       content
       player{

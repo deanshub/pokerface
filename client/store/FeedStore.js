@@ -5,7 +5,7 @@ import { EditorState } from 'draft-js'
 import lokkaClient from './lokkaClient'
 import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike} from './mutations/posts'
-import {commentCreate} from './mutations/comments'
+import {commentCreate, setCommentLike} from './mutations/comments'
 
 export class FeedStore {
   @observable posts: Object
@@ -183,6 +183,34 @@ export class FeedStore {
     }else{
       this.posts.get(postId).likes = this.posts.get(postId).likes
         .filter(username=>username!==user)
+    }
+  }
+
+  @action
+  setCommentLike(postId, commentId, like, user){
+    lokkaClient.mutate(setCommentLike, {username: user, comment:commentId, like})
+    .then(newPost=>{
+      this.posts.set(newPost.setCommentLike.post.id, newPost.setCommentLike.post)
+    })
+    .catch(err=>{
+      console.error(err);
+      let currentComment = this.posts.get(postId).comments.filter(comment=>comment.id===commentId)[0]
+      if (currentComment){
+        if (like){
+          currentComment.likes = currentComment.likes.filter(username=>username!==user)
+        }else{
+          currentComment.likes.push(user)
+        }
+      }
+    })
+
+    let currentComment = this.posts.get(postId).comments.filter(comment=>comment.id===commentId)[0]
+    if (currentComment){
+      if (like){
+        currentComment.likes.push(user)
+      }else{
+        currentComment.likes = currentComment.likes.filter(username=>username!==user)
+      }
     }
   }
 }
