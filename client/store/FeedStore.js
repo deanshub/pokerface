@@ -40,7 +40,6 @@ export class FeedStore {
       lokkaClient.mutate(postCreate, {username: this.currentUser, post:postText})
       // if post mutation succeded add id
       .then(newPost=>{
-        console.log('success',newPost);
         this.posts.delete(newPostTempId)
         this.posts.set(newPost.createPost.id, newPost.createPost)
       })
@@ -112,7 +111,11 @@ export class FeedStore {
 
   @action
   updatePost(editorState){
-    this.editorState = editorState
+    if (this.editorState === editorState){
+      this.editorState = EditorState.forceSelection(editorState, editorState.getSelection())
+    }else{
+      this.editorState = editorState
+    }
   }
 
   @computed

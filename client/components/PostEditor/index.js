@@ -6,6 +6,7 @@ import classnames from 'classnames'
 
 import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
+import createFocusPlugin from 'draft-js-focus-plugin'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
@@ -15,12 +16,14 @@ import createCardsPlugin from './CardsPlugin'
 
 import style from './style.css'
 import 'draft-js/dist/Draft.css'
+import 'draft-js-focus-plugin/lib/plugin.css'
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
 import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
 import 'draft-js-hashtag-plugin/lib/plugin.css'
 import 'draft-js-linkify-plugin/lib/plugin.css'
 
+const focusPlugin = createFocusPlugin()
 const inlineToolbarPlugin = createInlineToolbarPlugin()
 const { InlineToolbar } = inlineToolbarPlugin
 const emojiPlugin = createEmojiPlugin()
@@ -34,6 +37,7 @@ const linkifyPlugin = createLinkifyPlugin({
 const cardsPlugin = createCardsPlugin()
 
 const plugins = [
+  focusPlugin,
   inlineToolbarPlugin,
   emojiPlugin,
   mentionPlugin,
@@ -89,47 +93,62 @@ export default class PostEditor extends Component {
   }
 
   componentDidMount(){
-    this.focus()
+    setTimeout(()=>{
+      this.focus()
+    })
   }
   focus() {
+    // e.preventDefault()
     this.editor.focus()
   }
 
-  onSearchChange = ({ value }) => {
+  onSearchChange({ value }) {
     this.setState({
       suggestions: defaultSuggestionsFilter(value, mentions),
     })
-  };
+  }
 
-  onAddMention = () => {
+  onClose(){
+    this.setState({
+      suggestions: fromJS([]),
+    })
+  }
+
+  onAddMention() {
     // get the mention object selected
   }
 
   render(){
     const { editorState, onChange, postEditor, placeholder } = this.props
     const { suggestions } = this.state
+
     return (
       <div
           className={classnames({
             [style.editor]: true,
             [style.post]: postEditor,
           })}
-          onFocus={::this.focus}
+          onClick={::this.focus}
       >
         <Editor
             editorState={editorState}
             onChange={onChange}
             placeholder={placeholder}
             plugins={plugins}
-            ref={(element) => { this.editor = element }}
+            ref={(element) => {
+              this.editor = element
+              // if(element)
+              //   element.focus()
+            }}
         />
         <InlineToolbar/>
-        <EmojiSuggestions/>
         <MentionSuggestions
             onAddMention={::this.onAddMention}
+            onClose={::this.onClose}
             onSearchChange={::this.onSearchChange}
             suggestions={suggestions}
         />
+        <EmojiSuggestions/>
       </div>
     )
   }

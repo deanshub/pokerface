@@ -50,6 +50,7 @@
   "dependencies": {
     "draft-js": "^0.10.0",
     "draft-js-emoji-plugin": "beta",
+    "draft-js-focus-plugin": "beta",
     "draft-js-hashtag-plugin": "beta",
     "draft-js-inline-toolbar-plugin": "beta",
     "draft-js-linkify-plugin": "beta",
