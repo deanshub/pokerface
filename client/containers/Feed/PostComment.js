@@ -4,6 +4,8 @@ import { observer, inject } from 'mobx-react'
 import { Comment, Icon } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
+import { EditorState, convertFromRaw } from 'draft-js'
+import PostEditor from '../../components/PostEditor'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -22,7 +24,16 @@ export default class PostComment extends Component {
   constructor(props){
     super(props)
     this.timeAgo = new TimeAgo('en-US')
+    this.state={
+      commentEditorState: EditorState.createWithContent(convertFromRaw(JSON.parse(props.comment.content), 'update-contentState')),
+    }
   }
+
+  // componentWillReceiveProps(nextProps){
+  //   this.setState({
+  //     commentEditorState: EditorState.createWithContent(convertFromRaw(JSON.parse(nextProps.comment.content), 'update-contentState')),
+  //   })
+  // }
 
   goto(){
     const {comment, routing, auth} = this.props
@@ -51,6 +62,8 @@ export default class PostComment extends Component {
   render() {
     const { comment, auth } = this.props
     const activeLike = comment.likes.includes(auth.user.user)
+    const {commentEditorState} = this.state
+
     return (
       <Comment>
         <Comment.Avatar
@@ -64,7 +77,11 @@ export default class PostComment extends Component {
             <div>{this.timeAgo.format(new Date(comment.createdAt))}</div>
           </Comment.Metadata>
           <Comment.Text>
-            {comment.content}
+            <PostEditor
+                editorState={commentEditorState}
+                onChange={(editorState)=>this.setState({commentEditorState:editorState})}
+                readOnly
+            />
           </Comment.Text>
           <Comment.Actions onClick={::this.setLike}>
             <Comment.Action className={classnames({[style.active]: activeLike})}>

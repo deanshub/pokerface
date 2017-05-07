@@ -42,7 +42,7 @@ export default class FeedContainer extends Component {
       >
         <Feed>
           {feed.events.sort((a,b)=>{
-            return moment(b.createdAt).diff(moment(a.createdAt))
+            return moment(new Date(b.createdAt)).diff(moment(new Date(a.createdAt)))
           }).map(post=><Post key={post.id} post={post}/>)}
           {feed.loading?
             <Feed.Event>

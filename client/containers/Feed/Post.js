@@ -4,9 +4,12 @@ import { observer, inject } from 'mobx-react'
 import { Feed, Icon } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
+import { EditorState, convertFromRaw } from 'draft-js'
+
 import Comments from './Comments'
 import Reply from './Reply'
 import PostImage from './PostImage'
+import PostEditor from '../../components/PostEditor'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -23,12 +26,19 @@ export default class Post extends Component {
     this.timeAgo = new TimeAgo('en-US')
     this.state = {
       replying: false,
+      postEditorState: EditorState.createWithContent(convertFromRaw(JSON.parse(props.post.content), 'update-contentState')),
     }
   }
 
   static propTypes = {
     post: PropTypes.object,
   }
+
+  // componentWillReceiveProps(nextProps){
+  //   this.setState({
+  //     postEditorState: EditorState.createWithContent(convertFromRaw(JSON.parse(nextProps.post.content), 'update-contentState')),
+  //   })
+  // }
 
   goto(){
     const {post, routing, auth} = this.props
@@ -94,6 +104,7 @@ export default class Post extends Component {
     const { post, auth } = this.props
     const { replying } = this.state
     const activeLike = post.likes.includes(auth.user.user)
+    const {postEditorState} = this.state
 
     return (
       <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10, backgroundColor:'#ffffff'}}>
@@ -101,7 +112,11 @@ export default class Post extends Component {
         <Feed.Content>
             {this.getFeedSummary()}
           <Feed.Extra text>
-            {post.content}
+            <PostEditor
+                editorState={postEditorState}
+                onChange={(editorState)=>this.setState({postEditorState: editorState})}
+                readOnly
+            />
           </Feed.Extra>
           <Feed.Extra className={classnames(style.unselectable)} images>
             {post.photos.map((photo, index)=>

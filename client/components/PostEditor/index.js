@@ -1,14 +1,16 @@
 // @flow
 
 import React, { Component, PropTypes } from 'react'
-import { fromJS } from 'immutable'
 import classnames from 'classnames'
+import { observer, inject } from 'mobx-react'
 
 import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
+
 import createFocusPlugin from 'draft-js-focus-plugin'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
-import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin'
+import createMentionPlugin from 'draft-js-mention-plugin'
+import PlayerMention from './PlayerMention'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createHashtagPlugin from 'draft-js-hashtag-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
@@ -23,73 +25,44 @@ import 'draft-js-emoji-plugin/lib/plugin.css'
 import 'draft-js-hashtag-plugin/lib/plugin.css'
 import 'draft-js-linkify-plugin/lib/plugin.css'
 
-const focusPlugin = createFocusPlugin()
-const inlineToolbarPlugin = createInlineToolbarPlugin()
-const { InlineToolbar } = inlineToolbarPlugin
-const emojiPlugin = createEmojiPlugin()
-const { EmojiSuggestions } = emojiPlugin
-const mentionPlugin = createMentionPlugin()
-const { MentionSuggestions } = mentionPlugin
-const hashtagPlugin = createHashtagPlugin()
-const linkifyPlugin = createLinkifyPlugin({
-  target: '_blank',
-})
-const cardsPlugin = createCardsPlugin()
-
-const plugins = [
-  focusPlugin,
-  inlineToolbarPlugin,
-  emojiPlugin,
-  mentionPlugin,
-  hashtagPlugin,
-  linkifyPlugin,
-  cardsPlugin,
-]
-
-let mentions = fromJS([
-  {
-    name: 'Matthew Russell',
-    link: 'https://twitter.com/mrussell247',
-    avatar: 'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg',
-  },
-  {
-    name: 'Julian Krispel-Samsel',
-    link: 'https://twitter.com/juliandoesstuff',
-    avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400',
-  },
-  {
-    name: 'Jyoti Puri',
-    link: 'https://twitter.com/jyopur',
-    avatar: 'https://avatars0.githubusercontent.com/u/2182307?v=3&s=400',
-  },
-  {
-    name: 'Max Stoiber',
-    link: 'https://twitter.com/mxstbr',
-    avatar: 'https://pbs.twimg.com/profile_images/763033229993574400/6frGyDyA_400x400.jpg',
-  },
-  {
-    name: 'Nik Graf',
-    link: 'https://twitter.com/nikgraf',
-    avatar: 'https://avatars0.githubusercontent.com/u/223045?v=3&s=400',
-  },
-  {
-    name: 'Pascal Brandt',
-    link: 'https://twitter.com/psbrandt',
-    avatar: 'https://pbs.twimg.com/profile_images/688487813025640448/E6O6I011_400x400.png',
-  },
-])
-
+@inject('globalPlayersSearch')
+@observer
 export default class PostEditor extends Component {
   static defaultProps = {
     editorState: EditorState.createEmpty(),
     postEditor: false,
+    readOnly: false,
   }
 
   constructor(props){
     super(props)
-    this.state = {
-      suggestions: mentions,
-    }
+    const focusPlugin = createFocusPlugin()
+    const inlineToolbarPlugin = createInlineToolbarPlugin()
+    const { InlineToolbar } = inlineToolbarPlugin
+    const emojiPlugin = createEmojiPlugin()
+    const { EmojiSuggestions } = emojiPlugin
+    const mentionPlugin = createMentionPlugin({
+      mentionComponent: PlayerMention,
+    })
+    const { MentionSuggestions } = mentionPlugin
+    const hashtagPlugin = createHashtagPlugin()
+    const linkifyPlugin = createLinkifyPlugin({
+      target: '_blank',
+    })
+    const cardsPlugin = createCardsPlugin()
+
+    this.plugins = [
+      focusPlugin,
+      inlineToolbarPlugin,
+      emojiPlugin,
+      mentionPlugin,
+      hashtagPlugin,
+      linkifyPlugin,
+      cardsPlugin,
+    ]
+    this.InlineToolbar = InlineToolbar
+    this.EmojiSuggestions =EmojiSuggestions
+    this.MentionSuggestions= MentionSuggestions
   }
 
   componentDidMount(){
@@ -97,21 +70,22 @@ export default class PostEditor extends Component {
       this.focus()
     })
   }
+
   focus() {
-    // e.preventDefault()
-    this.editor.focus()
+    const { readOnly } = this.props
+    if (this.editor && !readOnly){
+      this.editor.focus()
+    }
   }
 
   onSearchChange({ value }) {
-    this.setState({
-      suggestions: defaultSuggestionsFilter(value, mentions),
-    })
+    const {globalPlayersSearch} = this.props
+    globalPlayersSearch.search(value)
   }
 
   onClose(){
-    this.setState({
-      suggestions: fromJS([]),
-    })
+    const { globalPlayersSearch } = this.props
+    globalPlayersSearch.availablePlayers = []
   }
 
   onAddMention() {
@@ -119,13 +93,13 @@ export default class PostEditor extends Component {
   }
 
   render(){
-    const { editorState, onChange, postEditor, placeholder } = this.props
-    const { suggestions } = this.state
+    const { editorState, onChange, postEditor, placeholder, readOnly, globalPlayersSearch } = this.props
+    const { InlineToolbar, EmojiSuggestions, MentionSuggestions} = this
 
     return (
       <div
           className={classnames({
-            [style.editor]: true,
+            [style.editor]: !readOnly,
             [style.post]: postEditor,
           })}
           onClick={::this.focus}
@@ -134,11 +108,11 @@ export default class PostEditor extends Component {
             editorState={editorState}
             onChange={onChange}
             placeholder={placeholder}
-            plugins={plugins}
+            plugins={this.plugins}
+            readOnly={readOnly}
             ref={(element) => {
-              this.editor = element
-              // if(element)
-              //   element.focus()
+              if (element)
+                this.editor = element
             }}
         />
         <InlineToolbar/>
@@ -146,7 +120,7 @@ export default class PostEditor extends Component {
             onAddMention={::this.onAddMention}
             onClose={::this.onClose}
             onSearchChange={::this.onSearchChange}
-            suggestions={suggestions}
+            suggestions={globalPlayersSearch.immutableAvailablePlayers}
         />
         <EmojiSuggestions/>
       </div>

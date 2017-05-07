@@ -1,8 +1,9 @@
 // @flow
 
-import { observable, action } from 'mobx'
+import { observable, action, computed, toJS } from 'mobx'
 import lokkaClient from './lokkaClient'
 import {playersQuery} from './queries/players'
+import { fromJS } from 'immutable'
 
 
 export class PlayersSearchStore {
@@ -29,5 +30,18 @@ export class PlayersSearchStore {
       }))
       this.loading = false
     })
+  }
+
+  @computed
+  get immutableAvailablePlayers(){
+    // name, link, avatar
+    const suggestedPlayers = toJS(this.availablePlayers).map(player=>{
+      return {
+        name: player.fullName,
+        avatar: player.avatar.includes('http')?player.avatar:`/images/${player.avatar}`,
+        link: `/profile/${player.username}`,
+      }
+    })
+    return fromJS(suggestedPlayers)
   }
 }

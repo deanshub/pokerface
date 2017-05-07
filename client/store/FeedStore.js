@@ -1,7 +1,7 @@
 // @flow
 
 import { observable, computed, action, toJS } from 'mobx'
-import { EditorState } from 'draft-js'
+import { EditorState, convertToRaw } from 'draft-js'
 import lokkaClient from './lokkaClient'
 import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike} from './mutations/posts'
@@ -33,11 +33,11 @@ export class FeedStore {
   addPost(){
     const content = this.editorState.getCurrentContent()
     if (content.hasText()){
-      const postText = content.getPlainText()
+      const post = convertToRaw(content)
       this.editorState = EditorState.createEmpty()
 
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
-      lokkaClient.mutate(postCreate, {username: this.currentUser, post:postText})
+      lokkaClient.mutate(postCreate, {username: this.currentUser, post:JSON.stringify(post)})
       // if post mutation succeded add id
       .then(newPost=>{
         this.posts.delete(newPostTempId)
@@ -53,7 +53,7 @@ export class FeedStore {
       this.posts.set(newPostTempId, {
         id: newPostTempId,
         createdAt: Date.now(),
-        content: postText,
+        content: JSON.stringify(post),
         photos:[],
         likes:[],
         comments:[],
@@ -70,14 +70,13 @@ export class FeedStore {
   addComment(postId){
     const content = this.commentDrafts.get(postId).getCurrentContent()
     if (content.hasText()){
-      const commentText = content.getPlainText()
+      const comment = convertToRaw(content)
       this.updateComment(postId, EditorState.createEmpty())
 
       const newCommentTempId = 9999999999+Math.floor(Math.random()*10000)
-      lokkaClient.mutate(commentCreate, {username: this.currentUser, comment:commentText, post:postId})
+      lokkaClient.mutate(commentCreate, {username: this.currentUser, comment:JSON.stringify(comment), post:postId})
       // if post mutation succeded add id
       .then(newComment=>{
-        console.log('success',newComment);
         this.posts.set(newComment.addComment.post.id, newComment.addComment.post)
       })
       // if post mutation failed remove it
@@ -97,7 +96,7 @@ export class FeedStore {
         id: newCommentTempId,
         postId,
         createdAt: Date.now(),
-        content: commentText,
+        content: JSON.stringify(comment),
         photos:[],
         likes:[],
         player:{
