@@ -8,7 +8,7 @@ const createModel = (Conn)=>{
       autoIncrement: true,
     },
     content:{
-      type: Sequelize.TEXT,
+      type: Sequelize.JSON,
       allowNull: false,
     },
     photos:{

@@ -85,31 +85,31 @@ Conn
   playersCreatetion.push(createDemoPlayer())
 
   Promise.all(playersCreatetion)
-  .then(players=>{
-    return Promise.all(generateArray(150).map(createPost)).then((posts)=>{
-      return {players,posts}
-    })
-  })
-  .then(({players,posts})=>{
-    return Promise.all(generateArray(60).map(createComment)).then((comments)=>{
-      return {players,posts,comments}
-    })
-  })
-  .then(({players,posts,comments})=>{
-    posts.forEach((post)=>{
-      const player = getRandomItem(players)
-      // post.setPlayer(player)
-      player.addPost(post)
-    })
-    comments.forEach((comment)=>{
-      const player = getRandomItem(players)
-      const post = getRandomItem(posts)
-      // comment.setPlayer(player)
-      // comment.setPost(post)
-      player.addComment(comment)
-      post.addComment(comment)
-    })
-  })
+  // .then(players=>{
+  //   return Promise.all(generateArray(150).map(createPost)).then((posts)=>{
+  //     return {players,posts}
+  //   })
+  // })
+  // .then(({players,posts})=>{
+  //   return Promise.all(generateArray(60).map(createComment)).then((comments)=>{
+  //     return {players,posts,comments}
+  //   })
+  // })
+  // .then(({players,posts,comments})=>{
+  //   posts.forEach((post)=>{
+  //     const player = getRandomItem(players)
+  //     // post.setPlayer(player)
+  //     player.addPost(post)
+  //   })
+  //   comments.forEach((comment)=>{
+  //     const player = getRandomItem(players)
+  //     const post = getRandomItem(posts)
+  //     // comment.setPlayer(player)
+  //     // comment.setPost(post)
+  //     player.addComment(comment)
+  //     post.addComment(comment)
+  //   })
+  // })
 })
 
 export default Conn
