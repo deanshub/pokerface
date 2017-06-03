@@ -460,13 +460,13 @@ ul.hand,
 ul.deck {
     list-style-type: none;
     padding: 0;
-    margin: 0 0 1.5em 0;
+    margin: 0 0 0em 0;
     position: relative;
     clear: both;
 }
-ul.hand {
+/*ul.hand {
     margin-bottom: 3.5em;
-}
+}*/
 ul.table li,
 ul.hand li,
 ul.deck li {

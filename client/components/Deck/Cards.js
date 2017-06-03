@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
-import style from './style.css'
+import cssStyle from './style.css'
 import Card from './Card'
 
 export default class Cards extends Component {
@@ -16,16 +16,18 @@ export default class Cards extends Component {
   }
 
   render() {
-    const {cards, hand, rotate} = this.props
+    const {cards, hand, rotate, style} = this.props
 
     return (
-      <div className={classnames({
-        [style.rotateHand]: rotate,
-      })}
+      <div
+          className={classnames({
+            [cssStyle.rotateHand]: rotate,
+          })}
+          style={style}
       >
         <ul className={classnames({
-          [style.simpleCards]:true,
-          [style.hand]: hand,
+          [cssStyle.simpleCards]:true,
+          [cssStyle.hand]: hand,
         })}
         >
           {cards.map((card)=>

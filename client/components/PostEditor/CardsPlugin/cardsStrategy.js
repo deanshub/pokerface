@@ -1,4 +1,4 @@
-const cardsBlockRegex = /\[\s?(((\d+|[kKjJqQaAjJ])([dDhHsScC♥♦♠♣]))\s?)+]/g
+import cardsBlockRegex from './cardsRegex'
 
 export default (contentBlock: Object, callback: Function)=>{
   const text = contentBlock.getText()

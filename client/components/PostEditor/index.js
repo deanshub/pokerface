@@ -4,8 +4,10 @@ import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import { observer, inject } from 'mobx-react'
 
-import { EditorState } from 'draft-js'
+import { EditorState, convertToRaw } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
+
+import CardsPreview from './CardsPreview'
 
 import createFocusPlugin from 'draft-js-focus-plugin'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
@@ -92,9 +94,16 @@ export default class PostEditor extends Component {
     // get the mention object selected
   }
 
+  getCardEntities(content){
+    return Object.keys(content.entityMap)
+      .filter((entityKey)=>content.entityMap[entityKey].type==='card')
+      .map(entityKey=>content.entityMap[entityKey].data.cardsText)
+  }
+
   render(){
     const { editorState, onChange, postEditor, placeholder, readOnly, globalPlayersSearch } = this.props
     const { InlineToolbar, EmojiSuggestions, MentionSuggestions} = this
+    const cardEntities = this.getCardEntities(convertToRaw(editorState.getCurrentContent()))
 
     return (
       <div
@@ -123,6 +132,7 @@ export default class PostEditor extends Component {
             suggestions={globalPlayersSearch.immutableAvailablePlayers}
         />
         <EmojiSuggestions/>
+        <CardsPreview cards={cardEntities}/>
       </div>
     )
   }
