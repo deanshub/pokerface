@@ -44,7 +44,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((email, done) => {
   if (email==='demo@pokerface.io'){
-    return done(null, {email,username:'demo'})
+    return done(null, {email,username:'deanshub'})
   }else{
     return done(null, false, {message: 'Email or password are Incorrect .'})
   }
@@ -58,7 +58,7 @@ passport.use(new LocalStrategy({
   passwordField: 'password',
 },(email, password, done) => {
   if (email==='demo@pokerface.io' && password==='demo'){
-    return done(null, {email,username:'demo'})
+    return done(null, {email,username:'deanshub'})
   }else{
     return done(null, false, {message: 'Email or password are Incorrect .'})
   }

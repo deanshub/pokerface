@@ -10,7 +10,7 @@ import Db from '../db'
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
-  description: 'Functions to CUD objects',
+  description: 'Functions to CRUD objects',
   fields() {
     return {
       createPlayer: {
@@ -46,17 +46,14 @@ const Mutation = new GraphQLObjectType({
           content:{
             type: new GraphQLNonNull(GraphQLString),
           },
-          username:{ //TODO: get username out of authentication
-            type: new GraphQLNonNull(GraphQLString),
-          },
           photos:{
             type: new GraphQLList(GraphQLString),
           },
         },
-        resolve(_, args){
+        resolve(_, args, context){
           return Db.models.post.create({
             content: args.content,
-            playerUsername: args.username,
+            playerUsername: context.user.username,
             photos: args.photos||[],
             likes:[],
           })
@@ -69,9 +66,6 @@ const Mutation = new GraphQLObjectType({
           content:{
             type: new GraphQLNonNull(GraphQLString),
           },
-          username:{ //TODO: get username out of authentication
-            type: new GraphQLNonNull(GraphQLString),
-          },
           photos:{
             type: new GraphQLList(GraphQLString),
           },
@@ -79,10 +73,10 @@ const Mutation = new GraphQLObjectType({
             type: new GraphQLNonNull(GraphQLString),
           },
         },
-        resolve(_, args){
+        resolve(_, args, context){
           return Db.models.comment.create({
             content: args.content,
-            playerUsername: args.username,
+            playerUsername: context.user.username,
             postId: args.post,
             photos: args.photos||[],
             likes:[],
@@ -96,21 +90,19 @@ const Mutation = new GraphQLObjectType({
           content:{
             type: new GraphQLNonNull(GraphQLBoolean),
           },
-          username:{ //TODO: get username out of authentication
-            type: new GraphQLNonNull(GraphQLString),
-          },
           comment:{
             type: new GraphQLNonNull(GraphQLString),
           },
         },
-        resolve(_, args){
+        resolve(_, args, context){
           return Db.models.comment.findById(args.comment)
             .then((comment)=>{
+              const username = context.user.username
               let likes = comment.get('likes')
-              if (args.content&&!likes.includes(args.username)){
-                likes.push(args.username)
-              }else if (!args.content&&likes.includes(args.username)){
-                likes = likes.filter(user=>user!==args.username)
+              if (args.content&&!likes.includes(username)){
+                likes.push(username)
+              }else if (!args.content&&likes.includes(username)){
+                likes = likes.filter(user=>user!==username)
               }
 
               comment.set('likes', likes)
@@ -125,21 +117,19 @@ const Mutation = new GraphQLObjectType({
           content:{
             type: new GraphQLNonNull(GraphQLBoolean),
           },
-          username:{ //TODO: get username out of authentication
-            type: new GraphQLNonNull(GraphQLString),
-          },
           post:{
             type: new GraphQLNonNull(GraphQLString),
           },
         },
-        resolve(_, args){
+        resolve(_, args, context){
           return Db.models.post.findById(args.post)
             .then((post)=>{
+              const username = context.user.username
               let likes = post.get('likes')
-              if (args.content&&!likes.includes(args.username)){
-                likes.push(args.username)
-              }else if (!args.content&&likes.includes(args.username)){
-                likes = likes.filter(user=>user!==args.username)
+              if (args.content&&!likes.includes(username)){
+                likes.push(username)
+              }else if (!args.content&&likes.includes(username)){
+                likes = likes.filter(user=>user!==username)
               }
 
               post.set('likes', likes)

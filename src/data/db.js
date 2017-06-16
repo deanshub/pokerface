@@ -58,7 +58,7 @@ Conn
       username: 'deanshub',
       firstName: 'Dean',
       lastName: 'Shub',
-      email: 'dean@pokerface.io',
+      email: 'demo@pokerface.io',
       avatar: 'dean2.jpg',
       coverImage: 'poker-1999643.jpg',
     })

@@ -9,6 +9,7 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon src/index.js",
+    "debug": "cross-env POSTGRES_USER=postgres POSTGRES_PASSWORD=admin babel-node --inspect --debug-brk src/index.js",
     "build": "cross-env NODE_ENV=production babel src -d dist",
     "serve": "cross-env NODE_ENV=production node dist/index.js"
   },

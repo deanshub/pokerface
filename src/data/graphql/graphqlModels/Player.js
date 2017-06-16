@@ -62,7 +62,7 @@ const Player = new GraphQLObjectType({
         resolve(player){
           return player.getComments()
         },
-      }
+      },
     }
   },
 })
