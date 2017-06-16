@@ -1,5 +1,5 @@
-export const commentCreate = `($username: String!, $post: String!, $comment: String!){
-  addComment(username:$username, post: $post, content:$comment){
+export const commentCreate = `($post: String!, $comment: String!){
+  addComment(post: $post, content:$comment){
     id
     post{
       id
@@ -29,8 +29,8 @@ export const commentCreate = `($username: String!, $post: String!, $comment: Str
   }
 }`
 
-export const setCommentLike = `($username: String!, $comment: String!, $like: Boolean!){
-  setCommentLike(content:$like, username:$username, comment:$comment){
+export const setCommentLike = `($comment: String!, $like: Boolean!){
+  setCommentLike(content:$like, comment:$comment){
     id
     post{
       id

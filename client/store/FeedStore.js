@@ -37,7 +37,7 @@ export class FeedStore {
       this.editorState = EditorState.createEmpty()
 
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
-      lokkaClient.mutate(postCreate, {username: this.currentUser, post:JSON.stringify(post)})
+      lokkaClient.mutate(postCreate, {post:JSON.stringify(post)})
       // if post mutation succeded add id
       .then(newPost=>{
         this.posts.delete(newPostTempId)
@@ -74,7 +74,7 @@ export class FeedStore {
       this.updateComment(postId, EditorState.createEmpty())
 
       const newCommentTempId = 9999999999+Math.floor(Math.random()*10000)
-      lokkaClient.mutate(commentCreate, {username: this.currentUser, comment:JSON.stringify(comment), post:postId})
+      lokkaClient.mutate(commentCreate, {comment:JSON.stringify(comment), post:postId})
       // if post mutation succeded add id
       .then(newComment=>{
         this.posts.set(newComment.addComment.post.id, newComment.addComment.post)
@@ -170,7 +170,7 @@ export class FeedStore {
 
   @action
   setPostLike(postId, like, user){
-    lokkaClient.mutate(setPostLike, {username: user, post:postId, like})
+    lokkaClient.mutate(setPostLike, {post:postId, like})
     .then(newPost=>{
       this.posts.set(postId, newPost.setPostLike)
     })
@@ -194,7 +194,7 @@ export class FeedStore {
 
   @action
   setCommentLike(postId, commentId, like, user){
-    lokkaClient.mutate(setCommentLike, {username: user, comment:commentId, like})
+    lokkaClient.mutate(setCommentLike, {comment:commentId, like})
     .then(newPost=>{
       this.posts.set(newPost.setCommentLike.post.id, newPost.setCommentLike.post)
     })

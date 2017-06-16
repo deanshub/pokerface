@@ -1,5 +1,5 @@
-export const postCreate = `($username: String!, $post: String!){
-  createPost(content:$post, username:$username){
+export const postCreate = `($post: String!){
+  createPost(content:$post){
     id
     createdAt
     content
@@ -26,8 +26,8 @@ export const postCreate = `($username: String!, $post: String!){
   }
 }`
 
-export const setPostLike = `($username: String!, $post: String!, $like: Boolean!){
-  setPostLike(content:$like, username:$username, post:$post){
+export const setPostLike = `($post: String!, $like: Boolean!){
+  setPostLike(content:$like, post:$post){
     id
     createdAt
     content
