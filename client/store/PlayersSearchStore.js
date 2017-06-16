@@ -39,6 +39,7 @@ export class PlayersSearchStore {
       return {
         name: player.fullName,
         avatar: player.avatar.includes('http')?player.avatar:`/images/${player.avatar}`,
+        username: player.username,
         link: `/profile/${player.username}`,
       }
     })
