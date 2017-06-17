@@ -11,7 +11,7 @@ import compression from 'compression'
 import apiRoutes from './routes'
 import graphql from './data/graphql'
 import {devMiddleware, hotMiddleware} from './routes/webpack.js'
-
+import Db from './data/db'
 
 const app = express()
 const PORT = process.env.port || 9031
@@ -39,40 +39,37 @@ if (process.env.NODE_ENV==='development'){
 
 
 passport.serializeUser((user, done) => {
-  done(null, user.email)
+  done(null, user.username)
 })
 
-passport.deserializeUser((email, done) => {
-  if (email==='demo@pokerface.io'){
-    return done(null, {email,username:'deanshub'})
-  }else{
+passport.deserializeUser((username, done) => {
+  Db.models.player.findOne({where:{username}, attributes: { exclude: ['password']}}).then((user)=>{
+    return done(null, user.get({plain:true}))
+  }).catch(e=>{
+    console.error(e)
     return done(null, false, {message: 'Email or password are Incorrect .'})
-  }
-  // User.findById(id, (err, user) => {
-  //   done(err, user)
-  // })
+  })
 })
 
 passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
 },(email, password, done) => {
-  if (email==='demo@pokerface.io' && password==='demo'){
-    return done(null, {email,username:'deanshub'})
-  }else{
+  Db.models.player.findOne({where:{email,password}, attributes: { exclude: ['password']} }).then((user)=>{
+    return done(null, user.get({plain:true}))
+  }).catch(e=>{
+    console.error(e)
     return done(null, false, {message: 'Email or password are Incorrect .'})
-  }
-  // User.findOne({ username: username }, function(err, user) {
-  //   if (err) { return done(err); }
-  //   if (!user) {
-  //     return done(null, false, { message: 'Incorrect username.' });
-  //   }
-  //   if (!user.validPassword(password)) {
-  //     return done(null, false, { message: 'Incorrect password.' });
-  //   }
-  //   return done(null, user);
-  // });
+  })
 }))
+
+app.post('/isAuthenticated', (req, res)=>{
+  if (req.isAuthenticated()){
+    res.json(req.user)
+  }else{
+    res.json({})
+  }
+})
 
 app.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
@@ -80,8 +77,7 @@ app.post('/login', (req, res, next) => {
     if (!user) { return res.status(403).json({error:'Email or password are Incorrect .'}) }
     req.logIn(user, (err) => {
       if (err) { return next(err) }
-      return res.redirect('/')
-      // return res.redirect(`/profile/${user.username}`)
+      res.json(user)
     })
   })(req, res, next)
 })

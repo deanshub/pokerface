@@ -51,6 +51,7 @@ Conn
       email: faker.internet.email(),
       avatar: faker.image.avatar(),
       coverImage: faker.image.image(),
+      password: faker.internet.password(),
     })
   }
   function createDemoPlayer(){
@@ -61,6 +62,7 @@ Conn
       email: 'demo@pokerface.io',
       avatar: 'dean2.jpg',
       coverImage: 'poker-1999643.jpg',
+      password:'demo',
     })
   }
 

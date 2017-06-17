@@ -26,10 +26,14 @@ const createModel = (Conn)=>{
       type: Sequelize.STRING,
       allowNull: true,
     },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
     coverImage: {
       type: Sequelize.STRING,
       allowNull: true,
-    }
+    },
   },{
     getterMethods: {
       fullName(){ return `${this.firstName} ${this.lastName}` },
