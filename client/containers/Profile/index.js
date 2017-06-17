@@ -30,7 +30,7 @@ export default class Profile extends Component {
             title={auth.user.displayName}
         />
         <ProfileNavbar
-            avatar={auth.user.avatarImage}
+            avatar={auth.user.avatar}
         />
 
         <Feed username={auth.user.user}/>

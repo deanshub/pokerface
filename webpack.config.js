@@ -80,10 +80,10 @@ const config = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loaders: [
+        use: [
           // 'react-hot-loader',
           ...babelHotloader,
-          'babel-loader',
+          'babel-loader?cacheDirectory=true',
         ],
       },
       {

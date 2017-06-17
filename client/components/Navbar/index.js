@@ -1,33 +1,26 @@
 // @flow
 
 import React, { Component, PropTypes } from 'react'
-// import { Link } from 'react-router'
 import { Menu, Button, Input, Icon, Label, Search } from 'semantic-ui-react'
-import { browserHistory } from 'react-router'
 import request from 'superagent'
 import { observer, inject } from 'mobx-react'
-// import classnames from 'classnames'
-// import style from './style.css'
 import PlayerSearchResult from './PlayerSearchResult'
 
 @inject('globalPlayersSearch')
 @inject('routing')
 @observer
 export default class Navbar extends Component {
-  static contextTypes = {
-    router: PropTypes.object,
-  }
-
   handleMenuItemClick(location){
-    browserHistory.replace(location)
+    this.props.routing.replace(location)
   }
 
   handleLogout(){
+    const {routing} = this.props
     request.get('/logout').then(()=>{
-      browserHistory.replace('/login')
+      routing.replace('/login')
     }).catch(err=>{
       console.error(err)
-      browserHistory.replace('/login')
+      routing.replace('/login')
     })
   }
 
@@ -98,7 +91,7 @@ export default class Navbar extends Component {
             >
               <Icon name="clock"/> Blinds Timer
             </Menu.Item>
-            <Menu.Item onClick={this.handleLogout}>
+            <Menu.Item onClick={::this.handleLogout}>
               <Button>logout</Button>
             </Menu.Item>
             <Menu.Item>

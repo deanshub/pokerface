@@ -22,9 +22,9 @@ export default class Navbar extends Component {
   componentDidMount(){
     const {image} = this.props
 
-    import(`../../assets/images/${image}`).then(imageFile=>{
+    if (image.startsWith('http')){
       this.setState({
-        imageFile,
+        imageFile:image,
       },()=>{
         setTimeout(()=>{
           this.setState({
@@ -32,7 +32,19 @@ export default class Navbar extends Component {
           })
         },100)
       })
-    })
+    }else{
+      import(`../../assets/images/${image}`).then(imageFile=>{
+        this.setState({
+          imageFile,
+        },()=>{
+          setTimeout(()=>{
+            this.setState({
+              loading: false,
+            })
+          },100)
+        })
+      })
+    }
   }
 
   render() {

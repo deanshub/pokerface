@@ -1,9 +1,8 @@
 // @flow
 
 import React, { Component, PropTypes } from 'react'
-// import classnames from 'classnames'
-// import style from './style.css'
-import { browserHistory } from 'react-router'
+import { observer, inject } from 'mobx-react'
+
 import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'semantic-ui-react'
 import request from 'superagent'
 import R from 'ramda'
@@ -15,11 +14,10 @@ const viewParam = (path, obj) => {
   return R.view(lense, obj)
 }
 
+@inject('routing')
+@inject('auth')
+@observer
 export default class Navigation extends Component {
-  static propTypes = {
-    // actions: PropTypes.object.isRequired,
-  }
-
   constructor(props){
     super(props)
     this.state = {
@@ -33,7 +31,7 @@ export default class Navigation extends Component {
 
   handleLogin(event, {formData}){
     event.preventDefault()
-    // const { actions2,actions, routing } = this.props
+    const { routing } = this.props
     this.setState({
       loggingInPorgress: true,
       loggingInFail: false,
@@ -43,12 +41,14 @@ export default class Navigation extends Component {
       .send({email:formData.email, password:formData.password})
       .accept('json')
       .type('json')
-      .then(() => {
+      .then((res) => {
+        this.props.auth.user= res.body
         this.setState({
           loggingInPorgress: false,
         })
-        browserHistory.replace('/')
+        routing.replace('/')
       }).catch((err)=>{
+        console.log(err)
         let loginFailMessage = viewParam('response.body.error', err)
         if (!loginFailMessage){
           loginFailMessage='An unknown error occurred, please try again later'
@@ -59,11 +59,6 @@ export default class Navigation extends Component {
           loginFailMessage,
         })
       })
-
-    // actions.login({
-    //   user:this.userInput.value,
-    //   password:this.passwordInput.value,
-    // })
   }
 
   handleSignup(event, {formData}){

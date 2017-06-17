@@ -1,17 +1,14 @@
 // @flow
 
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+import { Router, Route, Switch } from 'react-router'
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
+import createBrowserHistory from 'history/createBrowserHistory'
 import { Provider } from 'mobx-react'
 import React,{Component} from 'react'
 
 import Login from '../Login'
 import Navigation from '../Navigation'
-import Feed from '../Feed'
-import Profile from '../Profile'
-import Pulse from '../Pulse'
-import BlindsTimer from '../../components/BlindsTimer'
-import Lern from '../../components/Lern'
+import PrivateRoute from './PrivateRoute'
 
 import {AuthStore} from '../../store/AuthStore'
 import {GameStore} from '../../store/GameStore'
@@ -22,7 +19,7 @@ import {FeedStore} from '../../store/FeedStore'
 import {PhotoGalleryStore} from '../../store/PhotoGalleryStore'
 import {PlayersSearchStore} from '../../store/PlayersSearchStore'
 
-
+const browserHistory = createBrowserHistory()
 const routingStore = new RouterStore()
 const stores = {
   routing: routingStore,
@@ -42,18 +39,18 @@ export default class App extends Component {
     return(
       <Provider {...stores}>
         <Router history={history}>
-          <Route component={Login} path="/login"/>
+          <Switch>
+            <Route
+                component={Login}
+                exact
+                path="/login"
+            />
 
-          <Route component={Navigation} path="/">
-          <IndexRoute component={Feed}/>
-
-          <Route component={Profile} path="/profile/:userId"/>
-          <Route component={Profile} path="/profile"/>
-          <Route component={Pulse} path="/pulse"/>
-          <Route component={BlindsTimer} path="/timer"/>
-          <Route component={Lern} path="/smart"/>
-
-        </Route>
+            <PrivateRoute
+                component={Navigation}
+                path="/"
+            />
+        </Switch>
       </Router>
     </Provider>
     )

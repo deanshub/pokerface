@@ -35,11 +35,17 @@ export default class ProfileNavbar extends Component {
 
     window.addEventListener('scroll', this.checkStaticNavbarActivation)
 
-    import(`../../assets/images/${avatar}`).then(avatarImage=>{
+    if (avatar.startsWith('http')){
       this.setState({
-        avatarImage,
+        avatarImage:avatar,
       })
-    })
+    }else{
+      import(`../../assets/images/${avatar}`).then(avatarImage=>{
+        this.setState({
+          avatarImage,
+        })
+      })
+    }
   }
 
   componentWillUnmount(){

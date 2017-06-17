@@ -1,21 +1,30 @@
 // @flow
 
-import { observable } from 'mobx'
+import { observable, action } from 'mobx'
+import request from 'superagent'
 
 export class AuthStore {
   @observable user
   @observable opensourceModalOpen: boolean
+  @observable authenticating: boolean
 
   constructor(){
-    const coverImage = 'poker-1999643.jpg'
-
     this.user = {
-      user:'deanshub',
-      displayName: 'Dean Shub',
-      coverImage,
-      // coverImage: 'cover.jpg',
-      avatarImage: 'dean2.jpg',
     }
+    this.authenticating = true
+    // this.authenticate()
     this.opensourceModalOpen = false
+  }
+
+  @action
+  authenticate(){
+    this.authenticating = true
+    return request.post('/isAuthenticated').then((res)=>{
+      this.authenticating = false
+      return this.user=res.body
+    }).catch(err=>{
+      console.error(err)
+      this.authenticating = false
+    })
   }
 }
