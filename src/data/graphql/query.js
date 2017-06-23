@@ -19,23 +19,34 @@ const Query =  new GraphQLObjectType({
           phrase: {
             type: GraphQLString,
           },
+          username: {
+            type: GraphQLString,
+          },
         },
         resolve(root, args){
-          const where = args.phrase?{
-            $or:[{
-              username: {
-                $ilike: `%${args.phrase}%`,
-              },
-            },{
-              firstName: {
-                $ilike: `%${args.phrase}%`,
-              },
-            },{
-              lastName: {
-                $ilike: `%${args.phrase}%`,
-              },
-            }],
-          }:undefined
+          let where
+
+          if (args.username){
+            where = {
+              username: args.username,
+            }
+          }else if (args.phrase){
+            where = {
+              $or:[{
+                username: {
+                  $ilike: `%${args.phrase}%`,
+                },
+              },{
+                firstName: {
+                  $ilike: `%${args.phrase}%`,
+                },
+              },{
+                lastName: {
+                  $ilike: `%${args.phrase}%`,
+                },
+              }],
+            }
+          }
 
           return Db.models.player.findAll({
             where,
