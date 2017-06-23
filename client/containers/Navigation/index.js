@@ -6,7 +6,7 @@ import { Route, Switch } from 'react-router-dom'
 
 import Navbar from '../../components/Navbar'
 import Feed from '../Feed'
-import Profile from '../Profile'
+import Profile from '../../components/Profile'
 import Pulse from '../Pulse'
 import BlindsTimer from '../../components/BlindsTimer'
 import Lern from '../../components/Lern'
@@ -39,7 +39,7 @@ export default class Navigation extends Component {
               <Route
                   component={Profile}
                   exact
-                  path="/profile/:userId"
+                  path="/profile/:username"
               />
               <Route
                   component={Profile}

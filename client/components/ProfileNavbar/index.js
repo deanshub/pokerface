@@ -15,37 +15,18 @@ import style from './style.css'
 @inject('profile')
 @observer
 export default class ProfileNavbar extends Component {
-  static propTypes = {
-    avatar: PropTypes.string,
-  }
-
   constructor(props: Object){
     super(props)
     this.checkStaticNavbarActivation = this.checkStaticNavbarActivation.bind(this)
     this.state = {
-      avatarImage: undefined,
       activateFixedNavbar: false,
     }
   }
 
-  state: { avatarImage?: string, activateFixedNavbar: boolean }
+  state: { activateFixedNavbar: boolean }
 
   componentDidMount(){
-    const {avatar} = this.props
-
     window.addEventListener('scroll', this.checkStaticNavbarActivation)
-
-    if (avatar.startsWith('http')){
-      this.setState({
-        avatarImage:avatar,
-      })
-    }else{
-      import(`../../assets/images/${avatar}`).then(avatarImage=>{
-        this.setState({
-          avatarImage,
-        })
-      })
-    }
   }
 
   componentWillUnmount(){
@@ -78,9 +59,9 @@ export default class ProfileNavbar extends Component {
   }
 
   getMenu(fixed){
-    const {profile} = this.props
+    const {profile, avatarImage} = this.props
     const {currentTab} = profile
-    const {avatarImage, activateFixedNavbar}: {avatarImage?: string, activateFixedNavbar: boolean} = this.state
+    const {activateFixedNavbar}: {activateFixedNavbar: boolean} = this.state
 
     return (
       <Menu

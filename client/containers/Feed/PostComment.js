@@ -50,7 +50,7 @@ export default class PostComment extends Component {
   }
   getUserImageUrl(){
     const { comment } = this.props
-    return comment.player.avatar.includes('http')?comment.player.avatar:`images/${comment.player.avatar}`
+    return comment.player.avatar.includes('http')?comment.player.avatar:`/images/${comment.player.avatar}`
   }
 
   setLike(){

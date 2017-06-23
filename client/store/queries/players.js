@@ -1,9 +1,10 @@
-export const playersQuery = `query _($phrase: String)
+export const playersQuery = `query _($phrase: String, $username: String)
     {
-      players(phrase: $phrase){
+      players(phrase: $phrase, username: $username){
         username
         fullName
         avatar
+        coverImage
       }
     }
 `

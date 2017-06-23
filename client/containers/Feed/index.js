@@ -21,6 +21,11 @@ export default class FeedContainer extends Component {
     window.addEventListener('scroll', this.loadOnScroll)
   }
 
+  componentWillReceiveProps(props){
+    const { feed, username } = props
+    feed.fetchEvents(username)
+  }
+
   componentWillUnmount(){
     window.removeEventListener('scroll', this.loadOnScroll)
   }

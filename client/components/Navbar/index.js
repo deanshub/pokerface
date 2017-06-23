@@ -1,13 +1,14 @@
 // @flow
 
 import React, { Component, PropTypes } from 'react'
-import { Menu, Button, Input, Icon, Label, Search } from 'semantic-ui-react'
+import { Menu, Button, Input, Icon, Label, Search, Image } from 'semantic-ui-react'
 import request from 'superagent'
 import { observer, inject } from 'mobx-react'
 import PlayerSearchResult from './PlayerSearchResult'
 
 @inject('globalPlayersSearch')
 @inject('routing')
+@inject('auth')
 @observer
 export default class Navbar extends Component {
   handleMenuItemClick(location){
@@ -47,7 +48,7 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {globalPlayersSearch} = this.props
+    const {globalPlayersSearch, auth} = this.props
 
     return (
         <Menu
@@ -67,7 +68,16 @@ export default class Navbar extends Component {
               active={this.isActive('/profile', true)}
               onClick={()=>this.handleMenuItemClick('/profile')}
           >
-            <Icon name="user"/> Profile
+            {auth.user.avatar?
+              <Image
+                  shape="circular"
+                  size="mini"
+                  src={auth.user.avatar.startsWith('http')?auth.user.avatar:`/images/${auth.user.avatar}`}
+                  style={{marginTop:-5,marginBottom:-10, marginRight:10, maxHeight:35}}
+              />
+              :
+              <Icon name="user"/>
+            } Profile
           </Menu.Item>
           <Menu.Item
               active={this.isActive('/pulse', true)}
