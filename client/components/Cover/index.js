@@ -20,7 +20,7 @@ export default class Navbar extends Component {
 
     return (
       <div className={classnames({[style.container]: true, [style.loading]: imageFile===undefined})} style={coverDivStyle}>
-        <Header size="huge" style={{color:'white',zIndex:2}}>{title}</Header>
+        <Header size="huge" style={{color:'white',zIndex:2, textShadow:'1px 1px #525252'}}>{title}</Header>
       </div>
     )
   }
