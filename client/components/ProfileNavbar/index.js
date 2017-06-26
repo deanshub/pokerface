@@ -6,6 +6,7 @@ import { Menu, Segment, Icon, Image } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 
 import * as ProfileConsts from '../../constants/profile'
+import OnlyLoggedinUser from '../OnlyLoggedinUser'
 import Statistics from '../Statistics'
 import AddGame from '../AddGame'
 import AddPlay from '../AddPlay'
@@ -74,13 +75,15 @@ export default class ProfileNavbar extends Component {
           tabular
           widths={5}
       >
-        <Menu.Item
-            active={currentTab===ProfileConsts.ADD_GAME_TAB}
-            onClick={()=>profile.changeTab(ProfileConsts.ADD_GAME_TAB)}
-        >
-          <Icon name="gamepad" />
-          Game
-        </Menu.Item>
+        <OnlyLoggedinUser>
+          <Menu.Item
+              active={currentTab===ProfileConsts.ADD_GAME_TAB}
+              onClick={()=>profile.changeTab(ProfileConsts.ADD_GAME_TAB)}
+          >
+              <Icon name="gamepad" />
+              Game
+            </Menu.Item>
+        </OnlyLoggedinUser>
         <Menu.Item
             active={currentTab===ProfileConsts.STATISTICS_TAB}
             onClick={()=>profile.changeTab(ProfileConsts.STATISTICS_TAB)}
@@ -93,13 +96,15 @@ export default class ProfileNavbar extends Component {
               src={avatarImage}
           />
         </Menu.Item>
-        <Menu.Item
-            active={currentTab===ProfileConsts.ADD_PLAY_TAB}
-            onClick={()=>profile.changeTab(ProfileConsts.ADD_PLAY_TAB)}
-        >
-          <Icon name="share alternate" />
-          Post
-        </Menu.Item>
+        <OnlyLoggedinUser>
+          <Menu.Item
+              active={currentTab===ProfileConsts.ADD_PLAY_TAB}
+              onClick={()=>profile.changeTab(ProfileConsts.ADD_PLAY_TAB)}
+          >
+            <Icon name="share alternate" />
+            Post
+          </Menu.Item>
+        </OnlyLoggedinUser>
       </Menu>
     )
   }
