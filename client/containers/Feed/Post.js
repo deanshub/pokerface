@@ -42,7 +42,7 @@ export default class Post extends Component {
 
   goto(){
     const {post, routing, auth} = this.props
-    if (post.player.username===auth.user.user){
+    if (post.player.username===auth.user.username){
       routing.push('/profile')
     }else{
       routing.push(`/profile/${post.player.username}`)
@@ -51,7 +51,7 @@ export default class Post extends Component {
 
   getUserFullName(){
     const { post, auth } = this.props
-    return post.player.username===auth.user.user?'You':post.player.fullName
+    return post.player.username===auth.user.username?'You':post.player.fullName
   }
   getUserImageUrl(){
     const { post } = this.props
@@ -96,14 +96,14 @@ export default class Post extends Component {
 
   setLike(){
     const { feed, auth, post } = this.props
-    const activeLike = post.likes.includes(auth.user.user)
-    feed.setPostLike(post.id, !activeLike, auth.user.user)
+    const activeLike = post.likes.includes(auth.user.username)
+    feed.setPostLike(post.id, !activeLike, auth.user.username)
   }
 
   render() {
     const { post, auth } = this.props
     const { replying } = this.state
-    const activeLike = post.likes.includes(auth.user.user)
+    const activeLike = post.likes.includes(auth.user.username)
     const {postEditorState} = this.state
 
     return (

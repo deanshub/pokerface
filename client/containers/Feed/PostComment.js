@@ -37,7 +37,7 @@ export default class PostComment extends Component {
 
   goto(){
     const {comment, routing, auth} = this.props
-    if (comment.player.username===auth.user.user){
+    if (comment.player.username===auth.user.username){
       routing.push('/profile')
     }else{
       routing.push(`/profile/${comment.player.username}`)
@@ -46,7 +46,7 @@ export default class PostComment extends Component {
 
   getUserFullName(){
     const { comment, auth } = this.props
-    return comment.player.username===auth.user.user?'You':comment.player.fullName
+    return comment.player.username===auth.user.username?'You':comment.player.fullName
   }
   getUserImageUrl(){
     const { comment } = this.props
@@ -55,13 +55,13 @@ export default class PostComment extends Component {
 
   setLike(){
     const { feed, auth, comment } = this.props
-    const activeLike = comment.likes.includes(auth.user.user)
-    feed.setCommentLike(comment.post.id, comment.id, !activeLike, auth.user.user)
+    const activeLike = comment.likes.includes(auth.user.username)
+    feed.setCommentLike(comment.post.id, comment.id, !activeLike, auth.user.username)
   }
 
   render() {
     const { comment, auth } = this.props
-    const activeLike = comment.likes.includes(auth.user.user)
+    const activeLike = comment.likes.includes(auth.user.username)
     const {commentEditorState} = this.state
 
     return (
