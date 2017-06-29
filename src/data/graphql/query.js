@@ -7,6 +7,7 @@ import Db from '../db'
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
 import Comment from './graphqlModels/Comment'
+import Game from './graphqlModels/Game'
 
 const Query =  new GraphQLObjectType({
   name: 'Query',
@@ -103,6 +104,21 @@ const Query =  new GraphQLObjectType({
         type: new GraphQLList(Comment),
         resolve(root, args){
           return Db.models.comment.findAll({where: args})
+        },
+      },
+      games: {
+        type: new GraphQLList(Game),
+        resolve(root, args, context){
+          let where = {
+            invited: {
+              $contains: [context.user.username],
+            },
+          }
+          return Db.models.game.findAll({
+            where,
+            limit: 20,
+            order: [['created', 'DESC']],
+          })
         },
       },
     }

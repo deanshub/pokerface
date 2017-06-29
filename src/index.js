@@ -109,7 +109,7 @@ app.get('/smart', isAuthenticated, (req, res)=>{
 app.get('/profile/:username', isAuthenticated, (req, res)=>{
   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
 })
-app.get('/pulse', isAuthenticated, (req, res)=>{
+app.get('/events', isAuthenticated, (req, res)=>{
   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
 })
 app.get('/login', (req, res)=>{

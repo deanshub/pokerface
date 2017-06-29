@@ -5,6 +5,7 @@ import {
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
 import Comment from './graphqlModels/Comment'
+import Game from './graphqlModels/Game'
 import Db from '../db'
 
 
@@ -135,6 +136,52 @@ const Mutation = new GraphQLObjectType({
               post.set('likes', likes)
               return post.save()
             })
+        },
+      },
+
+      gameAttendanceUpdate:{
+        type: Game,
+        args:{
+          gameId:{
+            type: new GraphQLNonNull(GraphQLString),
+          },
+          attendance:{
+            type: new GraphQLNonNull(GraphQLBoolean),
+          },
+        },
+        resolve(_, args, context){
+          return Db.models.game.findById(args.gameId)
+          .then(game=>{
+            const username = context.user.username
+            let invited = game.get('invited')
+
+            if (invited.includes(username)){
+              const attendance = args.attendance
+              let accepted = game.get('accepted')
+              let declined = game.get('declined')
+
+              const acceptedIndex = accepted.indexOf(username)
+              const declinedIndex = declined.indexOf(username)
+
+              if (declinedIndex>-1 && attendance){
+                declined.splice(declinedIndex, 1)
+              }else if (declinedIndex===-1 && !attendance){
+                declined.push(username)
+              }
+
+              if (acceptedIndex>-1 && !attendance){
+                accepted.splice(acceptedIndex, 1)
+              }else if (acceptedIndex===-1 && attendance) {
+                accepted.push(username)
+              }
+
+              game.set('accepted',accepted)
+              game.set('declined',declined)
+              return game.save()
+            }
+
+            return game
+          })
         },
       },
 
