@@ -9,8 +9,13 @@ import PlayerSearchResult from './PlayerSearchResult'
 @inject('globalPlayersSearch')
 @inject('routing')
 @inject('auth')
+@inject('events')
 @observer
 export default class Navbar extends Component {
+  componentDidMount(){
+    this.props.events.fetchMyGames()
+  }
+
   handleMenuItemClick(location){
     this.props.routing.replace(location)
   }
@@ -48,7 +53,7 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {globalPlayersSearch, auth} = this.props
+    const {globalPlayersSearch, auth, events} = this.props
 
     return (
         <Menu
@@ -80,11 +85,15 @@ export default class Navbar extends Component {
             } Profile
           </Menu.Item>
           <Menu.Item
-              active={this.isActive('/pulse', true)}
-              onClick={()=>this.handleMenuItemClick('/pulse')}
+              active={this.isActive('/events', true)}
+              onClick={()=>this.handleMenuItemClick('/events')}
           >
-            <Icon name="heartbeat"/> Pulse
-            <Label circular size="mini">1</Label>
+            <Icon name="calendar"/> Events
+            {
+              events.games.size>0?
+              <Label circular size="mini">{events.games.size}</Label>:
+              undefined
+            }
           </Menu.Item>
 
 

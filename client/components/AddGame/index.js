@@ -156,14 +156,14 @@ export default class AddGame extends Component {
           </Grid.Column>
         </Grid.Row>
 
-        {players.currentPlayers.keys().map(user=>
+        {/**players.currentPlayers.keys().map(user=>
           <PlayerForm key={user} user={players.currentPlayers.get(user)} />
-        )}
+        )**/}
 
         <Grid.Row textAlign="right">
           <Grid.Column>
             <Button
-                content="Add The Game"
+                content="Create a game"
                 icon="add"
                 labelPosition="right"
                 onClick={()=>game.addGame()}

@@ -1,0 +1,20 @@
+export const eventsQuery = `query
+    {
+      games{
+          id
+          title
+          description
+          type
+          subtype
+          location
+          from
+          to
+          invited
+          accepted
+          declined
+          unresponsive
+          updatedAt
+          createdAt
+      }
+    }
+`

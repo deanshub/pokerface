@@ -3,11 +3,12 @@ import React, { Component, PropTypes } from 'react'
 import DocumentTitle from 'react-document-title'
 import DevTools from 'mobx-react-devtools'
 import { Route, Switch } from 'react-router-dom'
+// import { observer, inject } from 'mobx-react'
 
 import Navbar from '../../components/Navbar'
 import Feed from '../Feed'
 import Profile from '../../components/Profile'
-import Pulse from '../Pulse'
+import Events from '../Events'
 import BlindsTimer from '../../components/BlindsTimer'
 import Lern from '../../components/Lern'
 
@@ -47,9 +48,9 @@ export default class Navigation extends Component {
                   path="/profile"
               />
               <Route
-                  component={Pulse}
+                  component={Events}
                   exact
-                  path="/pulse"
+                  path="/events"
               />
               <Route
                   component={BlindsTimer}
