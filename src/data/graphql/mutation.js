@@ -2,6 +2,7 @@ import {
   GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLList,
   GraphQLBoolean,
 } from 'graphql'
+import mailer from '../../utils/mailer'
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
 import Comment from './graphqlModels/Comment'
@@ -222,10 +223,13 @@ const Mutation = new GraphQLObjectType({
             subtype: args.subtype,
             location: args.location,
             from: new Date(args.from),
-            to: args.to,
+            to: args.to!==undefined?new Date(args.to):undefined,
             invited: args.invited,
             declined:[],
             accepted:[],
+          }).then(game=>{
+            mailer.sendGameInvite(game, Db)
+            return game
           })
         },
       },
