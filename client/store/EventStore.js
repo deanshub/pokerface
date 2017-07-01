@@ -3,7 +3,8 @@
 import { observable, action, computed, toJS } from 'mobx'
 import lokkaClient from './lokkaClient'
 import {eventsQuery} from './queries/events'
-import {gameAttendanceUpdate} from './mutations/games'
+import {gameAttendanceUpdate, addGame, deleteGame} from './mutations/games'
+import moment from 'moment'
 
 export class EventStore {
   @observable games
@@ -15,10 +16,10 @@ export class EventStore {
   }
 
   setGame(game){
-    game.from = new Date(game.from)
-    game.to = new Date(game.to)
-    game.createdAt = new Date(game.createdAt)
-    game.updatedAt = new Date(game.updatedAt)
+    game.from = moment(game.from)
+    game.to = moment(game.to)
+    game.createdAt = moment(game.createdAt)
+    game.updatedAt = moment(game.updatedAt)
     this.games.set(game.id, game)
   }
 
@@ -31,6 +32,18 @@ export class EventStore {
     }).catch(err=>{
       this.loading = false
       console.error(err)
+    })
+  }
+
+  @action
+  deleteGame(game){
+    this.games.delete(game.id)
+    lokkaClient.mutate(deleteGame, {gameId: game.id})
+    .then(res=>{
+      console.log(res.deleteGame)
+    }).catch(err=>{
+      console.error(err)
+      this.games.set(game.id, game)
     })
   }
 
@@ -60,6 +73,19 @@ export class EventStore {
     .catch(err=>{
       console.error(err);
       this.setGame(oldGame)
+    })
+  }
+
+  @action createGame(players, game){
+    let currentGame = game.toJS()
+    return lokkaClient.mutate(addGame, {...currentGame, players})
+    .then((res)=>{
+      this.setGame(res.addGame)
+      return res.addGame
+    })
+    .catch(err=>{
+      console.error(err)
+      return {err}
     })
   }
 }

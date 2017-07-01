@@ -1,13 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Grid, Button, Icon, Container } from 'semantic-ui-react'
+import { Grid, Button, Icon, Container, Dimmer, Loader } from 'semantic-ui-react'
 import classnames from 'classnames'
+import moment from 'moment'
 import style from './style.css'
 
 @inject('auth')
 @inject('events')
 @observer
 export default class Events extends Component {
+  deleteGame(game){
+    const {events} = this.props
+    events.deleteGame(game)
+  }
+
   render() {
     const {auth, events} = this.props
 
@@ -15,14 +21,31 @@ export default class Events extends Component {
       <div className={classnames(style.container)}>
         <Grid divided="vertically">
           {
-            events.games.values().map(game=>{
+            events.games.values()
+            .sort((a,b)=>{
+              return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp))
+            })
+            .map(game=>{
               return (
                 <Grid.Row
                     columns={16}
                     key={game.id}
                     verticalAlign="middle"
                 >
-                  <Grid.Column width={5}>
+                  <Grid.Column width={1}>
+                    {
+                      auth.user.username===game.creator.username?
+                      <Button
+                          basic
+                          color="red"
+                          icon="remove"
+                          onClick={()=>this.deleteGame(game)}
+                      />
+                      :
+                      undefined
+                    }
+                  </Grid.Column>
+                  <Grid.Column width={4}>
                     {game.title}
                   </Grid.Column>
                   <Grid.Column width={4}>
@@ -64,9 +87,19 @@ export default class Events extends Component {
             })
           }
           {
-            events.games.size===0?
+            !events.loading&&events.games.size===0?
             <Container text>
               No games invites found
+            </Container>
+            :
+            undefined
+          }
+          {
+            events.loading?
+            <Container text>
+              <Dimmer active inverted>
+                <Loader>Loading</Loader>
+              </Dimmer>
             </Container>
             :
             undefined

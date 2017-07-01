@@ -56,7 +56,26 @@ export class GameStore {
     this.currentGame.set('endDate', endDate)
   }
 
-  @action addGame(){
-    console.log(this.currentGame);
+  @action resetGame(){
+    this.currentGame = observable.map({
+      startDate: moment(),
+      endDate: moment(),
+    })
+  }
+
+  typeChangeHandler(type){
+    this.currentGame.set('type', type)
+  }
+  subTypeChangeHandler(subType){
+    this.currentGame.set('subType', subType)
+  }
+  locationChangeHandler(location){
+    this.currentGame.set('location', location)
+  }
+  descriptionChangeHandler(description){
+    this.currentGame.set('description', description)
+  }
+  titleChangeHandler(title){
+    this.currentGame.set('title', title)
   }
 }

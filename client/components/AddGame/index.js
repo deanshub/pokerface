@@ -5,7 +5,7 @@ import Datetime from 'react-datetime'
 import 'react-datetime/css/react-datetime.css'
 
 import moment from 'moment'
-import { Grid, Icon, Dropdown, Input, Label, Header, Button } from 'semantic-ui-react'
+import { Grid, Icon, Dropdown, Input, Label, Header, Button, Form, TextArea } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -13,6 +13,8 @@ import PlayerForm from '../PlayerForm'
 
 @inject('players')
 @inject('game')
+@inject('routing')
+@inject('events')
 @observer
 export default class AddGame extends Component {
   constructor(props: Object){
@@ -41,6 +43,18 @@ export default class AddGame extends Component {
     players.search(phrase)
   }
 
+  addGame(e: Object){
+    e.preventDefault()
+    const {players, game, events, routing} = this.props
+    events.createGame(players.currentPlayersArray, game.currentGame)
+    .then(res=>{
+      if (!res.err){
+        game.resetGame()
+        routing.push('/events')
+      }
+    })
+  }
+
   render() {
     const {game, players} = this.props
 
@@ -59,11 +73,38 @@ export default class AddGame extends Component {
 
 
     return (
+      <Form>
       <Grid container>
+        <Grid.Row columns={1}>
+          <Grid.Column>
+            <Form.Field
+                control={Input}
+                id="form-input-control-title"
+                label="Game Title"
+                onChange={(ev, a)=>game.titleChangeHandler(a.value)}
+                placeholder="Game Title"
+            />
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row columns={1}>
+          <Grid.Column>
+            <Form.Field
+                autoHeight
+                control={TextArea}
+                id="form-textarea-control-description"
+                label="Game Description"
+                onChange={(ev, a)=>game.descriptionChangeHandler(a.value)}
+                placeholder="Game Description"
+            />
+          </Grid.Column>
+        </Grid.Row>
+
         <Grid.Row columns={2}>
           <Grid.Column textAlign="right">
             <Icon name="game" />
             <Dropdown
+                onChange={(ev, a)=>game.typeChangeHandler(a.value)}
                 options={game.gameTypes}
                 placeholder="Select Game Type"
                 selection
@@ -71,6 +112,7 @@ export default class AddGame extends Component {
           </Grid.Column>
           <Grid.Column>
             <Dropdown
+                onChange={(ev, a)=>game.subTypeChangeHandler(a.value)}
                 options={game.gameSubTypes}
                 placeholder="Select Game Sub-Type"
                 selection
@@ -83,6 +125,7 @@ export default class AddGame extends Component {
             <Input
                 icon="map"
                 iconPosition="left"
+                onChange={(ev, a)=>game.locationChangeHandler(a.value)}
                 placeholder="Location..."
             />
           </Grid.Column>
@@ -94,13 +137,6 @@ export default class AddGame extends Component {
                 type="text"
             >
               <Label basic>From</Label>
-              {/* <DatePicker
-                  endDate={endDate}
-                  onChange={(startDate)=>game.handleChangeStartDate(startDate)}
-                  selected={startDate}
-                  selectsStart
-                  startDate={startDate}
-              /> */}
               <Datetime
                   onChange={(startDate)=>game.handleChangeStartDate(startDate)}
                   value={startDate}
@@ -115,13 +151,6 @@ export default class AddGame extends Component {
                 type="text"
             >
               <Label basic>To</Label>
-              {/* <DatePicker
-                  endDate={endDate}
-                  onChange={(endDate)=>game.handleChangeEndDate(endDate)}
-                  selected={endDate}
-                  selectsEnd
-                  startDate={startDate}
-              /> */}
               <Datetime
                   onChange={(endDate)=>game.handleChangeEndDate(endDate)}
                   value={endDate}
@@ -163,15 +192,16 @@ export default class AddGame extends Component {
         <Grid.Row textAlign="right">
           <Grid.Column>
             <Button
-                content="Create a game"
+                content="Create game"
                 icon="add"
                 labelPosition="right"
-                onClick={()=>game.addGame()}
+                onClick={::this.addGame}
                 primary
             />
           </Grid.Column>
         </Grid.Row>
       </Grid>
+      </Form>
     )
   }
 }

@@ -13,6 +13,7 @@ export class PlayersStore {
   initialWin=0
 
   constructor(){
+    // todo: fill with auth user
     this.currentUser = {
       username:'deanshub',
       fullName: 'Dean Shub',

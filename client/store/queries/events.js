@@ -2,6 +2,11 @@ export const eventsQuery = `query
     {
       games{
           id
+          creator{
+            username
+            fullName
+            avatar
+          }
           title
           description
           type
