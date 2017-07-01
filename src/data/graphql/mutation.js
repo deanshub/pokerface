@@ -185,6 +185,68 @@ const Mutation = new GraphQLObjectType({
         },
       },
 
+      addGame:{
+        type: Game,
+        args:{
+          title: {
+            type: GraphQLString,
+          },
+          description: {
+            type: GraphQLString,
+          },
+          type: {
+            type: GraphQLString,
+          },
+          subtype: {
+            type: GraphQLString,
+          },
+          location: {
+            type: GraphQLString,
+          },
+          from: {
+            type: new GraphQLNonNull(GraphQLString),
+          },
+          to: {
+            type: GraphQLString,
+          },
+          invited: {
+            type: new GraphQLList(GraphQLString),
+          },
+        },
+        resolve(_, args, context){
+          return Db.models.game.create({
+            playerUsername: context.user.username,
+            title: args.title,
+            description: args.description,
+            type: args.type,
+            subtype: args.subtype,
+            location: args.location,
+            from: new Date(args.from),
+            to: args.to,
+            invited: args.invited,
+            declined:[],
+            accepted:[],
+          })
+        },
+      },
+
+      deleteGame:{
+        type: Game,
+        args:{
+          gameId: {
+            type: GraphQLString,
+          },
+        },
+        resolve(_, args, context){
+          return Db.models.game.findById(args.gameId).then(game=>{
+            if (game.playerUsername===context.user.username){
+              return game.destroy()
+            }
+            throw new Error('Can\'t delete game of another user')
+          })
+        },
+      },
+
     }
   },
 })
