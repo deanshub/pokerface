@@ -244,9 +244,15 @@ const Mutation = new GraphQLObjectType({
         resolve(_, args, context){
           return Db.models.game.findById(args.gameId).then(game=>{
             if (game.playerUsername===context.user.username){
-              return game.destroy()
+              return mailer.sendGameCancelled(game, Db).catch((err)=>{
+                console.error(err)
+                return game.destroy()
+              }).then(()=>{
+                return game.destroy()
+              })
+            }else{
+              throw new Error('Can\'t delete game of another user')
             }
-            throw new Error('Can\'t delete game of another user')
           })
         },
       },

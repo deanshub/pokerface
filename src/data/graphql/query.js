@@ -109,10 +109,15 @@ const Query =  new GraphQLObjectType({
       games: {
         type: new GraphQLList(Game),
         resolve(root, args, context){
+
           let where = {
-            invited: {
-              $contains: [context.user.username],
-            },
+            $or:[{
+              invited: {
+                $contains: [context.user.username],
+              },
+            },{
+              playerUsername: context.user.username,
+            }],
           }
           return Db.models.game.findAll({
             where,
