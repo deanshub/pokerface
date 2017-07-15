@@ -23,7 +23,7 @@ export default class Events extends Component {
           {
             events.games.values()
             .sort((a,b)=>{
-              return moment.utc(a.timeStamp).diff(moment.utc(b.timeStamp))
+              return moment.utc(a.from).diff(moment.utc(b.from))
             })
             .map(game=>{
               return (
@@ -52,7 +52,7 @@ export default class Events extends Component {
                     {game.location}
                   </Grid.Column>
                   <Grid.Column width={3}>
-                    {game.from.toLocaleString()}
+                    {game.from.fromNow()}
                   </Grid.Column>
                   <Grid.Column width={2}>
                     {game.invited.length} People invited
