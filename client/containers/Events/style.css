@@ -6,3 +6,13 @@
   background-color: white;
   border-radius: 5px;
 }
+
+.row{
+  cursor: pointer;
+}
+.row:hover{
+  background-color: #F9F9F9;
+}
+.expendedrow{
+  background-color: #ececec;
+}

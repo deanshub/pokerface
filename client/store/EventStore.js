@@ -9,6 +9,8 @@ import moment from 'moment'
 export class EventStore {
   @observable games
   @observable loading: boolean
+  @observable expendedGameId
+
 
   constructor(){
     this.games = observable.map({})
