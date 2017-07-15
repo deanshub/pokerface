@@ -30,17 +30,17 @@ Comment.belongsTo(Post)
 Comment.belongsTo(Player)
 
 
-Conn
-// .sync()
-// TODO: only in debug
-.sync({force: true})
-.then(()=>{
-  return generateFakeData(Conn, {
-    Player,
-    Post,
-    Comment,
-    Game,
-  })
-})
+// Conn
+// // .sync()
+// // TODO: only in debug
+// .sync({force: true})
+// .then(()=>{
+//   return generateFakeData(Conn, {
+//     Player,
+//     Post,
+//     Comment,
+//     Game,
+//   })
+// })
 
 export default Conn
