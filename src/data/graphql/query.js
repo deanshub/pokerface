@@ -118,6 +118,9 @@ const Query =  new GraphQLObjectType({
             },{
               playerUsername: context.user.username,
             }],
+            from: {
+              $gt: new Date(new Date() - 24 * 60 * 60 * 1000),
+            },
           }
           return Db.models.game.findAll({
             where,
