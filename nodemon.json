@@ -10,8 +10,6 @@
     "POSTGRES_USER": "postgres",
     "POSTGRES_PASSWORD": "admin",
     "NODE_ENV": "development",
-    "PORT": "9031",
-    "GMAIL_USER": "pokerfaceemail@gmail.com",
-    "GMAIL_PASSWORD": "kodszhadkclrkpyb"
+    "PORT": "9031"
   }
 }
