@@ -3,7 +3,7 @@ import {
   GraphQLInt,
 } from 'graphql'
 
-import Db from '../db'
+import DB from '../db'
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
 import Comment from './graphqlModels/Comment'
@@ -25,34 +25,19 @@ const Query =  new GraphQLObjectType({
           },
         },
         resolve(root, args){
-          let where
-
           if (args.username){
-            where = {
-              username: args.username,
-            }
+            return DB.models.Player.find({username: args.username})
           }else if (args.phrase){
-            where = {
-              $or:[{
-                username: {
-                  $ilike: `%${args.phrase}%`,
-                },
+            return DB.models.Player.find()
+              .or([{
+                username: new RegExp(args.phrase,'i'),
               },{
-                firstName: {
-                  $ilike: `%${args.phrase}%`,
-                },
+                firstname: new RegExp(args.phrase,'i'),
               },{
-                lastName: {
-                  $ilike: `%${args.phrase}%`,
-                },
-              }],
-            }
+                lastname: new RegExp(args.phrase,'i'),
+              }])
+              .limit(6)
           }
-
-          return Db.models.player.findAll({
-            where,
-            limit: 6,
-          })
         },
       },
       posts: {
@@ -69,64 +54,61 @@ const Query =  new GraphQLObjectType({
           },
         },
         resolve(root, args){
-          let where
+          let query
           if (args.id!==undefined){
-            where = {
-              id: args.id,
-            }
+            query = DB.models.Post.findById(args.id)
           }else if (args.username!==undefined) {
-            where = {
-              $or:[
-                {playerUsername: args.username},
-                {'$comments.playerUsername$': args.username},
-              ],
-            }
+            // TODO: fixt this so posts with comments of the user will show up too
+            query = DB.models.Post.find({player: args.username})
+            // .populate({
+            //   path:'comments',
+            //   match:{
+            //     player: args.username,
+            //   },
+            // })
+            // .populate('likes')
+            // .populate({
+            //   path:'player',
+            //   match:{
+            //     _id: args.username,
+            //   },
+            // })
+
+              // .or([
+              //   {playerUsername: args.username},
+              //   {'$comments.playerUsername$': args.username},
+              // ])
+          }else{
+            query = DB.models.Post.find()
           }
 
-          return Db.models.post.findAll({
-            where,
-            include: [{
-              model: Db.models.comment,
-              as: 'comments',
-              // where:{'playerUsername': args.username},
-              // required: false,
-              // separate: true,
-              // limit: 6,
-              duplicating: false,
-            }],
-            limit: 20,
-            offset: args.offset,
-            order: [['created', 'DESC']],
-          })
+          return query
+            .limit(20)
+            .skip(args.offset||0)
+            .sort('-created')
         },
       },
       comments: {
         type: new GraphQLList(Comment),
         resolve(root, args){
-          return Db.models.comment.findAll({where: args})
+          return DB.models.Comment.find(args)
         },
       },
       games: {
         type: new GraphQLList(Game),
         resolve(root, args, context){
-
-          let where = {
-            $or:[{
-              invited: {
-                $contains: [context.user.username],
-              },
-            },{
-              playerUsername: context.user.username,
-            }],
-            from: {
-              $gt: new Date(new Date() - 24 * 60 * 60 * 1000),
+          return DB.models.Game.find({
+            startDate: {
+              $gt: new Date(Date.now() - 24 * 60 * 60 * 1000),
             },
-          }
-          return Db.models.game.findAll({
-            where,
-            limit: 20,
-            order: [['created', 'DESC']],
           })
+          .or([{
+            invited: context.user._id,
+          },{
+            player: context.user._id,
+          }])
+          .limit(20)
+          .sort('-startDate')
         },
       },
     }

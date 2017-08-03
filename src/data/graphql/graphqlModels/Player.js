@@ -1,6 +1,7 @@
 import {
   GraphQLObjectType, GraphQLString, GraphQLList,
 } from 'graphql'
+import DB from '../../db'
 import Post from './Post'
 import Comment from './Comment'
 
@@ -15,22 +16,22 @@ const Player = new GraphQLObjectType({
           return player.username
         },
       },
-      firstName: {
+      firstname: {
         type: GraphQLString,
         resolve(player){
-          return player.firstName
+          return player.firstname
         },
       },
-      lastName: {
+      lastname: {
         type: GraphQLString,
         resolve(player){
-          return player.lastName
+          return player.lastname
         },
       },
-      fullName: {
+      fullname: {
         type: GraphQLString,
         resolve(player){
-          return player.fullName
+          return player.fullname
         },
       },
       email: {
@@ -54,13 +55,13 @@ const Player = new GraphQLObjectType({
       posts: {
         type: new GraphQLList(Post),
         resolve(player){
-          return player.getPosts()
+          return DB.models.Post.find({player: player._id})
         },
       },
       comments:{
         type: new GraphQLList(Comment),
         resolve(player){
-          return player.getComments()
+          return DB.models.Comment.find({player: player._id})
         },
       },
     }

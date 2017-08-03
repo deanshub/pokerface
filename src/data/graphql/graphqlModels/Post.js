@@ -2,6 +2,7 @@ import {
   GraphQLObjectType, GraphQLInt, GraphQLString,
   GraphQLList,
 } from 'graphql'
+import DB from '../../db'
 import Player from './Player'
 import Comment from './Comment'
 
@@ -11,9 +12,9 @@ const Post = new GraphQLObjectType({
   fields: ()=>{
     return {
       id: {
-        type: GraphQLInt,
+        type: GraphQLString,
         resolve(post){
-          return post.id
+          return post._id
         },
       },
       createdAt: {
@@ -35,21 +36,26 @@ const Post = new GraphQLObjectType({
         },
       },
       likes: {
-        type: new GraphQLList(GraphQLString),
+        type: new GraphQLList(Player),
         resolve(post){
-          return post.likes
+          return DB.models.Player.find({
+            _id:{
+              $in: post.likes,
+            },
+          })
         },
       },
       player: {
         type: Player,
         resolve(post){
-          return post.getPlayer()
+          return DB.models.Player.findById(post.player)
         },
       },
       comments: {
         type: new GraphQLList(Comment),
         resolve(post){
-          return post.getComments()
+          return DB.models.Comment.find({post:post._id})
+            .sort('created')
         },
       },
     }

@@ -1,46 +1,26 @@
-import Sequelize from 'sequelize'
-import CreatePlayerModel from './dbModels/Player'
-import CreatePostModel from './dbModels/Post'
-import CreateCommentModel from './dbModels/Comment'
-import CreateGameModel from './dbModels/Game'
+import mongoose from 'mongoose'
+mongoose.Promise = global.Promise
+
+import Player from './dbModels/Player'
+import Post from './dbModels/Post'
+import Comment from './dbModels/Comment'
+import Game from './dbModels/Game'
 import generateFakeData from './faker/generator'
 
-const Conn = new Sequelize(
-  'pokerface',
-  process.env.POSTGRES_USER,
-  process.env.POSTGRES_PASSWORD,
-  {
-    dialect: 'postgres',
-    host: 'localhost',
-  }
-)
+const connString = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@localhost/pokerface`
+mongoose.connect(connString,{
+  useMongoClient: true,
+})
 
-const Player = CreatePlayerModel(Conn)
-const Post = CreatePostModel(Conn)
-const Comment = CreateCommentModel(Conn)
-const Game = CreateGameModel(Conn)
+const DB = {
+  models:{
+    Player,
+    Post,
+    Comment,
+    Game,
+  },
+}
 
-Game.belongsTo(Player)
-Player.hasMany(Game)
-Player.hasMany(Post)
-Player.hasMany(Comment)
-Post.belongsTo(Player)
-Post.hasMany(Comment)
-Comment.belongsTo(Post)
-Comment.belongsTo(Player)
+// generateFakeData(DB).catch(console.error)
 
-
-// Conn
-// // .sync()
-// // TODO: only in debug
-// .sync({force: true})
-// .then(()=>{
-//   return generateFakeData(Conn, {
-//     Player,
-//     Post,
-//     Comment,
-//     Game,
-//   })
-// })
-
-export default Conn
+export default DB

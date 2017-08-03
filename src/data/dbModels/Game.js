@@ -1,66 +1,66 @@
-import Sequelize from 'sequelize'
+import mongoose from 'mongoose'
 
-const createModel = (Conn)=>{
-  const Game = Conn.define('game',{
-    id : {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    title:{
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
-    description:{
-      type: Sequelize.TEXT,
-      allowNull: true,
-    },
-    type:{
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
-    subtype:{
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
-    location:{
-      type: Sequelize.STRING,
-      allowNull: true,
-    },
-    from:{
-      type: Sequelize.DATE,
-      allowNull: false,
-    },
-    to:{
-      type: Sequelize.DATE,
-      allowNull: true,
-    },
-    invited:{
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      allowNull: false,
-    },
-    accepted:{
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      allowNull: false,
-    },
-    declined:{
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      allowNull: false,
-    },
-  },{
-    updatedAt: 'updated',
-    createdAt: 'created',
-    timestamps: true,
-    getterMethods: {
-      unresponsive(){
-        return (this.invited||[]).filter((username)=>{
-          return !this.accepted.includes(username) && !this.declined.includes(username)
-        })
-      },
-    },
+const schema = mongoose.Schema({
+  player: {
+    type: String,
+    ref: 'Player',
+    required: true,
+  },
+  title:{
+    type: String,
+    required: [true, 'Title is required'],
+    trim: true,
+  },
+  description:{
+    type: String,
+    trim: true,
+  },
+  type:{
+    type: String,
+    // enum: []
+  },
+  subtype:{
+    type: String,
+    // enum: []
+  },
+  location:{
+    type: String,
+    trim: true,
+  },
+  startDate:{
+    type: Date,
+    required: [true, 'Start time is required'],
+  },
+  endDate:{
+    type: Date,
+  },
+  invited:[{
+    type: String,
+    ref: 'Player',
+    required: true,
+    default: [],
+  }],
+  accepted:[{
+    type: String,
+    ref: 'Player',
+    required: true,
+    default: [],
+  }],
+  declined:[{
+    type: String,
+    ref: 'Player',
+    required: true,
+    default: [],
+  }],
+  updated: { type: Date, default: Date.now },
+  created: { type: Date, default: Date.now },
+})
+schema.virtual('unresponsive').get(function(){
+  return (this.invited).filter((username)=>{
+    return !this.accepted.includes(username) && !this.declined.includes(username)
   })
+})
 
-  return Game
-}
+const Game = mongoose.model('Game', schema)
 
-export default createModel
+export default Game

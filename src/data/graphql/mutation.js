@@ -7,7 +7,7 @@ import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
 import Comment from './graphqlModels/Comment'
 import Game from './graphqlModels/Game'
-import Db from '../db'
+import DB from '../db'
 
 
 const Mutation = new GraphQLObjectType({
@@ -21,7 +21,7 @@ const Mutation = new GraphQLObjectType({
           username:{
             type: new GraphQLNonNull(GraphQLString),
           },
-          firstName: {
+          firstname: {
             type: new GraphQLNonNull(GraphQLString),
           },
           lastName: {
@@ -33,12 +33,12 @@ const Mutation = new GraphQLObjectType({
         },
         resolve(_, args){
           // TODO: authorize only admins
-          return Db.models.player.create({
+          return new DB.models.Player({
             username: args.username,
-            firstName: args.firstName,
+            firstname: args.firstname,
             lastName: args.lastName,
             email: args.email.toLowerCase(),
-          })
+          }).save()
         },
       },
 
@@ -53,17 +53,16 @@ const Mutation = new GraphQLObjectType({
           },
         },
         resolve(_, args, context){
-          return Db.models.post.create({
+          return new DB.models.Post({
             content: args.content,
-            playerUsername: context.user.username,
-            photos: args.photos||[],
-            likes:[],
-          })
+            player: context.user._id,
+            photos: args.photos,
+          }).save()
         },
       },
 
       addComment: {
-        type: Comment,
+        type: Post,
         args:{
           content:{
             type: new GraphQLNonNull(GraphQLString),
@@ -76,12 +75,14 @@ const Mutation = new GraphQLObjectType({
           },
         },
         resolve(_, args, context){
-          return Db.models.comment.create({
+          return new DB.models.Comment({
             content: args.content,
-            playerUsername: context.user.username,
-            postId: args.post,
-            photos: args.photos||[],
-            likes:[],
+            player: context.user._id,
+            post: args.post,
+            photos: args.photos,
+          }).save()
+          .then(()=>{
+            return DB.models.Post.findById(args.post)
           })
         },
       },
@@ -97,9 +98,9 @@ const Mutation = new GraphQLObjectType({
           },
         },
         resolve(_, args, context){
-          return Db.models.comment.findById(args.comment)
+          return DB.models.Comment.findById(args.comment)
             .then((comment)=>{
-              const username = context.user.username
+              const username = context.user._id
               let likes = comment.get('likes')
               if (args.content&&!likes.includes(username)){
                 likes.push(username)
@@ -124,9 +125,9 @@ const Mutation = new GraphQLObjectType({
           },
         },
         resolve(_, args, context){
-          return Db.models.post.findById(args.post)
+          return DB.models.Post.findById(args.post)
             .then((post)=>{
-              const username = context.user.username
+              const username = context.user._id
               let likes = post.get('likes')
               if (args.content&&!likes.includes(username)){
                 likes.push(username)
@@ -151,9 +152,9 @@ const Mutation = new GraphQLObjectType({
           },
         },
         resolve(_, args, context){
-          return Db.models.game.findById(args.gameId)
+          return DB.models.Game.findById(args.gameId)
           .then(game=>{
-            const username = context.user.username
+            const username = context.user._id
             let invited = game.get('invited')
 
             if (invited.includes(username)){
@@ -215,20 +216,19 @@ const Mutation = new GraphQLObjectType({
           },
         },
         resolve(_, args, context){
-          return Db.models.game.create({
-            playerUsername: context.user.username,
+          return new DB.models.Game({
+            player: context.user._id,
             title: args.title,
             description: args.description,
             type: args.type,
             subtype: args.subtype,
             location: args.location,
-            from: new Date(args.from),
-            to: args.to!==undefined?new Date(args.to):undefined,
+            startDate: new Date(args.from),
+            endDate: args.to!==undefined?new Date(args.to):undefined,
             invited: args.invited,
-            declined:[],
-            accepted:[],
-          }).then(game=>{
-            mailer.sendGameInvite(game, Db)
+          }).save()
+          .then(game=>{
+            mailer.sendGameInvite(game, DB)
             return game
           })
         },
@@ -242,13 +242,13 @@ const Mutation = new GraphQLObjectType({
           },
         },
         resolve(_, args, context){
-          return Db.models.game.findById(args.gameId).then(game=>{
-            if (game.playerUsername===context.user.username){
-              return mailer.sendGameCancelled(game, Db).catch((err)=>{
+          return DB.models.Game.findById(args.gameId).then(game=>{
+            if (game.player===context.user._id){
+              return mailer.sendGameCancelled(game, DB).catch((err)=>{
                 console.error(err)
-                return game.destroy()
+                return game.remove()
               }).then(()=>{
-                return game.destroy()
+                return game.remove()
               })
             }else{
               throw new Error('Can\'t delete game of another user')

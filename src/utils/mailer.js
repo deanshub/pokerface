@@ -196,11 +196,9 @@ function sendPersonalGameCancellation(organizer, game, player){
 }
 
 function getAllPlayers(game, Db){
-  return Db.models.player.findAll({
-    where:{
-      username: {
-        $in: [...game.invited, game.playerUsername],
-      },
+  return Db.models.Player.find({
+    _id: {
+      $in: [...game.invited, game.playerUsername],
     },
   }).then(players=>{
     const orgenizer = players.filter(player=>player.username===game.playerUsername)[0]
@@ -217,8 +215,8 @@ function getAllPlayers(game, Db){
 }
 
 export default {
-  sendSignupMessage(firstName, lastName, email){
-    const htmlContent = `<h3>Sorry ${firstName} ${lastName},</h3>
+  sendSignupMessage(firstname, lastname, email){
+    const htmlContent = `<h3>Sorry ${firstname} ${lastname},</h3>
     <h4>Currently signup is via invitations only ☹</h4>
     <div>But don't worry, we added you to the waiting list,<br/>we will send you an invite as soon as we open pokerface.io to the public.</div>
     <br/>

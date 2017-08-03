@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon src/index.js",
-    "debug": "cross-env POSTGRES_USER=postgres POSTGRES_PASSWORD=admin babel-node --inspect --debug-brk src/index.js",
+    "debug": "cross-env DB_USER=mongo DB_PASSWORD=admin babel-node --inspect --debug-brk src/index.js",
     "build": "cross-env NODE_ENV=production babel src -d dist",
     "serve": "cross-env NODE_ENV=production node dist/index.js"
   },
@@ -23,12 +23,10 @@
     "express-session": "^1.15.1",
     "graphql": "^0.9.1",
     "ical-toolkit": "^1.0.9",
+    "mongoose": "^4.11.5",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
-    "pg": "^6.1.2",
-    "pg-hstore": "^2.3.2",
-    "sequelize": "^3.30.2"
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",

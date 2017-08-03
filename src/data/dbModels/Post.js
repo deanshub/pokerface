@@ -1,40 +1,36 @@
-import Sequelize from 'sequelize'
+import mongoose from 'mongoose'
 
-const createModel = (Conn)=>{
-  const Post = Conn.define('post',{
-    id : {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    content:{
-      type: Sequelize.JSON,
-      allowNull: false,
-    },
-    photos:{
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      allowNull: false,
-    },
-    likes : {
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      allowNull: true,
-    },
-  },{
-    updatedAt: 'updated',
-    createdAt: 'created',
-    timestamps: true,
-    // indexes: [
-    //   {
-    //     name: 'public_by_author',
-    //     fields: ['author', 'status'],
-    //     where: {
-    //       status: 0,
-    //     },
-    //   },
-    // ],
-  })
+const schema = mongoose.Schema({
+  player: {
+    type: String,
+    ref: 'Player',
+    required: true,
+  },
+  content: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  photos: [{
+    type: String,
+    required: true,
+    default: [],
+  }],
+  likes: [{
+    type: String,
+    ref: 'Player',
+    required: true,
+    default: [],
+  }],
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment',
+    required: true,
+    default: [],
+  }],
+  updated: { type: Date, default: Date.now },
+  created: { type: Date, default: Date.now },
+})
 
-  return Post
-}
+const Post = mongoose.model('Post', schema)
 
-export default createModel
+export default Post

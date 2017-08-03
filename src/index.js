@@ -39,12 +39,12 @@ if (process.env.NODE_ENV==='development'){
 
 
 passport.serializeUser((user, done) => {
-  done(null, user.username)
+  done(null, user._id)
 })
 
 passport.deserializeUser((username, done) => {
-  Db.models.player.findOne({where:{username}, attributes: { exclude: ['password']}}).then((user)=>{
-    return done(null, user.get({plain:true}))
+  Db.models.Player.findById(username).select('-password').then((user)=>{
+    return done(null, user.toJSON())
   }).catch(e=>{
     console.error(e)
     return done(null, false, {message: 'Email or password are Incorrect .'})
@@ -55,8 +55,8 @@ passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
 },(email, password, done) => {
-  Db.models.player.findOne({where:{email,password}, attributes: { exclude: ['password']} }).then((user)=>{
-    return done(null, user.get({plain:true}))
+  Db.models.Player.findOne({email,password}).select('-password').then((user)=>{
+    return done(null, user.toJSON())
   }).catch(e=>{
     console.error(e)
     return done(null, false, {message: 'Email or password are Incorrect .'})
@@ -65,7 +65,7 @@ passport.use(new LocalStrategy({
 
 app.post('/isAuthenticated', (req, res)=>{
   if (req.isAuthenticated()){
-    res.json(req.user)
+    res.json({...req.user, username: req.user._id})
   }else{
     res.json({})
   }

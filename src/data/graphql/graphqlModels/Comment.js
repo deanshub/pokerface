@@ -2,7 +2,7 @@ import {
   GraphQLObjectType, GraphQLInt, GraphQLString,
   GraphQLList,
 } from 'graphql'
-
+import DB from '../../db'
 import Player from './Player'
 import Post from './Post'
 
@@ -12,45 +12,49 @@ const Comment = new GraphQLObjectType({
   fields: ()=>{
     return {
       id: {
-        type: GraphQLInt,
-        resolve(post){
-          return post.id
+        type: GraphQLString,
+        resolve(comment){
+          return comment._id
         },
       },
       createdAt: {
         type: GraphQLString,
-        resolve(post){
-          return post.created
+        resolve(comment){
+          return comment.created
         },
       },
       content: {
         type: GraphQLString,
-        resolve(post){
-          return post.content
+        resolve(comment){
+          return comment.content
         },
       },
-      // photos:{
-      //   type: new GraphQLList(GraphQLString),
-      //   resolve(post){
-      //     return post.photos
-      //   },
-      // },
-      likes: {
+      photos:{
         type: new GraphQLList(GraphQLString),
-        resolve(post){
-          return post.likes
+        resolve(comment){
+          return comment.photos
+        },
+      },
+      likes: {
+        type: new GraphQLList(Player),
+        resolve(comment){
+          return DB.models.Player.find({
+            _id:{
+              $in: comment.likes,
+            },
+          })
         },
       },
       player: {
         type: Player,
         resolve(comment){
-          return comment.getPlayer()
+          return DB.models.Player.findById(comment.player)
         },
       },
       post: {
         type: Post,
         resolve(comment){
-          return comment.getPost()
+          return DB.models.Post.findById(comment.post)
         },
       },
     }

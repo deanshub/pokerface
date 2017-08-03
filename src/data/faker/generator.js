@@ -1,4 +1,5 @@
 import faker from 'faker'
+import mongoose from 'mongoose'
 
 faker.seed(123)
 
@@ -23,45 +24,50 @@ function getRandomItems(arr, num=1){
   return shuffle(arr).slice(-num)
 }
 
+function dropCollection(model){
+  return model.remove()
+}
 
-const generateFakeData = (conn, {Player,Post,Comment,Game}) => {
+
+const generateFakeData = (DB) => {
   function createPlayer(){
-    return Player.create({
+    return new DB.models.Player({
       username: faker.internet.userName(),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
+      firstname: faker.name.firstName(),
+      lastname: faker.name.lastName(),
       email: faker.internet.email(),
       avatar: faker.image.avatar(),
       coverImage: faker.image.image(),
       password: faker.internet.password(),
-    })
+    }).save()
   }
   function createDemoPlayer(){
-    return Player.create({
+    return new DB.models.Player({
       username: 'deanshub',
-      firstName: 'Dean',
-      lastName: 'Shub',
+      firstname: 'Dean',
+      lastname: 'Shub',
       email: 'demo@pokerface.io',
       avatar: 'dean2.jpg',
       coverImage: 'poker-1999643.jpg',
       password:'demo',
-    })
+    }).save()
   }
 
   function createGame(players){
     const invited = getRandomItems(players, 5).map(user=>user.username)
-    return Game.create({
+    return new DB.models.Game({
+      player: getRandomItems(players)[0].username,
       title: faker.lorem.sentence(),
       description: faker.lorem.paragraph(),
       type: 'Texas Hold\'em',
       subtype: 'Cash',
       location: `${faker.address.streetName()}, ${faker.address.city()}`,
-      from: faker.date.past(),
-      to: faker.date.past(),
+      startDate: faker.date.past(),
+      endDate: faker.date.past(),
       invited,
       accepted: invited.slice(0,2),
       declined: invited.slice(2,3),
-    })
+    }).save()
   }
 
   // function createPost(){
@@ -80,27 +86,30 @@ const generateFakeData = (conn, {Player,Post,Comment,Game}) => {
   //   })
   // }
 
+  return Promise.all(Object.keys(DB.models).map(modelName=>{
+    return dropCollection(DB.models[modelName])
+  }))
+  .then(()=>{
+    let playersCreatetion = generateArray(20).map(createPlayer)
+    playersCreatetion.push(createDemoPlayer())
 
-  let playersCreatetion = generateArray(20).map(createPlayer)
-  playersCreatetion.push(createDemoPlayer())
-
-  return Promise.all(playersCreatetion)
-  .then(players=>{
-    return Promise.all(generateRandomArray(25).map(()=>createGame(players)))
-    .then((games)=>{
-      return {players,games}
+    return Promise.all(playersCreatetion)
+    .then(players=>{
+      return Promise.all(generateRandomArray(25).map(()=>createGame(players)))
+      .then((games)=>{
+        return {players,games}
+      })
+      //   return Promise.all(generateArray(150).map(createPost)).then((posts)=>{
+      //     return {players,posts}
+      //   })
     })
-    //   return Promise.all(generateArray(150).map(createPost)).then((posts)=>{
-    //     return {players,posts}
+    // .then(({players,games})=>{
+    //   const addingGames = games.map(game=>{
+    //     const player = getRandomItems(players)[0]
+    //     return player.addGame(game)
     //   })
-  })
-  .then(({players,games})=>{
-    const addingGames = games.map(game=>{
-      const player = getRandomItems(players)[0]
-      return player.addGame(game)
-    })
-    return Promise.all(addingGames)
-  })
+    //   return Promise.all(addingGames)
+    // })
     // .then(({players,posts})=>{
     //   return Promise.all(generateArray(60).map(createComment)).then((comments)=>{
     //     return {players,posts,comments}
@@ -121,6 +130,8 @@ const generateFakeData = (conn, {Player,Post,Comment,Game}) => {
     //     post.addComment(comment)
     //   })
     // })
+  })
+
 }
 
 export default generateFakeData

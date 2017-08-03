@@ -2,7 +2,7 @@ import {
   GraphQLObjectType, GraphQLInt, GraphQLString,
   GraphQLList,
 } from 'graphql'
-
+import DB from '../../db'
 import Player from './Player'
 
 const Game = new GraphQLObjectType({
@@ -11,9 +11,9 @@ const Game = new GraphQLObjectType({
   fields: ()=>{
     return {
       id: {
-        type: GraphQLInt,
+        type: GraphQLString,
         resolve(game){
-          return game.id
+          return game._id
         },
       },
       title: {
@@ -49,37 +49,53 @@ const Game = new GraphQLObjectType({
       from: {
         type: GraphQLString,
         resolve(game){
-          return game.from
+          return game.startDate
         },
       },
       to: {
         type: GraphQLString,
         resolve(game){
-          return game.to
+          return game.endDate
         },
       },
       invited: {
-        type: new GraphQLList(GraphQLString),
+        type: new GraphQLList(Player),
         resolve(game){
-          return game.invited
+          return DB.models.Player.find({
+            _id: {
+              $in: game.invited,
+            },
+          })
         },
       },
       accepted: {
-        type: new GraphQLList(GraphQLString),
+        type: new GraphQLList(Player),
         resolve(game){
-          return game.accepted
+          return DB.models.Player.find({
+            _id: {
+              $in: game.accepted,
+            },
+          })
         },
       },
       declined: {
-        type: new GraphQLList(GraphQLString),
+        type: new GraphQLList(Player),
         resolve(game){
-          return game.declined
+          return DB.models.Player.find({
+            _id: {
+              $in: game.declined,
+            },
+          })
         },
       },
       unresponsive: {
-        type: new GraphQLList(GraphQLString),
+        type: new GraphQLList(Player),
         resolve(game){
-          return game.unresponsive
+          return DB.models.Player.find({
+            _id: {
+              $in: game.unresponsive,
+            },
+          })
         },
       },
       updatedAt: {
@@ -97,9 +113,15 @@ const Game = new GraphQLObjectType({
       creator: {
         type: Player,
         resolve(game){
-          return game.getPlayer()
+          return DB.models.Player.findById(game.player)
         },
       },
+      // player: {
+      //   type: Player,
+      //   resolve(game){
+      //     return game.player
+      //   },
+      // },
     }
   },
 })
