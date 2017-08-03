@@ -46,7 +46,7 @@ export default class PostComment extends Component {
 
   getUserFullName(){
     const { comment, auth } = this.props
-    return comment.player.username===auth.user.username?'You':comment.player.fullName
+    return comment.player.username===auth.user.username?'You':comment.player.fullname
   }
   getUserImageUrl(){
     const { comment } = this.props
@@ -55,13 +55,13 @@ export default class PostComment extends Component {
 
   setLike(){
     const { feed, auth, comment } = this.props
-    const activeLike = comment.likes.includes(auth.user.username)
+    const activeLike = comment.likes.filter((user)=>user.username===auth.user.username).length>0
     feed.setCommentLike(comment.post.id, comment.id, !activeLike, auth.user.username)
   }
 
   render() {
     const { comment, auth } = this.props
-    const activeLike = comment.likes.includes(auth.user.username)
+    const activeLike = comment.likes.filter((user)=>user.username===auth.user.username).length>0
     const {commentEditorState} = this.state
 
     return (

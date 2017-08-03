@@ -1,30 +1,35 @@
 export const commentCreate = `($post: String!, $comment: String!){
   addComment(post: $post, content:$comment){
     id
-    post{
+    createdAt
+    content
+    photos
+    likes{
+      username
+      fullname
+      avatar
+    }
+    comments{
       id
-      createdAt
-      content
-      photos
-      likes
-      comments{
+      post{
         id
-        post{
-          id
-        }
-        likes
-        content
-        player{
-          username
-          fullName
-          avatar
-        }
       }
-      player{
+      likes{
         username
-        fullName
+        fullname
         avatar
       }
+      content
+      player{
+        username
+        fullname
+        avatar
+      }
+    }
+    player{
+      username
+      fullname
+      avatar
     }
   }
 }`
@@ -37,23 +42,31 @@ export const setCommentLike = `($comment: String!, $like: Boolean!){
       createdAt
       content
       photos
-      likes
+      likes{
+        username
+        fullname
+        avatar
+      }
       comments{
         id
         post{
           id
         }
-        likes
+        likes{
+          username
+          fullname
+          avatar
+        }
         content
         player{
           username
-          fullName
+          fullname
           avatar
         }
       }
       player{
         username
-        fullName
+        fullname
         avatar
       }
     }

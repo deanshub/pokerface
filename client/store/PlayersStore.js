@@ -16,7 +16,7 @@ export class PlayersStore {
     // todo: fill with auth user
     this.currentUser = {
       username:'deanshub',
-      fullName: 'Dean Shub',
+      fullname: 'Dean Shub',
       avatar: '/images/dean2.jpg',
       buyIns: [{value: this.initialBuyIn, key:Math.random()}],
       winnings: [{value: this.initialWin, key:Math.random()}],
@@ -52,7 +52,7 @@ export class PlayersStore {
     if (player===undefined){
       player = {
         username,
-        fullName:username,
+        fullname:username,
         avatar: avatarImage,
       }
       this.searchPlayers.set(username, player)

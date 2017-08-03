@@ -37,7 +37,7 @@ export class PlayersSearchStore {
     // name, link, avatar
     const suggestedPlayers = toJS(this.availablePlayers).map(player=>{
       return {
-        name: player.fullName,
+        name: player.fullname,
         avatar: player.avatar.includes('http')?player.avatar:`/images/${player.avatar}`,
         username: player.username,
         link: `/profile/${player.username}`,

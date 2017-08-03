@@ -59,7 +59,7 @@ export class FeedStore {
         comments:[],
         player:{
           username: this.currentUser,
-          fullName: 'Dean Shub',
+          fullname: 'Dean Shub',
           avatar: 'dean2.jpg',
         },
       })
@@ -77,16 +77,15 @@ export class FeedStore {
       lokkaClient.mutate(commentCreate, {comment:JSON.stringify(comment), post:postId})
       // if post mutation succeded add id
       .then(newComment=>{
-        this.posts.set(newComment.addComment.post.id, newComment.addComment.post)
+        this.posts.set(newComment.addComment.id, newComment.addComment)
       })
       // if post mutation failed remove it
       .catch(err=>{
         console.error(err);
         const commentedPost = this.posts.get(postId)
         const tempComment = commentedPost.comments.filter(comment=>comment.id===newCommentTempId)[0]
-        const tempCommentIndex = commentedPost.comments.indexOf(tempComment)
-        if (tempCommentIndex!==-1){
-          commentedPost.comments = commentedPost.comments.splice(tempCommentIndex-1, 1)
+        if (tempComment){
+          commentedPost.comments.remove(tempComment)
         }
       })
 
@@ -101,7 +100,7 @@ export class FeedStore {
         likes:[],
         player:{
           username: this.currentUser,
-          fullName: 'Dean Shub',
+          fullname: 'Dean Shub',
           avatar: 'dean2.jpg',
         },
       })

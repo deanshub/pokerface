@@ -51,7 +51,7 @@ export default class Post extends Component {
 
   getUserFullName(){
     const { post, auth } = this.props
-    return post.player.username===auth.user.username?'You':post.player.fullName
+    return post.player.username===auth.user.username?'You':post.player.fullname
   }
   getUserImageUrl(){
     const { post } = this.props
@@ -96,14 +96,14 @@ export default class Post extends Component {
 
   setLike(){
     const { feed, auth, post } = this.props
-    const activeLike = post.likes.includes(auth.user.username)
+    const activeLike = post.likes.filter(user=>user.username===auth.user.username).length>0
     feed.setPostLike(post.id, !activeLike, auth.user.username)
   }
 
   render() {
     const { post, auth } = this.props
     const { replying } = this.state
-    const activeLike = post.likes.includes(auth.user.username)
+    const activeLike = post.likes.filter(user=>user.username===auth.user.username).length>0
     const {postEditorState} = this.state
 
     return (

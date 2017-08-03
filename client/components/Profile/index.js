@@ -42,7 +42,7 @@ export default class Profile extends Component {
       <div className={classnames(style.container)}>
         <Cover
             imageFile={user.get('imageFile')}
-            title={user.get('fullName')}
+            title={user.get('fullname')}
         />
         <ProfileNavbar
             avatarImage={user.get('avatarImage')}

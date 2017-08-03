@@ -64,7 +64,7 @@ export default class AddGame extends Component {
     const searchPlayerOptions = players.searchPlayers.keys().map(username=>{
       const player = players.searchPlayers.get(username)
       return {
-        text: player.fullName,
+        text: player.fullname,
         value: username,
         image: player.avatar,
         disabled: players.currentPlayers.has(username),

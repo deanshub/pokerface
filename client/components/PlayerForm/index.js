@@ -21,7 +21,7 @@ export default class PlayerForm extends Component {
             <Image src={user.avatar}/>
             <Card.Content>
               <Card.Header>
-                {user.fullName}
+                {user.fullname}
               </Card.Header>
               <Card.Content extra>
                 <Icon name="user" />

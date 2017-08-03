@@ -3,7 +3,7 @@ export const gameAttendanceUpdate = `($gameId: String!, $attendance: Boolean!){
     id
     creator{
       username
-      fullName
+      fullname
       avatar
     }
     title
@@ -13,10 +13,26 @@ export const gameAttendanceUpdate = `($gameId: String!, $attendance: Boolean!){
     location
     from
     to
-    invited
-    accepted
-    declined
-    unresponsive
+    invited{
+      username
+      fullname
+      avatar
+    }
+    accepted{
+      username
+      fullname
+      avatar
+    }
+    declined{
+      username
+      fullname
+      avatar
+    }
+    unresponsive{
+      username
+      fullname
+      avatar
+    }
     updatedAt
     createdAt
   }
@@ -27,7 +43,7 @@ export const addGame = `($title: String!, $description: String, $type: String, $
     id
     creator{
       username
-      fullName
+      fullname
       avatar
     }
     title
@@ -37,10 +53,26 @@ export const addGame = `($title: String!, $description: String, $type: String, $
     location
     from
     to
-    invited
-    accepted
-    declined
-    unresponsive
+    invited{
+      username
+      fullname
+      avatar
+    }
+    accepted{
+      username
+      fullname
+      avatar
+    }
+    declined{
+      username
+      fullname
+      avatar
+    }
+    unresponsive{
+      username
+      fullname
+      avatar
+    }
     updatedAt
     createdAt
   }

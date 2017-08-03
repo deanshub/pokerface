@@ -36,12 +36,12 @@ export default class Navbar extends Component {
     routing.push(`/profile/${selected.username}`)
   }
 
-  resultRenderer({username, fullName, avatar}){
+  resultRenderer({username, fullname, avatar}){
     return (
       <PlayerSearchResult
           avatar={avatar}
           childKey={username}
-          name={fullName}
+          name={fullname}
           username={username}
       />
     )

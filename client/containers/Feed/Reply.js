@@ -17,7 +17,6 @@ export default class Comments extends Component {
 
   componentDidMount(){
     const { auth } = this.props
-    console.log(auth.user);
     if (auth.user.avatar!==undefined){
       if (auth.user.avatar.startsWith('http')){
         this.setState({

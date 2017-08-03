@@ -4,7 +4,7 @@ export const eventsQuery = `query
           id
           creator{
             username
-            fullName
+            fullname
             avatar
           }
           title
@@ -14,10 +14,26 @@ export const eventsQuery = `query
           location
           from
           to
-          invited
-          accepted
-          declined
-          unresponsive
+          invited{
+            username
+            fullname
+            avatar
+          }
+          accepted{
+            username
+            fullname
+            avatar
+          }
+          declined{
+            username
+            fullname
+            avatar
+          }
+          unresponsive{
+            username
+            fullname
+            avatar
+          }
           updatedAt
           createdAt
       }

@@ -52,7 +52,7 @@ export default class EventRow extends Component {
           <Button.Group>
             <Button
                 animated
-                negative={game.declined.includes(auth.user.username)}
+                negative={game.declined.filter(user=>user.username===auth.user.username).length>0}
                 onClick={()=>{events.fillAttendance(auth.user.username, game.id, false)}}
             >
               <Button.Content visible>Not Going</Button.Content>
@@ -64,7 +64,7 @@ export default class EventRow extends Component {
             <Button
                 animated
                 onClick={()=>{events.fillAttendance(auth.user.username, game.id, true)}}
-                positive={game.accepted.includes(auth.user.username)}
+                positive={game.accepted.filter(user=>user.username===auth.user.username).length>0}
             >
               <Button.Content visible>Going</Button.Content>
               <Button.Content hidden>

@@ -4,23 +4,31 @@ export const postCreate = `($post: String!){
     createdAt
     content
     photos
-    likes
+    likes{
+      username
+      fullname
+      avatar
+    }
     comments{
       id
       post{
         id
       }
-      likes
+      likes{
+        username
+        fullname
+        avatar
+      }
       content
       player{
         username
-        fullName
+        fullname
         avatar
       }
     }
     player{
       username
-      fullName
+      fullname
       avatar
     }
   }
@@ -32,23 +40,31 @@ export const setPostLike = `($post: String!, $like: Boolean!){
     createdAt
     content
     photos
-    likes
+    likes{
+      username
+      fullname
+      avatar
+    }
     comments{
       id
       post{
         id
       }
-      likes
+      likes{
+        username
+        fullname
+        avatar
+      }
       content
       player{
         username
-        fullName
+        fullname
         avatar
       }
     }
     player{
       username
-      fullName
+      fullname
       avatar
     }
   }

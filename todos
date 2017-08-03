@@ -6,8 +6,9 @@ add user (with temp until verified)
 
 -------------------------------------------------------------------------------
 
-add server side defaults when adding posts or comments (photos, likes,...)
 allow posting from home page
+add graphql fregments
+move to appolo client instead of looka
 
 GAME
 -------

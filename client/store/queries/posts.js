@@ -5,14 +5,22 @@ export const postsQuery = `query _($username: String, $offset: Int)
         createdAt
         content
         photos
-        likes
+        likes{
+          username
+          fullname
+          avatar
+        }
         comments{
           id
-          likes
+          likes{
+            username
+            fullname
+            avatar
+          }
           content
           player{
             username
-            fullName
+            fullname
             avatar
           }
           post{
@@ -21,7 +29,7 @@ export const postsQuery = `query _($username: String, $offset: Int)
         }
         player{
           username
-          fullName
+          fullname
           avatar
         }
       }
