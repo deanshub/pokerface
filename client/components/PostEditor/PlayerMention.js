@@ -6,17 +6,20 @@ import { observer, inject } from 'mobx-react'
 @observer
 export default class PlayerMention extends Component {
   render(){
-    const {className, decoratedText} = this.props
+    const {className, decoratedText, mention, routing} = this.props
+    const url = mention._root.entries.filter(entry=>entry[0]==='link')[0][1]
+
     return (
-      <span
+      <a
           className={className}
-          onClick={()=>{
-            const url = this.props.mention._root.entries[3][1]
-            this.props.routing.push(url)
+          href={url}
+          onClick={(e)=>{
+            e.preventDefault()
+            routing.push(url)
           }}
       >
         {decoratedText}
-      </span>
+      </a>
     )
   }
 }
