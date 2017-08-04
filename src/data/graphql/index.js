@@ -11,7 +11,7 @@ const Schema = new GraphQLSchema({
 // TODO: make pretty and graphiql true only in dev
 export default GraphHTTP({
   schema: Schema,
-  pretty: true,
-  graphiql: true,
+  pretty: process.env.NODE_ENV==='development'?true:false,
+  graphiql: process.env.NODE_ENV==='development'?true:false,
   printErrors: true,
 })
