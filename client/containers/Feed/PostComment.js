@@ -24,8 +24,13 @@ export default class PostComment extends Component {
   constructor(props){
     super(props)
     this.timeAgo = new TimeAgo('en-US')
+    let content = JSON.parse(props.comment.content)
+    if (!content.entityMap){
+      content.entityMap={}
+    }
+    const parsedContent = convertFromRaw(content, 'update-contentState')
     this.state={
-      commentEditorState: EditorState.createWithContent(convertFromRaw(JSON.parse(props.comment.content), 'update-contentState')),
+      commentEditorState: EditorState.createWithContent(parsedContent),
     }
   }
 

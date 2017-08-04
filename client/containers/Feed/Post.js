@@ -24,9 +24,14 @@ export default class Post extends Component {
   constructor(props){
     super(props)
     this.timeAgo = new TimeAgo('en-US')
+    let content = JSON.parse(props.post.content)
+    if (!content.entityMap){
+      content.entityMap={}
+    }
+    const parsedContent = convertFromRaw(content, 'update-contentState')
     this.state = {
       replying: false,
-      postEditorState: EditorState.createWithContent(convertFromRaw(JSON.parse(props.post.content), 'update-contentState')),
+      postEditorState: EditorState.createWithContent(parsedContent),
     }
   }
 
