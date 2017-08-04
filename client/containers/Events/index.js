@@ -10,14 +10,8 @@ import EventRow from './EventRow'
 @inject('events')
 @observer
 export default class Events extends Component {
-  propTypes = {
-    events: PropTypes.arrayOf(PropTypes.shape).isRequired,
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.handleToggle = this.handleToggle.bind(this)
+  static propTypes = {
+    events: PropTypes.shape().isRequired,
   }
 
   handleToggle(game) {

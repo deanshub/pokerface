@@ -11,8 +11,8 @@ import RSVPStatics from './RSVPStatics'
 @inject('events')
 @observer
 export default class EventRow extends Component {
-  propTypes = {
-    game: PropTypes.shape.isRequired,
+  static propTypes = {
+    game: PropTypes.shape().isRequired,
     isExpanded: PropTypes.bool,
   }
 

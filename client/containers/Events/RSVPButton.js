@@ -1,23 +1,21 @@
 import React, { PropTypes } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
-import classnames from 'classnames'
-import style from './style.css'
 
 export default ({ auth, game, events }) => {
   const handleNotGoing = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    events.fillAttendance(auth.user.username, game.id, false);
-  };
+    e.preventDefault()
+    e.stopPropagation()
+    events.fillAttendance(auth.user.username, game.id, false)
+  }
 
   const handleGoing = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    events.fillAttendance(auth.user.username, game.id, true);
-  };
+    e.preventDefault()
+    e.stopPropagation()
+    events.fillAttendance(auth.user.username, game.id, true)
+  }
 
-  const isGoing = game.accepted.filter(user=>user.username===auth.user.username).length>0;
-  const isNotGoing = game.declined.filter(user=>user.username===auth.user.username).length>0;
+  const isGoing = game.accepted.filter(user=>user.username===auth.user.username).length>0
+  const isNotGoing = game.declined.filter(user=>user.username===auth.user.username).length>0
 
   return (
     <Button.Group className="is-going-button">
@@ -43,5 +41,5 @@ export default ({ auth, game, events }) => {
         </Button.Content>
       </Button>
     </Button.Group>
-  );
-};
+  )
+}
