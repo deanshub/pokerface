@@ -1,21 +1,19 @@
 // @flow
 
 import express from 'express'
-import path from 'path'
 import passport from 'passport'
 import {Strategy as LocalStrategy} from 'passport-local'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import expressSession from 'express-session'
 import compression from 'compression'
-import apiRoutes from './routes'
+import routes from './routes'
 import graphql from './data/graphql'
 import {devMiddleware, hotMiddleware} from './routes/webpack.js'
 import Db from './data/db'
 
 const app = express()
 const PORT = process.env.port || 9031
-const STATIC_FILES_DIRECTORY = path.join(__dirname,'../../client/static')
 
 app.use(compression())
 app.use(cookieParser())
@@ -63,14 +61,6 @@ passport.use(new LocalStrategy({
   })
 }))
 
-app.post('/isAuthenticated', (req, res)=>{
-  if (req.isAuthenticated()){
-    res.json({...req.user, username: req.user._id})
-  }else{
-    res.json({})
-  }
-})
-
 app.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     if (err) { return next(err) }
@@ -87,47 +77,15 @@ app.get('/logout', (req, res)=>{
   res.redirect('/login')
 })
 
-function isAuthenticated(req, res, next) {
-  if (req.isAuthenticated()){
-    return next()
-  }
-  res.redirect('/login')
-}
-
-app.get('/', isAuthenticated, (req, res)=>{
-  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-})
-app.get('/profile', isAuthenticated, (req, res)=>{
-  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-})
-app.get('/timer', isAuthenticated, (req, res)=>{
-  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-})
-app.get('/smart', isAuthenticated, (req, res)=>{
-  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-})
-app.get('/profile/:username', isAuthenticated, (req, res)=>{
-  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-})
-app.get('/events', isAuthenticated, (req, res)=>{
-  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-})
-app.get('/login', (req, res)=>{
-  res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-})
-
 app.use('/graphql', graphql)
-apiRoutes.then(routes=>{
-  routes.forEach((route)=>{
+
+routes.apiRoutes.then(apiRoutes=>{
+  apiRoutes.forEach((route)=>{
     app.use('/api', route)
   })
 })
 
-app.use('/', express.static(STATIC_FILES_DIRECTORY))
-// app.get('*', function (req, res) {
-//   // and drop 'public' in the middle of here
-//   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-// })
+app.use('/', routes.staticRoutes)
 
 app.listen(PORT, ()=>{
   console.log(`Pokerface server listening on port ${PORT}`)

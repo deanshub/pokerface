@@ -15,4 +15,12 @@ router.post('/signup', (req, res)=>{
   })
 })
 
+router.post('/isAuthenticated', (req, res)=>{
+  if (req.isAuthenticated()){
+    res.json({...req.user, username: req.user._id})
+  }else{
+    res.json({})
+  }
+})
+
 export default router

@@ -3,6 +3,8 @@ const routesConfig = [{
   // disabled: true,
 }]
 
+import staticRoutes from './staticRoutes'
+
 const enableModules = routesConfig
   .filter(route=>route.disabled!==true)
   .map(route=>{
@@ -12,4 +14,7 @@ const enableModules = routesConfig
     return Promise.resolve(require(`./${route.name}`).default)
   })
 
-export default Promise.all(enableModules)
+export default {
+  apiRoutes: Promise.all(enableModules),
+  staticRoutes,
+}
