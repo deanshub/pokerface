@@ -26,7 +26,7 @@ const Post = new GraphQLObjectType({
       content: {
         type: GraphQLString,
         resolve(post){
-          return post.content
+          return JSON.stringify(post.content)
         },
       },
       photos:{

@@ -55,7 +55,7 @@ const Mutation = new GraphQLObjectType({
         },
         resolve(_, args, context){
           return new DB.models.Post({
-            content: args.content,
+            content: JSON.parse(args.content),
             player: context.user._id,
             photos: args.photos,
           }).save()
@@ -77,7 +77,7 @@ const Mutation = new GraphQLObjectType({
         },
         resolve(_, args, context){
           return new DB.models.Comment({
-            content: args.content,
+            content: JSON.parse(args.content),
             player: context.user._id,
             post: args.post,
             photos: args.photos,
