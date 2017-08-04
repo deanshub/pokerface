@@ -2,6 +2,7 @@
 
 import express from 'express'
 import passport from 'passport'
+import multer from 'multer'
 import {Strategy as LocalStrategy} from 'passport-local'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
@@ -42,7 +43,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((username, done) => {
   Db.models.Player.findById(username).select('-password').then((user)=>{
-    return done(null, user.toJSON())
+    return done(null, {...user.toJSON(), fullname:user.fullname})
   }).catch(e=>{
     console.error(e)
     return done(null, false, {message: 'Email or password are Incorrect .'})
@@ -54,7 +55,7 @@ passport.use(new LocalStrategy({
   passwordField: 'password',
 },(email, password, done) => {
   Db.models.Player.findOne({email,password}).select('-password').then((user)=>{
-    return done(null, user.toJSON())
+    return done(null, {...user.toJSON(), fullname:user.fullname})
   }).catch(e=>{
     console.error(e)
     return done(null, false, {message: 'Email or password are Incorrect .'})
@@ -76,6 +77,11 @@ app.get('/logout', (req, res)=>{
   req.logout()
   res.redirect('/login')
 })
+
+// Multer provides multipart form data parsing.
+// const storage = multer.memoryStorage()
+// app.use(multer({storage}))
+app.use(multer({ dest: 'uploads/' }).array())
 
 app.use('/graphql', graphql)
 

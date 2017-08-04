@@ -26,11 +26,11 @@ const Query =  new GraphQLObjectType({
         },
         resolve(root, args){
           if (args.username){
-            return DB.models.Player.find({username: args.username})
+            return DB.models.Player.find({_id:args.username})
           }else if (args.phrase){
             return DB.models.Player.find()
               .or([{
-                username: new RegExp(args.phrase,'i'),
+                _id: new RegExp(args.phrase,'i'),
               },{
                 firstname: new RegExp(args.phrase,'i'),
               },{

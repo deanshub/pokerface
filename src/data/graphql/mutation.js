@@ -7,6 +7,7 @@ import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
 import Comment from './graphqlModels/Comment'
 import Game from './graphqlModels/Game'
+import UploadedFile from './graphqlModels/UploadedFile'
 import DB from '../db'
 
 
@@ -254,6 +255,22 @@ const Mutation = new GraphQLObjectType({
               throw new Error('Can\'t delete game of another user')
             }
           })
+        },
+      },
+
+      updatePersonalInfo:{
+        type: Player,
+        args:{
+          firstname: {
+            type: GraphQLString,
+          },
+          // cover: {
+          //   type: UploadedFile,
+          // },
+        },
+        resolve(rootValue, args, context){
+          // console.log(args, rootValue.request.file, rootValue.request.files);
+          return DB.models.Player.findById(context.user._id)
         },
       },
 

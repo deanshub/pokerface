@@ -12,13 +12,13 @@ function isAuthenticated(req, res, next) {
 }
 
 const router = express.Router()
-router.use('/', isAuthenticated, express.static(INDEX_HTML_PATH))
 router.use('/profile', isAuthenticated, express.static(INDEX_HTML_PATH))
 router.use('/timer', isAuthenticated, express.static(INDEX_HTML_PATH))
 router.use('/smart', isAuthenticated, express.static(INDEX_HTML_PATH))
 router.use('/profile/:username', isAuthenticated,express.static(INDEX_HTML_PATH))
 router.use('/events', isAuthenticated,express.static(INDEX_HTML_PATH))
 router.use('/login', express.static(INDEX_HTML_PATH))
+// router.use('/', isAuthenticated, express.static(INDEX_HTML_PATH))
 
 
 router.use('/', express.static(STATIC_FILES_DIRECTORY))
