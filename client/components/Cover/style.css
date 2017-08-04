@@ -28,11 +28,11 @@
   to {left: 120%;}
 }
 
-/*.title{
-  color: $titleColor;
-  font-size: 300%;
-}*/
-
-/*.coverImage{
-  max-height: 20vh;
-}*/
+.edit{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+  color: white;
+  margin: 20px !important;
+}

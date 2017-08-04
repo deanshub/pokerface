@@ -19,7 +19,7 @@ export class AuthStore {
   @action
   authenticate(){
     this.authenticating = true
-    return request.post('/isAuthenticated').then((res)=>{
+    return request.post('/api/isAuthenticated').then((res)=>{
       this.authenticating = false
       return this.user=res.body
     }).catch(err=>{

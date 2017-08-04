@@ -4,6 +4,7 @@ import { observable, action } from 'mobx'
 import * as ProfileConsts from '../constants/profile'
 import lokkaClient from './lokkaClient'
 import {playersQuery} from './queries/players'
+import {updatePersonalInfoMutation} from './mutations/players'
 
 export class ProfileStore {
   @observable currentTab: string
@@ -54,5 +55,10 @@ export class ProfileStore {
         })
       }
     }
+  }
+
+  updatePersonalInfo(info): void{
+    // return lokkaClient.mutate(updatePersonalInfoMutation, {firstname:'aba', info})
+    return Promise.resolve(info)
   }
 }
