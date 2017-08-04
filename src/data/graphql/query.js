@@ -56,28 +56,20 @@ const Query =  new GraphQLObjectType({
         resolve(root, args){
           let query
           if (args.id!==undefined){
-            query = DB.models.Post.findById(args.id)
+            query = DB.models.Post.find(args.id)
           }else if (args.username!==undefined) {
-            // TODO: fixt this so posts with comments of the user will show up too
-            query = DB.models.Post.find({player: args.username})
-            // .populate({
-            //   path:'comments',
-            //   match:{
-            //     player: args.username,
-            //   },
-            // })
-            // .populate('likes')
-            // .populate({
-            //   path:'player',
-            //   match:{
-            //     _id: args.username,
-            //   },
-            // })
-
-              // .or([
-              //   {playerUsername: args.username},
-              //   {'$comments.playerUsername$': args.username},
-              // ])
+            return DB.models.Comment.find({player: args.username}).then((comments)=>{
+              const posts = comments.map(comment=>comment.post)
+              return DB.models.Post.find({
+                $or:[
+                  {player: args.username},
+                  {_id:{$in:posts}},
+                ],
+              })
+              .limit(20)
+              .skip(args.offset||0)
+              .sort('-created')
+            })
           }else{
             query = DB.models.Post.find()
           }

@@ -1,5 +1,5 @@
 import {
-  GraphQLObjectType, GraphQLInt, GraphQLString,
+  GraphQLObjectType, GraphQLString,
   GraphQLList,
 } from 'graphql'
 import DB from '../../db'

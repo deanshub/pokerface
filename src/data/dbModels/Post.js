@@ -21,12 +21,6 @@ const schema = mongoose.Schema({
     required: true,
     default: [],
   }],
-  comments: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Comment',
-    required: true,
-    default: [],
-  }],
   updated: { type: Date, default: Date.now },
   created: { type: Date, default: Date.now },
 })

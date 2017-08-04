@@ -21,6 +21,6 @@ const DB = {
   },
 }
 
-generateFakeData(DB).catch(console.error)
+// generateFakeData(DB).catch(console.error)
 
 export default DB
