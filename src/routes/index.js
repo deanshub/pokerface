@@ -1,6 +1,9 @@
 const routesConfig = [{
   name: 'signup',
   // disabled: true,
+},{
+  name:'avatarGenerator',
+  // disabled: true,
 }]
 
 import staticRoutes from './staticRoutes'

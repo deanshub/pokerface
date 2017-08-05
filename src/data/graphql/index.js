@@ -8,7 +8,6 @@ const Schema = new GraphQLSchema({
   mutation: Mutation,
 })
 
-// TODO: make pretty and graphiql true only in dev
 export default GraphHTTP({
   schema: Schema,
   pretty: process.env.NODE_ENV==='development'?true:false,

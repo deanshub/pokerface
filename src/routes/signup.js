@@ -17,7 +17,15 @@ router.post('/signup', (req, res)=>{
 
 router.post('/isAuthenticated', (req, res)=>{
   if (req.isAuthenticated()){
-    res.json({...req.user, username: req.user._id})
+    const username = req.user._id
+
+    let avatar = req.user.avatar
+    if (!avatar){
+      avatar = `/api/avatarGenerator?username=${username}`
+    }else if (!avatar.includes('http')) {
+      avatar = `/images/${avatar}`
+    }
+    res.json({...req.user, username, avatar})
   }else{
     res.json({})
   }

@@ -1042,6 +1042,10 @@ camelcase@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-3.0.0.tgz#32fc4b9fcdaf845fcdf7e73bb97cac2261f0ab0a"
 
+canvas-renderer@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/canvas-renderer/-/canvas-renderer-1.0.0.tgz#be15680c25c6878944101ca06fd5538ea7179fd4"
+
 caseless@~0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.11.0.tgz#715b96ea9841593cc33067923f5ec60ebda4f7d7"
@@ -2343,6 +2347,13 @@ iterall@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.0.3.tgz#e0b31958f835013c323ff0b10943829ac69aa4b7"
 
+jdenticon@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/jdenticon/-/jdenticon-1.7.2.tgz#4472bd161f6ca94b0cbc96b798a7cb3099a73cc2"
+  dependencies:
+    canvas-renderer "~1.0.0"
+    requirejs "^2.3.3"
+
 jodid25519@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/jodid25519/-/jodid25519-1.0.2.tgz#06d4912255093419477d425633606e0e90782967"
@@ -3387,6 +3398,10 @@ require_optional@~1.0.0:
   dependencies:
     resolve-from "^2.0.0"
     semver "^5.1.0"
+
+requirejs@^2.3.3:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/requirejs/-/requirejs-2.3.4.tgz#f45c48e66ebf0f163da57f6e0cf40fd57996ef50"
 
 resolve-from@^1.0.0:
   version "1.0.1"

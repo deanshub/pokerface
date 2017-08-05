@@ -43,6 +43,11 @@ const Player = new GraphQLObjectType({
       avatar: {
         type: GraphQLString,
         resolve(player){
+          if (!player.avatar){
+            return `/api/avatarGenerator?username=${player.username}`
+          }else if (!player.avatar.includes('http')) {
+            return `/images/${player.avatar}`
+          }
           return player.avatar
         },
       },
