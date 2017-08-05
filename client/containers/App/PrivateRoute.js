@@ -25,7 +25,7 @@ export default class PrivateRoute extends Component {
               ) : (
                 <Redirect
                     to={{
-                      pathname: `/login?url=${routing.location.pathname}`,
+                      pathname: routing.location.pathname==='/'?'/login':`/login?url=${routing.location.pathname}`,
                     }}
                 />
               )

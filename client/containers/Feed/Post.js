@@ -21,6 +21,11 @@ TimeAgo.locale(timeAgoEnLocale)
 @inject('feed')
 @observer
 export default class Post extends Component {
+  static propTypes = {
+    post: PropTypes.object,
+    standalone: PropTypes.bool,
+  }
+
   constructor(props){
     super(props)
     this.timeAgo = new TimeAgo('en-US')
@@ -33,11 +38,6 @@ export default class Post extends Component {
       replying: false,
       postEditorState: EditorState.createWithContent(parsedContent),
     }
-  }
-
-  static propTypes = {
-    post: PropTypes.object,
-    standalone: PropTypes.bool,
   }
 
   // componentWillReceiveProps(nextProps){
