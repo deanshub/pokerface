@@ -1,37 +1,27 @@
 import React, { Component, PropTypes } from 'react'
 import { Button, Modal } from 'semantic-ui-react'
+import { observer, inject } from 'mobx-react'
 import AddGame from './index'
 
+
+@inject('game')
+@observer
 export default class AddGameModal extends Component {
   static propTypes = {
     buttonClassName: PropTypes.string,
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.state = { isOpen: false }
-    this.openModal = this.openModal.bind(this)
-    this.closeModal = this.closeModal.bind(this)
-  }
-
-  openModal() {
-    this.setState({ isOpen: true })
-  }
-
-  closeModal() {
-    this.setState({ isOpen: false })
+    game: PropTypes.shape().isRequired,
   }
 
   render() {
+    const { game } = this.props
     return (
         <Modal
-            onClose={this.closeModal}
-            open={this.state.isOpen}
+            onClose={() => game.closeAddGameModal()}
+            open={game.addGameModalOpen}
             trigger={
                 <Button
                     className={this.props.buttonClassName}
-                    onClick={this.openModal}
+                    onClick={() => game.openAddGameModal()}
                     primary
                     size="small"
                 >
@@ -40,7 +30,7 @@ export default class AddGameModal extends Component {
         >
           <Modal.Header>Create an event</Modal.Header>
           <Modal.Content image>
-            <AddGame handleClose={this.closeModal}/>
+            <AddGame handleClose={() => game.closeAddGameModal()}/>
           </Modal.Content>
         </Modal>
     )

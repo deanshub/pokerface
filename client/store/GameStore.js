@@ -3,12 +3,15 @@ import moment from 'moment'
 
 export class GameStore {
   @observable currentGame
+  @observable addGameModalOpen
 
   constructor(){
     this.currentGame = observable.map({
       startDate: moment(),
       endDate: moment(),
     })
+
+    this.addGameModalOpen = false
 
     this.gameTypes = [{
       text: 'Texas Hold\'em',
@@ -77,5 +80,15 @@ export class GameStore {
   }
   titleChangeHandler(title){
     this.currentGame.set('title', title)
+  }
+
+  @action
+  openAddGameModal() {
+    this.addGameModalOpen = true
+  }
+
+  @action
+  closeAddGameModal() {
+    this.addGameModalOpen = false
   }
 }

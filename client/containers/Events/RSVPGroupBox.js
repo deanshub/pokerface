@@ -11,9 +11,8 @@ const RSVPGroupBox =({ group, groupName, hideWhenEmpty }) => {
   return (
     <div className={classnames(style.rsvpGroup)}>
       <div className={classnames(style.rsvpGroupHeader)}>{group.length} {groupName}</div>
-      <div className="rsvp-group-content">
+      <div>
         {group.map(({ username, fullname, avatar }) => {
-          const imageSrc = `/images/${avatar}`
           const href = `/profile/${username}`
           return (
             <div key={username}>
@@ -27,7 +26,7 @@ const RSVPGroupBox =({ group, groupName, hideWhenEmpty }) => {
                         shape="circular"
                         size="mini"
                         spaced
-                        src={imageSrc}
+                        src={avatar}
                     />
                   }
               />
@@ -40,7 +39,7 @@ const RSVPGroupBox =({ group, groupName, hideWhenEmpty }) => {
 }
 
 RSVPGroupBox.propTypes = {
-  group: PropTypes.shape.isRequired,
+  group: PropTypes.shape().isRequired,
   groupName: PropTypes.string.isRequired,
   hideWhenEmpty: PropTypes.bool,
 }
