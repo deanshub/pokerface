@@ -7,11 +7,28 @@
   border-radius: 5px;
 }
 
+.containerHeader {
+  margin: 20px;
+  padding: 10px;
+  position: relative;
+}
+
+.containerHeaderText {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.containerHeaderButton {
+  position: absolute;
+  top: 0.3rem;
+  right: 0;
+  max-width: 100px;
+}
+
 .eventPanel{
   width: 100%;
     padding: 0.3rem;
 }
-
 
 .eventPanel:not(:last-of-type) {
     margin-bottom: 0.5rem;
