@@ -56,7 +56,7 @@ const Query =  new GraphQLObjectType({
         resolve(root, args){
           let query
           if (args.id!==undefined){
-            query = DB.models.Post.find(args.id)
+            query = DB.models.Post.find({_id: args.id})
           }else if (args.username!==undefined) {
             return DB.models.Comment.find({player: args.username}).then((comments)=>{
               const posts = comments.map(comment=>comment.post)

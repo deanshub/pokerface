@@ -8,7 +8,12 @@ function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()){
     return next()
   }
-  res.redirect(`/login?url=${req.originalUrl}`)
+
+  if (req.originalUrl.trim()==='/'){
+    res.redirect(`/login?url=${req.originalUrl}`)
+  }else {
+    res.redirect('/login')
+  }
 }
 
 const router = express.Router()
@@ -18,6 +23,7 @@ router.use('/smart', isAuthenticated, express.static(INDEX_HTML_PATH))
 router.use('/profile/:username', isAuthenticated,express.static(INDEX_HTML_PATH))
 router.use('/events', isAuthenticated,express.static(INDEX_HTML_PATH))
 router.use('/login', express.static(INDEX_HTML_PATH))
+router.use('/post/:id', express.static(INDEX_HTML_PATH))
 // router.use('/', isAuthenticated, express.static(INDEX_HTML_PATH))
 
 
