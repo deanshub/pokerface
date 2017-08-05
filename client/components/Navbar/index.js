@@ -77,7 +77,7 @@ export default class Navbar extends Component {
               <Image
                   shape="circular"
                   size="mini"
-                  src={auth.user.avatar.startsWith('http')?auth.user.avatar:`/images/${auth.user.avatar}`}
+                  src={auth.user.avatar}
                   style={{marginTop:-5,marginBottom:-10, marginRight:10, maxHeight:35}}
               />
               :

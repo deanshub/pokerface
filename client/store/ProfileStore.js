@@ -24,7 +24,8 @@ export class ProfileStore {
   setCurrentUser(user): void{
     if (typeof user === 'string'){
       lokkaClient.query(playersQuery, {username:user}).then((result)=>{
-        this.currentUser = observable.map(result.players[0])
+        const player = result.players[0]
+        this.currentUser = observable.map(player)
         this.setImageFiles()
       })
     }else{
@@ -35,7 +36,7 @@ export class ProfileStore {
 
   setImageFiles(): void{
     const coverImage = this.currentUser.get('coverImage')
-    if(coverImage!==undefined){
+    if(coverImage){
       if (coverImage.startsWith('http')){
         this.currentUser.set('imageFile', coverImage)
       }else{
@@ -46,14 +47,8 @@ export class ProfileStore {
     }
 
     const avatarUrl = this.currentUser.get('avatar')
-    if(avatarUrl!==undefined){
-      if (avatarUrl.startsWith('http')){
-        this.currentUser.set('avatarImage', avatarUrl)
-      }else{
-        import(`../assets/images/${avatarUrl}`).then(avatarImage=>{
-          this.currentUser.set('avatarImage', avatarImage)
-        })
-      }
+    if(avatarUrl){
+      this.currentUser.set('avatarImage', avatarUrl)
     }
   }
 

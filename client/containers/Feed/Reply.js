@@ -17,18 +17,10 @@ export default class Comments extends Component {
 
   componentDidMount(){
     const { auth } = this.props
-    if (auth.user.avatar!==undefined){
-      if (auth.user.avatar.startsWith('http')){
-        this.setState({
-          avatarImage:auth.user.avatar,
-        })
-      }else{
-        import(`../../assets/images/${auth.user.avatar}`).then(avatarImage=>{
-          this.setState({
-            avatarImage,
-          })
-        })
-      }
+    if (auth.user.avatar){
+      this.setState({
+        avatarImage:auth.user.avatar,
+      })
     }
   }
 

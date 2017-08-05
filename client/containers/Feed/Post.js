@@ -60,7 +60,7 @@ export default class Post extends Component {
   }
   getUserImageUrl(){
     const { post } = this.props
-    return post.player.avatar.includes('http')?post.player.avatar:`/images/${post.player.avatar}`
+    return post.player.avatar
   }
 
   getFeedSummary(){

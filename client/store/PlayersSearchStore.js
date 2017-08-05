@@ -26,6 +26,7 @@ export class PlayersSearchStore {
     lokkaClient.query(playersQuery, {phrase}).then((result)=>{
       this.availablePlayers.replace(result.players.map(player=>{
         player.childKey=player.username
+
         return player
       }))
       this.loading = false
@@ -38,7 +39,7 @@ export class PlayersSearchStore {
     const suggestedPlayers = toJS(this.availablePlayers).map(player=>{
       return {
         name: player.fullname,
-        avatar: player.avatar.includes('http')?player.avatar:`/images/${player.avatar}`,
+        avatar: player.avatar,
         username: player.username,
         link: `/profile/${player.username}`,
       }

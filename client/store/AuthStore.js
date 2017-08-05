@@ -21,7 +21,8 @@ export class AuthStore {
     this.authenticating = true
     return request.post('/api/isAuthenticated').then((res)=>{
       this.authenticating = false
-      return this.user=res.body
+      const player = res.body
+      return this.user=player
     }).catch(err=>{
       console.error(err)
       this.authenticating = false
