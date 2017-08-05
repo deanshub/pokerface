@@ -17,6 +17,10 @@ import PlayerForm from '../PlayerForm'
 @inject('events')
 @observer
 export default class AddGame extends Component {
+  static propTypes = {
+      handleClose: PropTypes.func.isRequired,
+  }
+
   constructor(props: Object){
     super(props)
     this.state = {
@@ -51,6 +55,7 @@ export default class AddGame extends Component {
       if (!res.err){
         game.resetGame()
         routing.push('/events')
+        this.props.handleClose()
       }
     })
   }

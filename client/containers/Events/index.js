@@ -4,6 +4,7 @@ import { Container, Button, Dimmer, Loader } from 'semantic-ui-react'
 import moment from 'moment'
 import classnames from 'classnames'
 import style from './style.css'
+import AddGameModal from '../../components/AddGame/AddGameModal'
 
 import EventRow from './EventRow'
 
@@ -22,7 +23,6 @@ export default class Events extends Component {
 
     events.expendedGameId = game.id
   }
-
 
   render() {
     const {events} = this.props
@@ -56,15 +56,12 @@ export default class Events extends Component {
 
     return (
       <div>
+
         { !events.loading && <div className={classnames(style.containerHeader)}>
           <span className={classnames(style.containerHeaderText)}>
               {title}
           </span>
-          <Button
-              className={classnames(style.containerHeaderButton)}
-              primary
-              size="small"
-          >Add Event</Button>
+          <AddGameModal buttonClassName={classnames(style.containerHeaderButton)} />
         </div> }
         { hasEvents && <div className={classnames(style.container)}>{eventRows}</div> }
         {
