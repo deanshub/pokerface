@@ -9,7 +9,7 @@ function isAuthenticated(req, res, next) {
     return next()
   }
 
-  if (req.originalUrl.trim()==='/'){
+  if (req.originalUrl.trim()!=='/'){
     res.redirect(`/login?url=${req.originalUrl}`)
   }else {
     res.redirect('/login')
