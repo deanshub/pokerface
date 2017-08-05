@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Container, Dimmer, Loader } from 'semantic-ui-react'
+import { Container, Button, Dimmer, Loader } from 'semantic-ui-react'
 import moment from 'moment'
 import classnames from 'classnames'
 import style from './style.css'
+import AddGameModal from '../../components/AddGame/AddGameModal'
 
 import EventRow from './EventRow'
 
@@ -41,22 +42,36 @@ export default class Events extends Component {
       )
     })
 
+    const gamesAmount = events.games.size
+    const hasEvents = gamesAmount > 0
+
+    let title
+    if (gamesAmount === 0) {
+      title = 'There are no scheduled events'
+    } else if (gamesAmount === 1) {
+      title = 'There is 1 scheduled event'
+    } else {
+      title = `There are ${gamesAmount} scheduled events`
+    }
+
     return (
-      <div className={classnames(style.container)}>
-        <div>
-          {eventRows}
-          {!events.loading && events.games.size===0 &&
-            <Container text> No game invites found </Container>
-          }
-          {
-            events.loading &&
-            <Container text>
-              <Dimmer active inverted>
-                <Loader>Loading</Loader>
-              </Dimmer>
-            </Container>
-          }
-        </div>
+      <div>
+
+        { !events.loading && <div className={classnames(style.containerHeader)}>
+          <span className={classnames(style.containerHeaderText)}>
+              {title}
+          </span>
+          <AddGameModal buttonClassName={classnames(style.containerHeaderButton)} />
+        </div> }
+        { hasEvents && <div className={classnames(style.container)}>{eventRows}</div> }
+        {
+          events.loading &&
+          <Container text>
+            <Dimmer active inverted>
+              <Loader>Loading</Loader>
+            </Dimmer>
+          </Container>
+        }
       </div>
     )
   }
