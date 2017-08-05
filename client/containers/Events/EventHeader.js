@@ -51,7 +51,8 @@ const EventHeader = ({ game, events, auth, onClick, isExpanded }) => {
 }
 
 EventHeader.propTypes = {
-  events: PropTypes.object.isRequired,
+  auth: PropTypes.shape().isRequired,
+  events: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   game: PropTypes.shape().isRequired,
   isExpanded: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
