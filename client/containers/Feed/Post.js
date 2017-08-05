@@ -106,6 +106,12 @@ export default class Post extends Component {
     feed.setPostLike(post.id, !activeLike, auth.user.username)
   }
 
+  sharePost(){
+    const { post } = this.props
+    const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/post/${post.id}&title=Pokerface.io&description=Post by ${post.player.fullname}&picture=http://pokerface.io${require('file-loader!../../assets/fav2.jpg')}`
+    window.open(shareurl,'', 'height=570,width=520')
+  }
+
   render() {
     const { post, auth, standalone } = this.props
     const { replying } = this.state
@@ -151,7 +157,10 @@ export default class Post extends Component {
               <Icon className={classnames(style.icon)} name="reply" />
               Reply
             </Feed.Like>
-            <Feed.Like className={classnames(style.unselectable, style.blackIcons)}>
+            <Feed.Like
+                className={classnames(style.unselectable, style.blackIcons)}
+                onClick={::this.sharePost}
+            >
               <Icon className={classnames(style.icon)} name="share" />
               Share
             </Feed.Like>

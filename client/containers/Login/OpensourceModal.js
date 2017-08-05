@@ -58,7 +58,7 @@ export default class Footer extends Component {
               <List.Item href="https://github.com/kadirahq/lokka" target="_blank" >lokka</List.Item>
               <List.Item href="https://github.com/expressjs/multer" target="_blank" >multer</List.Item>
               <List.Item href="https://jdenticon.com/js-get-started.html" target="_blank" >jdenticon</List.Item>
-
+              <List.Item href="https://github.com/nfl/react-helmet" target="_blank" >react-helmet</List.Item>
 
             </List>
           </Modal.Description>
