@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react'
 import DocumentTitle from 'react-document-title'
 import DevTools from 'mobx-react-devtools'
 import { Route, Switch } from 'react-router-dom'
-// import { observer, inject } from 'mobx-react'
 
 import Navbar from '../../components/Navbar'
 import Feed from '../Feed'

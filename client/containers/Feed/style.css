@@ -17,3 +17,7 @@
 .active .icon{
   color: #FF2733 !important;
 }
+
+.standalone>img{
+  max-height: 200px;
+}

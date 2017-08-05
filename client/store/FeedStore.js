@@ -218,4 +218,15 @@ export class FeedStore {
       }
     }
   }
+
+  getStandalonePost(id: String): Function{
+    return lokkaClient.query(postsQuery, {id}).then((result) => {
+      const post = result.posts[0]
+      if (post){
+        return post
+      }else{
+        throw new Error('Post doesn\'t exists anymore')
+      }
+    })
+  }
 }

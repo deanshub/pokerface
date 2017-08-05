@@ -8,7 +8,11 @@ add user (with temp until verified)
 
 -------------------------------------------------------------------------------
 
+add link to post
+add share on facebook button
 allow posting from home page
+allow creating event from events section
+remove the profile sub navigation
 add graphql fregments
 move to appolo client instead of looka
 

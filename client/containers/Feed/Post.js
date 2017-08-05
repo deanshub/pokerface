@@ -37,6 +37,7 @@ export default class Post extends Component {
 
   static propTypes = {
     post: PropTypes.object,
+    standalone: PropTypes.bool,
   }
 
   // componentWillReceiveProps(nextProps){
@@ -106,14 +107,18 @@ export default class Post extends Component {
   }
 
   render() {
-    const { post, auth } = this.props
+    const { post, auth, standalone } = this.props
     const { replying } = this.state
     const activeLike = post.likes.filter(user=>user.username===auth.user.username).length>0
     const {postEditorState} = this.state
 
     return (
       <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10, backgroundColor:'#ffffff'}}>
-        <Feed.Label image={this.getUserImageUrl()}  onClick={::this.goto}/>
+        <Feed.Label
+            className={classnames({[style.standalone]:standalone, [style.clickable]: true})}
+            image={this.getUserImageUrl()}
+            onClick={::this.goto}
+        />
         <Feed.Content>
             {this.getFeedSummary()}
           <Feed.Extra text>

@@ -4,6 +4,7 @@ import { Route, Redirect } from 'react-router'
 import { observer, inject } from 'mobx-react'
 
 @inject('auth')
+@inject('routing')
 @observer
 export default class PrivateRoute extends Component {
   componentWillMount(){
@@ -12,7 +13,7 @@ export default class PrivateRoute extends Component {
     })
   }
   render(){
-    const {component: Component, auth, ...rest} = this.props
+    const {component: Component, auth, routing, ...rest} = this.props
     return (
       <Route
           {...rest}
@@ -24,7 +25,7 @@ export default class PrivateRoute extends Component {
               ) : (
                 <Redirect
                     to={{
-                      pathname: '/login',
+                      pathname: `/login?url=${routing.location.pathname}`,
                     }}
                 />
               )
