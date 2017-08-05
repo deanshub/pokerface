@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "draft-js": "^0.10.0",
+    "draft-js-buttons": "^2.0.0-beta6",
     "draft-js-emoji-plugin": "beta",
     "draft-js-focus-plugin": "beta",
     "draft-js-hashtag-plugin": "beta",
@@ -56,6 +57,7 @@
     "draft-js-linkify-plugin": "beta",
     "draft-js-mention-plugin": "beta",
     "draft-js-plugins-editor": "beta",
+    "draft-js-video-plugin": "beta",
     "history": "^4.6.2",
     "immutable": "^3.8.1",
     "intl-messageformat": "^2.0.0",

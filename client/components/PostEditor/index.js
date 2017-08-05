@@ -10,13 +10,29 @@ import Editor from 'draft-js-plugins-editor'
 import CardsPreview from './CardsPreview'
 
 import createFocusPlugin from 'draft-js-focus-plugin'
-import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
+import createInlineToolbarPlugin, {Separator}  from 'draft-js-inline-toolbar-plugin'
 import createMentionPlugin from 'draft-js-mention-plugin'
 import PlayerMention from './PlayerMention'
 import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createHashtagPlugin from 'draft-js-hashtag-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
+import createVideoPlugin from 'draft-js-video-plugin'
 import createCardsPlugin from './CardsPlugin'
+
+import {
+  ItalicButton,
+  BoldButton,
+  UnderlineButton,
+  CodeButton,
+  // HeadlineOneButton,
+  // HeadlineTwoButton,
+  // HeadlineThreeButton,
+  // UnorderedListButton,
+  // OrderedListButton,
+  // BlockquoteButton,
+  // CodeBlockButton,
+} from 'draft-js-buttons'
+import AddVideoButton from './AddVideoButton'
 
 import style from './style.css'
 import 'draft-js/dist/Draft.css'
@@ -26,10 +42,19 @@ import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
 import 'draft-js-hashtag-plugin/lib/plugin.css'
 import 'draft-js-linkify-plugin/lib/plugin.css'
+import 'draft-js-video-plugin/lib/plugin.css'
 
 @inject('globalPlayersSearch')
 @observer
 export default class PostEditor extends Component {
+  static propTypes = {
+    editorState: PropTypes.shape(),
+    onChange: PropTypes.func,
+    placeholder: PropTypes.string,
+    postEditor: PropTypes.bool,
+    readOnly: PropTypes.bool,
+  }
+
   static defaultProps = {
     editorState: EditorState.createEmpty(),
     postEditor: false,
@@ -39,7 +64,16 @@ export default class PostEditor extends Component {
   constructor(props){
     super(props)
     const focusPlugin = createFocusPlugin()
-    const inlineToolbarPlugin = createInlineToolbarPlugin()
+    const inlineToolbarPlugin = createInlineToolbarPlugin({
+      structure: [
+        BoldButton,
+        ItalicButton,
+        UnderlineButton,
+        CodeButton,
+        Separator,
+        AddVideoButton,
+      ],
+    })
     const { InlineToolbar } = inlineToolbarPlugin
     const emojiPlugin = createEmojiPlugin()
     const { EmojiSuggestions } = emojiPlugin
@@ -51,6 +85,7 @@ export default class PostEditor extends Component {
     const linkifyPlugin = createLinkifyPlugin({
       target: '_blank',
     })
+    const videoPlugin = createVideoPlugin()
     const cardsPlugin = createCardsPlugin()
 
     this.plugins = [
@@ -60,6 +95,7 @@ export default class PostEditor extends Component {
       mentionPlugin,
       hashtagPlugin,
       linkifyPlugin,
+      videoPlugin,
       cardsPlugin,
     ]
     this.InlineToolbar = InlineToolbar
