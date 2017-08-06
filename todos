@@ -2,16 +2,13 @@ FOR GA ONLY!!!
 --------------
 
 handle email\guest on game players addition
-pictures for undefined cover and profile pictures
 add user (with temp until verified)
 
 
 -------------------------------------------------------------------------------
 
-add link to post
-add share on facebook button
-allow posting from home page
-allow creating event from events section
+allow post edit\deletion
+add game statistics (maybe it should look like a poker table and you can click the players to see stats)
 remove the profile sub navigation
 add graphql fregments
 move to appolo client instead of looka
@@ -31,22 +28,8 @@ creation time
 creation of a game should also create a post
 
 
-POST
----------
-change likes to strings of usernames then you can implement the like mutation
-allow comments on posts
-
 POST CREATION - ADD GAME
 -------------------------
-draft.js based
 have rich text header and selection toolbar
   allow bold, link, add images (with preview), friend tagging, youtube\url embedding
         italic, emojis, hashtag, linkify
-allow cards as text, once in show preview in other div
-use authenticated connection to know who created the post (instead of taking it from the mutation)
-
-
-PROFILE
--------
-implement the profile of other usres
-make post queries by the user
