@@ -2,14 +2,11 @@
 
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
-import { Menu, Segment, Icon, Image } from 'semantic-ui-react'
+import { Menu, Segment, Image } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 
 import * as ProfileConsts from '../../constants/profile'
-import OnlyLoggedinUser from '../OnlyLoggedinUser'
 import Statistics from '../Statistics'
-import AddGame from '../AddGame'
-import AddPlay from '../AddPlay'
 import UnavailableSection from '../UnavailableSection'
 import style from './style.css'
 
@@ -50,16 +47,12 @@ export default class ProfileNavbar extends Component {
   getCurrentTab(currentTab: string){
     if (currentTab===ProfileConsts.STATISTICS_TAB){
       return <Statistics />
-    }else if (currentTab===ProfileConsts.ADD_GAME_TAB) {
-      return <AddGame />
-    }else if (currentTab===ProfileConsts.ADD_PLAY_TAB) {
-      return <AddPlay />
     }else{
       return <UnavailableSection/>
     }
   }
 
-  getMenu(fixed){
+  getMenu(fixed: boolean){
     const {profile, avatarImage} = this.props
     const {currentTab} = profile
     const {activateFixedNavbar}: {activateFixedNavbar: boolean} = this.state
@@ -75,15 +68,6 @@ export default class ProfileNavbar extends Component {
           tabular
           widths={5}
       >
-        <OnlyLoggedinUser>
-          <Menu.Item
-              active={currentTab===ProfileConsts.ADD_GAME_TAB}
-              onClick={()=>profile.changeTab(ProfileConsts.ADD_GAME_TAB)}
-          >
-              <Icon name="gamepad" />
-              Game
-            </Menu.Item>
-        </OnlyLoggedinUser>
         <Menu.Item
             active={currentTab===ProfileConsts.STATISTICS_TAB}
             onClick={()=>profile.changeTab(ProfileConsts.STATISTICS_TAB)}
@@ -96,15 +80,6 @@ export default class ProfileNavbar extends Component {
               src={avatarImage}
           />
         </Menu.Item>
-        <OnlyLoggedinUser>
-          <Menu.Item
-              active={currentTab===ProfileConsts.ADD_PLAY_TAB}
-              onClick={()=>profile.changeTab(ProfileConsts.ADD_PLAY_TAB)}
-          >
-            <Icon name="share alternate" />
-            Post
-          </Menu.Item>
-        </OnlyLoggedinUser>
       </Menu>
     )
   }

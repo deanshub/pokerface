@@ -4,6 +4,7 @@ import { Feed, Container, Loader } from 'semantic-ui-react'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import moment from 'moment'
+import AddPlay from '../../components/AddPlay'
 // import classnames from 'classnames'
 // import style from './style.css'
 
@@ -42,23 +43,29 @@ export default class FeedContainer extends Component {
 
     return (
       <Container
-          style={{marginTop:20}}
-          text
+          fluid
+          style={{marginTop:30}}
       >
-        <Feed>
-          {feed.events.sort((a,b)=>{
-            return moment(new Date(b.createdAt)).diff(moment(new Date(a.createdAt)))
-          }).map(post=><Post key={post.id} post={post}/>)}
-          {feed.loading?
-            <Feed.Event>
-               <Loader active inline="centered">Loading</Loader>
-            </Feed.Event>
-          :
-            null
-          }
-        </Feed>
-        <PhotoGallery/>
-      </Container>
+        <AddPlay />
+        <Container
+            style={{marginTop:60}}
+            text
+        >
+          <Feed>
+            {feed.events.sort((a,b)=>{
+              return moment(new Date(b.createdAt)).diff(moment(new Date(a.createdAt)))
+            }).map(post=><Post key={post.id} post={post}/>)}
+            {feed.loading?
+              <Feed.Event>
+                 <Loader active inline="centered">Loading</Loader>
+              </Feed.Event>
+            :
+              null
+            }
+          </Feed>
+          <PhotoGallery/>
+        </Container>
+    </Container>
     )
   }
 }
