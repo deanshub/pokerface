@@ -9,6 +9,7 @@ export class TimerStore {
   @observable round
   @observable paused
   @observable settingsModalOpen
+  @observable inverted
 
   MINIMAL_OFFSET = 10
   MINUTES_MULTIPLIER = 60 * 1000
@@ -23,19 +24,38 @@ export class TimerStore {
   constructor(){
     this.rounds = [
       this.INITIAL_ROUND,
-      {
-        ante: 10,
+      Object.assign({}, this.INITIAL_ROUND, {
+        key: Math.random(),
         smallBlind: 15,
         bigBlind: 30,
-        time: 10,
+      }),
+      Object.assign({}, this.INITIAL_ROUND, {
         key: Math.random(),
-      },
+        smallBlind: 20,
+        bigBlind: 40,
+      }),
+      Object.assign({}, this.INITIAL_ROUND, {
+        key: Math.random(),
+        smallBlind: 30,
+        bigBlind: 60,
+      }),
+      Object.assign({}, this.INITIAL_ROUND, {
+        key: Math.random(),
+        smallBlind: 50,
+        bigBlind: 100,
+      }),
+      Object.assign({}, this.INITIAL_ROUND, {
+        key: Math.random(),
+        smallBlind: 150,
+        bigBlind: 300,
+      }),
     ]
 
     this.round = 1
     this.paused = true
     this.offset = this.rounds[this.round-1].time * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET
     this.settingsModalOpen = false
+    this.inverted = false
   }
 
   @action start(){
@@ -126,14 +146,19 @@ export class TimerStore {
     if (currentRound.type==='break'){
       return 'Break'
     }
-    const currentAnte = `${currentRound.ante}`
-    return currentAnte
+    if (!currentRound.ante){
+      return null
+    }
+    return `${currentRound.ante}`
   }
   @computed get nextAnte(){
     if (this.round<this.rounds.length){
       const nextRound = this.rounds[this.round]
       if (nextRound.type==='break'){
         return 'Break'
+      }
+      if (!nextRound.ante){
+        return null
       }
       return `Next ${nextRound.ante}`
     }

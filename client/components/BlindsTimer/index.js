@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import { Grid, Button, Header, Progress, Icon } from 'semantic-ui-react'
+import { Grid, Button, Header, Progress, Icon, Checkbox } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -11,6 +11,7 @@ import BlindsTimerSettingsModal from './BlindsTimerSettingsModal'
 @observer
 export default class BlindsTimer extends Component {
   static propTypes ={
+    timer: PropTypes.shape(),
   }
 
   componentWillUnmount(){
@@ -47,11 +48,25 @@ export default class BlindsTimer extends Component {
     }, 1000)
   }
 
+  toggleInverted(){
+    const {timer} = this.props
+    timer.inverted = !timer.inverted
+  }
+
   toggleFullscreen(){
+    const {timer} = this.props
+    const inverted = timer.inverted
+
     if (!document.fullscreenElement) {
+      if (!inverted){
+        this.toggleInverted()
+      }
       ReactDOM.findDOMNode(this).requestFullscreen()
     } else {
       if (document.exitFullscreen) {
+        if (inverted){
+          this.toggleInverted()
+        }
         document.exitFullscreen()
       }
     }
@@ -64,47 +79,82 @@ export default class BlindsTimer extends Component {
 
   render() {
     const {timer} = this.props
+    const inverted = timer.inverted
+
+    const anteSection =
+      timer.ante || timer.nextAnte ?[
+        <Header
+            color="grey"
+            inverted={inverted}
+            key="1"
+        >
+          Ante
+        </Header>,
+        <Header
+            inverted={inverted}
+            key="2"
+            style={{fontSize:'9vw', margin:0, lineHeight:0.8}}
+        >
+          {timer.ante||'0'}
+        </Header>,
+        <Header
+            inverted={inverted}
+            key="3"
+        >
+          {timer.nextAnte}
+        </Header>,
+      ]
+      :
+      null
 
     return (
-      <Grid className={classnames(style.fullScreen)} stretched>
-        <BlindsTimerSettingsModal />
+      <Grid
+          className={classnames(style.fullScreen)}
+          stretched
+      >
+        <BlindsTimerSettingsModal mountNode={this}/>
 
-        <Grid.Row color="black" stretched>
-          <Grid.Column width={3}>
-            <Header inverted>Pokerface.io</Header>
+        <Grid.Row
+            color={inverted?'black':undefined}
+            stretched
+            style={{backgroundColor:!inverted?'white':undefined, paddingTop:25}}
+        >
+          <Grid.Column width={5}>
+            <Header inverted={inverted} style={{textDecoration: 'underline'}}>Pokerface.io</Header>
           </Grid.Column>
-          <Grid.Column textAlign="center" width={11}>
-            <Header color="grey" inverted>Round {timer.round}</Header>
-          </Grid.Column>
-          <Grid.Column
-              textAlign="center"
-              verticalAlign="top"
-              width={1}
-          >
-            <Button
-                inverted
-                onClick={::this.openSettingsModal}
-                style={{margin:'0 auto'}}
-            >
-              <Icon name="setting" style={{margin:'0 auto'}}/>
-            </Button>
+          <Grid.Column textAlign="center" width={6}>
+            <Header color="grey" inverted={inverted}>Round {timer.round}</Header>
           </Grid.Column>
           <Grid.Column
+              style={{ paddingRight:20 }}
               textAlign="center"
               verticalAlign="top"
-              width={1}
+              width={5}
           >
-            <Button
-                inverted
-                onClick={::this.toggleFullscreen}
-                style={{margin:'0 auto'}}
+            <Button.Group
+                basic={!inverted}
+                color={inverted?'black':undefined}
+                compact
+                icon
+                inverted={inverted}
             >
-              <Icon name="expand" style={{margin:'0 auto'}}/>
-            </Button>
+              <Button onClick={::this.toggleInverted}>
+                <Checkbox
+                    checked={inverted}
+                    toggle
+                />
+              </Button>
+              <Button onClick={::this.openSettingsModal}>
+                  <Icon name="setting"/>
+              </Button>
+              <Button onClick={::this.toggleFullscreen}>
+                <Icon name="expand"/>
+              </Button>
+            </Button.Group>
           </Grid.Column>
 
           <Grid.Column textAlign="center" width={16}>
-            <Header inverted style={{fontSize:'25vw', margin:0, lineHeight:1}}>{timer.timeLeft}</Header>
+            <Header inverted={inverted} style={{fontSize:'25vw', margin:0, lineHeight:1}}>{timer.timeLeft}</Header>
           </Grid.Column>
 
           <Grid.Column
@@ -114,16 +164,16 @@ export default class BlindsTimer extends Component {
           >
             <Progress
                 color="red"
-                inverted
+                inverted={inverted}
                 percent={timer.precentageComplete}
                 size="tiny"
             />
           </Grid.Column>
 
           <Grid.Column textAlign="center" width={6}>
-            <Header color="grey" inverted>Blinds</Header>
-            <Header inverted style={{fontSize:'9vw', margin:0, lineHeight:0.8}}>{timer.blinds}</Header>
-            <Header inverted>{timer.nextBlinds}</Header>
+            <Header color="grey" inverted={inverted}>Blinds</Header>
+            <Header inverted={inverted} style={{fontSize:'9vw', margin:0, lineHeight:0.8}}>{timer.blinds}</Header>
+            <Header inverted={inverted}>{timer.nextBlinds}</Header>
           </Grid.Column>
           <Grid.Column width={1}/>
           <Grid.Column
@@ -135,7 +185,8 @@ export default class BlindsTimer extends Component {
               timer.paused?
               <Button
                   circular
-                  inverted
+                  icon
+                  inverted={inverted}
                   onClick={::this.resumeTimer}
                   size="large"
               >
@@ -144,7 +195,8 @@ export default class BlindsTimer extends Component {
               :
               <Button
                   circular
-                  inverted
+                  icon
+                  inverted={inverted}
                   onClick={::this.pauseTimer}
                   size="large"
               >
@@ -158,9 +210,9 @@ export default class BlindsTimer extends Component {
             */}
           </Grid.Column>
           <Grid.Column textAlign="center" width={7}>
-            <Header color="grey" inverted>Ante</Header>
-            <Header inverted style={{fontSize:'9vw', margin:0, lineHeight:0.8}}>{timer.ante}</Header>
-            <Header inverted>{timer.nextAnte}</Header>
+            {
+              anteSection
+            }
           </Grid.Column>
         </Grid.Row>
       </Grid>

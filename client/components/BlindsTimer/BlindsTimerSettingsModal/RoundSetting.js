@@ -43,7 +43,7 @@ export default class BlindsTimer extends Component {
           <Input
               defaultValue={round.smallBlind}
               min={0}
-              onChange={(ev,{value})=>round.smallBlind=value}
+              onChange={(ev,{value})=>round.smallBlind=parseInt(value)}
               type="number"
           />
         </Table.Cell>
@@ -51,7 +51,7 @@ export default class BlindsTimer extends Component {
           <Input
               defaultValue={round.bigBlind}
               min={0}
-              onChange={(ev,{value})=>round.bigBlind=value}
+              onChange={(ev,{value})=>round.bigBlind=parseInt(value)}
               type="number"
           />
         </Table.Cell>
@@ -59,7 +59,7 @@ export default class BlindsTimer extends Component {
           <Input
               defaultValue={round.ante}
               min={0}
-              onChange={(ev,{value})=>round.ante=value}
+              onChange={(ev,{value})=>round.ante=parseInt(value)}
               type="number"
           />
         </Table.Cell>
@@ -67,7 +67,7 @@ export default class BlindsTimer extends Component {
           <Input
               defaultValue={round.time}
               min={0}
-              onChange={(ev,{value})=>round.time=value}
+              onChange={(ev,{value})=>round.time=parseInt(value)}
               type="number"
           />
         </Table.Cell>
