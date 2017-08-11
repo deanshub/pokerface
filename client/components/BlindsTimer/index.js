@@ -25,12 +25,6 @@ export default class BlindsTimer extends Component {
 
   resetTimer(){
     const {timer} = this.props
-    this.pauseTimer()
-    timer.start()
-  }
-
-  startTimer(){
-    const {timer} = this.props
     clearInterval(this.interval)
     timer.start()
     this.interval = setInterval(()=>{
@@ -51,6 +45,18 @@ export default class BlindsTimer extends Component {
     this.interval = setInterval(()=>{
       timer.updateTimer()
     }, 1000)
+  }
+
+  previousRound(){
+    const {timer} = this.props
+    timer.round--
+    this.pauseTimer()
+  }
+
+  nextRound(){
+    const {timer} = this.props
+    timer.round++
+    this.pauseTimer()
   }
 
   toggleInverted(){
@@ -208,11 +214,21 @@ export default class BlindsTimer extends Component {
                 <Icon name="pause"/>
               </Button>
             }
-
-            {/*
-              <Button onClick={::this.startTimer}>Start</Button>
-              <Button onClick={::this.resetTimer}>Reset</Button>
-            */}
+            <Button.Group
+                icon
+                inverted={inverted}
+                style={{marginTop:100}}
+            >
+              <Button inverted={inverted} onClick={::this.previousRound}>
+                  <Icon name="step backward"/>
+              </Button>
+              <Button inverted={inverted} onClick={::this.resetTimer}>
+                  <Icon flipped="horizontally" name="repeat"/>
+              </Button>
+              <Button inverted={inverted} onClick={::this.nextRound}>
+                <Icon name="step forward"/>
+              </Button>
+            </Button.Group>
           </Grid.Column>
           <Grid.Column textAlign="center" width={7}>
             {

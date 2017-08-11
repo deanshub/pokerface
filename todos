@@ -7,9 +7,7 @@ add user (with temp until verified)
 
 -------------------------------------------------------------------------------
 
-timer bugs when array is empty
-timer should continue when arrived to the last item in array
-use localstorage to remember timer configurations
+add audio when the last 5 seconds
 post facebook preview picture
   server side rendering
 allow post edit\deletion

@@ -14,7 +14,7 @@ export class TimerStore {
 
   MINIMAL_OFFSET = 10
   MINUTES_MULTIPLIER = 60 * 1000
-  INITIAL_ROUND ={
+  DEFAULT_INITIAL_ROUND ={
     ante: 10,
     smallBlind: 10,
     bigBlind: 20,
@@ -23,34 +23,42 @@ export class TimerStore {
   }
 
   constructor(){
-    this.rounds = [
-      this.INITIAL_ROUND,
-      Object.assign({}, this.INITIAL_ROUND, {
-        key: Math.random(),
-        smallBlind: 15,
-        bigBlind: 30,
-      }),
-      Object.assign({}, this.INITIAL_ROUND, {
-        key: Math.random(),
-        smallBlind: 20,
-        bigBlind: 40,
-      }),
-      Object.assign({}, this.INITIAL_ROUND, {
-        key: Math.random(),
-        smallBlind: 30,
-        bigBlind: 60,
-      }),
-      Object.assign({}, this.INITIAL_ROUND, {
-        key: Math.random(),
-        smallBlind: 50,
-        bigBlind: 100,
-      }),
-      Object.assign({}, this.INITIAL_ROUND, {
-        key: Math.random(),
-        smallBlind: 150,
-        bigBlind: 300,
-      }),
-    ]
+    const blindsTimerRounds = localStorage.getItem('blindsTimerRounds')
+    if (blindsTimerRounds){
+      this.rounds = JSON.parse(blindsTimerRounds)
+
+      this.DEFAULT_INITIAL_ROUND = this.rounds[0]
+    }else{
+      this.rounds = [
+        this.DEFAULT_INITIAL_ROUND,
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
+          key: Math.random(),
+          smallBlind: 15,
+          bigBlind: 30,
+        }),
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
+          key: Math.random(),
+          smallBlind: 20,
+          bigBlind: 40,
+        }),
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
+          key: Math.random(),
+          smallBlind: 30,
+          bigBlind: 60,
+        }),
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
+          key: Math.random(),
+          smallBlind: 50,
+          bigBlind: 100,
+        }),
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
+          key: Math.random(),
+          smallBlind: 150,
+          bigBlind: 300,
+        }),
+      ]
+      this.updateLocalStorage()
+    }
 
     this.round = 1
     this.paused = true
@@ -62,19 +70,32 @@ export class TimerStore {
 
   @action start(){
     this.paused = false
-    this.updateTimer()
-    this.endTime = new Date(this.currentTime.getTime() + this.rounds[this.round-1].time * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET)
+    this.updateTimer(false)
+    let currentRound
+    if (this.rounds.length>this.round-1){
+      currentRound = this.rounds[this.round-1]
+    }else{
+      currentRound = this.getLastRound()
+    }
+    const roundTime = currentRound.time
+    this.endTime = new Date(this.currentTime.getTime() + roundTime * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET)
   }
 
   @action resume(){
     this.endTime = new Date(new Date().getTime() + this.offset)
-    this.updateTimer()
+    this.updateTimer(false)
     this.paused = false
   }
 
-  @action updateTimer(){
+  @action updateTimer(updateRound=true){
     this.currentTime = new Date()
-    return this.endTime-this.currentTime>0
+
+    if (updateRound && this.endTime-this.currentTime<0){
+      if (this.round-1<this.rounds.length){
+        this.round++
+      }
+      this.start()
+    }
   }
 
   @action startOrResume(){
@@ -95,31 +116,30 @@ export class TimerStore {
     if (rounds.length>0)
       return rounds[rounds.length-1]
     else
-      return this.INITIAL_ROUND
+      return this.DEFAULT_INITIAL_ROUND
+  }
+
+  updateLocalStorage(){
+    localStorage.setItem('blindsTimerRounds', JSON.stringify(this.rounds))
   }
 
   @action addRound(){
     this.rounds.push(Object.assign({},this.getLastRound(),{key:Math.random()}))
+    this.updateLocalStorage()
   }
   @action removeRound(index){
     this.rounds.splice(index,1)
+    this.updateLocalStorage()
   }
   @action addBreak(){
     this.rounds.push({type:'break', time:10, key:Math.random()})
+    this.updateLocalStorage()
   }
 
   @computed
   get timeLeft(){
     if (this.endTime!==undefined){
       const diff = this.endTime - this.currentTime
-
-      if (diff<0){
-        if (this.round<this.rounds.length){
-          this.round++
-          this.start()
-        }
-        return '00:00'
-      }
 
       const minutes = Math.floor(diff/1000/60)
       const seconds = Math.floor(diff/1000%60)
@@ -129,7 +149,13 @@ export class TimerStore {
 
       return `${parsedMinutes}:${parsedSeconds}`
     }else{
-      const minutes = this.rounds[this.round-1].time
+      let currentRound
+      if (this.rounds.length>this.round-1){
+        currentRound = this.rounds[this.round-1]
+      }else{
+        currentRound = this.getLastRound()
+      }
+      const minutes = currentRound.time
       const parsedMinutes = minutes>9?`${minutes}`:`0${minutes}`
       return `${parsedMinutes}:00`
     }
@@ -137,14 +163,29 @@ export class TimerStore {
 
   @computed
   get precentageComplete(){
+    let currentRound
+    if (this.rounds.length>this.round-1){
+      currentRound = this.rounds[this.round-1]
+    }else{
+      currentRound = this.getLastRound()
+    }
+
+    const totalRoundTime = currentRound.time
     const timePassed = this.paused ? this.offset : this.endTime - this.currentTime
-    const roundTime = this.rounds[this.round-1].time * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET
+    const roundTime = totalRoundTime * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET
     const percentageComplete = 100 - (timePassed/roundTime*100)
     return percentageComplete
   }
 
-  @computed get ante(){
-    const currentRound = this.rounds[this.round-1]
+  @computed
+  get ante(){
+    let currentRound
+    if (this.rounds.length>this.round-1){
+      currentRound = this.rounds[this.round-1]
+    }else{
+      currentRound = this.getLastRound()
+    }
+
     if (currentRound.type==='break'){
       return 'Break'
     }
@@ -153,7 +194,8 @@ export class TimerStore {
     }
     return `${currentRound.ante}`
   }
-  @computed get nextAnte(){
+  @computed
+  get nextAnte(){
     if (this.round<this.rounds.length){
       const nextRound = this.rounds[this.round]
       if (nextRound.type==='break'){
@@ -166,15 +208,23 @@ export class TimerStore {
     }
   }
 
-  @computed get blinds(){
-    const currentRound = this.rounds[this.round-1]
+  @computed
+  get blinds(){
+    let currentRound
+    if (this.rounds.length>this.round-1){
+      currentRound = this.rounds[this.round-1]
+    }else{
+      currentRound = this.getLastRound()
+    }
+
     if (currentRound.type==='break'){
       return 'Break'
     }
     const currentBlinds = `${currentRound.smallBlind}/${currentRound.bigBlind}`
     return currentBlinds
   }
-  @computed get nextBlinds(){
+  @computed
+  get nextBlinds(){
     if (this.round<this.rounds.length){
       const nextRound = this.rounds[this.round]
       if (nextRound.type==='break'){
@@ -182,5 +232,11 @@ export class TimerStore {
       }
       return `Next ${nextRound.smallBlind}/${nextRound.bigBlind}`
     }
+  }
+
+  @action
+  updateRound(round, propName, value){
+    round[propName] = value
+    this.updateLocalStorage()
   }
 }
