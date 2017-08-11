@@ -66,6 +66,7 @@ export class TimerStore {
     this.settingsModalOpen = false
     this.inverted = false
     this.settingsModalMountNode = undefined
+    this.blindsSound = new Audio(require('../assets/10.mp3'))
   }
 
   @action start(){
@@ -89,8 +90,11 @@ export class TimerStore {
 
   @action updateTimer(updateRound=true){
     this.currentTime = new Date()
+    const timeDiff = this.endTime-this.currentTime
 
-    if (updateRound && this.endTime-this.currentTime<0){
+    if (timeDiff<11*1000 && timeDiff>9*1000){
+      this.blindsSound.play()
+    }else if (updateRound && timeDiff<0){
       if (this.round-1<this.rounds.length){
         this.round++
       }
