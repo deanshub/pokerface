@@ -10,6 +10,7 @@ export class TimerStore {
   @observable paused
   @observable settingsModalOpen
   @observable inverted
+  @observable settingsModalMountNode
 
   MINIMAL_OFFSET = 10
   MINUTES_MULTIPLIER = 60 * 1000
@@ -56,6 +57,7 @@ export class TimerStore {
     this.offset = this.rounds[this.round-1].time * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET
     this.settingsModalOpen = false
     this.inverted = false
+    this.settingsModalMountNode = undefined
   }
 
   @action start(){

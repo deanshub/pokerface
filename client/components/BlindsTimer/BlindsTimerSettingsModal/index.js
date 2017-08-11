@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
 import { Modal, Button, Header, Icon, Table } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import RoundSetting from './RoundSetting'
@@ -26,13 +25,12 @@ export default class BlindsTimer extends Component {
   }
 
   render() {
-    const {timer, mountNode: reactMountNode} = this.props
-    const mountNode = ReactDOM.findDOMNode(reactMountNode)
+    const {timer} = this.props
 
     return (
       <Modal
           basic
-          mountNode={mountNode}
+          mountNode={timer.settingsModalMountNode}
           onClose={::this.closeModal}
           open={timer.settingsModalOpen}
       >

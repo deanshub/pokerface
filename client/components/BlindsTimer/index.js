@@ -14,6 +14,11 @@ export default class BlindsTimer extends Component {
     timer: PropTypes.shape(),
   }
 
+  componentDidMount(){
+    const {timer} = this.props
+    timer.settingsModalMountNode = ReactDOM.findDOMNode(this)
+  }
+
   componentWillUnmount(){
     this.pauseTimer()
   }
@@ -112,7 +117,7 @@ export default class BlindsTimer extends Component {
           className={classnames(style.fullScreen)}
           stretched
       >
-        <BlindsTimerSettingsModal mountNode={this}/>
+        <BlindsTimerSettingsModal mountNode={timer.settingsModalMountNode}/>
 
         <Grid.Row
             color={inverted?'black':undefined}
