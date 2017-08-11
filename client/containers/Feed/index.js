@@ -49,7 +49,6 @@ export default class FeedContainer extends Component {
         <AddPlay />
         <Container
             style={{marginTop:60}}
-            text
         >
           <Feed>
             {feed.events.sort((a,b)=>{

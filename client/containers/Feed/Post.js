@@ -127,7 +127,7 @@ export default class Post extends Component {
         />
         <Feed.Content>
             {this.getFeedSummary()}
-          <Feed.Extra text>
+          <Feed.Extra text style={{maxWidth:'none'}}>
             <PostEditor
                 editorState={postEditorState}
                 onChange={(editorState)=>this.setState({postEditorState: editorState})}

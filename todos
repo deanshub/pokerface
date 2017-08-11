@@ -7,11 +7,17 @@ add user (with temp until verified)
 
 -------------------------------------------------------------------------------
 
+timer bugs when array is empty
+timer should continue when arrived to the last item in array
+use localstorage to remember timer configurations
+post facebook preview picture
+  server side rendering
 allow post edit\deletion
 add game statistics (maybe it should look like a poker table and you can click the players to see stats)
 remove the profile sub navigation
+allow file upload
+  move to appolo client instead of looka
 add graphql fregments
-move to appolo client instead of looka
 
 GAME
 -------
