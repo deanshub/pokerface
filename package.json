@@ -8,7 +8,7 @@
   "author": "Dean Shub (dean@shubapp.com)",
   "scripts": {
     "test": "jest",
-    "build:prod": "cross-env NODE_ENV=production webpack -p --env=prod --progress --colors",
+    "build:prod": "cross-env NODE_ENV=production DB_USER=mongo DB_PASSWORD=admin webpack -p --env=prod --progress --colors",
     "build:prod:watch": "cross-env NODE_ENV=production webpack -p --env=prod --progress --colors --watch",
     "build:dev": "cross-env DB_USER=mongo DB_PASSWORD=admin webpack -d --env=dev --hot --progress --colors --display-error-details",
     "build:dev:watch": "cross-env DB_USER=mongo DB_PASSWORD=admin webpack -d --env=dev --hot --progress --colors --display-error-details --watch",
@@ -16,7 +16,7 @@
     "start2": "babel-node src/index.js",
     "debug": "cross-env DB_USER=mongo DB_PASSWORD=admin node --inspect --debug-brk dist/main.js",
     "build": "webpack -p --env=prod --progress --colors",
-    "serve": "cross-env NODE_ENV=production node dist/index.js"
+    "serve": "cross-env NODE_ENV=production node dist/main.js"
   },
   "dependencies": {
     "body-parser": "^1.16.1",

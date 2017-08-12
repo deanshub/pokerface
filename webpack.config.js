@@ -2,9 +2,12 @@
 const webpack = require('webpack')
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
-let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
-let DB_USER = JSON.stringify(process.env.DB_USER)
-console.log(DB_USER);
+const NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
+const DB_USER = JSON.stringify(process.env.DB_USER)
+const DB_PASSWORD = JSON.stringify(process.env.DB_PASSWORD)
+const PORT = JSON.stringify(process.env.PORT)
+const GMAIL_USER = JSON.stringify(process.env.GMAIL_USER)
+const GMAIL_PASSWORD = JSON.stringify(process.env.GMAIL_PASSWORD)
 
 let devtool
 // let hotloaderEntries=[]
@@ -14,10 +17,10 @@ let plugins = [
     'process.env': {
       NODE_ENV,
       DB_USER,
-      'DB_PASSWORD': '"admin"',
-      'PORT': '"9031"',
-      'GMAIL_USER': '"pokerfaceemail@gmail.com"',
-      'GMAIL_PASSWORD': '"kodszhadkclrkpyb"',
+      DB_PASSWORD,
+      PORT,
+      GMAIL_USER,
+      GMAIL_PASSWORD,
     },
   }),
 ]
@@ -40,7 +43,6 @@ if (NODE_ENV==='"development"'){
     },
   }))
   plugins.push(new webpack.optimize.AggressiveMergingPlugin())
-  plugins.push(new webpack.optimize.DedupePlugin())
 }
 
 const config = {
