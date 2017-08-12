@@ -8,9 +8,14 @@
   "author": "Dean Shub (dean@shubapp.com)",
   "scripts": {
     "test": "jest",
-    "start": "nodemon src/index.js",
-    "debug": "cross-env DB_USER=mongo DB_PASSWORD=admin babel-node --inspect --debug-brk src/index.js",
-    "build": "cross-env NODE_ENV=production babel src -d dist",
+    "build:prod": "cross-env NODE_ENV=production webpack -p --env=prod --progress --colors",
+    "build:prod:watch": "cross-env NODE_ENV=production webpack -p --env=prod --progress --colors --watch",
+    "build:dev": "cross-env DB_USER=mongo DB_PASSWORD=admin webpack -d --env=dev --hot --progress --colors --display-error-details",
+    "build:dev:watch": "cross-env DB_USER=mongo DB_PASSWORD=admin webpack -d --env=dev --hot --progress --colors --display-error-details --watch",
+    "start": "nodemon dist/main.js",
+    "start2": "babel-node src/index.js",
+    "debug": "cross-env DB_USER=mongo DB_PASSWORD=admin node --inspect --debug-brk dist/main.js",
+    "build": "webpack -p --env=prod --progress --colors",
     "serve": "cross-env NODE_ENV=production node dist/index.js"
   },
   "dependencies": {
@@ -24,26 +29,40 @@
     "graphql": "^0.9.1",
     "ical-toolkit": "^1.0.9",
     "jdenticon": "^1.7.2",
-    "mongoose": "^4.11.5",
+    "mongoose": "^4.11.6",
     "multer": "^1.3.0",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "react-dom": "^15.6.1",
+    "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
+    "babel-core": "^6.25.0",
     "babel-eslint": "^7.1.1",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-import-commonjs": "^1.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.22.0",
     "cross-env": "^4.0.0",
     "eslint": "^3.15.0",
     "faker": "^4.1.0",
+    "file-loader": "^0.11.2",
     "flow-bin": "^0.52.0",
     "graphiql": "^0.9.3",
-    "webpack": "^2.2.1",
-    "webpack-dev-middleware": "^1.10.1",
-    "webpack-hot-middleware": "^2.17.1"
+    "json-loader": "^0.5.7",
+    "node-loader": "^0.6.0",
+    "react": "^15.6.1",
+    "react-hot-loader": "next",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.5.3",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-hot-middleware": "^2.18.2"
   }
 }
