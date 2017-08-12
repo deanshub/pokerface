@@ -24,16 +24,18 @@ if (NODE_ENV==='"development"'){
   babelHotloader = ['react-hot-loader/webpack']
 }else{
   // plugins.push(new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}))
+  plugins.push(new webpack.optimize.DedupePlugin())
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compressor: {
       warnings: false,
     },
+    sourceMap: false,
   }))
   plugins.push(new webpack.optimize.AggressiveMergingPlugin())
 }
 
 const config = {
-  context: path.join(__dirname, './client'),
+  context: path.resolve(__dirname, './client'),
   entry: {
     bundle: [
       ...hotloaderEntries,
@@ -74,7 +76,7 @@ const config = {
     ],
   },
   output: {
-    path: path.join(__dirname, './static'),
+    path: path.resolve(__dirname, './static'),
     publicPath: '/',
     filename: '[name].js',
     chunkFilename: '[id].[chunkhash].js',
@@ -87,7 +89,7 @@ const config = {
       },
       {
         test: /\.css$/,
-        include: path.join(__dirname, 'client'),
+        include: path.resolve(__dirname, 'client'),
         use: [
           'style-loader',
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[local]___[hash:base64:5]',
@@ -96,7 +98,7 @@ const config = {
       },
       {
         test: /\.css$/,
-        exclude: path.join(__dirname, 'client'),
+        exclude: path.resolve(__dirname, 'client'),
         use: [{
           loader:'style-loader',
         },{
@@ -115,19 +117,19 @@ const config = {
       {
         test: /\.svg(\?.*)?$/,
         loader: 'url-loader?limit=10000&mimetype=image/svg+xml&name=images/[name].[ext]',
-        include: path.join(__dirname, 'client', 'assets'),
+        include: path.resolve(__dirname, 'client', 'assets'),
       }, {
         test: /\.png$/,
         loader: 'url-loader?limit=8192&mimetype=image/png&name=images/[name].[ext]',
-        // include: path.join(__dirname, 'client', 'assets'),
+        // include: path.resolve(__dirname, 'client', 'assets'),
       }, {
         test: /\.gif$/,
         loader: 'url-loader?limit=8192&mimetype=image/gif&name=images/[name].[ext]',
-        include: path.join(__dirname, 'client', 'assets'),
+        include: path.resolve(__dirname, 'client', 'assets'),
       }, {
         test: /\.jpg$/,
         loader: 'url-loader?limit=8192&mimetype=image/jpg&name=images/[name].[ext]',
-        include: path.join(__dirname, 'client', 'assets'),
+        include: path.resolve(__dirname, 'client', 'assets'),
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -154,5 +156,4 @@ const config = {
     publicPath: '/',
   },
 }
-
 module.exports = config
