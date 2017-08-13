@@ -9,7 +9,7 @@ export default class Comments extends Component {
   render() {
     const { comments } = this.props
     return (
-      <Comment.Group>
+      <Comment.Group style={{maxWidth:'98%'}}>
         {comments.map(comment=><PostComment comment={comment} key={comment.id}/>)}
       </Comment.Group>
     )

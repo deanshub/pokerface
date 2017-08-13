@@ -5,7 +5,7 @@ import { EditorState, convertToRaw } from 'draft-js'
 import lokkaClient from './lokkaClient'
 import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike, postDelete} from './mutations/posts'
-import {commentCreate, setCommentLike} from './mutations/comments'
+import {commentCreate, setCommentLike, commentDelete} from './mutations/comments'
 
 export class FeedStore {
   @observable posts: Object
@@ -75,6 +75,19 @@ export class FeedStore {
         },
       })
     }
+  }
+
+  @action
+  deleteComment(comment: Object): void{
+    // console.log(comment);
+    const commentCopy = toJS(comment)
+    let post = this.posts.get(comment.post.id)
+    lokkaClient.mutate(commentDelete, {commentId:comment.id})
+    .catch(err=>{
+      console.error(err)
+      post.comments.push(commentCopy)
+    })
+    post.comments.remove(comment)
   }
 
   @action

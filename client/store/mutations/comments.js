@@ -34,6 +34,12 @@ export const commentCreate = `($post: String!, $comment: String!){
   }
 }`
 
+export const commentDelete = `($commentId: String!){
+  deleteComment(commentId: $commentId){
+    id
+  }
+}`
+
 export const setCommentLike = `($comment: String!, $like: Boolean!){
   setCommentLike(content:$like, comment:$comment){
     id

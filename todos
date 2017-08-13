@@ -7,7 +7,6 @@ add user (with temp until verified)
 
 -------------------------------------------------------------------------------
 
-allow post edit\deletion
 post facebook preview picture
   server side rendering
 add game statistics (maybe it should look like a poker table and you can click the players to see stats)
