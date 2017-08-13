@@ -7,14 +7,14 @@ add user (with temp until verified)
 
 -------------------------------------------------------------------------------
 
+allow post edit\deletion
 post facebook preview picture
   server side rendering
-allow post edit\deletion
 add game statistics (maybe it should look like a poker table and you can click the players to see stats)
 remove the profile sub navigation
 allow file upload
   move to appolo client instead of looka
-add graphql fregments
+    add graphql fregments
 
 GAME
 -------

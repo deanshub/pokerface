@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Feed, Icon } from 'semantic-ui-react'
+import { Feed, Icon, Button, Popup } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import { EditorState, convertFromRaw } from 'draft-js'
@@ -22,7 +22,8 @@ TimeAgo.locale(timeAgoEnLocale)
 @observer
 export default class Post extends Component {
   static propTypes = {
-    post: PropTypes.object,
+    auth: PropTypes.shape(),
+    post: PropTypes.shape(),
     standalone: PropTypes.bool,
   }
 
@@ -64,13 +65,76 @@ export default class Post extends Component {
     return post.player.avatar
   }
 
+  openDeletePopup(){
+    this.setState({
+      deletePopupOpen: true,
+    })
+  }
+  closeDeletePopup(){
+    this.setState({
+      deletePopupOpen: false,
+    })
+  }
+
+  deletePost(){
+    const { post, feed }= this.props
+    feed.deletePost(post.id)
+    this.closeDeletePopup()
+  }
+
   getFeedSummary(){
-    const { post } = this.props
+    const { post, auth } = this.props
+    const deleteButton = (
+      <Popup
+          content={
+            <div>
+              Are you sure?
+              <Button.Group compact style={{marginLeft:10}}>
+                <Button
+                    basic
+                    color="green"
+                    onClick={::this.deletePost}
+                >
+                  Yes
+                </Button>
+                <Button
+                    basic
+                    color="red"
+                    onClick={::this.closeDeletePopup}
+                >
+                  No
+                </Button>
+              </Button.Group>
+            </div>
+          }
+          on="click"
+          onClose={::this.closeDeletePopup}
+          onOpen={::this.openDeletePopup}
+          open={this.state.deletePopupOpen}
+          trigger={
+            <Button
+                basic
+                compact
+                floated="right"
+                icon="delete"
+                size="small"
+            />
+          }
+      />
+    )
+
+
     if (post.photos.length>0) {
       return (
         <Feed.Summary>
           <Feed.User onClick={::this.goto}>{this.getUserFullName()}</Feed.User> added <a onClick={()=>this.openModal()}>{post.photos.length} new photos</a>
           <Feed.Date>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
+          {
+            post.player.username===auth.user.username?
+            deleteButton
+            :
+            null
+          }
         </Feed.Summary>
       )
     }else{
@@ -78,6 +142,12 @@ export default class Post extends Component {
         <Feed.Summary>
           <Feed.User onClick={::this.goto}>{this.getUserFullName()}</Feed.User> shared a post
           <Feed.Date>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
+          {
+            post.player.username===auth.user.username?
+            deleteButton
+            :
+            null
+          }
         </Feed.Summary>
       )
     }

@@ -4,7 +4,7 @@ import { observable, computed, action, toJS } from 'mobx'
 import { EditorState, convertToRaw } from 'draft-js'
 import lokkaClient from './lokkaClient'
 import {postsQuery} from './queries/posts'
-import {postCreate, setPostLike} from './mutations/posts'
+import {postCreate, setPostLike, postDelete} from './mutations/posts'
 import {commentCreate, setCommentLike} from './mutations/comments'
 
 export class FeedStore {
@@ -27,6 +27,17 @@ export class FeedStore {
   @computed
   get events(): Object[]{
     return toJS(this.posts.values())
+  }
+
+  @action
+  deletePost(postId: String): void{
+    const post = toJS(this.posts.get(postId))
+    lokkaClient.mutate(postDelete, {postId})
+    .catch(err=>{
+      console.error(err)
+      this.posts.set(post.id, post)
+    })
+    this.posts.delete(postId)
   }
 
   @action

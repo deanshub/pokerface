@@ -34,6 +34,13 @@ export const postCreate = `($post: String!){
   }
 }`
 
+export const postDelete = `($postId: String!){
+  deletePost(postId: $postId){
+    id
+  }
+}`
+
+
 export const setPostLike = `($post: String!, $like: Boolean!){
   setPostLike(content:$like, post:$post){
     id
