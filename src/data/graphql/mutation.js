@@ -106,6 +106,24 @@ const Mutation = new GraphQLObjectType({
         },
       },
 
+      deleteComment:{
+        type: Comment,
+        args:{
+          commentId: {
+            type: GraphQLString,
+          },
+        },
+        resolve(_, args, context){
+          return DB.models.Comment.findById(args.commentId).then(comment=>{
+            if (comment.player===context.user._id){
+              return comment.remove()
+            }else{
+              throw new Error('Can\'t delete comment of another user')
+            }
+          })
+        },
+      },
+
       setCommentLike: {
         type: Comment,
         args:{
