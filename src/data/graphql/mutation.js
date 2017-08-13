@@ -62,6 +62,24 @@ const Mutation = new GraphQLObjectType({
         },
       },
 
+      deletePost:{
+        type: Post,
+        args:{
+          postId: {
+            type: GraphQLString,
+          },
+        },
+        resolve(_, args, context){
+          return DB.models.Post.findById(args.postId).then(post=>{
+            if (post.player===context.user._id){
+              return post.remove()
+            }else{
+              throw new Error('Can\'t delete post of another user')
+            }
+          })
+        },
+      },
+
       addComment: {
         type: Post,
         args:{
