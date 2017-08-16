@@ -1,7 +1,7 @@
 // @flow
 
-import { observable, action, computed, toJS } from 'mobx'
-import lokkaClient from './lokkaClient'
+import { observable, action, toJS } from 'mobx'
+import graphqlClient from './graphqlClient'
 import {eventsQuery} from './queries/events'
 import {gameAttendanceUpdate, addGame, deleteGame} from './mutations/games'
 import moment from 'moment'
@@ -18,18 +18,21 @@ export class EventStore {
   }
 
   setGame(game){
-    game.from = moment(game.from)
-    game.to = moment(game.to)
-    game.createdAt = moment(game.createdAt)
-    game.updatedAt = moment(game.updatedAt)
-    this.games.set(game.id, game)
+    const newGame = {
+      ...toJS(game),
+      from : moment(game.from),
+      to : moment(game.to),
+      createdAt : moment(game.createdAt),
+      updatedAt : moment(game.updatedAt),
+    }
+    this.games.set(newGame.id, newGame)
   }
 
   @action
   fetchMyGames(): void{
     this.loading = true
-    lokkaClient.query(eventsQuery).then((result)=>{
-      result.games.forEach(::this.setGame)
+    graphqlClient.query({query: eventsQuery}).then((result)=>{
+      result.data.games.forEach(::this.setGame)
       this.loading = false
     }).catch(err=>{
       this.loading = false
@@ -40,9 +43,9 @@ export class EventStore {
   @action
   deleteGame(game){
     this.games.delete(game.id)
-    lokkaClient.mutate(deleteGame, {gameId: game.id})
+    graphqlClient.mutate({mutation: deleteGame, variables: {gameId: game.id}})
     .then(res=>{
-      console.log(res.deleteGame)
+      console.log(res.data.deleteGame)
     }).catch(err=>{
       console.error(err)
       this.games.set(game.id, game)
@@ -68,9 +71,9 @@ export class EventStore {
       game.accepted.push(username)
     }
 
-    lokkaClient.mutate(gameAttendanceUpdate,{gameId, attendance})
+    graphqlClient.mutate({mutation: gameAttendanceUpdate, variables: {gameId, attendance}})
     .then((res)=>{
-      this.setGame(res.gameAttendanceUpdate)
+      this.setGame(res.data.gameAttendanceUpdate)
     })
     .catch(err=>{
       console.error(err);
@@ -80,10 +83,10 @@ export class EventStore {
 
   @action createGame(players, game){
     let currentGame = game.toJS()
-    return lokkaClient.mutate(addGame, {...currentGame, players})
+    return graphqlClient.mutate({mutation: addGame, variables: {...currentGame, players}})
     .then((res)=>{
-      this.setGame(res.addGame)
-      return res.addGame
+      this.setGame(res.data.addGame)
+      return res.data.addGame
     })
     .catch(err=>{
       console.error(err)

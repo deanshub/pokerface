@@ -1,4 +1,5 @@
-export const commentCreate = `($post: String!, $comment: String!){
+import gql from 'graphql-tag'
+export const commentCreate = gql`mutation addComment($post: String!, $comment: String!){
   addComment(post: $post, content:$comment){
     id
     createdAt
@@ -34,13 +35,13 @@ export const commentCreate = `($post: String!, $comment: String!){
   }
 }`
 
-export const commentDelete = `($commentId: String!){
+export const commentDelete = gql`mutation deleteComment($commentId: String!){
   deleteComment(commentId: $commentId){
     id
   }
 }`
 
-export const setCommentLike = `($comment: String!, $like: Boolean!){
+export const setCommentLike = gql`mutation setCommentLike($comment: String!, $like: Boolean!){
   setCommentLike(content:$like, comment:$comment){
     id
     post{

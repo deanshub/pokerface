@@ -3,12 +3,11 @@ FOR GA ONLY!!!
 
 handle email\guest on game players addition
 add user (with temp until verified)
-
+error message (store), an error occurred please refresh or try again later
 
 -------------------------------------------------------------------------------
 
 allow file upload
-  move to appolo client instead of looka
 add graphql fregments
 add game statistics (maybe it should look like a poker table and you can click the players to see stats)
 remove the profile sub navigation

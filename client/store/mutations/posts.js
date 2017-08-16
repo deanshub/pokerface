@@ -1,4 +1,6 @@
-export const postCreate = `($post: String!){
+import gql from 'graphql-tag'
+
+export const postCreate = gql`mutation createPost($post: String!){
   createPost(content:$post){
     id
     createdAt
@@ -32,16 +34,18 @@ export const postCreate = `($post: String!){
       avatar
     }
   }
-}`
+}
+`
 
-export const postDelete = `($postId: String!){
+export const postDelete = gql`mutation deletePost($postId: String!){
   deletePost(postId: $postId){
     id
   }
-}`
+}
+`
 
 
-export const setPostLike = `($post: String!, $like: Boolean!){
+export const setPostLike = gql`mutation setPostLike($post: String!, $like: Boolean!){
   setPostLike(content:$like, post:$post){
     id
     createdAt
@@ -75,4 +79,5 @@ export const setPostLike = `($post: String!, $like: Boolean!){
       avatar
     }
   }
-}`
+}
+`

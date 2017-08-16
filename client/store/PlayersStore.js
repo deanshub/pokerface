@@ -2,7 +2,7 @@
 
 import { observable, action, computed, toJS } from 'mobx'
 import avatarImage from '../assets/images/avatar.png'
-import lokkaClient from './lokkaClient'
+import graphqlClient from './graphqlClient'
 import {playersQuery} from './queries/players'
 
 export class PlayersStore {
@@ -31,8 +31,8 @@ export class PlayersStore {
   search(phrase){
     this.searchLoading = true
     this.searchValue = phrase
-    lokkaClient.query(playersQuery, {phrase}).then((result)=>{
-      const playersObj = result.players.reduce((res, player)=>{
+    graphqlClient.query({query: playersQuery, variables: {phrase}}).then((result)=>{
+      const playersObj = result.data.players.reduce((res, player)=>{
         res[player.username] = Object.assign({},player,{
           buyIns: [{value: this.initialBuyIn, key:Math.random()}],
           winnings: [{value: this.initialWin, key:Math.random()}],

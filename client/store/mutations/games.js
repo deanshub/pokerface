@@ -1,4 +1,5 @@
-export const gameAttendanceUpdate = `($gameId: String!, $attendance: Boolean!){
+import gql from 'graphql-tag'
+export const gameAttendanceUpdate = gql`mutation gameAttendanceUpdate($gameId: String!, $attendance: Boolean!){
   gameAttendanceUpdate(gameId: $gameId, attendance: $attendance){
     id
     creator{
@@ -36,9 +37,10 @@ export const gameAttendanceUpdate = `($gameId: String!, $attendance: Boolean!){
     updatedAt
     createdAt
   }
-}`
+}
+`
 
-export const addGame = `($title: String!, $description: String, $type: String, $subtype: String, $location: String, $startDate: String!, $endDate: String, $players: [String]!){
+export const addGame = gql`mutation addGame($title: String!, $description: String, $type: String, $subtype: String, $location: String, $startDate: String!, $endDate: String, $players: [String]!){
   addGame(title:$title, description:$description, type:$type, subtype:$subtype, location:$location, from: $startDate, to:$endDate, invited: $players){
     id
     creator{
@@ -76,12 +78,12 @@ export const addGame = `($title: String!, $description: String, $type: String, $
     updatedAt
     createdAt
   }
-}`
+}
+`
 
-export const deleteGame = `($gameId: String!){
+export const deleteGame = gql`mutation deleteGame($gameId: String!){
   deleteGame(gameId: $gameId){
     id
   }
 }
-
 `

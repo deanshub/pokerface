@@ -1,11 +1,30 @@
 // @flow
 
 import { observable, computed, action, toJS } from 'mobx'
+// import { fromResource } from 'mobx-utils'
 import { EditorState, convertToRaw } from 'draft-js'
-import lokkaClient from './lokkaClient'
+import graphqlClient from './graphqlClient'
 import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike, postDelete} from './mutations/posts'
 import {commentCreate, setCommentLike, commentDelete} from './mutations/comments'
+
+// const queryToObservable = (q, callbacks = {}) => {
+//   let subscription
+//
+//   return fromResource(
+//     sink =>
+//       (subscription = q.subscribe({
+//         next: ({ data }) => {
+//           sink(observable(data))
+//           if (callbacks.onUpdate) callbacks.onUpdate(data)
+//         },
+//         error: error => {
+//           if (callbacks.onError) callbacks.onError(error)
+//         },
+//       })),
+//     () => subscription.unsubscribe()
+//   )
+// }
 
 export class FeedStore {
   @observable posts: Object
@@ -32,7 +51,7 @@ export class FeedStore {
   @action
   deletePost(postId: String): void{
     const post = toJS(this.posts.get(postId))
-    lokkaClient.mutate(postDelete, {postId})
+    graphqlClient.mutate({mutation: postDelete, variables: {postId}})
     .catch(err=>{
       console.error(err)
       this.posts.set(post.id, post)
@@ -48,11 +67,11 @@ export class FeedStore {
       this.editorState = EditorState.createEmpty()
 
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
-      lokkaClient.mutate(postCreate, {post:JSON.stringify(post)})
+      graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(post)}})
       // if post mutation succeded add id
-      .then(newPost=>{
+      .then(result=>{
         this.posts.delete(newPostTempId)
-        this.posts.set(newPost.createPost.id, newPost.createPost)
+        this.posts.set(result.data.createPost.id, result.data.createPost)
       })
       // if post mutation failed remove it
       .catch(err=>{
@@ -82,7 +101,7 @@ export class FeedStore {
     // console.log(comment);
     const commentCopy = toJS(comment)
     let post = this.posts.get(comment.post.id)
-    lokkaClient.mutate(commentDelete, {commentId:comment.id})
+    graphqlClient.mutate({mutation: commentDelete, variables: {commentId:comment.id}})
     .catch(err=>{
       console.error(err)
       post.comments.push(commentCopy)
@@ -98,10 +117,10 @@ export class FeedStore {
       this.updateComment(postId, EditorState.createEmpty())
 
       const newCommentTempId = 9999999999+Math.floor(Math.random()*10000)
-      lokkaClient.mutate(commentCreate, {comment:JSON.stringify(comment), post:postId})
+      graphqlClient.mutate({mutation: commentCreate, variables: {comment:JSON.stringify(comment), post:postId}})
       // if post mutation succeded add id
-      .then(newComment=>{
-        this.posts.set(newComment.addComment.id, newComment.addComment)
+      .then(result=>{
+        this.posts.set(result.data.addComment.id, result.data.addComment)
       })
       // if post mutation failed remove it
       .catch(err=>{
@@ -171,31 +190,38 @@ export class FeedStore {
     }
 
     // const offset = this.offsets[username]||0
-    lokkaClient.watchQuery(postsQuery, {username, offset:this.posts.size}, (err, result) => {
-      if (err){
-        console.error(err.message)
-        return
-      }
-
-      const newPosts = result.posts.filter(post=>!this.posts.has(post.id))
-      if (newPosts.length===0){
-        this.noMorePosts = true
-      }else{
-        newPosts.forEach((post)=>{
-          this.posts.set(post.id, post)
-        })
-      }
-      setTimeout(()=>{
+    graphqlClient.watchQuery({
+      query: postsQuery,
+      variables:{
+        username, offset:this.posts.size,
+      },
+      pollInterval: 5000,
+    }).subscribe({
+      next :(result)=>{
+        const newPosts = result.data.posts.filter(post=>!this.posts.has(post.id))
+        if (newPosts.length===0){
+          this.noMorePosts = true
+        }else{
+          newPosts.forEach((post)=>{
+            this.posts.set(post.id, post)
+          })
+        }
+        setTimeout(()=>{
+          this.loading = false
+        },1000)
+      },
+      error: console.error,
+      complete:()=>{
         this.loading = false
-      },1000)
+      },
     })
   }
 
   @action
   setPostLike(postId, like, user){
-    lokkaClient.mutate(setPostLike, {post:postId, like})
-    .then(newPost=>{
-      this.posts.set(postId, newPost.setPostLike)
+    graphqlClient.mutate({mutation: setPostLike, variables: {post:postId, like}})
+    .then(result=>{
+      this.posts.set(postId, result.data.setPostLike)
     })
     .catch(err=>{
       console.error(err);
@@ -217,9 +243,9 @@ export class FeedStore {
 
   @action
   setCommentLike(postId, commentId, like, user){
-    lokkaClient.mutate(setCommentLike, {comment:commentId, like})
-    .then(newPost=>{
-      this.posts.set(newPost.setCommentLike.post.id, newPost.setCommentLike.post)
+    graphqlClient.mutate({mutation: setCommentLike, variables: {comment:commentId, like}})
+    .then(result=>{
+      this.posts.set(result.data.setCommentLike.post.id, result.data.setCommentLike.post)
     })
     .catch(err=>{
       console.error(err);
@@ -244,7 +270,7 @@ export class FeedStore {
   }
 
   getStandalonePost(id: String): Function{
-    return lokkaClient.query(postsQuery, {id}).then((result) => {
+    return graphqlClient.query({query: postsQuery, variables: {id}}).then((result) => {
       const post = result.posts[0]
       if (post){
         return post

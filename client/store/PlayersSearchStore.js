@@ -1,7 +1,7 @@
 // @flow
 
 import { observable, action, computed, toJS } from 'mobx'
-import lokkaClient from './lokkaClient'
+import graphqlClient from './graphqlClient'
 import {playersQuery} from './queries/players'
 import { fromJS } from 'immutable'
 
@@ -23,11 +23,9 @@ export class PlayersSearchStore {
     if (phrase.length<1) return undefined
 
     this.loading = true
-    lokkaClient.query(playersQuery, {phrase}).then((result)=>{
-      this.availablePlayers.replace(result.players.map(player=>{
-        player.childKey=player.username
-
-        return player
+    graphqlClient.query({query: playersQuery, variables: {phrase}}).then((result)=>{
+      this.availablePlayers.replace(result.data.players.map(player=>{
+        return {...player, childKey:player.username}
       }))
       this.loading = false
     })

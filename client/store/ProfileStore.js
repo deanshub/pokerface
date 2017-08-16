@@ -2,9 +2,9 @@
 
 import { observable, action } from 'mobx'
 import * as ProfileConsts from '../constants/profile'
-import lokkaClient from './lokkaClient'
+import graphqlClient from './graphqlClient'
 import {playersQuery} from './queries/players'
-import {updatePersonalInfoMutation} from './mutations/players'
+// import {updatePersonalInfoMutation} from './mutations/players'
 
 export class ProfileStore {
   @observable currentTab: string
@@ -23,8 +23,8 @@ export class ProfileStore {
   @action
   setCurrentUser(user): void{
     if (typeof user === 'string'){
-      lokkaClient.query(playersQuery, {username:user}).then((result)=>{
-        const player = result.players[0]
+      graphqlClient.query({query: playersQuery, variables: {username:user}}).then((result)=>{
+        const player = result.data.players[0]
         this.currentUser = observable.map(player)
         this.setImageFiles()
       })
@@ -53,7 +53,7 @@ export class ProfileStore {
   }
 
   updatePersonalInfo(info): void{
-    // return lokkaClient.mutate(updatePersonalInfoMutation, {firstname:'aba', info})
+    // return graphqlClient.mutate({mutation: updatePersonalInfoMutation, variables: {firstname:'aba', info}})
     return Promise.resolve(info)
   }
 }
