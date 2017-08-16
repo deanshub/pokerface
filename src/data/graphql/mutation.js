@@ -3,6 +3,7 @@ import {
   GraphQLBoolean,
 } from 'graphql'
 import mailer from '../../utils/mailer'
+import authUtils from '../../utils/authUtils'
 import Player from './graphqlModels/Player'
 import Post from './graphqlModels/Post'
 import Comment from './graphqlModels/Comment'
@@ -26,20 +27,32 @@ const Mutation = new GraphQLObjectType({
             type: new GraphQLNonNull(GraphQLString),
           },
           lastName: {
-            type: new GraphQLNonNull(GraphQLString),
+            type: GraphQLString,
           },
           email: {
             type: new GraphQLNonNull(GraphQLString),
           },
+          // avatar: {
+          //   type: new GraphQLNonNull(GraphQLString),
+          // },
+          // password: {
+          //   type: new GraphQLNonNull(GraphQLString),
+          // },
+          // coverImage: {
+          //   type: new GraphQLNonNull(GraphQLString),
+          // },
         },
-        resolve(_, args){
+        resolve(_, args, context){
           // TODO: authorize only admins
-          return new DB.models.Player({
-            username: args.username,
-            firstname: args.firstname,
-            lastName: args.lastName,
-            email: args.email.toLowerCase(),
-          }).save()
+          if (authUtils.isSuperAdmin(context.user)){
+            return new DB.models.Player({
+              _id: args.username,
+              firstname: args.firstname,
+              lastName: args.lastName,
+              email: args.email.toLowerCase(),
+            }).save()
+          }
+          return new Error('Only super admins are allowed to this API')
         },
       },
 

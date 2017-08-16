@@ -19,12 +19,12 @@
     "serve": "cross-env NODE_ENV=production node dist/main.js"
   },
   "dependencies": {
+    "apollo-server-express": "^1.1.0",
     "body-parser": "^1.16.1",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "emailjs": "^1.0.8",
     "express": "^4.14.1",
-    "express-graphql": "^0.6.3",
     "express-session": "^1.15.1",
     "graphql": "^0.9.1",
     "ical-toolkit": "^1.0.9",

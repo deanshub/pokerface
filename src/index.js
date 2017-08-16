@@ -83,7 +83,7 @@ app.get('/logout', (req, res)=>{
 // app.use(multer({storage}))
 app.use(multer({ dest: 'uploads/' }).array())
 
-app.use('/graphql', graphql)
+app.use('/graphql', bodyParser.json(), graphql)
 
 routes.apiRoutes.then(apiRoutes=>{
   apiRoutes.forEach((route)=>{

@@ -138,7 +138,7 @@ function sendPersonalGameInvite(organizer, game, player){
       from: '"Pokerface.io" <support@pokerface.io>', // sender address
       subject: game.title||'Game Invitation', // Subject line
     }
-    const htmlContent = `<div>${organizer.fullName} invited you to a game.</div>
+    const htmlContent = `<div>${organizer.fullname} invited you to a game.</div>
     <br/>
     <div>${game.description||''}</div>
     <br/><br/>
@@ -172,7 +172,7 @@ function sendPersonalGameCancellation(organizer, game, player){
       from: '"Pokerface.io" <support@pokerface.io>', // sender address
       subject: game.title?`${game.title} Cancelled`:'Game Cancelled', // Subject line
     }
-    const htmlContent = `<div>${organizer.fullName} canelled the game.</div>
+    const htmlContent = `<div>${organizer.fullname} canelled the game.</div>
     <br/><br/>
     <div>${newPlayer?'You\'re not a registered user, if you wish to register please signup at <a href="http://pokerface.io/login">Pokerface.io</a>':''}</div>
     <br/><br/><br/>
