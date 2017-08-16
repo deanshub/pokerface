@@ -7,7 +7,7 @@ export const SUITES = {
   clubs: '♣',
 }
 
-export const RANKS: string[] = ['2','3','4','5','6','7','8','9','10','j','q','k','a']
+export const RANKS: string[] = ['2','3','4','5','6','7','8','9','10','t','j','q','k','a']
 
 const suitesKeys = Object.keys(SUITES)
 
@@ -37,16 +37,18 @@ export const normalizeSuite: Function =(originalSuit: string): string=>{
 }
 
 export const normalizeRank: Function =(originalRank: string): string=>{
-  const lowerRank = originalRank.toLowerCase()
-  if (lowerRank==='j'||lowerRank==='11'){
+  const lowerCaseRank = originalRank.toLowerCase()
+  if (lowerCaseRank==='t'||lowerCaseRank==='10'){
+    return '10'
+  } else if (lowerCaseRank==='j'||lowerCaseRank==='11'){
     return 'j'
-  }else if (lowerRank==='q'||lowerRank==='12') {
+  }else if (lowerCaseRank==='q'||lowerCaseRank==='12') {
     return 'q'
-  }else if (lowerRank==='k'||lowerRank==='13') {
+  }else if (lowerCaseRank==='k'||lowerCaseRank==='13') {
     return 'k'
-  }else if (lowerRank==='1'||lowerRank==='a') {
+  }else if (lowerCaseRank==='1'||lowerCaseRank==='a') {
     return 'a'
   }else{
-    return lowerRank
+    return lowerCaseRank
   }
 }
