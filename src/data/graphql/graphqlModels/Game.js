@@ -61,10 +61,14 @@ const Game = new GraphQLObjectType({
       invited: {
         type: new GraphQLList(Player),
         resolve(game){
+          const invitedUsers = game.invited.filter(player=>!player.guest).map(player=>player.username)
+          const invitedGuests = game.invited.filter(player=>player.guest)
           return DB.models.Player.find({
             _id: {
-              $in: game.invited,
+              $in: invitedUsers,
             },
+          }).then((players)=>{
+            return players.concat(invitedGuests)
           })
         },
       },
@@ -91,10 +95,15 @@ const Game = new GraphQLObjectType({
       unresponsive: {
         type: new GraphQLList(Player),
         resolve(game){
+          const invitedUsers = game.unresponsive.filter(player=>!player.guest).map(player=>player.username)
+          const invitedGuests = game.unresponsive.filter(player=>player.guest)
+
           return DB.models.Player.find({
             _id: {
-              $in: game.unresponsive,
+              $in: invitedUsers,
             },
+          }).then((players)=>{
+            return players.concat(invitedGuests)
           })
         },
       },

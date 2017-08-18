@@ -262,7 +262,7 @@ const Mutation = new GraphQLObjectType({
             type: GraphQLString,
           },
           invited: {
-            type: new GraphQLList(GraphQLString),
+            type: GraphQLString,
           },
         },
         resolve(_, args, context){
@@ -275,7 +275,7 @@ const Mutation = new GraphQLObjectType({
             location: args.location,
             startDate: new Date(args.from),
             endDate: args.to!==undefined?new Date(args.to):undefined,
-            invited: args.invited,
+            invited: JSON.parse(args.invited),
           }).save()
           .then(game=>{
             mailer.sendGameInvite(game, DB)

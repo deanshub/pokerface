@@ -39,10 +39,10 @@ function generateIcs(game, cancel=false){
   builder.events.push({
 
     //Event start time, Required: type Date()
-    start: game.from,
+    start: game.startDate,
 
     //Event end time, Required: type Date()
-    end: game.to,
+    end: game.endDate,
 
     //transp. Will add TRANSP:OPAQUE to block calendar.
     transp: 'OPAQUE',
@@ -61,7 +61,7 @@ function generateIcs(game, cancel=false){
     // },
 
     //Event identifier, Optional, default auto generated
-    uid: game.id,
+    uid: game._id,
 
     // //Optional, The sequence number in update, Default: 0
     // sequence: null,
@@ -196,18 +196,23 @@ function sendPersonalGameCancellation(organizer, game, player){
 }
 
 function getAllPlayers(game, Db){
+  const invitedUsers = game.invited.filter(player=>!player.guest).map(player=>player.username)
+  const invitedGuests = game.invited.filter(player=>player.guest)
+
   return Db.models.Player.find({
     _id: {
-      $in: [...game.invited, game.playerUsername],
+      $in: [...invitedUsers, game.player],
     },
   }).then(players=>{
-    const orgenizer = players.filter(player=>player.username===game.playerUsername)[0]
-    const additionalPlayers = game.invited.filter(name=>emailRegex.test(name)).map(email=>{
+    const orgenizer = players.filter(player=>player.username===game.player)[0]
+
+    const additionalPlayers = invitedGuests.filter(player=>emailRegex.test(player.fullname)).map(player=>{
       return {
-        email,
+        email: player.fullname,
         new: true,
       }
     })
+
     const registeredPlayersEmails = players.map(player=>player.email)
     const additionalPlayersEmails = additionalPlayers.filter(newPlayer=>!registeredPlayersEmails.includes(newPlayer.email))
     return {players:players.concat(additionalPlayersEmails), orgenizer}

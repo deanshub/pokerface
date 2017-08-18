@@ -35,8 +35,7 @@ const schema = mongoose.Schema({
     type: Date,
   },
   invited:[{
-    type: String,
-    ref: 'Player',
+    type: mongoose.Schema.Types.Mixed,
     required: true,
     default: [],
   }],
@@ -56,8 +55,8 @@ const schema = mongoose.Schema({
   created: { type: Date, default: Date.now },
 })
 schema.virtual('unresponsive').get(function(){
-  return (this.invited).filter((username)=>{
-    return !this.accepted.includes(username) && !this.declined.includes(username)
+  return (this.invited).filter((player)=>{
+    return player.gust || ((!this.accepted.includes(player.username) && !this.declined.includes(player.username)))
   })
 })
 

@@ -1,5 +1,6 @@
 import {
   GraphQLObjectType, GraphQLString, GraphQLList,
+  GraphQLBoolean,
 } from 'graphql'
 import DB from '../../db'
 import Post from './Post'
@@ -14,6 +15,12 @@ const Player = new GraphQLObjectType({
         type: GraphQLString,
         resolve(player){
           return player.username
+        },
+      },
+      guest: {
+        type: GraphQLBoolean,
+        resolve(player){
+          return !!player.guest
         },
       },
       firstname: {
@@ -43,7 +50,9 @@ const Player = new GraphQLObjectType({
       avatar: {
         type: GraphQLString,
         resolve(player){
-          if (!player.avatar){
+          if (!player.avatar && !player.username){
+            return '/images/avatar.png'
+          }else if (!player.avatar){
             return `/api/avatarGenerator?username=${player.username}`
           }else if (!player.avatar.includes('http')) {
             return `/images/${player.avatar}`
