@@ -9,7 +9,7 @@ import { Grid, Icon, Dropdown, Input, Label, Header, Button, Form, TextArea } fr
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
-import PlayerForm from '../PlayerForm'
+// import PlayerForm from '../PlayerForm'
 
 @inject('players')
 @inject('game')
@@ -18,7 +18,7 @@ import PlayerForm from '../PlayerForm'
 @observer
 export default class AddGame extends Component {
   static propTypes = {
-      handleClose: PropTypes.func.isRequired,
+    handleClose: PropTypes.func.isRequired,
   }
 
   constructor(props: Object){
@@ -50,7 +50,7 @@ export default class AddGame extends Component {
   addGame(e: Object){
     e.preventDefault()
     const {players, game, events, routing, handleClose} = this.props
-    events.createGame(players.currentPlayersArray, game.currentGame)
+    events.createGame(players.currentPlayersObject, game.currentGame)
     .then(res=>{
       if (!res.err){
         game.resetGame()
@@ -75,7 +75,6 @@ export default class AddGame extends Component {
         disabled: players.currentPlayers.has(username),
       }
     })
-
 
     return (
       <Form>
@@ -175,7 +174,8 @@ export default class AddGame extends Component {
                 fluid
                 multiple
                 noResultsMessage="No players found"
-                onChange={(ev, {value})=>players.setPlayer(value)}
+                onAddItem={(ev,data)=>{players.addGuest(data.value)}}
+                onChange={(ev, data)=>{players.setPlayer(data.value)}}
                 onLabelClick={this.scrollToPlayer}
                 onSearchChange={::this.searchChange}
                 options={searchPlayerOptions}

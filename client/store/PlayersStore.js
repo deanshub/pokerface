@@ -13,7 +13,7 @@ export class PlayersStore {
   initialWin=0
 
   constructor(){
-    // todo: fill with auth user
+    // TODO: fill with auth user
     this.currentUser = {
       username:'deanshub',
       fullname: 'Dean Shub',
@@ -32,13 +32,16 @@ export class PlayersStore {
     this.searchLoading = true
     this.searchValue = phrase
     graphqlClient.query({query: playersQuery, variables: {phrase}}).then((result)=>{
-      const playersObj = result.data.players.reduce((res, player)=>{
-        res[player.username] = Object.assign({},player,{
-          buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-          winnings: [{value: this.initialWin, key:Math.random()}],
-        })
-        return res
-      },{})
+      let playersObj = {}
+      if (result.data.players){
+        playersObj = result.data.players.reduce((res, player)=>{
+          res[player.username] = Object.assign({},player,{
+            buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+            winnings: [{value: this.initialWin, key:Math.random()}],
+          })
+          return res
+        },{})
+      }
 
       this.searchPlayers.replace(Object.assign({},playersObj, toJS(this.currentPlayers)))
       this.searchLoading = false
@@ -51,11 +54,11 @@ export class PlayersStore {
     let player = this.searchPlayers.get(username)
     if (player===undefined){
       player = {
+        guest: true,
         username,
         fullname:username,
         avatar: avatarImage,
       }
-      this.searchPlayers.set(username, player)
     }
 
     return Object.assign({},player,{
@@ -64,15 +67,37 @@ export class PlayersStore {
     })
   }
 
+  @computed
+  get currentPlayersObject(){
+    return toJS(this.currentPlayers)
+  }
+
   @action
   setPlayer(users){
-    const players = users.reduce((res, user)=>{
+    if (this.guest){
+      this.currentPlayers.set(this.guest.username, this.guest)
+      this.guest = null
+    }else{
+      const players = users.reduce((res, user)=>{
+        res[user] = this.getPlayer(user)
+        return res
+      },{})
 
-      res[user] = this.getPlayer(user)
-      return res
-    },{})
+      this.currentPlayers.replace(players)
+    }
+  }
 
-    this.currentPlayers.replace(players)
+  @action
+  addGuest(name){
+    const guestKey = `guest${Math.random().toString()}`
+    const guest = {
+      guest: true,
+      username:guestKey,
+      fullname:name,
+      avatar: avatarImage,
+    }
+    this.searchPlayers.set(guestKey, guest)
+    this.guest = guest
   }
 
   @computed

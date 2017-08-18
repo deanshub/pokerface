@@ -1,16 +1,19 @@
 FOR GA ONLY!!!
 --------------
 
-handle email\guest on game players addition
 add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
-
 -------------------------------------------------------------------------------
+
+make standalone posts pretty
+make map in fixed size so image loading won't change the size
+when there are no unresponsive people make the accepted and declined half of the size each
 
 allow file upload
 add graphql fregments
 add game statistics (maybe it should look like a poker table and you can click the players to see stats)
 remove the profile sub navigation
+return to url
 
 GAME
 -------

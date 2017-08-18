@@ -20,6 +20,7 @@ export const eventsQuery = gql`
             username
             fullname
             avatar
+            guest
           }
           accepted{
             username
@@ -35,6 +36,7 @@ export const eventsQuery = gql`
             username
             fullname
             avatar
+            guest
           }
           updatedAt
           createdAt

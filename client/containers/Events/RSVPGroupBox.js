@@ -19,7 +19,9 @@ export default class RSVPGroupBox extends Component {
     const { routing } = this.props
 
     e.preventDefault()
-    routing.push(href)
+    if (href){
+      routing.push(href)
+    }
   }
 
   render(){
@@ -34,9 +36,9 @@ export default class RSVPGroupBox extends Component {
         <div className={classnames(style.rsvpGroupHeader)}>{group.length} {groupName}</div>
         <div>
           {group.map(({ username, fullname, avatar }) => {
-            const href = `/profile/${username}`
+            const href = username&&`/profile/${username}`
             return (
-              <div key={username}>
+              <div key={username||Math.random().toString()}>
                 <Popup
                     content={fullname}
                     on="hover"

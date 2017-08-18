@@ -82,8 +82,16 @@ export class EventStore {
   }
 
   @action createGame(players, game){
-    let currentGame = game.toJS()
-    return graphqlClient.mutate({mutation: addGame, variables: {...currentGame, players}})
+    const normalizedPlayers = Object.keys(players).map(key=>{
+      const player = players[key]
+      return {
+        username: player.guest?undefined:player.username,
+        fullname: player.guest?player.fullname:undefined,
+        guest: player.guest,
+      }
+    })
+    let currentGame = toJS(game)
+    return graphqlClient.mutate({mutation: addGame, variables: {...currentGame, players:JSON.stringify(normalizedPlayers)}})
     .then((res)=>{
       this.setGame(res.data.addGame)
       return res.data.addGame
