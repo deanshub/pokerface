@@ -205,7 +205,7 @@ const Mutation = new GraphQLObjectType({
           return DB.models.Game.findById(args.gameId)
           .then(game=>{
             const username = context.user._id
-            let invited = game.get('invited')
+            let invited = game.invited.filter(player=>!player.guest).map(player=>player.username)
 
             if (invited.includes(username)){
               const attendance = args.attendance

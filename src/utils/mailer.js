@@ -142,7 +142,7 @@ function sendPersonalGameInvite(organizer, game, player){
     <br/>
     <div>${game.description||''}</div>
     <br/><br/>
-    <div>${newPlayer?'You\'re not a registered user, if you wish to RSVP please signup at <a href="http://pokerface.io/login">Pokerface.io</a>':'Please RSVP at <a href="http://pokerface.io/events">Pokerface.io</a>'}</div>
+    <div>${newPlayer?'You are not a registered user, if you wish to RSVP please signup at <a href="http://pokerface.io/login">Pokerface.io</a>':'Please RSVP at <a href="http://pokerface.io/events">Pokerface.io</a>'}</div>
     <br/><br/><br/>
     <small>For more information checkout <a href="http://pokerface.io/events">Pokerface.io</a></small>`
 
