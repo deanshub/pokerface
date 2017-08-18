@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Image } from 'semantic-ui-react'
+import classnames from 'classnames'
+import style from './style.css'
 
 export default class Events extends Component {
   render() {
@@ -11,8 +13,11 @@ export default class Events extends Component {
       <a href={`https://www.google.com/maps/search/${parsedLocation}`} target="_blank">
         <Image
             alt={location}
+            className={classnames(style.mapImage)}
             fluid
+            height={400}
             src={url}
+            width={400}
         />
       </a>
     )

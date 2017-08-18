@@ -54,33 +54,29 @@ export default class ProfileNavbar extends Component {
 
   getMenu(fixed: boolean){
     const {profile, avatarImage} = this.props
-    const {currentTab} = profile
     const {activateFixedNavbar}: {activateFixedNavbar: boolean} = this.state
 
+
+    console.log(profile.get('fullname'))
+
     return (
-      <Menu
+      <div
           className={classnames({
             [style.fixedNavbar]:fixed,
             [style.hidden]:(!fixed&&activateFixedNavbar),
             [style.invisible]:(fixed&&!activateFixedNavbar)})}
-          icon="labeled"
           style={{backgroundColor:'white', marginTop:0}}
-          tabular
-          widths={5}
       >
-        <Menu.Item
-            active={currentTab===ProfileConsts.STATISTICS_TAB}
-            onClick={()=>profile.changeTab(ProfileConsts.STATISTICS_TAB)}
-            style={{maxHeight:74}}
-        >
+        <div style={{maxHeight:74, textAlign: 'center'}}>
+          { profile.currentUser.fullname }
           <Image
               avatar
               className={classnames(style.avatar)}
               size="tiny"
               src={avatarImage}
           />
-        </Menu.Item>
-      </Menu>
+        </div>
+      </div>
     )
   }
 

@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
+import classnames from 'classnames'
+import style from './style.css'
 
 export default ({ auth, game, events }) => {
   const handleNotGoing = (e) => {
@@ -18,9 +20,10 @@ export default ({ auth, game, events }) => {
   const isNotGoing = game.declined.filter(user=>user.username===auth.user.username).length>0
 
   return (
-    <Button.Group className="is-going-button">
+    <Button.Group>
       <Button
           animated
+          className={classnames(style.isGoingButton)}
           negative={isNotGoing}
           onClick={handleNotGoing}
       >
@@ -32,6 +35,7 @@ export default ({ auth, game, events }) => {
       <Button.Or />
       <Button
           animated
+          className={classnames(style.isGoingButton)}
           onClick={handleGoing}
           positive={isGoing}
       >
