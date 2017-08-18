@@ -83,7 +83,7 @@ export default class Post extends Component {
   }
 
   getFeedSummary(){
-    const { post, auth } = this.props
+    const { post, auth, standalone } = this.props
     const deleteButton = (
       <Popup
           content={
@@ -126,9 +126,9 @@ export default class Post extends Component {
 
     if (post.photos.length>0) {
       return (
-        <Feed.Summary>
+        <Feed.Summary className={classnames({[style.standaloneSummary]: standalone})}>
           <Feed.User onClick={::this.goto}>{this.getUserFullName()}</Feed.User> added <a onClick={()=>this.openModal()}>{post.photos.length} new photos</a>
-          <Feed.Date>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
+          <Feed.Date className={classnames({[style.standaloneSummaryDate]: standalone})}>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
           {
             post.player.username===auth.user.username?
             deleteButton
@@ -139,9 +139,9 @@ export default class Post extends Component {
       )
     }else{
       return (
-        <Feed.Summary>
+        <Feed.Summary className={classnames({[style.standaloneSummary]: standalone})}>
           <Feed.User onClick={::this.goto}>{this.getUserFullName()}</Feed.User> shared a post
-          <Feed.Date>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
+          <Feed.Date className={classnames({[style.standaloneSummaryDate]: standalone})}>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
           {
             post.player.username===auth.user.username?
             deleteButton
@@ -189,15 +189,15 @@ export default class Post extends Component {
     const {postEditorState} = this.state
 
     return (
-      <Feed.Event className={classnames(style.post)} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10, backgroundColor:'#ffffff'}}>
+      <Feed.Event className={classnames({[style.post]: true, [style.standalone]: standalone })} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10, backgroundColor:'#ffffff'}}>
         <Feed.Label
-            className={classnames({[style.standalone]:standalone, [style.clickable]: true})}
+            className={classnames(style.clickable)}
             image={this.getUserImageUrl()}
             onClick={::this.goto}
         />
         <Feed.Content>
             {this.getFeedSummary()}
-          <Feed.Extra text style={{maxWidth:'none'}}>
+          <Feed.Extra text style={{maxWidth:'none'}} className={classnames({[style.standaloneText]: standalone})}>
             <PostEditor
                 editorState={postEditorState}
                 onChange={(editorState)=>this.setState({postEditorState: editorState})}
@@ -213,22 +213,27 @@ export default class Post extends Component {
               />
             )}
           </Feed.Extra>
-          <Feed.Meta>
+          <Feed.Meta className={classnames({[style.standaloneContentMeta]: standalone })}>
             <Feed.Like
                 className={classnames(style.unselectable, style.blackIcons, {
                   [style.active]: activeLike,
+                  [style.standaloneUnselectable]: standalone,
                 })}
                 onClick={::this.setLike}
             >
               <Icon className={classnames(style.icon)} name="like"/>
               {(post.likes&&post.likes.length)||0} Likes
             </Feed.Like>
-            <Feed.Like className={classnames(style.unselectable, style.blackIcons)} onClick={::this.addReply}>
+            <Feed.Like className={classnames(style.unselectable, style.blackIcons, {
+              [style.standaloneUnselectable]: standalone
+            })} onClick={::this.addReply}>
               <Icon className={classnames(style.icon)} name="reply" />
               Reply
             </Feed.Like>
             <Feed.Like
-                className={classnames(style.unselectable, style.blackIcons)}
+                className={classnames(style.unselectable, style.blackIcons, {
+                  [style.standaloneUnselectable]: standalone
+                })}
                 onClick={::this.sharePost}
             >
               <Icon className={classnames(style.icon)} name="share" />
@@ -239,7 +244,12 @@ export default class Post extends Component {
             <Comments
                 comments={post.comments}
             />
-            {replying&&<Reply post={post} removeReply={::this.removeReply}/>}
+            {replying&&
+              <Reply
+                  post={post}
+                  removeReply={::this.removeReply}
+                  standalone={standalone}
+              />}
           </Feed.Extra>
         </Feed.Content>
       </Feed.Event>

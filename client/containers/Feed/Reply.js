@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
 import { Form, Button, Image, Divider } from 'semantic-ui-react'
 import PostEditor from '../../components/PostEditor'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('auth')
 @inject('feed')
@@ -39,7 +41,7 @@ export default class Comments extends Component {
   }
 
   render() {
-    const { feed, post } = this.props
+    const { feed, post, standalone } = this.props
     const {avatarImage} = this.state
 
     return (
@@ -66,6 +68,7 @@ export default class Comments extends Component {
           </Form.Field>
         </Form.Group>
         <Button
+            className={classnames({[style.standaloneReply]: standalone})}
             content="Add Reply"
             icon="edit"
             labelPosition="left"
@@ -74,6 +77,7 @@ export default class Comments extends Component {
             size="tiny"
         />
         <Button
+            className={classnames({[style.standaloneReply]: standalone})}
             content="Cancel"
             icon="remove"
             labelPosition="left"
