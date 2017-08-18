@@ -271,7 +271,7 @@ export class FeedStore {
 
   getStandalonePost(id: String): Function{
     return graphqlClient.query({query: postsQuery, variables: {id}}).then((result) => {
-      const post = result.posts[0]
+      const post = result.data.posts[0]
       if (post){
         return post
       }else{
