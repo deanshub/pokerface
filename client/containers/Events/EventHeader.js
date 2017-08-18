@@ -39,7 +39,7 @@ const EventHeader = ({ game, events, auth, onClick, isExpanded }) => {
         <div>
           { !isExpanded && `${game.invited.length} People invited` }
         </div>
-        <div className="rsvp-button">
+        <div className={classnames(style.rsvpButton)}>
           <RSVPButton
               auth={auth}
               events={events}

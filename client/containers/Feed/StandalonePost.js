@@ -25,6 +25,7 @@ export default class StandalonePost extends Component {
         loading: false,
       })
     }).catch((e)=>{
+      console.error(e);
       this.setState({
         loading: false,
       })

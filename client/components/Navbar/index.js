@@ -5,6 +5,8 @@ import { Menu, Button, Input, Icon, Label, Search, Image } from 'semantic-ui-rea
 import request from 'superagent'
 import { observer, inject } from 'mobx-react'
 import PlayerSearchResult from './PlayerSearchResult'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('globalPlayersSearch')
 @inject('routing')
@@ -64,12 +66,14 @@ export default class Navbar extends Component {
             style={{marginBottom:0, backgroundColor:'white'}}
         >
           <Menu.Item
+              className={classnames(style.navbarMenuItemAnchor)}
               active={this.isActive('/', true)}
               onClick={()=>this.handleMenuItemClick('/')}
           >
             <Icon name="home"/> Home
           </Menu.Item>
           <Menu.Item
+              className={classnames(style.navbarMenuItemAnchor)}
               active={this.isActive('/profile', true)}
               onClick={()=>this.handleMenuItemClick('/profile')}
           >
@@ -85,6 +89,7 @@ export default class Navbar extends Component {
             } Profile
           </Menu.Item>
           <Menu.Item
+              className={classnames(style.navbarMenuItemAnchor)}
               active={this.isActive('/events', true)}
               onClick={()=>this.handleMenuItemClick('/events')}
           >
@@ -99,18 +104,23 @@ export default class Navbar extends Component {
 
           <Menu.Menu position="right">
             <Menu.Item
+                className={classnames(style.navbarMenuItemAnchor)}
                 active={this.isActive('/smart', true)}
                 onClick={()=>this.handleMenuItemClick('/smart')}
             >
               <Icon name="student"/> Get Smarter
             </Menu.Item>
             <Menu.Item
+                className={classnames(style.navbarMenuItemAnchor)}
                 active={this.isActive('/timer', true)}
                 onClick={()=>this.handleMenuItemClick('/timer')}
             >
               <Icon name="clock"/> Blinds Timer
             </Menu.Item>
-            <Menu.Item onClick={::this.handleLogout}>
+            <Menu.Item
+                className={classnames(style.navbarMenuItemAnchor)}
+                onClick={::this.handleLogout}
+            >
               <Button>logout</Button>
             </Menu.Item>
             <Menu.Item>
