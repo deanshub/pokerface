@@ -1,13 +1,7 @@
-import {
-  GraphQLObjectType, GraphQLString,
-} from 'graphql'
-
-const UploadedFile = new GraphQLObjectType({
-  name: 'UploadedFile',
-  fields: {
-    originalname: { type: GraphQLString },
-    mimetype: { type: GraphQLString },
-  },
-})
-
-export default UploadedFile
+export const schema =  [`input Upload {
+  name: String!
+  type: String!
+  size: Int!
+  path: String!
+}
+`]

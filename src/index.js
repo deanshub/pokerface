@@ -2,7 +2,7 @@
 
 import express from 'express'
 import passport from 'passport'
-import multer from 'multer'
+import fileUploadMiddleware from './utils/fileUploadMiddleware'
 import {Strategy as LocalStrategy} from 'passport-local'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
@@ -29,7 +29,6 @@ app.use(expressSession({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-
 
 if (process.env.NODE_ENV==='development'){
   app.use(devMiddleware())
@@ -78,12 +77,15 @@ app.get('/logout', (req, res)=>{
   res.redirect('/login')
 })
 
-// Multer provides multipart form data parsing.
-// const storage = multer.memoryStorage()
-// app.use(multer({storage}))
-app.use(multer({ dest: 'uploads/' }).array())
-
-app.use('/graphql', bodyParser.json(), graphql)
+app.use('/graphql',
+  bodyParser.json(),
+  fileUploadMiddleware({
+    uploadDir: '../client/static/images',
+    keepExtensions: true,
+    maxFieldsSize: 5 * 1024 * 1024, // 5MB
+  }),
+  graphql
+)
 
 routes.apiRoutes.then(apiRoutes=>{
   apiRoutes.forEach((route)=>{

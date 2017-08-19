@@ -20,12 +20,23 @@ router.post('/isAuthenticated', (req, res)=>{
     const username = req.user._id
 
     let avatar = req.user.avatar
-    if (!avatar){
+    if (!avatar && !username){
+      return '/images/avatar.png'
+    }else if (!avatar){
       avatar = `/api/avatarGenerator?username=${username}`
     }else if (!avatar.includes('http')) {
       avatar = `/images/${avatar}`
     }
-    res.json({...req.user, username, avatar})
+
+    let coverImage = req.user.coverImage
+    if (!coverImage && !username){
+      return '/images/cover.jpg'
+    }else if (!coverImage){
+      coverImage = `/api/avatarGenerator?username=${username}`
+    }else if (!coverImage.includes('http')) {
+      coverImage = `/images/${coverImage}`
+    }
+    res.json({...req.user, username, avatar, coverImage})
   }else{
     res.json({})
   }

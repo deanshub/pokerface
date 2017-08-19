@@ -1,65 +1,117 @@
-import {
-  GraphQLObjectType, GraphQLString,
-  GraphQLList,
-} from 'graphql'
 import DB from '../../db'
-import Player from './Player'
-import Comment from './Comment'
+// import {schema as Player} from './Player'
+// import {schema as Comment} from './Comment'
 
-const Post = new GraphQLObjectType({
-  name: 'Post',
-  description: 'Represents a player\'s post',
-  fields: ()=>{
-    return {
-      id: {
-        type: GraphQLString,
-        resolve(post){
-          return post._id
-        },
+export const schema =  [`
+  type Post {
+    id: String!
+    createdAt: String
+    content: String
+    photos: [String]
+    likes: [Player]
+    player: Player
+    comments: [Comment]
+  }
+
+  type Query {
+    posts(
+      id: String,
+      username: String,
+      offset: Int
+    ): [Post]
+  }
+
+  type Mutation{
+    createPost(
+      content: String!,
+      photos: [String]
+    ): Post
+    deletePost(
+      postId: String!
+    ): Post
+    setPostLike(
+      content: Boolean!,
+      post: String!
+    ): Post
+  }
+`]
+
+export const resolvers = {
+  Post:{
+    id: (post)=>post._id,
+    createdAt: (post)=>post.created,
+    content: (post)=>JSON.stringify(post.content),
+    photos: (post)=>post.photos,
+    likes: (post)=>DB.models.Player.find({
+      _id:{
+        $in: post.likes,
       },
-      createdAt: {
-        type: GraphQLString,
-        resolve(post){
-          return post.created
-        },
-      },
-      content: {
-        type: GraphQLString,
-        resolve(post){
-          return JSON.stringify(post.content)
-        },
-      },
-      photos:{
-        type: new GraphQLList(GraphQLString),
-        resolve(post){
-          return post.photos
-        },
-      },
-      likes: {
-        type: new GraphQLList(Player),
-        resolve(post){
-          return DB.models.Player.find({
-            _id:{
-              $in: post.likes,
-            },
-          })
-        },
-      },
-      player: {
-        type: Player,
-        resolve(post){
-          return DB.models.Player.findById(post.player)
-        },
-      },
-      comments: {
-        type: new GraphQLList(Comment),
-        resolve(post){
-          return DB.models.Comment.find({post:post._id})
-            .sort('created')
-        },
-      },
-    }
+    }),
+    player: (post)=>DB.models.Player.findById(post.player),
+    comments: (post)=>DB.models.Comment.find({post:post._id})
+      .sort('created'),
   },
-})
 
-export default Post
+  Query: {
+    posts: (_, {id, username, offset})=>{
+      let query
+      if (id!==undefined){
+        query = DB.models.Post.find({_id: id})
+      }else if (username!==undefined) {
+        return DB.models.Comment.find({player: username}).then((comments)=>{
+          const posts = comments.map(comment=>comment.post)
+          return DB.models.Post.find({
+            $or:[
+              {player: username},
+              {_id:{$in:posts}},
+            ],
+          })
+          .limit(20)
+          .skip(offset||0)
+          .sort('-created')
+        })
+      }else{
+        query = DB.models.Post.find()
+      }
+
+      return query
+        .limit(20)
+        .skip(offset||0)
+        .sort('-created')
+    },
+  },
+
+  Mutation: {
+    createPost: (_, {content, photos}, context)=>{
+      return new DB.models.Post({
+        content: JSON.parse(content),
+        player: context.user._id,
+        photos,
+      }).save()
+    },
+    deletePost:(_, {postId}, context)=>{
+      return DB.models.Post.findById(postId).then(post=>{
+        if (post.player===context.user._id){
+          return post.remove()
+        }else{
+          throw new Error('Can\'t delete post of another user')
+        }
+      })
+    },
+    setPostLike:(_, {post, content}, context)=>{
+      return DB.models.Post.findById(post)
+        .then((post)=>{
+          const username = context.user._id
+          let likes = post.get('likes')
+          if (content&&!likes.includes(username)){
+            likes.push(username)
+          }else if (!content&&likes.includes(username)){
+            likes = likes.filter(user=>user!==username)
+          }
+
+          post.set('likes', likes)
+          return post.save()
+        })
+    },
+  },
+}
