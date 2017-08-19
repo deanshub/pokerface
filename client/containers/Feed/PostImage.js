@@ -26,17 +26,6 @@ export default class PostImage extends Component {
         imageFile: photo,
       })
     },200)
-    // import(`../../assets/images/${photo}`).then(imageFile=>{
-    //   this.setState({
-    //     imageFile,
-    //   },()=>{
-    //     setTimeout(()=>{
-    //       this.setState({
-    //         loading: false,
-    //       })
-    //     },500)
-    //   })
-    // })
   }
 
   shouldComponentUpdate(nextProps: Object, nextState: Object) {

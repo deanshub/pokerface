@@ -33,6 +33,7 @@ export class FeedStore {
   @observable commentDrafts: Object
   currentUser: Object
   noMorePosts: boolean
+  @observable uploadImages
 
 
   constructor(){
@@ -41,6 +42,7 @@ export class FeedStore {
     this.loading = false
     this.noMorePosts = false
     this.editorState = EditorState.createEmpty()
+    this.uploadImages = []
   }
 
   @computed
@@ -60,14 +62,14 @@ export class FeedStore {
   }
 
   @action
-  addPost(){
+  addPost(photos){
     const content = this.editorState.getCurrentContent()
     if (content.hasText()){
       const post = convertToRaw(content)
       this.editorState = EditorState.createEmpty()
 
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
-      graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(post)}})
+      graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(post), photos}})
       // if post mutation succeded add id
       .then(result=>{
         this.posts.delete(newPostTempId)
@@ -84,7 +86,7 @@ export class FeedStore {
         id: newPostTempId,
         createdAt: Date.now(),
         content: JSON.stringify(post),
-        photos:[],
+        photos: [],
         likes:[],
         comments:[],
         player:{
@@ -278,5 +280,18 @@ export class FeedStore {
         throw new Error('Post doesn\'t exists anymore')
       }
     })
+  }
+
+  @action
+  previewUploadImages(images){
+    this.uploadImages=[]
+    for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
+      const image = images[imageIndex]
+      let reader = new FileReader()
+      reader.onload = (e)=>{
+        this.uploadImages.push(e.target.result)
+      }
+      reader.readAsDataURL(image)
+    }
   }
 }

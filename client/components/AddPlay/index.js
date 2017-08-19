@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Grid, Form, Button, Icon, Dropdown, Header } from 'semantic-ui-react'
+import { Grid, Form, Button, Icon, Dropdown, Header, Input } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
 
@@ -28,16 +28,22 @@ const shareWithOptions = [{
 export default class AddGame extends Component {
   addPhoto(event){
     event.preventDefault()
+    this.photosElm.click()
   }
 
   addPost(event){
     event.preventDefault()
-    this.props.feed.addPost()
+    this.props.feed.addPost(this.photosElm.files)
   }
 
   onPostChange(editorState){
     const {feed} = this.props
     feed.updatePost(editorState)
+  }
+
+  photosChanged(){
+    const {feed} = this.props
+    feed.previewUploadImages(this.photosElm.files)
   }
 
   render() {
@@ -55,8 +61,32 @@ export default class AddGame extends Component {
                   postEditor
               />
             </Grid.Column>
+            {
+              feed.uploadImages.length>0
+              ?
+              <Grid.Column style={{marginTop:-27, marginBottom:27, display:'flex !important', flexDirection:'row', flexFlow:'row wrap'}} width={16}>
+                {
+                  feed.uploadImages.map(src=>(
+                    <img
+                        key={Math.random()}
+                        src={src}
+                        style={{width:'6em', height:'3em', flexGrow:0}}
+                    />
+                  ))
+                }
+              </Grid.Column>
+              :
+              null
+            }
 
             <Grid.Column width={3}>
+              <input
+                  multiple
+                  ref={(photosElm)=>this.photosElm=photosElm}
+                  style={{display:'none'}}
+                  type="file"
+                  onChange={::this.photosChanged}
+              />
               <Button
                   content="Add Photos"
                   icon="add"
@@ -70,6 +100,7 @@ export default class AddGame extends Component {
                   icon="users"
                   labelPosition="left"
                   onClick={::this.addPhoto}
+                  type="file"
               />
             </Grid.Column>
             <Grid.Column width={3}>

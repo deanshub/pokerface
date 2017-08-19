@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-export const postCreate = gql`mutation createPost($post: String!){
-  createPost(content:$post){
+export const postCreate = gql`mutation createPost($post: String!, $photos: [Upload]){
+  createPost(content:$post, photos:$photos){
     id
     createdAt
     content
