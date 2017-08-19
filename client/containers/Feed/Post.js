@@ -195,7 +195,7 @@ export default class Post extends Component {
             image={this.getUserImageUrl()}
             onClick={::this.goto}
         />
-        <Feed.Content>
+        <Feed.Content className={classnames({[style.standaloneContent]: standalone})}>
             {this.getFeedSummary()}
           <Feed.Extra text style={{maxWidth:'none'}} className={classnames({[style.standaloneText]: standalone})}>
             <PostEditor
@@ -243,6 +243,7 @@ export default class Post extends Component {
           <Feed.Extra>
             <Comments
                 comments={post.comments}
+                standalone={standalone}
             />
             {replying&&
               <Reply

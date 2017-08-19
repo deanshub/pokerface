@@ -7,10 +7,16 @@ import PostComment from './PostComment'
 @observer
 export default class Comments extends Component {
   render() {
-    const { comments } = this.props
+    const { comments, standalone } = this.props
     return (
       <Comment.Group style={{maxWidth:'98%'}}>
-        {comments.map(comment=><PostComment comment={comment} key={comment.id}/>)}
+        {comments.map(comment=>(
+          <PostComment
+              comment={comment}
+              key={comment.id}
+              standalone={standalone}
+          />))
+        }
       </Comment.Group>
     )
   }

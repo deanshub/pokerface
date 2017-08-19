@@ -19,6 +19,7 @@ TimeAgo.locale(timeAgoEnLocale)
 export default class PostComment extends Component {
   static propTypes = {
     comment: PropTypes.object,
+    standalone: PropTypes.bool,
   }
 
   constructor(props){
@@ -82,7 +83,7 @@ export default class PostComment extends Component {
   }
 
   render() {
-    const { comment, auth } = this.props
+    const { comment, auth, standalone } = this.props
     const activeLike = comment.likes.filter((user)=>user.username===auth.user.username).length>0
     const {commentEditorState} = this.state
 
@@ -133,7 +134,7 @@ export default class PostComment extends Component {
             onClick={::this.goto}
             src={this.getUserImageUrl()}
         />
-        <Comment.Content>
+        <Comment.Content className={classnames({[style.standaloneComment]: standalone})}>
           <Comment.Author as="a" onClick={::this.goto}>{this.getUserFullName()}</Comment.Author>
           <Comment.Metadata>
             <div>{this.timeAgo.format(new Date(comment.createdAt))}</div>
@@ -144,7 +145,7 @@ export default class PostComment extends Component {
             :
             null
           }
-          <Comment.Text style={{width:'95%'}}>
+          <Comment.Text className={classnames({[style.standaloneCommentText]: standalone})} style={{width:'95%'}}>
             <PostEditor
                 editorState={commentEditorState}
                 onChange={(editorState)=>this.setState({commentEditorState:editorState})}
