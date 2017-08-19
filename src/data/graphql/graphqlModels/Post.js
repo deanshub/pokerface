@@ -1,3 +1,4 @@
+import path from 'path'
 import DB from '../../db'
 // import {schema as Player} from './Player'
 // import {schema as Comment} from './Comment'
@@ -24,7 +25,7 @@ export const schema =  [`
   type Mutation{
     createPost(
       content: String!,
-      photos: [String]
+      photos: [Upload]
     ): Post
     deletePost(
       postId: String!
@@ -41,7 +42,7 @@ export const resolvers = {
     id: (post)=>post._id,
     createdAt: (post)=>post.created,
     content: (post)=>JSON.stringify(post.content),
-    photos: (post)=>post.photos,
+    photos: (post)=>post.photos.map(photo=>`/images/${photo}`),
     likes: (post)=>DB.models.Player.find({
       _id:{
         $in: post.likes,
@@ -83,10 +84,14 @@ export const resolvers = {
 
   Mutation: {
     createPost: (_, {content, photos}, context)=>{
+      const photosUrl = photos.map(photo=>{
+        const filename = path.parse(photo.path).base
+        return filename
+      })
       return new DB.models.Post({
         content: JSON.parse(content),
         player: context.user._id,
-        photos,
+        photos: photosUrl,
       }).save()
     },
     deletePost:(_, {postId}, context)=>{
