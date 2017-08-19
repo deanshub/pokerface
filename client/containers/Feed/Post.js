@@ -207,6 +207,7 @@ export default class Post extends Component {
           <Feed.Extra className={classnames(style.unselectable)} images>
             {post.photos.map((photo, index)=>
               <PostImage
+                  className={classnames({[style.standaloneImage]: standalone})}
                   key={Math.random()}
                   onClick={()=>this.openModal(index)}
                   photo={photo}

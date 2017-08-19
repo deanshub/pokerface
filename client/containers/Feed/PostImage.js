@@ -33,12 +33,16 @@ export default class PostImage extends Component {
   }
 
   render() {
-    const {onClick} = this.props
+    const {onClick, className} = this.props
     const {imageFile} = this.state
 
     return (
       <a onClick={onClick}>
-        <img draggable={false} src={imageFile} />
+        <img
+            className={className}
+            draggable={false}
+            src={imageFile}
+        />
       </a>
     )
   }

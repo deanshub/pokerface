@@ -86,3 +86,7 @@
 .standaloneCommentText {
     height: min-content;
 }
+
+.standaloneImage{
+  width: 100%;
+}
