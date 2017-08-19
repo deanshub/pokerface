@@ -4,7 +4,7 @@ import { observable, action } from 'mobx'
 import * as ProfileConsts from '../constants/profile'
 import graphqlClient from './graphqlClient'
 import {playersQuery} from './queries/players'
-// import {updatePersonalInfoMutation} from './mutations/players'
+import {updatePersonalInfoMutation} from './mutations/players'
 
 export class ProfileStore {
   @observable currentTab: string
@@ -37,13 +37,7 @@ export class ProfileStore {
   setImageFiles(): void{
     const coverImage = this.currentUser.get('coverImage')
     if(coverImage){
-      if (coverImage.startsWith('http')){
-        this.currentUser.set('imageFile', coverImage)
-      }else{
-        import(`../assets/images/${coverImage}`).then(imageFile=>{
-          this.currentUser.set('imageFile', imageFile)
-        })
-      }
+      this.currentUser.set('imageFile', coverImage)
     }
 
     const avatarUrl = this.currentUser.get('avatar')
@@ -53,7 +47,6 @@ export class ProfileStore {
   }
 
   updatePersonalInfo(info): void{
-    // return graphqlClient.mutate({mutation: updatePersonalInfoMutation, variables: {firstname:'aba', info}})
-    return Promise.resolve(info)
+    return graphqlClient.mutate({mutation: updatePersonalInfoMutation, variables: info}).then(res=>res.data.updatePersonalInfo)
   }
 }
