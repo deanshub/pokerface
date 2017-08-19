@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "apollo-client": "^1.9.1",
+    "apollo-upload-client": "^5.1.1",
     "draft-js": "^0.10.0",
     "draft-js-buttons": "^2.0.0-beta6",
     "draft-js-emoji-plugin": "beta",

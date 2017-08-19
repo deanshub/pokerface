@@ -17,6 +17,14 @@ export class AuthStore {
   }
 
   @action
+  updateUserInfo(info){
+    this.user = {
+      ...this.user,
+      ...info,
+    }
+  }
+
+  @action
   authenticate(){
     this.authenticating = true
     return request.post('/api/isAuthenticated').then((res)=>{

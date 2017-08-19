@@ -195,7 +195,7 @@ export class FeedStore {
       variables:{
         username, offset:this.posts.size,
       },
-      pollInterval: 5000,
+      // pollInterval: 10000, //ms
     }).subscribe({
       next :(result)=>{
         const newPosts = result.data.posts.filter(post=>!this.posts.has(post.id))
