@@ -95,6 +95,7 @@ export class FeedStore {
           avatar: 'dean2.jpg',
         },
       })
+      this.uploadImages=[]
     }
   }
 
