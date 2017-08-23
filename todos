@@ -1,12 +1,10 @@
 FOR GA ONLY!!!
 --------------
 
-make nginx serve static assets
 add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
 -------------------------------------------------------------------------------
 
-make return to url work
 make map in fixed size so image loading won't change the size
 
 fix re-render of the images in posts (when like)
@@ -16,8 +14,6 @@ add game statistics (maybe it should look like a poker table and you can click t
 remove the profile sub navigation
 
 fix serverside webpack (remove unnessercy loaders)
-
-make pm2 run in cluster per cpu
 
 tournement managment
 -----------------------

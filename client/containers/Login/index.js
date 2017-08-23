@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
+import { parse } from 'qs'
 
 import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'semantic-ui-react'
 import request from 'superagent'
@@ -31,7 +32,9 @@ export default class Navigation extends Component {
 
   handleLogin(event, {formData}){
     event.preventDefault()
-    const { routing } = this.props
+    const { routing, location } = this.props
+    const query = parse(location.search.substr(1))
+    console.log(query);
     this.setState({
       loggingInPorgress: true,
       loggingInFail: false,
@@ -46,7 +49,7 @@ export default class Navigation extends Component {
         this.setState({
           loggingInPorgress: false,
         })
-        routing.replace('/')
+        routing.replace(query.url)
       }).catch((err)=>{
         console.log(err)
         let loginFailMessage = viewParam('response.body.error', err)
