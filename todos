@@ -1,17 +1,34 @@
 FOR GA ONLY!!!
 --------------
 
+make nginx serve static assets
 add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
 -------------------------------------------------------------------------------
 
-make standalone posts pretty
+make return to url work
 make map in fixed size so image loading won't change the size
+
+fix re-render of the images in posts (when like)
 
 add graphql fregments
 add game statistics (maybe it should look like a poker table and you can click the players to see stats)
 remove the profile sub navigation
-make return to url work
+
+fix serverside webpack (remove unnessercy loaders)
+
+make pm2 run in cluster per cpu
+
+tournement managment
+-----------------------
+title and sub-title in the blinds timer
+saving game templates in the DB per user
+allowing user to connect from different computers (timer stays the same)
+prizes
+table and user sitting
+
+
+
 
 GAME
 -------

@@ -12,18 +12,6 @@ export default class AddVideoButton extends Component {
     theme: PropTypes.shape(),
   }
 
-  // toggleStyle(event){
-  //   const { setEditorState, getEditorState, style } = this.props
-  //
-  //   event.preventDefault()
-  //   setEditorState(
-  //     RichUtils.toggleInlineStyle(
-  //       getEditorState(),
-  //       style
-  //     )
-  //   )
-  // }
-
   toggleVideo(event){
     const { setEditorState, getEditorState } = this.props
     event.preventDefault()

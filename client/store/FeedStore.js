@@ -2,7 +2,7 @@
 
 import { observable, computed, action, toJS } from 'mobx'
 // import { fromResource } from 'mobx-utils'
-import { EditorState, convertToRaw } from 'draft-js'
+import { EditorState, convertToRaw, Modifier } from 'draft-js'
 import graphqlClient from './graphqlClient'
 import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike, postDelete} from './mutations/posts'
@@ -34,6 +34,7 @@ export class FeedStore {
   currentUser: Object
   noMorePosts: boolean
   @observable uploadImages
+  @observable openCardSelection: boolean
 
 
   constructor(){
@@ -43,6 +44,7 @@ export class FeedStore {
     this.noMorePosts = false
     this.editorState = EditorState.createEmpty()
     this.uploadImages = []
+    this.openCardSelection = false
   }
 
   @computed
@@ -294,5 +296,37 @@ export class FeedStore {
       }
       reader.readAsDataURL(image)
     }
+  }
+
+  @action
+  addCard(card){
+    const contentState = this.editorState.getCurrentContent()
+    const targetRange = this.editorState.getSelection()
+
+    const newContentState = Modifier.replaceText(contentState, targetRange, `[${card}] `)
+    const newEditorState = EditorState.push(
+      this.editorState,
+      newContentState,
+      'convert-to-immutable-cards',
+      // this.editorState.getLastChangeType(),
+    )
+
+    this.editorState = EditorState.moveFocusToEnd(newEditorState)
+  }
+
+  @action
+  addFriendTag(){
+    const contentState = this.editorState.getCurrentContent()
+    const targetRange = this.editorState.getSelection()
+
+    const newContentState = Modifier.replaceText(contentState, targetRange, '@')
+    const newEditorState = EditorState.push(
+      this.editorState,
+      newContentState,
+      // 'convert-to-immutable-cards',
+      this.editorState.getLastChangeType(),
+    )
+
+    this.editorState = newEditorState
   }
 }

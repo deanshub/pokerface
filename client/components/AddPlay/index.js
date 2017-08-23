@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-import { Grid, Form, Button, Icon, Dropdown, Header, Input } from 'semantic-ui-react'
+import { Grid, Form, Button, Icon, Dropdown, Header } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
+import CardSelection from './CardSelection'
 
 const shareWithOptions = [{
   key: 'everyone',
@@ -15,12 +16,14 @@ const shareWithOptions = [{
   value: 'friends',
   content: 'Friends',
   icon: 'users',
+  disabled: true,
 },{
   key: 'private',
   text: 'Private',
   value: 'private',
   content: 'Private',
   icon: 'user',
+  disabled: true,
 }]
 
 @inject('feed')
@@ -44,6 +47,17 @@ export default class AddGame extends Component {
   photosChanged(){
     const {feed} = this.props
     feed.previewUploadImages(this.photosElm.files)
+  }
+
+  tagFriends(event){
+    event.preventDefault()
+    const {feed} = this.props
+    feed.addFriendTag()
+  }
+  insertCard(card){
+    const {feed} = this.props
+    feed.openCardSelection=false
+    feed.addCard(card)
   }
 
   render() {
@@ -82,10 +96,10 @@ export default class AddGame extends Component {
             <Grid.Column width={3}>
               <input
                   multiple
+                  onChange={::this.photosChanged}
                   ref={(photosElm)=>this.photosElm=photosElm}
                   style={{display:'none'}}
                   type="file"
-                  onChange={::this.photosChanged}
               />
               <Button
                   content="Add Photos"
@@ -99,17 +113,29 @@ export default class AddGame extends Component {
                   content="Tag friends"
                   icon="users"
                   labelPosition="left"
-                  onClick={::this.addPhoto}
+                  onClick={::this.tagFriends}
                   type="file"
               />
             </Grid.Column>
             <Grid.Column width={3}>
-              <Button
-                  content="Insert Card"
-                  icon="empty heart"
-                  labelPosition="left"
-                  onClick={::this.addPhoto}
-              />
+              <Dropdown
+                  button
+                  className="icon"
+                  floating
+                  icon="dropdown"
+                  labeled
+                  onClick={()=>{feed.openCardSelection=!feed.openCardSelection}}
+                  open={feed.openCardSelection}
+                  text="Insert Card"
+              >
+                <Dropdown.Menu>
+                  <Dropdown.Header content="Select a card" icon="tags" />
+                  <Dropdown.Divider />
+                  <CardSelection
+                      onCardSelected={::this.insertCard}
+                  />
+                </Dropdown.Menu>
+              </Dropdown>
             </Grid.Column>
             <Grid.Column width={1}/>
             <Grid.Column width={3}>

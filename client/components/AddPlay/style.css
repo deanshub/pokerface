@@ -1,1 +1,27 @@
 @import "../../constants/styles";
+
+.cardSelectionContainer{
+  display: grid;
+  margin: 0 10px;
+  grid-template-columns: repeat(3, 16.66%) 1px repeat(2, 25%);
+  grid-template-rows: repeat(5, 1fr);
+  align-items: stretch;
+  justify-items: stretch;
+  padding-bottom: 10px;
+}
+
+.item{
+  text-align: center;
+  line-height: 200%;
+  border: 1px solid #2f2f2f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.item:hover{
+  background-color: #f2f2f2;
+}
+.selected{
+  background-color: #c2c2c2;
+}

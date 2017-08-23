@@ -55,11 +55,12 @@ export default function(editorState){
   })
 
   if (!newContentState.equals(contentState)) {
-    return EditorState.push(
+    const newEditorState = EditorState.push(
       editorState,
       newContentState,
       'convert-to-immutable-cards',
     )
+    return EditorState.moveFocusToEnd(newEditorState)
   }
 
   return editorState
