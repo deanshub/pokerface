@@ -36,8 +36,16 @@ export default class Card extends Component {
             )}
             style={coveredStyle}
         >
-          <span className={classnames(style.rank)}>{normalizedRank.toUpperCase()}</span>
-          <span className={classnames(style.suit)}>{SUITES[normalizedSuit]}</span>
+          {
+            covered?null:(
+              <span className={classnames(style.rank)}>{normalizedRank.toUpperCase()}</span>
+            )
+          }
+          {
+            covered?null:(
+              <span className={classnames(style.suit)}>{SUITES[normalizedSuit]}</span>
+            )
+          }
         </a>
       </li>
     )
