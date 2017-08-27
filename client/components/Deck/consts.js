@@ -11,6 +11,13 @@ export const RANKS: string[] = ['2','3','4','5','6','7','8','9','10','t','j','q'
 
 const suitesKeys = Object.keys(SUITES)
 
+export const getUnimportantCard: Function = (): Object=>{
+  return {
+    rank: '?',
+    suit: '?',
+  }
+}
+
 export const randomSuit: Function = (): string=>{
   const randomIndex: number = Math.floor(Math.random() * suitesKeys.length)
   return suitesKeys[randomIndex]
@@ -31,6 +38,8 @@ export const normalizeSuite: Function =(originalSuit: string): string=>{
     return 'spades'
   }else if (lowerSuit==='♣'||lowerSuit==='c'||lowerSuit==='club'||lowerSuit==='clubs'){
     return 'clubs'
+  }else if (lowerSuit==='?'||lowerSuit==='joker'){
+    return 'joker'
   }else{
     return null
   }
@@ -48,6 +57,8 @@ export const normalizeRank: Function =(originalRank: string): string=>{
     return 'k'
   }else if (lowerCaseRank==='1'||lowerCaseRank==='a') {
     return 'a'
+  }else if (lowerCaseRank==='?'||lowerCaseRank==='joker') {
+    return 'joker'
   }else{
     return lowerCaseRank
   }

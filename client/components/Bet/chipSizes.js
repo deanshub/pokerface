@@ -1,0 +1,39 @@
+const chipSizes = {
+  1000:{
+    value:1000,
+    primaryColor:'brown',
+    seconderyColor:'gray',
+  },
+  100:{
+    value:100,
+    primaryColor:'#000000',
+    seconderyColor:'#ffffff',
+  },
+  50:{
+    value:50,
+    primaryColor:'#7e57c2',
+    seconderyColor:'#ffffff',
+  },
+  10:{
+    value:10,
+    primaryColor:'#009688',
+    seconderyColor:'#ffffff',
+  },
+  5:{
+    value:5,
+    primaryColor:'#0d47a1',
+    seconderyColor:'#ffffff',
+  },
+  2:{
+    value:2,
+    primaryColor:'#ef5350',
+    seconderyColor:'#ffffff',
+  },
+  1:{
+    value:1,
+    primaryColor:'#ffffff',
+    seconderyColor:'#045acc',
+  },
+}
+
+export default chipSizes

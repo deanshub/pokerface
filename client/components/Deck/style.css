@@ -30,6 +30,7 @@
     -moz-box-shadow: .2em .2em .5em #333;
     -webkit-box-shadow: .2em .2em .5em #333;
     box-shadow: .2em .2em .5em #333;
+    cursor: pointer;
 }
 
 a.card {
@@ -45,15 +46,23 @@ label.card {
     cursor: pointer;
 }
 
-.card.back {
+.card.back{
+  background-image: url('./back.png') !important;
+  background-position: 50% 50%;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: white;
+}
+/*.card.back {
     text-indent: -4000px;
     background-color: #ccc;
     background-repeat: repeat;
-    background-image: url(data:image/gif;base64,R0lGODlhJAAkAJEAAOjFsezdztOKbL5QKCH5BAAAAAAALAAAAAAkACQAAAL/HC4RAqm/mmLHyHmAbczB11Ea8ombJKSgKo6Z17pXFznmS1JptiX0z3vVhpEKDoUIkoa0olGIUeZUk1RI6Yn2mh/FDAt6frOrRRTqXPpsVLYugzxaVy+YcBdnoWPZOT0E4eckQtZFZBjWoHixQFWl6Nhol6R2p1Okt5TGaEWZA6fjiMdhZgPHeWrTWGVq+jTZg1HYyAEWKLYzmyiGKoUimilz+YYryyTlg5RcDJSAbNx0Q7lMcbIGEyzTK8zVdfVaImzs/QV+prYqWWW2ObkoOApM/Em/rUlIm7fijs8a2EEKEaZ3AsMUgneEU6RcpJbZ27aGHkAO2Ors8xQH1IR0Bn5YnOtVAAA7); /* image is "Pattern 069" from http://www.squidfingers.com/patterns/ */
+    background-image: url(data:image/gif;base64,R0lGODlhJAAkAJEAAOjFsezdztOKbL5QKCH5BAAAAAAALAAAAAAkACQAAAL/HC4RAqm/mmLHyHmAbczB11Ea8ombJKSgKo6Z17pXFznmS1JptiX0z3vVhpEKDoUIkoa0olGIUeZUk1RI6Yn2mh/FDAt6frOrRRTqXPpsVLYugzxaVy+YcBdnoWPZOT0E4eckQtZFZBjWoHixQFWl6Nhol6R2p1Okt5TGaEWZA6fjiMdhZgPHeWrTWGVq+jTZg1HYyAEWKLYzmyiGKoUimilz+YYryyTlg5RcDJSAbNx0Q7lMcbIGEyzTK8zVdfVaImzs/QV+prYqWWW2ObkoOApM/Em/rUlIm7fijs8a2EEKEaZ3AsMUgneEU6RcpJbZ27aGHkAO2Ors8xQH1IR0Bn5YnOtVAAA7);
     background-image: -moz-repeating-linear-gradient(34% 6% 135deg,#0F1E59, #75A1BF, #3E3E63 50%);
     background-image: -webkit-gradient(radial, center center, 20, center center, 80, from(#3c3), color-stop(0.4, #363), to(#030));
-    /* yes, it's intentional that Mozilla, Webkit, Opera and IE all will get different backgrounds ... why not? :) */
-}
+}*/
 
 /* suit colours
 ********************************************************************/
@@ -355,9 +364,6 @@ label.card {
 /*.faceImages .card.rank-k.clubs  { background-image: url(faces/KC.gif); }*/
 
 /*.faceImages .card.joker         { background-image: url(faces/joker.gif); }*/
-.simpleCards .card.rank-j,
-.simpleCards .card.rank-q,
-.simpleCards .card.rank-k       { background-image: none !important; }
 
 /*____________ symbols in the middle (faces as dingbat symbols) ____________*/
 
@@ -628,3 +634,14 @@ ul.deck li:nth-child(29) { left: 56px; bottom: 28px; }
 ul.deck li:nth-child(30) { left: 58px; bottom: 29px; }
 ul.deck li:nth-child(31) { left: 60px; bottom: 30px; }
 ul.deck li:nth-child(32) { left: 62px; bottom: 31px; }
+
+.simpleCards .card.rank-j,
+.simpleCards .card.rank-q,
+.simpleCards .card.rank-k       { background-image: none; }
+
+/* my section for disabling the hover effect*/
+a.card.noHoverEffect:hover, a.card.noHoverEffect:active, a.card.noHoverEffect:focus,
+label.card.noHoverEffect:hover,
+strong .card.noHoverEffect {
+    bottom: inherit;
+}

@@ -1,0 +1,15 @@
+.betLabel{
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  margin: 5% 40%;
+  padding: 3px;
+  border-radius: 20%;
+  font-size: initial;
+}
+
+.dealerBet{
+  position: absolute;
+  top: -20%;
+  margin: 0;
+  font-size: initial;
+}

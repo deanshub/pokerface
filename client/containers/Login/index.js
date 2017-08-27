@@ -34,7 +34,6 @@ export default class Navigation extends Component {
     event.preventDefault()
     const { routing, location } = this.props
     const query = parse(location.search.substr(1))
-    console.log(query);
     this.setState({
       loggingInPorgress: true,
       loggingInFail: false,
@@ -49,7 +48,7 @@ export default class Navigation extends Component {
         this.setState({
           loggingInPorgress: false,
         })
-        routing.replace(query.url)
+        routing.replace(query.url||'/')
       }).catch((err)=>{
         console.log(err)
         let loginFailMessage = viewParam('response.body.error', err)

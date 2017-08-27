@@ -1,0 +1,90 @@
+.chip {
+  width: 100%;
+  height: 100%;
+  border: 1.5vw dashed white;
+  border-radius: 50%;
+  background-color: #045acc;
+  box-shadow: 0px 0px 0px 1px #045acc;
+  //animation: chip-rotate 5s linear infinite;
+  /*text-shadow: -1px -1px 0px #2f2f2f;*/
+  color: white;
+  text-align: center;
+  position: relative;
+  font-size: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.innerDashes{
+  content:'';
+  box-shadow:  0px 0px 2px 1px #2f2f2f inset,
+    0px 0px 0px 1px #2f2f2f;
+  border: 0.2vw dashed white;
+  border-radius: 50%;
+  display: block;
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  left: 10%;
+  right: 10%;
+}
+
+.multiple{
+  top: -10%;
+  right: 5%;
+  content: '';
+  background-color: #045acc;
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  width: 120%;
+  height: 120%;
+  border: 0.2vw dashed white;
+  box-shadow: 0px 0px 0px 1px #045acc;
+}
+
+@keyframes chip-rotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  50% {
+    transform: rotateZ(180deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+.chip3d .innerDashes{
+  width: 85%;
+  left: 3%;
+  height: 79%;
+  top: 7%;
+}
+
+.firstLayer {
+  transform: rotateX(65deg);
+  box-shadow: 0 15px 0 rgb(0, 0, 60);
+}
+
+.topRow {
+  height: 10%;
+  /*font-size: 100%;*/
+  margin-top:40%;
+  font-weight: bold;
+}
+
+/*.bottomRow {
+  height: 10%;
+  font-size: 120%;
+  margin-bottom:40%;
+}*/
+
+.smallChip{
+  border-width: 0.2vw;
+}
+.smallChip>.innerDashes{
+  border-width: 0.1vw;
+}
