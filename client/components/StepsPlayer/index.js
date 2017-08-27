@@ -64,18 +64,11 @@ export default class SpotPlayer extends Component {
     const {
       onNextStep,
       onPreviousStep,
-      icon,
-      inverted,
-      width,
     } = this.props
     const {speed, auto} = this.state
 
     return (
-      <Menu
-          icon={icon}
-          inverted={inverted}
-          width={width}
-      >
+      <Menu>
         <Menu.Item>
           <Form.Field className={classnames(style.stepsSpeed)} inline>
             <label>Speed:</label>
@@ -127,8 +120,8 @@ export default class SpotPlayer extends Component {
             name="forward"
             onClick={onNextStep}
         >
-          <Icon name="right chevron" />
           Forward
+          <Icon name="right chevron" />
         </Menu.Item>
       </Menu>
     )

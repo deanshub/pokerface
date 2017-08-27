@@ -1,7 +1,7 @@
 .table {
   border: 1px solid black;
   width: 80%;
-  height: 70%;
+  height: 55%;
   border-radius: 40%;
   box-shadow: 0 0 5px 10px #a2a2a2,
     0 0 3px 12px black,
@@ -10,7 +10,7 @@
     0 1px 3px 34px black,
     0 0 0 20px green inset,
     0 0 0 23px rgba(255, 255, 255, 0.5) inset;
-  margin: 7% auto;
+  margin: 9% auto;
   background: green;
   line-height: 10vw;
   text-align: center;

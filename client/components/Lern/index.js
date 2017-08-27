@@ -6,7 +6,7 @@ import SpotPlayer from '../../containers/SpotPlayer'
 export default class Lern extends Component {
   render() {
     return (
-      <Container fluid style={{height:'80vh'}}>
+      <Container fluid style={{height:'94vh'}}>
         {/* <UnavailableSection/> */}
         <SpotPlayer/>
       </Container>

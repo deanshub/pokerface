@@ -30,9 +30,10 @@ export default class Navigation extends Component {
     }
   }
 
-  handleLogin(event, {formData}){
+  handleLogin(event){
     event.preventDefault()
     const { routing, location } = this.props
+    const {email, password} = this.state
     const query = parse(location.search.substr(1))
     this.setState({
       loggingInPorgress: true,
@@ -40,7 +41,7 @@ export default class Navigation extends Component {
       loginFailMessage: null,
     })
     request.post('/login')
-      .send({email:formData.email, password:formData.password})
+      .send({email, password})
       .accept('json')
       .type('json')
       .then((res) => {
@@ -63,17 +64,18 @@ export default class Navigation extends Component {
       })
   }
 
-  handleSignup(event, {formData}){
+  handleSignup(event){
     event.preventDefault()
+    const {firstName, lastName, email} = this.state
     this.setState({
       signingupInPorgress: true,
     })
 
     request.post('/api/signup')
       .send({
-        firstName:formData.firstName,
-        lastName:formData.lastName,
-        email:formData.email,
+        firstName,
+        lastName,
+        email,
       }).accept('json')
       .type('json')
       .then(() => {
@@ -92,6 +94,12 @@ export default class Navigation extends Component {
           signingupSuccess: true,
         })
       })
+  }
+
+  handleInputChange(e, {name, value}){
+    this.setState({
+      [name]: value,
+    })
   }
 
   render() {
@@ -133,12 +141,14 @@ export default class Navigation extends Component {
                     focus
                     label="Email"
                     name="email"
+                    onChange={::this.handleInputChange}
                     required
                     type="email"
                 />
                 <Form.Input
                     label="Password"
                     name="password"
+                    onChange={::this.handleInputChange}
                     required
                     type="password"
                 />
@@ -175,16 +185,19 @@ export default class Navigation extends Component {
                 <Form.Input
                     label="First Name"
                     name="firstName"
+                    onChange={::this.handleInputChange}
                     required
                 />
                 <Form.Input
                     label="Last Name"
                     name="lastName"
+                    onChange={::this.handleInputChange}
                     required
                 />
                 <Form.Input
                     label="E-mail"
                     name="email"
+                    onChange={::this.handleInputChange}
                     required
                     type="email"
                 />
