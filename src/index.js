@@ -8,13 +8,14 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import expressSession from 'express-session'
 import compression from 'compression'
+import config from 'config'
 import routes from './routes'
 import graphql from './data/graphql'
 import {devMiddleware, hotMiddleware} from './routes/webpack.js'
 import Db from './data/db'
 
 const app = express()
-const PORT = process.env.port || 9031
+const PORT = config.port || 9031
 
 app.use(compression())
 app.use(cookieParser())
@@ -30,7 +31,7 @@ app.use(expressSession({
 app.use(passport.initialize())
 app.use(passport.session())
 
-if (process.env.NODE_ENV==='development'){
+if (config.NODE_ENV==='development'){
   app.use(devMiddleware())
   app.use(hotMiddleware())
 }

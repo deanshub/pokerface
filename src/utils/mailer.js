@@ -1,10 +1,11 @@
 import emailjs from 'emailjs'
 import icalToolkit from 'ical-toolkit'
+import config from 'config'
 
 // create reusable transporter object using the default SMTP transport
 const server = emailjs.server.connect({
-  user: process.env.GMAIL_USER,
-  password: process.env.GMAIL_PASSWORD,
+  user: config.GMAIL_USER,
+  password: config.GMAIL_PASSWORD,
   host: 'smtp.gmail.com',
   ssl: true,
 })

@@ -2,6 +2,7 @@ import { graphqlExpress } from 'apollo-server-express'
 import { makeExecutableSchema } from 'graphql-tools'
 import {mergeStrings} from 'gql-merge'
 import {merge} from 'lodash'
+import config from 'config'
 
 import { schema as PostSchema, resolvers as PostResolvers } from './graphqlModels/Post'
 import { schema as CommentSchema, resolvers as CommentResolvers } from './graphqlModels/Comment'
@@ -29,8 +30,8 @@ const Schema = makeExecutableSchema({
 export default graphqlExpress(req=>{
   return {
     schema: Schema,
-    pretty: process.env.NODE_ENV==='development'?true:false,
-    graphiql: process.env.NODE_ENV==='development'?true:false,
+    pretty: config.NODE_ENV==='development'?true:false,
+    graphiql: config.NODE_ENV==='development'?true:false,
     printErrors: true,
     context: {user: req.user},
   }

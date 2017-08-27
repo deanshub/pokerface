@@ -2,12 +2,14 @@
 const webpack = require('webpack')
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
-const NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
-const DB_USER = JSON.stringify(process.env.DB_USER)
-const DB_PASSWORD = JSON.stringify(process.env.DB_PASSWORD)
-const PORT = JSON.stringify(process.env.PORT)
-const GMAIL_USER = JSON.stringify(process.env.GMAIL_USER)
-const GMAIL_PASSWORD = JSON.stringify(process.env.GMAIL_PASSWORD)
+const config = require('config')
+
+const NODE_ENV = JSON.stringify(config.NODE_ENV || 'development')
+const DB_USER = JSON.stringify(config.DB_USER)
+const DB_PASSWORD = JSON.stringify(config.DB_PASSWORD)
+const PORT = JSON.stringify(config.PORT)
+const GMAIL_USER = JSON.stringify(config.GMAIL_USER)
+const GMAIL_PASSWORD = JSON.stringify(config.GMAIL_PASSWORD)
 
 let devtool
 // let hotloaderEntries=[]
@@ -45,7 +47,7 @@ if (NODE_ENV==='"development"'){
   plugins.push(new webpack.optimize.AggressiveMergingPlugin())
 }
 
-const config = {
+const webpackConfig = {
   target: 'node',
   entry: './src/index.js',
   externals: nodeExternals(),
@@ -124,4 +126,4 @@ const config = {
   },
 }
 
-module.exports = config
+module.exports = webpackConfig
