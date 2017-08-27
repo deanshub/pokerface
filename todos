@@ -5,7 +5,6 @@ add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
 -------------------------------------------------------------------------------
 
-create a production.json on the server
 add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
 add the spot player to the posts
 

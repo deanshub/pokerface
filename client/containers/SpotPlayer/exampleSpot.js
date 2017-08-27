@@ -38,7 +38,7 @@ const spot = {
       lastname: 'Shub',
       fullname: 'Dean Shub',
       email: 'demo@pokerface.io',
-      avatar: '/images/upload_a591e181882091f45888bc07444da2eb.jpg',
+      avatar: '/images/dean2.jpg',
       bank: 1002,
     },
     // null,
