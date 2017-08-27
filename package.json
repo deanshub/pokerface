@@ -11,7 +11,7 @@
     "start": "nodemon src/index.js",
     "debug": "babel-node --inspect --debug-brk src/index.js",
     "build": "cross-env NODE_ENV=production babel src -d dist",
-    "serve": "cross-env NODE_ENV=production node dist/main.js"
+    "serve": "cross-env NODE_ENV=production node dist/index.js"
   },
   "dependencies": {
     "apollo-server-express": "^1.1.0",
