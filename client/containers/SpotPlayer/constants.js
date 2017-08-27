@@ -21,7 +21,7 @@ const MOVES={
     RIVER: 'RIVER',
   },
   DEALER_META_ACTIONS:{
-    POT: 'POT',
+    END: 'END',
   },
 }
 

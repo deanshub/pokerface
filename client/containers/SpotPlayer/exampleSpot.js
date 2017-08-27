@@ -12,25 +12,25 @@ const spot = {
       fullname: 'player1',
       guest: true,
       avatar: '/images/avatar.png',
-      bank: 100,
+      bank: 1352,
     },
     {
       fullname: 'player2',
       guest: true,
       avatar: '/images/avatar.png',
-      bank: 100,
+      bank: 158,
     },
     {
       fullname: 'player3',
       guest: true,
       avatar: '/images/avatar.png',
-      bank: 100,
+      bank: 1100,
     },
     {
       fullname: 'player4',
       guest: true,
       avatar: '/images/avatar.png',
-      bank: 100,
+      bank: 1556,
     },
     {
       username: 'deanshub',
@@ -39,14 +39,14 @@ const spot = {
       fullname: 'Dean Shub',
       email: 'demo@pokerface.io',
       avatar: '/images/upload_a591e181882091f45888bc07444da2eb.jpg',
-      bank: 100,
+      bank: 1002,
     },
     // null,
     {
       fullname: 'player6',
       guest: true,
       avatar: '/images/avatar.png',
-      bank: 100,
+      bank: 904,
     },
     // {
     //   fullname: 'player7',
@@ -157,6 +157,10 @@ const spot = {
     {
       player:4,
       action:MOVES.PLAYER_META_ACTIONS.SHOWS,
+    },
+    {
+      player:MOVES.DEALER,
+      action: MOVES.DEALER_META_ACTIONS.END,
     },
     // {//????? what about splits and side pots
     //   winners: [4],

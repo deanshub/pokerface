@@ -25,6 +25,7 @@ export class SpotPlayerStore{
   nextStep(){
     const newSpotPlayerState = utils.getNextStep(this.spot, this.spotPlayerState)
     this.spotPlayerState = newSpotPlayerState
+    return newSpotPlayerState.nextMoveIndex<this.spot.moves.length
   }
 
   @action

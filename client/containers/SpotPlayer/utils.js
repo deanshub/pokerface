@@ -194,6 +194,7 @@ const utils = {
     }
     case MOVES.PLAYER_ACTIONS.CALL:{
       newPlayersState[move.player].bet=move.value
+      newPlayersState[move.player].bank-=move.value
       newPlayersState[move.player].description = 'Call'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
@@ -201,6 +202,7 @@ const utils = {
     }
     case MOVES.PLAYER_ACTIONS.RAISE:{
       newPlayersState[move.player].bet=move.value
+      newPlayersState[move.player].bank-=move.value
       newPlayersState[move.player].description = 'Raise'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
@@ -217,21 +219,51 @@ const utils = {
 
     case MOVES.DEALER_ACTIONS.FLOP:{
       newSpotPlayerState.dealer.cards=utils.stringToCards(move.value)
+      let totalPot = newSpotPlayerState.dealer.pot
+      newPlayersState.forEach(player=>{
+        totalPot += player.bet
+        player.bet = 0
+      })
+      newSpotPlayerState.players = newPlayersState
+      newSpotPlayerState.dealer.pot = totalPot
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.DEALER_ACTIONS.TURN:{
       newSpotPlayerState.dealer.cards=[...newSpotPlayerState.dealer.cards,...utils.stringToCards(move.value)]
+      let totalPot = newSpotPlayerState.dealer.pot
+      newPlayersState.forEach(player=>{
+        totalPot += player.bet
+        player.bet = 0
+      })
+      newSpotPlayerState.players = newPlayersState
+      newSpotPlayerState.dealer.pot = totalPot
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.DEALER_ACTIONS.RIVER:{
       newSpotPlayerState.dealer.cards=[...newSpotPlayerState.dealer.cards,...utils.stringToCards(move.value)]
+      let totalPot = newSpotPlayerState.dealer.pot
+      newPlayersState.forEach(player=>{
+        totalPot += player.bet
+        player.bet = 0
+      })
+      newSpotPlayerState.players = newPlayersState
+      newSpotPlayerState.dealer.pot = totalPot
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
-    // case MOVES.DEALER_META_ACTIONS.POT:{
-    // }
+    case MOVES.DEALER_META_ACTIONS.END:{
+      let totalPot = newSpotPlayerState.dealer.pot
+      newPlayersState.forEach(player=>{
+        totalPot += player.bet
+        player.bet = 0
+      })
+      newSpotPlayerState.players = newPlayersState
+      newSpotPlayerState.dealer.pot = totalPot
+      newSpotPlayerState.nextMoveIndex++
+      return newSpotPlayerState
+    }
     }
   },
 

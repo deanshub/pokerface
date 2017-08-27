@@ -48,8 +48,11 @@ export default class SpotPlayer extends Component {
 
     this.setState({
       auto: setTimeout(()=>{
-        onNextStep()
-        this.autoPlay()
+        if (onNextStep()){
+          this.autoPlay()
+        }else{
+          this.pauseAutoPlay()
+        }
       },1000*1/speed),
     })
   }
@@ -86,6 +89,7 @@ export default class SpotPlayer extends Component {
         </Menu.Item>
 
         <Menu.Item
+            disabled
             name="back"
             onClick={onPreviousStep}
         >
