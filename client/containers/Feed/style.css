@@ -19,12 +19,13 @@
 }
 
 .standalone {
-  display: table;
+  display: flex;
   width: 100%;
 }
 
 .standalone>.clickable {
-  display: table-cell;
+  margin-left: 10px;
+  margin-right: 20px;
 }
 
 .standalone>.clickable>img {
@@ -33,7 +34,7 @@
 }
 
 .standaloneContent {
-  display: table-cell;
+  flex: 1;
   vertical-align: top;
   position: relative;
 }
