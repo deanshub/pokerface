@@ -4,7 +4,6 @@ import { observer, inject } from 'mobx-react'
 import { Feed, Icon, Button, Popup } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
-import { EditorState, convertFromRaw } from 'draft-js'
 
 import Comments from './Comments'
 import Reply from './Reply'
@@ -30,25 +29,11 @@ export default class Post extends Component {
   constructor(props){
     super(props)
     this.timeAgo = new TimeAgo('en-US')
-    let content = JSON.parse(props.post.content)
-    if (!content.entityMap){
-      content.entityMap={}
-    }
-    const parsedContent = convertFromRaw(content, 'update-contentState')
-    this.state = {
-      replying: false,
-      postEditorState: EditorState.createWithContent(parsedContent),
-    }
   }
 
-  // componentWillReceiveProps(nextProps){
-  //   this.setState({
-  //     postEditorState: EditorState.createWithContent(convertFromRaw(JSON.parse(nextProps.post.content), 'update-contentState')),
-  //   })
-  // }
-
-  goto(){
+  goto(event){
     const {post, routing, auth} = this.props
+    event.preventDefault()
     if (post.player.username===auth.user.username){
       routing.push('/profile')
     }else{
@@ -66,14 +51,12 @@ export default class Post extends Component {
   }
 
   openDeletePopup(){
-    this.setState({
-      deletePopupOpen: true,
-    })
+    const { post }= this.props
+    post.deletePopupOpen = true
   }
   closeDeletePopup(){
-    this.setState({
-      deletePopupOpen: false,
-    })
+    const { post }= this.props
+    post.deletePopupOpen = false
   }
 
   deletePost(){
@@ -110,7 +93,7 @@ export default class Post extends Component {
           on="click"
           onClose={::this.closeDeletePopup}
           onOpen={::this.openDeletePopup}
-          open={this.state.deletePopupOpen}
+          open={post.deletePopupOpen}
           trigger={
             <Button
                 basic
@@ -124,33 +107,36 @@ export default class Post extends Component {
     )
 
 
-    if (post.photos.length>0) {
-      return (
-        <Feed.Summary className={classnames({[style.standaloneSummary]: standalone})}>
-          <Feed.User onClick={::this.goto}>{this.getUserFullName()}</Feed.User> added <a onClick={()=>this.openModal()}>{post.photos.length} new photos</a>
-          <Feed.Date className={classnames({[style.standaloneSummaryDate]: standalone})}>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
-          {
-            post.player.username===auth.user.username?
-            deleteButton
-            :
-            null
-          }
-        </Feed.Summary>
-      )
+    let titleComponents = [(
+      <Feed.User
+          href={`/profile/${post.player.username}`}
+          key="1"
+          onClick={::this.goto}
+      >
+        {this.getUserFullName()}
+      </Feed.User>
+    )]
+    if (post.spot!==undefined) {
+      titleComponents.push(' shared a game spot')
+    }else if (post.photos.length>0) {
+      titleComponents.push(' added ')
+      titleComponents.push(<a key="2" onClick={()=>this.openModal()}>{post.photos.length} new photos</a>)
     }else{
-      return (
-        <Feed.Summary className={classnames({[style.standaloneSummary]: standalone})}>
-          <Feed.User onClick={::this.goto}>{this.getUserFullName()}</Feed.User> shared a post
-          <Feed.Date className={classnames({[style.standaloneSummaryDate]: standalone})}>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
-          {
-            post.player.username===auth.user.username?
-            deleteButton
-            :
-            null
-          }
-        </Feed.Summary>
-      )
+      titleComponents.push(' shared a post')
     }
+
+    return (
+      <Feed.Summary className={classnames({[style.standaloneSummary]: standalone})}>
+        {titleComponents}
+        <Feed.Date className={classnames({[style.standaloneSummaryDate]: standalone})}>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
+        {
+          post.player.username===auth.user.username?
+          deleteButton
+          :
+          null
+        }
+      </Feed.Summary>
+    )
   }
 
   openModal(index){
@@ -159,15 +145,13 @@ export default class Post extends Component {
   }
 
   addReply(){
-    this.setState({
-      replying: true,
-    })
+    const { post, feed } = this.props
+    feed.createDraft(post)
   }
 
   removeReply(){
-    this.setState({
-      replying: false,
-    })
+    const { post, feed } = this.props
+    feed.removeDraft(post)
   }
 
   setLike(){
@@ -184,9 +168,8 @@ export default class Post extends Component {
 
   render() {
     const { post, auth, standalone } = this.props
-    const { replying } = this.state
+    const { replying } = post
     const activeLike = post.likes.filter(user=>user.username===auth.user.username).length>0
-    const {postEditorState} = this.state
 
     return (
       <Feed.Event className={classnames({[style.post]: true, [style.standalone]: standalone })} style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10, backgroundColor:'#ffffff'}}>
@@ -197,18 +180,22 @@ export default class Post extends Component {
         />
         <Feed.Content className={classnames({[style.standaloneContent]: standalone})}>
             {this.getFeedSummary()}
-          <Feed.Extra text style={{maxWidth:'none'}} className={classnames({[style.standaloneText]: standalone})}>
+          <Feed.Extra
+              className={classnames({[style.standaloneText]: standalone})}
+              style={{maxWidth:'none'}}
+              text
+          >
             <PostEditor
-                editorState={postEditorState}
-                onChange={(editorState)=>this.setState({postEditorState: editorState})}
+                post={post}
                 readOnly
+                standalone={standalone}
             />
           </Feed.Extra>
           <Feed.Extra className={classnames(style.unselectable)} images>
             {post.photos.map((photo, index)=>
               <PostImage
                   className={classnames({[style.standaloneImage]: standalone})}
-                  key={Math.random()}
+                  key={index}
                   onClick={()=>this.openModal(index)}
                   photo={photo}
               />
@@ -225,16 +212,27 @@ export default class Post extends Component {
               <Icon className={classnames(style.icon)} name="like"/>
               {(post.likes&&post.likes.length)||0} Likes
             </Feed.Like>
-            <Feed.Like className={classnames(style.unselectable, style.blackIcons, {
-              [style.standaloneUnselectable]: standalone
-            })} onClick={::this.addReply}>
+            <Feed.Like
+                className={classnames(
+                  style.unselectable,
+                  style.blackIcons,
+                  {
+                    [style.standaloneUnselectable]: standalone,
+                  }
+                )}
+                onClick={::this.addReply}
+            >
               <Icon className={classnames(style.icon)} name="reply" />
               Reply
             </Feed.Like>
             <Feed.Like
-                className={classnames(style.unselectable, style.blackIcons, {
-                  [style.standaloneUnselectable]: standalone
-                })}
+                className={classnames(
+                  style.unselectable,
+                  style.blackIcons,
+                  {
+                    [style.standaloneUnselectable]: standalone,
+                  }
+                )}
                 onClick={::this.sharePost}
             >
               <Icon className={classnames(style.icon)} name="share" />

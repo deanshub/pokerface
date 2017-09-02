@@ -30,14 +30,9 @@ export default class Comments extends Component {
     const { post, feed } = this.props
     feed.addComment(post.id)
   }
-  updateComment(editorState){
-    const { post, feed } = this.props
-    feed.updateComment(post.id, editorState)
-  }
   removeReply(){
-    const { feed, post, removeReply } = this.props
-    feed.updateComment(post.id)
-    removeReply()
+    const { feed, post } = this.props
+    feed.removeDraft(post)
   }
 
   render() {
@@ -61,9 +56,8 @@ export default class Comments extends Component {
           </Form.Field>
           <Form.Field width={15}>
             <PostEditor
-                editorState={feed.rawComments[post.id]}
-                onChange={::this.updateComment}
                 placeholder="Add comment"
+                post={feed.commentDrafts.get(post.id)}
             />
           </Form.Field>
         </Form.Group>

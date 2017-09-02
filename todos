@@ -20,7 +20,6 @@ changing game details after creating one
 
 make map in fixed size so image loading won't change the size
 
-fix re-render of the images in posts (when like)
 fix editor toolbar on RTL
 
 add graphql fregments

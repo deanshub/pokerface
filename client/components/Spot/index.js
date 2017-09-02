@@ -16,11 +16,12 @@ export default class Spot extends Component {
     currency: PropTypes.string,
     dealer: PropTypes.shape().isRequired,
     movesTotal: PropTypes.number.isRequired,
-    players: PropTypes.shape().isRequired,
+    standalone: PropTypes.bool,
   }
 
   static defaultProps = {
     currency: '$',
+    standalone: false,
   }
 
   buildPlayerComponents(player, index){
@@ -119,13 +120,13 @@ export default class Spot extends Component {
   }
 
   render() {
-    const { players } = this.props
+    const { players, standalone } = this.props
     // players {username, fullname, name, bank, description ('bb'\'sb'\'ante'\...), avatar, bet, folded, myTurn, isDealer}
     const dealerComponent = this.buildDealerComponent()
     // dealer {pot, cards, }
 
     return (
-      <PokerTable>
+      <PokerTable standalone={standalone}>
         {
           players.map(::this.buildPlayerComponents).reduce((res, playerComponents)=>{
             return [...res, ...playerComponents]

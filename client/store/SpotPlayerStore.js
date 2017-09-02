@@ -2,18 +2,12 @@
 
 import { observable, action } from 'mobx'
 import utils from '../containers/SpotPlayer/utils'
-import exampleSpot from '../containers/SpotPlayer/exampleSpot'
 
 export class SpotPlayerStore{
-  @observable spot
-  @observable spotPlayerState
   @observable speed
-  @observable auto
 
   constructor(){
     this.speed = 1
-    this.spot = exampleSpot
-    this.spotPlayerState = utils.generateInitialState(this.spot)
   }
 
   @action
@@ -22,20 +16,21 @@ export class SpotPlayerStore{
   }
 
   @action
-  nextStep(){
-    const newSpotPlayerState = utils.getNextStep(this.spot, this.spotPlayerState)
-    this.spotPlayerState = newSpotPlayerState
-    return newSpotPlayerState.nextMoveIndex<this.spot.moves.length
+  nextStep(post){
+    const newSpotPlayerState = utils.getNextStep(post.spot, post.spotPlayerState)
+    post.spotPlayerState = newSpotPlayerState
+    return newSpotPlayerState.nextMoveIndex<post.spot.moves.length
   }
 
   @action
-  previousStep(){
-    const newSpotPlayerState = utils.getPreviousStep(this.spot, this.spotPlayerState)
-    this.spotPlayerState = newSpotPlayerState
+  previousStep(post){
+    const newSpotPlayerState = utils.getPreviousStep(post.spot, post.spotPlayerState)
+    post.spotPlayerState = newSpotPlayerState
+    return newSpotPlayerState.nextMoveIndex>0
   }
 
   @action
-  reset(){
-    this.spotPlayerState = utils.generateInitialState(this.spot)
+  reset(post){
+    post.spotPlayerState = utils.generateInitialState(post.spot)
   }
 }

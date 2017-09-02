@@ -2,11 +2,13 @@
 
 import { observable, computed, action, toJS } from 'mobx'
 // import { fromResource } from 'mobx-utils'
-import { EditorState, convertToRaw, Modifier } from 'draft-js'
+import { EditorState, convertToRaw, Modifier, convertFromRaw } from 'draft-js'
 import graphqlClient from './graphqlClient'
 import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike, postDelete} from './mutations/posts'
 import {commentCreate, setCommentLike, commentDelete} from './mutations/comments'
+import utils from '../containers/SpotPlayer/utils'
+import moment from 'moment'
 
 // const queryToObservable = (q, callbacks = {}) => {
 //   let subscription
@@ -28,7 +30,8 @@ import {commentCreate, setCommentLike, commentDelete} from './mutations/comments
 
 export class FeedStore {
   @observable posts: Object
-  @observable editorState: Object
+  @observable newPost: Object
+  @observable standalonePost: Object
   @observable loading: boolean
   @observable commentDrafts: Object
   currentUser: Object
@@ -42,14 +45,52 @@ export class FeedStore {
     this.commentDrafts = observable.map({})
     this.loading = false
     this.noMorePosts = false
-    this.editorState = EditorState.createEmpty()
+    this.newPost = observable({
+      content: EditorState.createEmpty(),
+      spot: undefined,
+      deletePopupOpen: false,
+    })
     this.uploadImages = []
     this.openCardSelection = false
+    this.standalonePost = observable({
+      loading: true,
+      post: undefined,
+    })
+  }
+
+  parsePost(post){
+    let content = JSON.parse(post.content)
+    if (!content.entityMap){
+      content.entityMap={}
+    }
+    const parsedContent = convertFromRaw(content, 'update-contentState')
+    const newContent = EditorState.createWithContent(parsedContent)
+
+    const spotPlayerState = utils.generateInitialState(content.spot)
+
+    let parsedPost = Object.assign({}, post, {content: newContent, replying: false, deletePopupOpen: false, spot:content.spot, spotPlayerState})
+    parsedPost.comments = parsedPost.comments.map((comment)=>{
+      let originalContent = JSON.parse(comment.content)
+      if (!originalContent.entityMap){
+        originalContent.entityMap={}
+      }
+      const parsedContent = convertFromRaw(originalContent, 'update-contentState')
+
+      return {
+        ...comment,
+        deletePopupOpen: false,
+        content: EditorState.createWithContent(parsedContent),
+      }
+    })
+
+    return parsedPost
   }
 
   @computed
-  get events(): Object[]{
-    return toJS(this.posts.values())
+  get parsedPosts(): Object[]{
+    return this.posts.values().sort((a,b)=>{
+      return moment(new Date(b.createdAt)).diff(moment(new Date(a.createdAt)))
+    })
   }
 
   @action
@@ -65,17 +106,19 @@ export class FeedStore {
 
   @action
   addPost(photos){
-    const content = this.editorState.getCurrentContent()
+    const editorState = this.newPost.content
+    const content = editorState.getCurrentContent()
     if (content.hasText()){
-      const post = convertToRaw(content)
-      this.editorState = EditorState.createEmpty()
+      const rawPostContent = convertToRaw(content)
+      this.newPost.content = EditorState.createEmpty()
 
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
-      graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(post), photos}})
+      graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(rawPostContent), photos}})
       // if post mutation succeded add id
       .then(result=>{
         this.posts.delete(newPostTempId)
-        this.posts.set(result.data.createPost.id, result.data.createPost)
+        const newPost = this.parsePost(result.data.createPost)
+        this.posts.set(newPost.id, newPost)
       })
       // if post mutation failed remove it
       .catch(err=>{
@@ -83,11 +126,12 @@ export class FeedStore {
         this.posts.delete(newPostTempId)
       })
 
+      // TODO: replace this with auth user
       // add post anyway
       this.posts.set(newPostTempId, {
         id: newPostTempId,
         createdAt: Date.now(),
-        content: JSON.stringify(post),
+        content: editorState,
         photos: [],
         likes:[],
         comments:[],
@@ -103,29 +147,34 @@ export class FeedStore {
 
   @action
   deleteComment(comment: Object): void{
-    // console.log(comment);
-    const commentCopy = toJS(comment)
+    comment.deletePopupOpen = false
     let post = this.posts.get(comment.post.id)
     graphqlClient.mutate({mutation: commentDelete, variables: {commentId:comment.id}})
     .catch(err=>{
       console.error(err)
-      post.comments.push(commentCopy)
+      post.comments.push(comment)
     })
     post.comments.remove(comment)
   }
 
   @action
   addComment(postId){
-    const content = this.commentDrafts.get(postId).getCurrentContent()
+    const comment = this.commentDrafts.get(postId)
+    const commentState = comment.content
+    const content = commentState.getCurrentContent()
     if (content.hasText()){
-      const comment = convertToRaw(content)
-      this.updateComment(postId, EditorState.createEmpty())
+      const rawComment = convertToRaw(content)
+      this.updatePost(this.commentDrafts.get(postId), {
+        content:EditorState.createEmpty(),
+        spot: undefined,
+      })
 
       const newCommentTempId = 9999999999+Math.floor(Math.random()*10000)
-      graphqlClient.mutate({mutation: commentCreate, variables: {comment:JSON.stringify(comment), post:postId}})
+      graphqlClient.mutate({mutation: commentCreate, variables: {comment:JSON.stringify(rawComment), post:postId}})
       // if post mutation succeded add id
       .then(result=>{
-        this.posts.set(result.data.addComment.id, result.data.addComment)
+        const parsedPost = this.parsePost(result.data.addComment)
+        this.posts.set(parsedPost.id, parsedPost)
       })
       // if post mutation failed remove it
       .catch(err=>{
@@ -143,43 +192,43 @@ export class FeedStore {
         id: newCommentTempId,
         postId,
         createdAt: Date.now(),
-        content: JSON.stringify(comment),
+        content: commentState,
         photos:[],
         likes:[],
         player:{
           username: this.currentUser,
           fullname: 'Dean Shub',
-          avatar: 'dean2.jpg',
+          avatar: '/images/dean2.jpg',
         },
       })
     }
   }
 
   @action
-  updatePost(editorState){
-    if (this.editorState === editorState){
-      this.editorState = EditorState.forceSelection(editorState, editorState.getSelection())
-    }else{
-      this.editorState = editorState
-    }
-  }
-
-  @computed
-  get rawEditorState(): Object{
-    return toJS(this.editorState)
+  updatePost(post, changes){
+    Object.keys(changes).forEach(key=>{
+      post[key]=changes[key]
+    })
+    // if (this.newPost.content === post.content){
+    //   this.newPost.content = EditorState.forceSelection(post.content, post.content.getSelection())
+    // }else{
+    //   this.newPost.content = post.content
+    // }
   }
 
   @action
-  updateComment(postId, editorState=EditorState.createEmpty()){
-    if (this.commentDrafts.get(postId) === editorState){
-      this.commentDrafts.set(postId, EditorState.forceSelection(editorState, editorState.getSelection()))
-    }else{
-      this.commentDrafts.set(postId, editorState)
-    }
+  createDraft(post){
+    this.commentDrafts.set(post.id, observable({
+      content:EditorState.createEmpty(),
+      spot: undefined,
+      deletePopupOpen: false,
+    }))
+    post.replying = true
   }
-  @computed
-  get rawComments(): Object{
-    return toJS(this.commentDrafts)
+  @action
+  removeDraft(post){
+    this.commentDrafts.delete(post.id)
+    post.replying = false
   }
 
   @action
@@ -208,7 +257,8 @@ export class FeedStore {
           this.noMorePosts = true
         }else{
           newPosts.forEach((post)=>{
-            this.posts.set(post.id, post)
+            const parsedPost = this.parsePost(post)
+            this.posts.set(parsedPost.id, parsedPost)
           })
         }
         setTimeout(()=>{
@@ -226,7 +276,8 @@ export class FeedStore {
   setPostLike(postId, like, user){
     graphqlClient.mutate({mutation: setPostLike, variables: {post:postId, like}})
     .then(result=>{
-      this.posts.set(postId, result.data.setPostLike)
+      const newPost = this.parsePost(result.data.setPostLike)
+      this.posts.set(postId, newPost)
     })
     .catch(err=>{
       console.error(err);
@@ -274,12 +325,16 @@ export class FeedStore {
     }
   }
 
-  getStandalonePost(id: String): Function{
+  fetchStandalonePost(id: String): Function{
+    this.standalonePost.post = undefined
+    this.standalonePost.loading = true
     return graphqlClient.query({query: postsQuery, variables: {id}}).then((result) => {
       const post = result.data.posts[0]
       if (post){
-        return post
+        this.standalonePost.loading = false
+        this.standalonePost.post = this.parsePost(post)
       }else{
+        this.standalonePost.loading = false
         throw new Error('Post doesn\'t exists anymore')
       }
     })
@@ -300,33 +355,33 @@ export class FeedStore {
 
   @action
   addCard(card){
-    const contentState = this.editorState.getCurrentContent()
-    const targetRange = this.editorState.getSelection()
+    const contentState = this.newPost.content.getCurrentContent()
+    const targetRange = this.newPost.content.getSelection()
 
     const newContentState = Modifier.replaceText(contentState, targetRange, `[${card}] `)
     const newEditorState = EditorState.push(
-      this.editorState,
+      this.newPost.content,
       newContentState,
       'convert-to-immutable-cards',
-      // this.editorState.getLastChangeType(),
+      // this.newPost.content.getLastChangeType(),
     )
 
-    this.editorState = EditorState.moveFocusToEnd(newEditorState)
+    this.newPost.content = EditorState.moveFocusToEnd(newEditorState)
   }
 
   @action
   addFriendTag(){
-    const contentState = this.editorState.getCurrentContent()
-    const targetRange = this.editorState.getSelection()
+    const contentState = this.newPost.content.getCurrentContent()
+    const targetRange = this.newPost.content.getSelection()
 
     const newContentState = Modifier.replaceText(contentState, targetRange, '@')
     const newEditorState = EditorState.push(
-      this.editorState,
+      this.newPost.content,
       newContentState,
       // 'convert-to-immutable-cards',
-      this.editorState.getLastChangeType(),
+      this.newPost.content.getLastChangeType(),
     )
 
-    this.editorState = newEditorState
+    this.newPost.content = newEditorState
   }
 }

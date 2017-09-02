@@ -89,8 +89,8 @@ export default class Navbar extends Component {
             } Profile
           </Menu.Item>
           <Menu.Item
-              className={classnames(style.navbarMenuItemAnchor)}
               active={this.isActive('/events', true)}
+              className={classnames(style.navbarMenuItemAnchor)}
               onClick={()=>this.handleMenuItemClick('/events')}
           >
             <Icon name="calendar"/> Events
@@ -103,16 +103,16 @@ export default class Navbar extends Component {
 
 
           <Menu.Menu position="right">
-            <Menu.Item
+            {/* <Menu.Item
                 className={classnames(style.navbarMenuItemAnchor)}
                 active={this.isActive('/smart', true)}
                 onClick={()=>this.handleMenuItemClick('/smart')}
             >
               <Icon name="student"/> Get Smarter
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item
-                className={classnames(style.navbarMenuItemAnchor)}
                 active={this.isActive('/timer', true)}
+                className={classnames(style.navbarMenuItemAnchor)}
                 onClick={()=>this.handleMenuItemClick('/timer')}
             >
               <Icon name="clock"/> Blinds Timer

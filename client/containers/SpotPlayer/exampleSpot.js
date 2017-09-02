@@ -2,11 +2,6 @@ import MOVES from './constants'
 
 const spot = {
   currency: MOVES.CURRENCIES.EURO,
-  // ante:1398,
-  // sb:922,
-  // bb:1394,
-  sb:2,
-  bb:4,
   players:[
     {
       fullname: 'player1',
@@ -72,6 +67,20 @@ const spot = {
     3:'Ah Th',
   },
   moves:[
+    {
+      player:4,
+      action:MOVES.PLAYER_META_ACTIONS.DEALER,
+    },
+    {
+      player:5,
+      action:MOVES.PLAYER_ACTIONS.SMALLBLIND,
+      value: 2,
+    },
+    {
+      player:0,
+      action:MOVES.PLAYER_ACTIONS.BIGBLIND,
+      value: 4,
+    },
     {
       player:4,
       action:MOVES.PLAYER_META_ACTIONS.SHOWS,
@@ -161,6 +170,10 @@ const spot = {
     {
       player:MOVES.DEALER,
       action: MOVES.DEALER_META_ACTIONS.END,
+      // value: [{
+      //   player: 4,
+      //   takes: 1000,
+      // }],
     },
     // {//????? what about splits and side pots
     //   winners: [4],

@@ -10,8 +10,12 @@ const MOVES={
     CHECK: 'CHECK',
     CALL: 'CALL',
     RAISE: 'RAISE',
+    ANTE: 'ANTE',
+    SMALLBLIND: 'SMALLBLIND',
+    BIGBLIND: 'BIGBLIND',
   },
   PLAYER_META_ACTIONS:{
+    DEALER: 'DEALER',
     SHOWS: 'SHOWS',
     MOCKS: 'MOCKS',
   },

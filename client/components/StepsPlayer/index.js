@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
-import { Button, Form, Input, Menu, Icon } from 'semantic-ui-react'
+import { Form, Input, Menu, Icon } from 'semantic-ui-react'
 
 import classnames from 'classnames'
 import style from './style.css'
 
 
-export default class SpotPlayer extends Component {
+export default class StepsPlayer extends Component {
   static propTypes = {
     onNextStep: PropTypes.func.isRequired,
     onPreviousStep: PropTypes.func.isRequired,
@@ -99,7 +99,10 @@ export default class SpotPlayer extends Component {
             name="reset"
             onClick={::this.reset}
         >
-          <Icon name="repeat horizontally flipped" />
+          <Icon
+              flipped="horizontally"
+              name="repeat"
+          />
           Reset
         </Menu.Item>
         {

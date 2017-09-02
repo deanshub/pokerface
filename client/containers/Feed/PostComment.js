@@ -4,11 +4,9 @@ import { observer, inject } from 'mobx-react'
 import { Comment, Icon, Popup, Button } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
-import { EditorState, convertFromRaw } from 'draft-js'
 import PostEditor from '../../components/PostEditor'
 import classnames from 'classnames'
 import style from './style.css'
-
 
 TimeAgo.locale(timeAgoEnLocale)
 
@@ -25,21 +23,7 @@ export default class PostComment extends Component {
   constructor(props){
     super(props)
     this.timeAgo = new TimeAgo('en-US')
-    let content = JSON.parse(props.comment.content)
-    if (!content.entityMap){
-      content.entityMap={}
-    }
-    const parsedContent = convertFromRaw(content, 'update-contentState')
-    this.state={
-      commentEditorState: EditorState.createWithContent(parsedContent),
-    }
   }
-
-  // componentWillReceiveProps(nextProps){
-  //   this.setState({
-  //     commentEditorState: EditorState.createWithContent(convertFromRaw(JSON.parse(nextProps.comment.content), 'update-contentState')),
-  //   })
-  // }
 
   goto(){
     const {comment, routing, auth} = this.props
@@ -66,26 +50,22 @@ export default class PostComment extends Component {
   }
 
   openDeletePopup(){
-    this.setState({
-      deletePopupOpen: true,
-    })
+    const { comment } = this.props
+    comment.deletePopupOpen = true
   }
   closeDeletePopup(){
-    this.setState({
-      deletePopupOpen: false,
-    })
+    const { comment } = this.props
+    comment.deletePopupOpen = false
   }
 
   deleteComment(){
     const { comment, feed }= this.props
     feed.deleteComment(comment)
-    this.closeDeletePopup()
   }
 
   render() {
     const { comment, auth, standalone } = this.props
     const activeLike = comment.likes.filter((user)=>user.username===auth.user.username).length>0
-    const {commentEditorState} = this.state
 
 
     const deleteButton = (
@@ -114,7 +94,7 @@ export default class PostComment extends Component {
           on="click"
           onClose={::this.closeDeletePopup}
           onOpen={::this.openDeletePopup}
-          open={this.state.deletePopupOpen}
+          open={comment.deletePopupOpen}
           trigger={
             <Button
                 basic
@@ -147,8 +127,7 @@ export default class PostComment extends Component {
           }
           <Comment.Text className={classnames({[style.standaloneCommentText]: standalone})} style={{width:'95%'}}>
             <PostEditor
-                editorState={commentEditorState}
-                onChange={(editorState)=>this.setState({commentEditorState:editorState})}
+                post={comment}
                 readOnly
             />
           </Comment.Text>

@@ -11,32 +11,29 @@ import StepsPlayer from '../../components/StepsPlayer'
 @observer
 export default class SpotPlayer extends Component {
   render() {
-    const {spotPlayer} = this.props
-    const currentState = spotPlayer.spotPlayerState
+    const {spotPlayer, style, standalone, post} = this.props
 
     return (
-      <Sidebar.Pushable as={Segment}>
+      <Sidebar.Pushable as={Segment} style={style}>
         <Sidebar
             animation="push"
             direction="bottom"
             icon="labeled"
-            onNextStep={()=>spotPlayer.nextStep()}
-            onPreviousStep={()=>spotPlayer.previousStep()}
-            onReset={()=>spotPlayer.reset()}
             visible
         >
           <StepsPlayer
-              onNextStep={()=>spotPlayer.nextStep()}
-              onPreviousStep={()=>spotPlayer.previousStep()}
-              onReset={()=>spotPlayer.reset()}
+              onNextStep={()=>spotPlayer.nextStep(post)}
+              onPreviousStep={()=>spotPlayer.previousStep(post)}
+              onReset={()=>spotPlayer.reset(post)}
           />
         </Sidebar>
         <Sidebar.Pusher style={{height:'100%'}}>
           <Spot
-              currency={currentState.currency}
-              dealer={currentState.dealer}
-              movesTotal={spotPlayer.spot.moves.length}
-              players={currentState.players}
+              currency={post.spotPlayerState.currency}
+              dealer={post.spotPlayerState.dealer}
+              movesTotal={post.spot.moves.length}
+              players={post.spotPlayerState.players}
+              standalone={standalone}
           />
         </Sidebar.Pusher>
       </Sidebar.Pushable>
