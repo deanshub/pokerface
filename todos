@@ -6,7 +6,6 @@ error message (store), an error occurred please refresh or try again later
 -------------------------------------------------------------------------------
 
 add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
-add the spot player to the posts
 
 fix NODE_APP_INSTANCE bug, when running pm2 with -i 0 there is an error (http://pm2.keymetrics.io/docs/usage/environment/#specific-environment-variables)
 

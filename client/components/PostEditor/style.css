@@ -13,3 +13,9 @@
 .post :global(.public-DraftEditor-content){
   min-height: 140px;
 }
+
+.cardsPreview{
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10;
+}
