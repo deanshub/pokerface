@@ -84,7 +84,7 @@ export default class StepsPlayer extends Component {
                 type="range"
                 value={speed}
             />
-            <label>{`X${speed}`}</label>
+            <label style={{width:'3vw'}}>{`X${speed}`}</label>
           </Form.Field>
         </Menu.Item>
 
