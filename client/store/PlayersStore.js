@@ -13,17 +13,8 @@ export class PlayersStore {
   initialWin=0
 
   constructor(){
-    // TODO: fill with auth user
-    this.currentUser = {
-      username:'deanshub',
-      fullname: 'Dean Shub',
-      avatar: '/images/dean2.jpg',
-      buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-      winnings: [{value: this.initialWin, key:Math.random()}],
-    }
-
-    this.currentPlayers = observable.map({[this.currentUser.username]: this.currentUser})
-    this.searchPlayers = observable.map({[this.currentUser.username]: this.currentUser})
+    this.currentPlayers = observable.map({})
+    this.searchPlayers = observable.map({})
     this.searchLoading = false
   }
 
@@ -65,11 +56,6 @@ export class PlayersStore {
       buyIns: [{value: this.initialBuyIn, key:Math.random()}],
       winnings: [{value: this.initialWin, key:Math.random()}],
     })
-  }
-
-  @computed
-  get currentPlayersObject(){
-    return toJS(this.currentPlayers)
   }
 
   @action
@@ -123,5 +109,10 @@ export class PlayersStore {
   removeWin(user, index){
     const {winnings} = this.currentPlayers.get(user)
     winnings.splice(index, 1)
+  }
+
+  @action
+  setAuthenticatedUser(user){
+    this.currentPlayers.set(user.username, user)
   }
 }

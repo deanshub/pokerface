@@ -6,7 +6,7 @@ import { Menu, Segment, Image } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 
 import * as ProfileConsts from '../../constants/profile'
-import Statistics from '../Statistics'
+import ProfileStatistics from '../Statistics'
 import UnavailableSection from '../UnavailableSection'
 import style from './style.css'
 
@@ -46,7 +46,7 @@ export default class ProfileNavbar extends Component {
 
   getCurrentTab(currentTab: string){
     if (currentTab===ProfileConsts.STATISTICS_TAB){
-      return <Statistics />
+      return <ProfileStatistics />
     }else{
       return <UnavailableSection/>
     }

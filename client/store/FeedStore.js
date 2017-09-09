@@ -105,7 +105,7 @@ export class FeedStore {
   }
 
   @action
-  addPost(photos){
+  addPost(user, photos){
     const editorState = this.newPost.content
     const content = editorState.getCurrentContent()
     if (content.hasText()){
@@ -126,7 +126,6 @@ export class FeedStore {
         this.posts.delete(newPostTempId)
       })
 
-      // TODO: replace this with auth user
       // add post anyway
       this.posts.set(newPostTempId, {
         id: newPostTempId,
@@ -135,11 +134,7 @@ export class FeedStore {
         photos: [],
         likes:[],
         comments:[],
-        player:{
-          username: this.currentUser,
-          fullname: 'Dean Shub',
-          avatar: 'dean2.jpg',
-        },
+        player:user,
       })
       this.uploadImages=[]
     }

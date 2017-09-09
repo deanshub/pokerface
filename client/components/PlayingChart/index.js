@@ -62,7 +62,7 @@ export default class PlayingChart extends Component {
             outerRadius={outerRadius}
             width={width}
         >
-          <Radar name={player.name} dataKey="A" stroke="#DB2828" fill="#DB2828" fillOpacity={0.6}/>
+          <Radar name={player.fullname} dataKey="A" stroke="#DB2828" fill="#DB2828" fillOpacity={0.6}/>
           <PolarGrid />
           <PolarAngleAxis dataKey="subject" />
           <PolarRadiusAxis/>

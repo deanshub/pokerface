@@ -1,25 +1,22 @@
 FOR GA ONLY!!!
 --------------
 
+search players both in searchbar and in tagging @ bug
 add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
 -------------------------------------------------------------------------------
 
-add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
 
 fix NODE_APP_INSTANCE bug, when running pm2 with -i 0 there is an error (http://pm2.keymetrics.io/docs/usage/environment/#specific-environment-variables)
-
-remove me as the default user (use auth user)
-
+fix editor toolbar on RTL
+changing game details after creating one
+make map in fixed size so image loading won't change the size
+use sticky from semantic-ui-react for the profile navbar
+add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
 allow cards to move up on click
 
-use sticky from semantic-ui-react for the profile navbar
 
-changing game details after creating one
 
-make map in fixed size so image loading won't change the size
-
-fix editor toolbar on RTL
 
 add graphql fregments
 add game statistics (maybe it should look like a poker table and you can click the players to see stats)

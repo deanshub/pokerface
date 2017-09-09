@@ -9,7 +9,6 @@ import { Header, Container, Icon, Loader } from 'semantic-ui-react'
 import Post from './Post'
 
 @inject('routing')
-@inject('auth')
 @inject('feed')
 @observer
 export default class StandalonePost extends Component {
