@@ -35,7 +35,7 @@ export default class Navbar extends Component {
   handleResultSelect(e, selected){
     const {routing, globalPlayersSearch} = this.props
     globalPlayersSearch.searchValue = ''
-    routing.push(`/profile/${selected.username}`)
+    routing.push(`/profile/${selected.result.username}`)
   }
 
   resultRenderer({username, fullname, avatar}){
