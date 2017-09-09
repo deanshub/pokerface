@@ -130,7 +130,7 @@ export default class Navbar extends Component {
                   loading={globalPlayersSearch.loading}
                   noResultsMessage="No players found"
                   onResultSelect={::this.handleResultSelect}
-                  onSearchChange={(e, value)=>globalPlayersSearch.search(value)}
+                  onSearchChange={(e, {value})=>globalPlayersSearch.search(value)}
                   placeholder="Search Users..."
                   resultRenderer={::this.resultRenderer}
                   results={globalPlayersSearch.availablePlayers}
