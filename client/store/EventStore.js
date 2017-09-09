@@ -52,24 +52,23 @@ export class EventStore {
     })
   }
 
+  add(item, arr){
+    const arrItem = arr.find((arrItem)=>arrItem.username===item.username)
+    if (arrItem===undefined){
+      arr.push(item)
+    }
+  }
+  remove(item, arr){
+    const arrItem = arr.find((arrItem)=>arrItem.username===item.username)
+    if (arrItem){
+      arr.remove(arrItem)
+    }
+  }
+
   @action
-  fillAttendance(username, gameId, attendance){
+  fillAttendance(user, gameId, attendance){
     let game = this.games.get(gameId)
     const oldGame = toJS(game)
-    const acceptedIndex = game.accepted.indexOf(username)
-    const declinedIndex = game.declined.indexOf(username)
-
-    if (declinedIndex>-1 && attendance){
-      game.declined.splice(declinedIndex, 1)
-    }else if (declinedIndex===-1 && !attendance){
-      game.declined.push(username)
-    }
-
-    if (acceptedIndex>-1 && !attendance){
-      game.accepted.splice(acceptedIndex, 1)
-    }else if (acceptedIndex===-1 && attendance) {
-      game.accepted.push(username)
-    }
 
     graphqlClient.mutate({mutation: gameAttendanceUpdate, variables: {gameId, attendance}})
     .then((res)=>{
@@ -79,6 +78,20 @@ export class EventStore {
       console.error(err);
       this.setGame(oldGame)
     })
+
+    if (attendance===null){
+      this.remove(user, game.accepted)
+      this.remove(user, game.declined)
+      this.add(user, game.unresponsive)
+    }else if (attendance===true){
+      this.add(user, game.accepted)
+      this.remove(user, game.declined)
+      this.remove(user, game.unresponsive)
+    }else if (attendance===false){
+      this.remove(user, game.accepted)
+      this.add(user, game.declined)
+      this.remove(user, game.unresponsive)
+    }
   }
 
   @action createGame(players, game){
