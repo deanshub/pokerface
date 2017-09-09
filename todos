@@ -7,10 +7,11 @@ error message (store), an error occurred please refresh or try again later
 -------------------------------------------------------------------------------
 
 
+in prod change deanshub user to pokerface (including username, first & last name, password)
+  and add deanshub user
 fix NODE_APP_INSTANCE bug, when running pm2 with -i 0 there is an error (http://pm2.keymetrics.io/docs/usage/environment/#specific-environment-variables)
 fix editor toolbar on RTL
 changing game details after creating one
-make map in fixed size so image loading won't change the size
 use sticky from semantic-ui-react for the profile navbar
 add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
 allow cards to move up on click

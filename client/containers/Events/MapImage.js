@@ -19,9 +19,7 @@ export default class Events extends Component {
             alt={location}
             className={classnames(style.mapImage)}
             fluid
-            height={400}
             src={url}
-            width={400}
         />
       </a>
     )
