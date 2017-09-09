@@ -11,5 +11,8 @@ export const devMiddleware = ()=> webpackDevMiddleware(compiler,{
   },
   // noInfo: true,
   publicPath: webpackConfig.output.publicPath,
+  watchOptions:{
+    aggregateTimeout: 300,
+  },
 })
 export const hotMiddleware = ()=> webpackHotMiddleware(compiler)

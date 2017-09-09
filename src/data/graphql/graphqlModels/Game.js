@@ -28,7 +28,7 @@ export const schema =  [`
   type Mutation{
     gameAttendanceUpdate(
       gameId: String!,
-      attendance: Boolean!
+      attendance: Boolean
     ): Game
     addGame(
       title: String!,
@@ -125,16 +125,27 @@ export const resolvers = {
           const acceptedIndex = accepted.indexOf(username)
           const declinedIndex = declined.indexOf(username)
 
-          if (declinedIndex>-1 && attendance){
-            declined.splice(declinedIndex, 1)
-          }else if (declinedIndex===-1 && !attendance){
-            declined.push(username)
-          }
-
-          if (acceptedIndex>-1 && !attendance){
-            accepted.splice(acceptedIndex, 1)
-          }else if (acceptedIndex===-1 && attendance) {
-            accepted.push(username)
+          if (attendance===null){
+            if (acceptedIndex!==-1) {
+              accepted.splice(acceptedIndex, 1)
+            }
+            if (declinedIndex!==-1){
+              declined.splice(declinedIndex, 1)
+            }
+          }else if (attendance===true) {
+            if (acceptedIndex===-1) {
+              accepted.push(username)
+            }
+            if (declinedIndex>-1){
+              declined.splice(declinedIndex, 1)
+            }
+          }else if (attendance===false) {
+            if (acceptedIndex>-1){
+              accepted.splice(acceptedIndex, 1)
+            }
+            if (declinedIndex===-1){
+              declined.push(username)
+            }
           }
 
           game.set('accepted',accepted)
