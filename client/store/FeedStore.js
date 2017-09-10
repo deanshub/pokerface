@@ -202,11 +202,11 @@ export class FeedStore {
   @action
   updatePost(post, changes){
     Object.keys(changes).forEach(key=>{
-      if(key==='content'){
-        post[key]=EditorState.forceSelection(changes[key], changes[key].getSelection())
-      }else{
-        post[key]=changes[key]
-      }
+      // if(key==='content'){
+      //   post[key]=EditorState.forceSelection(changes[key], changes[key].getSelection())
+      // }else{
+      post[key]=changes[key]
+      // }
     })
   }
 
