@@ -69,6 +69,10 @@ const spot = {
   moves:[
     {
       player:4,
+      action:MOVES.PLAYER_META_ACTIONS.SHOWS,
+    },
+    {
+      player:4,
       action:MOVES.PLAYER_META_ACTIONS.DEALER,
     },
     {
@@ -80,10 +84,6 @@ const spot = {
       player:0,
       action:MOVES.PLAYER_ACTIONS.BIGBLIND,
       value: 4,
-    },
-    {
-      player:4,
-      action:MOVES.PLAYER_META_ACTIONS.SHOWS,
     },
     {
       player:1,

@@ -2,12 +2,27 @@
 
 import { observable, action } from 'mobx'
 import utils from '../containers/SpotPlayer/utils'
+import exampleSpot from '../containers/SpotPlayer/exampleSpot'
 
 export class SpotPlayerStore{
   @observable speed
+  @observable spotWizardOpen
+  @observable newSpot
 
   constructor(){
     this.speed = 1
+    this.spotWizardOpen = false
+
+    this.newSpot = observable({
+      spot:exampleSpot,
+      step: 0,
+      generalSettings:{
+        ante: 0,
+        sb: 1,
+        bb: 2,
+        // currency: '$',
+      },
+    })
   }
 
   @action
@@ -32,5 +47,6 @@ export class SpotPlayerStore{
   @action
   reset(post){
     post.spotPlayerState = utils.generateInitialState(post.spot)
+    return post
   }
 }

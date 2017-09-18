@@ -56,6 +56,9 @@ const utils = {
       }
       index++
     }
+    if (moves.length>0){
+      return moves[moves.length-1]
+    }
     return null
   },
 
@@ -116,12 +119,49 @@ const utils = {
     // dealer {pot, cards, }
   },
 
-  getNextPlayer(moves, moveIndex){
-    if (moves.length>moveIndex+1){
-      return moves[moveIndex+1].player
-    }else{
-      return null
+  getNextPlayer(moves, currentSpotPlayerState){
+    const {nextMoveIndex, players} = currentSpotPlayerState
+
+    let nextPlayerMoveIndex = nextMoveIndex
+    let playerFound = false
+    while(!playerFound && moves.length>nextPlayerMoveIndex){
+      playerFound = moves[nextPlayerMoveIndex].player!==MOVES.DEALER
+      nextPlayerMoveIndex++
     }
+    if (playerFound){
+      return moves[nextPlayerMoveIndex-1].player
+    }
+
+    nextPlayerMoveIndex = nextMoveIndex-1
+    while(!playerFound && nextPlayerMoveIndex>=0){
+      playerFound = moves[nextPlayerMoveIndex].player!==MOVES.DEALER
+      nextPlayerMoveIndex--
+    }
+    if (playerFound){
+      let nextPlayerIndex = moves[nextPlayerMoveIndex+1].player+1
+      if (nextPlayerIndex>=players.length){
+        nextPlayerIndex=0
+      }
+
+      while (players[nextPlayerIndex].folded){
+        nextPlayerIndex++
+        if (nextPlayerIndex>=players.length){
+          nextPlayerIndex=0
+        }
+      }
+      return nextPlayerIndex
+    }
+
+    return null
+
+    // if (moves.length>moveIndex+1){
+    //   return moves[moveIndex+1].player
+    // }else if (moves[moveIndex].player+1<players.length){
+    //   return moves[moveIndex].player+1
+    // }else{
+    //   return 0
+    // }
+
     // let nextMoveIndex = moveIndex+1
     // let playerFound = false
     // while(!playerFound && moves.length>nextMoveIndex){
@@ -137,7 +177,7 @@ const utils = {
 
   getNextStep(spot, currentSpotPlayerState, ereaseDescription=true){
     const move = spot.moves[currentSpotPlayerState.nextMoveIndex]
-    const nextPlayer = utils.getNextPlayer(spot.moves, currentSpotPlayerState.nextMoveIndex)
+    const nextPlayer = utils.getNextPlayer(spot.moves, currentSpotPlayerState)
     let newSpotPlayerState = Object.assign({}, currentSpotPlayerState)
     let newPlayersState = currentSpotPlayerState.players.map((player, playerIndex)=>{
       if (ereaseDescription){
@@ -161,6 +201,9 @@ const utils = {
     }
     case MOVES.PLAYER_ACTIONS.CHECK:{
       newPlayersState[move.player].description = 'Check'
+      if (newSpotPlayerState.raiser===undefined){
+        newSpotPlayerState.raiser = move.player
+      }
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
@@ -175,6 +218,7 @@ const utils = {
     case MOVES.PLAYER_ACTIONS.RAISE:{
       newPlayersState[move.player].bet+=move.value
       newPlayersState[move.player].bank-=move.value
+      newSpotPlayerState.raiser = move.player
       newPlayersState[move.player].description = 'Raise'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
@@ -187,6 +231,7 @@ const utils = {
     case MOVES.PLAYER_ACTIONS.SMALLBLIND:{
       newPlayersState[move.player].bet+=move.value
       newPlayersState[move.player].bank-=move.value
+      newSpotPlayerState.raiser = move.player
       newPlayersState[move.player].description = 'Small Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
@@ -195,6 +240,7 @@ const utils = {
     case MOVES.PLAYER_ACTIONS.BIGBLIND:{
       newPlayersState[move.player].bet+=move.value
       newPlayersState[move.player].bank-=move.value
+      newSpotPlayerState.raiser = move.player
       newPlayersState[move.player].description = 'Big Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
@@ -296,6 +342,10 @@ const utils = {
         return utils.amountToCoins(amount, coins)
       }
     }
+  },
+
+  getCurrentTurnPlayerIndex(currentSpotPlayerState){
+    return currentSpotPlayerState.players.findIndex(player=>player.myTurn)
   },
 
 }
