@@ -60,6 +60,7 @@
     "draft-js-mention-plugin": "beta",
     "draft-js-plugins-editor": "beta",
     "draft-js-video-plugin": "beta",
+    "graphql-subscriptions": "^0.4.4",
     "graphql-tag": "^2.4.2",
     "history": "^4.6.2",
     "immutable": "^3.8.1",
@@ -82,6 +83,7 @@
     "recharts": "^0.20.8",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.71.5",
+    "subscriptions-transport-ws": "^0.8.2",
     "superagent": "^3.4.1"
   }
 }

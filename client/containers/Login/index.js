@@ -45,7 +45,10 @@ export default class Navigation extends Component {
       .accept('json')
       .type('json')
       .then((res) => {
-        this.props.auth.user= res.body
+        const {token, user} = res.body
+        this.props.auth.user= user
+        document.cookie = `jwt=${token}`
+
         this.setState({
           loggingInPorgress: false,
         })

@@ -4,6 +4,7 @@ import { observable, action } from 'mobx'
 import request from 'superagent'
 
 export class AuthStore {
+  @observable token
   @observable user
   @observable opensourceModalOpen: boolean
   @observable authenticating: boolean
@@ -26,6 +27,7 @@ export class AuthStore {
 
   @action
   authenticate(){
+
     this.authenticating = true
     return request.post('/api/isAuthenticated').then((res)=>{
       this.authenticating = false
