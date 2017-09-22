@@ -36,12 +36,8 @@ export default class AddGame extends Component {
 
   addPost(event){
     event.preventDefault()
-    this.props.feed.addPost(this.photosElm.files)
-  }
-
-  onPostChange(editorState){
     const {feed} = this.props
-    feed.updatePost(editorState)
+    feed.addPost(this.photosElm.files)
   }
 
   photosChanged(){
@@ -69,9 +65,8 @@ export default class AddGame extends Component {
           <Grid.Row stretched>
             <Grid.Column width={16}>
               <PostEditor
-                  editorState={feed.rawEditorState}
-                  onChange={::this.onPostChange}
                   placeholder="Share a post"
+                  post={feed.newPost}
                   postEditor
               />
             </Grid.Column>

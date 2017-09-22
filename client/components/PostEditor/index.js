@@ -44,21 +44,25 @@ import 'draft-js-hashtag-plugin/lib/plugin.css'
 import 'draft-js-linkify-plugin/lib/plugin.css'
 import 'draft-js-video-plugin/lib/plugin.css'
 
+import SpotPlayer from '../../containers/SpotPlayer'
+
+@inject('feed')
 @inject('globalPlayersSearch')
 @observer
 export default class PostEditor extends Component {
   static propTypes = {
-    editorState: PropTypes.shape(),
     onChange: PropTypes.func,
     placeholder: PropTypes.string,
+    post: PropTypes.shape().isRequired,
     postEditor: PropTypes.bool,
     readOnly: PropTypes.bool,
+    standalone: PropTypes.bool,
   }
 
   static defaultProps = {
-    editorState: EditorState.createEmpty(),
     postEditor: false,
     readOnly: false,
+    standalone: false,
   }
 
   constructor(props){
@@ -101,6 +105,10 @@ export default class PostEditor extends Component {
     this.InlineToolbar = InlineToolbar
     this.EmojiSuggestions =EmojiSuggestions
     this.MentionSuggestions= MentionSuggestions
+
+    if (props.post.content===undefined){
+      props.post.content = EditorState.createEmpty()
+    }
   }
 
   componentDidMount(){
@@ -136,10 +144,22 @@ export default class PostEditor extends Component {
       .map(entityKey=>content.entityMap[entityKey].data.cardsText)
   }
 
+  postContentChange(editorState){
+    const {feed, post} = this.props
+    feed.updatePost(post ,{content: editorState})
+  }
+
   render(){
-    const { editorState, onChange, postEditor, placeholder, readOnly, globalPlayersSearch } = this.props
+    const {
+      post,
+      postEditor,
+      placeholder,
+      readOnly,
+      globalPlayersSearch,
+      standalone,
+    } = this.props
     const { InlineToolbar, EmojiSuggestions, MentionSuggestions} = this
-    const cardEntities = this.getCardEntities(convertToRaw(editorState.getCurrentContent()))
+    const cardEntities = this.getCardEntities(convertToRaw(post.content.getCurrentContent()))
 
     return (
       <div
@@ -150,8 +170,8 @@ export default class PostEditor extends Component {
           onClick={::this.focus}
       >
         <Editor
-            editorState={editorState}
-            onChange={onChange}
+            editorState={post.content}
+            onChange={::this.postContentChange}
             placeholder={placeholder}
             plugins={this.plugins}
             readOnly={readOnly}
@@ -168,6 +188,15 @@ export default class PostEditor extends Component {
             suggestions={globalPlayersSearch.immutableAvailablePlayers}
         />
         <EmojiSuggestions/>
+        {
+          post.spot?(
+          <SpotPlayer
+              post={post}
+              standalone={standalone}
+              style={{height:'70vh'}}
+          />
+          ):null
+        }
         <CardsPreview cards={cardEntities}/>
       </div>
     )

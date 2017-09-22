@@ -3,6 +3,8 @@
 import React, { Component, PropTypes } from 'react'
 import Cards from '../../Deck/Cards'
 import {cardRegex} from '../CardsPlugin/cardsRegex'
+import classnames from 'classnames'
+import style from '../style.css'
 
 export default class CardsPreview extends Component {
   static defaultProps = {
@@ -24,7 +26,6 @@ export default class CardsPreview extends Component {
           cards={cards}
           hand
           key={index}
-          style={{flex:1}}
       />
     )
   }
@@ -36,7 +37,7 @@ export default class CardsPreview extends Component {
     }
 
     return (
-      <div style={{marginBottom:10, display:'flex'}}>
+      <div className={classnames(style.cardsPreview)}>
         {cards.map(this.getCardsElement)}
       </div>
     )

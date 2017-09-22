@@ -5,6 +5,7 @@ import graphqlClient from './graphqlClient'
 import {playersQuery} from './queries/players'
 import { fromJS } from 'immutable'
 
+const searchTimeoutTime = 200
 
 export class PlayersSearchStore {
   @observable availablePlayers
@@ -20,15 +21,23 @@ export class PlayersSearchStore {
   @action
   search(phrase): void{
     this.searchValue = phrase
-    if (phrase.length<1) return undefined
-
     this.loading = true
-    graphqlClient.query({query: playersQuery, variables: {phrase}}).then((result)=>{
-      this.availablePlayers.replace(result.data.players.map(player=>{
-        return {...player, childKey:player.username}
-      }))
+    clearTimeout(this.timeout)
+    if (phrase.length<1) {
       this.loading = false
-    })
+    }else{
+      this.timeout = setTimeout(()=>{
+        graphqlClient.query({query: playersQuery, variables: {phrase}}).then((result)=>{
+          this.availablePlayers.replace(result.data.players.map(player=>{
+            return {...player, childKey:player.username}
+          }))
+          this.loading = false
+        }).catch(e=>{
+          console.error(e)
+          this.loading = false
+        })
+      }, searchTimeoutTime)
+    }
   }
 
   @computed

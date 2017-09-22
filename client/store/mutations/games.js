@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-export const gameAttendanceUpdate = gql`mutation gameAttendanceUpdate($gameId: String!, $attendance: Boolean!){
+export const gameAttendanceUpdate = gql`mutation gameAttendanceUpdate($gameId: String!, $attendance: Boolean){
   gameAttendanceUpdate(gameId: $gameId, attendance: $attendance){
     id
     creator{

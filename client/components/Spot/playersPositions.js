@@ -1,6 +1,6 @@
 const playersPositions = [
   {
-    top:'-25%',
+    top:'-30%',
     right:'25%',
   },
   {
@@ -17,7 +17,7 @@ const playersPositions = [
   },
   {
     left:'46%',
-    bottom:'-35%',
+    bottom:'-45%',
   },
   {
     left:'24%',
@@ -32,7 +32,7 @@ const playersPositions = [
     left:'6%',
   },
   {
-    top:'-25%',
+    top:'-30%',
     left:'32%',
   },
 ]

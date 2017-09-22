@@ -3,25 +3,22 @@ FOR GA ONLY!!!
 
 add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
+change the script name to include hash (so when a new version comes it won't be cached)
+fix the keys selection of emoji\ mention plugins within the post editor
 -------------------------------------------------------------------------------
 
-add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
-add the spot player to the posts
 
+in prod change deanshub user to pokerface (including username, first & last name, password)
+  and add deanshub user
 fix NODE_APP_INSTANCE bug, when running pm2 with -i 0 there is an error (http://pm2.keymetrics.io/docs/usage/environment/#specific-environment-variables)
-
-remove me as the default user (use auth user)
-
+fix editor toolbar on RTL
+changing game details after creating one
+use sticky from semantic-ui-react for the profile navbar
+add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
 allow cards to move up on click
 
-use sticky from semantic-ui-react for the profile navbar
 
-changing game details after creating one
 
-make map in fixed size so image loading won't change the size
-
-fix re-render of the images in posts (when like)
-fix editor toolbar on RTL
 
 add graphql fregments
 add game statistics (maybe it should look like a poker table and you can click the players to see stats)

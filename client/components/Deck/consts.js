@@ -30,15 +30,15 @@ export const randomRank: Function = (): string=>{
 
 export const normalizeSuite: Function =(originalSuit: string): string=>{
   const lowerSuit = originalSuit.toLowerCase()
-  if (lowerSuit==='♥'||lowerSuit==='h'||lowerSuit==='heart'||lowerSuit==='hearts'){
+  if (lowerSuit==='♥'||lowerSuit==='♡'||lowerSuit==='h'||lowerSuit==='heart'||lowerSuit==='hearts'){
     return 'hearts'
-  }else if (lowerSuit==='♦'||lowerSuit==='d'||lowerSuit==='dimond'||lowerSuit==='dimonds'||lowerSuit==='diam'||lowerSuit==='diams'){
+  }else if (lowerSuit==='♦'||lowerSuit==='♢'||lowerSuit==='d'||lowerSuit==='dimond'||lowerSuit==='dimonds'||lowerSuit==='diam'||lowerSuit==='diams'){
     return 'diams'
-  }else if (lowerSuit==='♠'||lowerSuit==='s'||lowerSuit==='spade'||lowerSuit==='spades'){
+  }else if (lowerSuit==='♠'||lowerSuit==='♤'||lowerSuit==='s'||lowerSuit==='spade'||lowerSuit==='spades'){
     return 'spades'
-  }else if (lowerSuit==='♣'||lowerSuit==='c'||lowerSuit==='club'||lowerSuit==='clubs'){
+  }else if (lowerSuit==='♣'||lowerSuit==='♧'||lowerSuit==='c'||lowerSuit==='club'||lowerSuit==='clubs'){
     return 'clubs'
-  }else if (lowerSuit==='?'||lowerSuit==='joker'){
+  }else if (lowerSuit==='?'||lowerSuit==='joker'||lowerSuit==='☺'||lowerSuit==='☻'){
     return 'joker'
   }else{
     return null

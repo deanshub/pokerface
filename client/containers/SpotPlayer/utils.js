@@ -4,36 +4,11 @@ import {getUnimportantCard} from '../../components/Deck/consts'
 
 const utils = {
   getDealerIndex(players, moves){
-    let dealerPlayerIndex = utils.getFirstMove(moves).player-3
-    if (dealerPlayerIndex<0){
-      dealerPlayerIndex = players.length + dealerPlayerIndex
-    }
-    return dealerPlayerIndex
+    const moveIndex = moves.findIndex(move=>move.action===MOVES.PLAYER_META_ACTIONS.DEALER)
+    return moves[moveIndex].player
   },
 
-  getBbIndex(players, moves){
-    let bbPlayerIndex = utils.getFirstMove(moves).player-1
-    if (bbPlayerIndex<0){
-      bbPlayerIndex = players.length + bbPlayerIndex
-    }
-    return bbPlayerIndex
-  },
-
-  getSbIndex(players, moves){
-    let sbPlayerIndex = utils.getFirstMove(moves).player-2
-    if (sbPlayerIndex<0){
-      sbPlayerIndex = players.length + sbPlayerIndex
-    }
-    return sbPlayerIndex
-  },
-
-  getDescription(ante, isBb, isSb){
-    if (isBb){
-      return 'Big Blind'
-    }
-    if (isSb){
-      return 'Small Blind'
-    }
+  getDescription(ante){
     if (ante){
       return 'Ante'
     }
@@ -71,7 +46,11 @@ const utils = {
     let stillLooking = true
 
     while(stillLooking && moves.length>index){
-      stillLooking = moves[index].action===MOVES.PLAYER_META_ACTIONS.SHOWS
+      stillLooking = (
+        moves[index].action===MOVES.PLAYER_META_ACTIONS.SHOWS ||
+        moves[index].action===MOVES.PLAYER_META_ACTIONS.DEALER ||
+        moves[index].action===MOVES.PLAYER_ACTIONS.ANTE
+      )
       if (!stillLooking){
         return moves[index]
       }
@@ -88,10 +67,10 @@ const utils = {
   },
 
   generateInitialState(spot){
-    const {players, ante, sb, bb, currency, cards, moves } = spot
+    if (spot === undefined) return undefined
+
+    const {players, ante, currency, cards, moves } = spot
     const dealerPlayerIndex = utils.getDealerIndex(players, moves)
-    const bbPlayerIndex = utils.getBbIndex(players, moves)
-    const sbPlayerIndex = utils.getSbIndex(players, moves)
     const firstMove = utils.getFirstMove(moves)
 
     const playersShowingCards = utils.getPlayersShowingCards(moves)
@@ -102,16 +81,8 @@ const utils = {
       }
       const myTurn = index === firstMove.player
       const isDealer = index === dealerPlayerIndex
-      const isBb = index === bbPlayerIndex
-      const isSb = index === sbPlayerIndex
-      let bet = ante||0
-
-      if (isBb){
-        bet+=bb
-      }
-      if (isSb){
-        bet+=sb
-      }
+      const bet = ante||0
+      const bank = player.bank - bet
 
       let playerCards = utils.stringToCards(cards[index])
       if (playerCards.length===0){
@@ -124,9 +95,10 @@ const utils = {
         myTurn,
         isDealer,
         bet,
+        bank,
         showCards: !!playersShowingCards[index],
         cards: playerCards,
-        description: utils.getDescription(ante, isBb, isSb),
+        description: utils.getDescription(ante),
       }
     })
 
@@ -193,7 +165,7 @@ const utils = {
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.CALL:{
-      newPlayersState[move.player].bet=move.value
+      newPlayersState[move.player].bet+=move.value
       newPlayersState[move.player].bank-=move.value
       newPlayersState[move.player].description = 'Call'
       newSpotPlayerState.players = newPlayersState
@@ -201,16 +173,41 @@ const utils = {
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.RAISE:{
-      newPlayersState[move.player].bet=move.value
+      newPlayersState[move.player].bet+=move.value
       newPlayersState[move.player].bank-=move.value
       newPlayersState[move.player].description = 'Raise'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
+    case MOVES.PLAYER_ACTIONS.ANTE:{
+      newSpotPlayerState.nextMoveIndex++
+      return newSpotPlayerState
+    }
+    case MOVES.PLAYER_ACTIONS.SMALLBLIND:{
+      newPlayersState[move.player].bet+=move.value
+      newPlayersState[move.player].bank-=move.value
+      newPlayersState[move.player].description = 'Small Blind'
+      newSpotPlayerState.players = newPlayersState
+      newSpotPlayerState.nextMoveIndex++
+      return newSpotPlayerState
+    }
+    case MOVES.PLAYER_ACTIONS.BIGBLIND:{
+      newPlayersState[move.player].bet+=move.value
+      newPlayersState[move.player].bank-=move.value
+      newPlayersState[move.player].description = 'Big Blind'
+      newSpotPlayerState.players = newPlayersState
+      newSpotPlayerState.nextMoveIndex++
+      return newSpotPlayerState
+    }
+
     case MOVES.PLAYER_META_ACTIONS.SHOWS:{
       newPlayersState[move.player].showCards=true
       newSpotPlayerState.players = newPlayersState
+      newSpotPlayerState.nextMoveIndex++
+      return utils.getNextStep(spot, newSpotPlayerState, false)
+    }
+    case MOVES.PLAYER_META_ACTIONS.DEALER:{
       newSpotPlayerState.nextMoveIndex++
       return utils.getNextStep(spot, newSpotPlayerState, false)
     }

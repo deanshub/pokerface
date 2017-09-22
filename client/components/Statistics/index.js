@@ -2,68 +2,55 @@ import React, { Component, PropTypes } from 'react'
 // import classnames from 'classnames'
 // import style from './style.css'
 import { Grid, Statistic, Icon } from 'semantic-ui-react'
+import { observer, inject } from 'mobx-react'
 import WinningsChart from '../WinningsChart'
 import PlayingChart from '../PlayingChart'
 
 const statisticalItems = [
-  { label: 'Games', value: '22' },
-  { label: 'Winings', value: '3,200' },
-  { label: 'Avarage Buy-ins', value: '250' },
-  { label: 'Avarage Win', value: '250' },
-  { label: 'Position', value: '2' },
+  { label: 'Games', value: '0' },
+  { label: 'Winings', value: '0' },
+  { label: 'Avarage Buy-ins', value: '0' },
+  { label: 'Avarage Win', value: '0' },
+  { label: 'Position', value: '1' },
 ]
 
-const winningsChartData = [{
-  startDate: new Date(),
-  winSum: 1000,
-  location: 'Raanana',
-},{
-  startDate: new Date(),
-  winSum: 200,
-  location: 'Herzelia',
-},{
-  startDate: new Date(),
-  winSum: 1700,
-  location: 'Ramat Hasharon',
-},{
-  startDate: new Date(),
-  winSum: 3400,
-  location: 'Rishon Lezion',
-}]
+const winningsChartData = []
 
 const playingChartData = [{
   subject: 'Bluffing',
-  A: 100,
+  A: 50,
   B: 90,
   fullMark: 100,
 },{
   subject: 'Aggresive',
-  A: 88,
+  A: 50,
   B: 30,
   fullMark: 100,
 },{
   subject: 'Smart',
-  A: 86,
+  A: 50,
   B: 70,
   fullMark: 100,
 },{
   subject: 'Predictive',
-  A: 27,
+  A: 50,
   B: 100,
   fullMark: 100,
 },{
   subject: 'Agile',
-  A: 85,
+  A: 50,
   B: 90,
   fullMark: 100,
 },{
   subject: 'Non-Emotional',
-  A: 65,
+  A: 50,
   B: 85,
   fullMark: 100,
 }]
 
-export default class ProfileStatistic extends Component {
+@inject('auth')
+@observer
+export default class ProfileStatistics extends Component {
   static propTypes = {
   }
 
@@ -77,6 +64,8 @@ export default class ProfileStatistic extends Component {
   }
 
   render() {
+    const {auth} = this.props
+
     return (
       <Grid columns={3} >
         <Grid.Row>
@@ -131,7 +120,7 @@ export default class ProfileStatistic extends Component {
           <Grid.Column>
             <PlayingChart
                 data={playingChartData}
-                player={{name:'Dean Shub'}}
+                player={auth.user}
             />
           </Grid.Column>
         </Grid.Row>

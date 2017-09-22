@@ -122,8 +122,8 @@
 }
 
 .mapImage {
-  max-height: 400px !important;
-  max-width: 400px !important;
+  width: 100%;
+  min-height: 400px;
 }
 
 .rsvpButton {

@@ -16,16 +16,17 @@ export default class Spot extends Component {
     currency: PropTypes.string,
     dealer: PropTypes.shape().isRequired,
     movesTotal: PropTypes.number.isRequired,
-    players: PropTypes.shape().isRequired,
+    standalone: PropTypes.bool,
   }
 
   static defaultProps = {
     currency: '$',
+    standalone: false,
   }
 
   buildPlayerComponents(player, index){
     if (player){
-      const {currency} = this.props
+      const {currency, standalone} = this.props
 
       const position = playersPositions[index]
       const betPosition = betPositions[index]
@@ -87,6 +88,7 @@ export default class Spot extends Component {
                 cards={player.cards}
                 covered={!player.showCards}
                 hand
+                size={standalone?3.8:3.5}
             />
           </div>
         </div>
@@ -96,7 +98,7 @@ export default class Spot extends Component {
   }
 
   buildDealerComponent(){
-    const { dealer, currency } = this.props
+    const { dealer, currency, standalone } = this.props
 
     return (
       <div className={classnames(style.dealerSpace)}>
@@ -111,7 +113,9 @@ export default class Spot extends Component {
         <div className={classnames(style.dealerCards)}>
           <Cards
               cards={dealer.cards}
+              dealer
               noHoverEffect
+              size={standalone?3.8:3.5}
           />
         </div>
       </div>
@@ -119,13 +123,13 @@ export default class Spot extends Component {
   }
 
   render() {
-    const { players } = this.props
+    const { players, standalone } = this.props
     // players {username, fullname, name, bank, description ('bb'\'sb'\'ante'\...), avatar, bet, folded, myTurn, isDealer}
     const dealerComponent = this.buildDealerComponent()
     // dealer {pot, cards, }
 
     return (
-      <PokerTable>
+      <PokerTable standalone={standalone}>
         {
           players.map(::this.buildPlayerComponents).reduce((res, playerComponents)=>{
             return [...res, ...playerComponents]

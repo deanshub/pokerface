@@ -1,49 +1,78 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 import classnames from 'classnames'
 import style from './style.css'
+import { observer, inject } from 'mobx-react'
 
-export default ({ auth, game, events }) => {
-  const handleNotGoing = (e) => {
+@inject('events')
+@inject('auth')
+@observer
+export default class RSVPButton extends Component {
+  handleNotGoing(e) {
     e.preventDefault()
     e.stopPropagation()
-    events.fillAttendance(auth.user.username, game.id, false)
+    const {events, auth, game } = this.props
+    events.fillAttendance(auth.user, game.id, false)
   }
 
-  const handleGoing = (e) => {
+  handleGoing(e) {
     e.preventDefault()
     e.stopPropagation()
-    events.fillAttendance(auth.user.username, game.id, true)
+    const {events, auth, game } = this.props
+    events.fillAttendance(auth.user, game.id, true)
   }
 
-  const isGoing = game.accepted.filter(user=>user.username===auth.user.username).length>0
-  const isNotGoing = game.declined.filter(user=>user.username===auth.user.username).length>0
+  handleUnresponsive(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    const {events, auth, game } = this.props
+    events.fillAttendance(auth.user, game.id, null)
+  }
 
-  return (
-    <Button.Group>
-      <Button
-          animated
-          className={classnames(style.isGoingButton)}
-          negative={isNotGoing}
-          onClick={handleNotGoing}
-      >
-        <Button.Content visible>Not Going</Button.Content>
-        <Button.Content hidden>
-          <Icon name="thumbs outline down" />
-        </Button.Content>
-      </Button>
-      <Button.Or />
-      <Button
-          animated
-          className={classnames(style.isGoingButton)}
-          onClick={handleGoing}
-          positive={isGoing}
-      >
-        <Button.Content visible>Going</Button.Content>
-        <Button.Content hidden>
-          <Icon name="thumbs outline up" />
-        </Button.Content>
-      </Button>
-    </Button.Group>
-  )
+  render(){
+    const {game, auth } = this.props
+    const isGoing = game.accepted.find(user=>user.username===auth.user.username)!==undefined
+    const isNotGoing = game.declined.find(user=>user.username===auth.user.username)!==undefined
+    const isUnresponsive = game.unresponsive.find(user=>user.username===auth.user.username)!==undefined
+
+    return (
+      <Button.Group>
+        <Button
+            animated
+            className={classnames(style.isGoingButton)}
+            negative={isNotGoing}
+            onClick={::this.handleNotGoing}
+        >
+          <Button.Content visible>Not Going</Button.Content>
+          <Button.Content hidden>
+            <Icon name="thumbs outline down" />
+          </Button.Content>
+        </Button>
+        <Button.Or />
+        <Button
+            animated
+            className={classnames(style.isGoingButton)}
+            color={isUnresponsive?'yellow':undefined}
+            onClick={::this.handleUnresponsive}
+        >
+          <Button.Content visible>Maybe</Button.Content>
+          <Button.Content hidden>
+            <Icon name="help" />
+          </Button.Content>
+        </Button>
+        <Button.Or />
+        <Button
+            animated
+            className={classnames(style.isGoingButton)}
+            onClick={::this.handleGoing}
+            positive={isGoing}
+        >
+          <Button.Content visible>Going</Button.Content>
+          <Button.Content hidden>
+            <Icon name="thumbs outline up" />
+          </Button.Content>
+        </Button>
+      </Button.Group>
+    )
+  }
 }
