@@ -4,6 +4,7 @@ const DEFAULT_INITIAL_ROUND ={
   ante: 10,
   smallBlind: 10,
   bigBlind: 20,
+  time: 10,
   key: Math.random(),
 }
 
@@ -50,8 +51,10 @@ const getDefaultTimer = () => ({
 })
 
 // When to delete the timer after the user goes out
+const KEEP_ALIVE_TIMER_DURATION = 20 * MINUTES_MULTIPLIER
 
 // When to ask the user if he wants to reset after he goes outs and back
+const SET_TIMER_TO_BE_RECOVERED_DURATION = 5 * MINUTES_MULTIPLIER
 
 const onConnect = (timer) => {
   timer.userInstancesCounter++
