@@ -10,17 +10,15 @@ const metaFbUrl = '<meta property="og:url" content="http://pokerface.io"/>'
 const metaFbTitle = '<meta property="og:title" content="Welcome to Pokerface.io"/>'
 const metaFbImage = '<meta property="og:image" content="http://pokerface.io/images/fav2.jpg"/>'
 
-
 function isAuthenticated(req, res, next) {
-  if (req.isAuthenticated()){
-    return next()
+  if (!req.user) {
+    if (req.originalUrl.trim()!=='/'){
+      res.redirect(`/login?url=${req.originalUrl}`)
+    }else {
+      res.redirect('/login')
+    }
   }
-
-  if (req.originalUrl.trim()!=='/'){
-    res.redirect(`/login?url=${req.originalUrl}`)
-  }else {
-    res.redirect('/login')
-  }
+  return next()
 }
 
 function sendDocument(req, res, post) {
@@ -47,13 +45,11 @@ const router = express.Router()
 router.use('/profile', isAuthenticated, express.static(INDEX_HTML_PATH))
 router.use('/timer', isAuthenticated, express.static(INDEX_HTML_PATH))
 router.use('/smart', isAuthenticated, express.static(INDEX_HTML_PATH))
-router.use('/profile/:username', isAuthenticated,express.static(INDEX_HTML_PATH))
-router.use('/events', isAuthenticated,express.static(INDEX_HTML_PATH))
+router.use('/profile/:username', isAuthenticated, express.static(INDEX_HTML_PATH))
+router.use('/events', isAuthenticated, express.static(INDEX_HTML_PATH))
 router.use('/login', express.static(INDEX_HTML_PATH))
-// router.use('/post/:id', express.static(INDEX_HTML_PATH))
 router.get('/post/:id', function (req, res) {
-  //   // and drop 'public' in the middle of here
-  //   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
+
 
   DB.models.Post.findById(req.params.id).then(post=>{
     sendDocument(req, res, post)
@@ -62,16 +58,9 @@ router.get('/post/:id', function (req, res) {
     sendDocument(req, res)
   })
 })
-// router.use('/', isAuthenticated, express.static(INDEX_HTML_PATH))
 
 
 router.use('/', express.static(STATIC_FILES_DIRECTORY))
-
-
-// router.get('*', function (req, res) {
-//   // and drop 'public' in the middle of here
-//   res.sendFile(path.join(STATIC_FILES_DIRECTORY, 'index.html'))
-// })
 
 
 export default router

@@ -1,22 +1,29 @@
-import { graphqlExpress } from 'apollo-server-express'
-import { makeExecutableSchema } from 'graphql-tools'
+import {graphqlExpress} from 'apollo-server-express'
+import {makeExecutableSchema} from 'graphql-tools'
+import {SubscriptionServer} from 'subscriptions-transport-ws'
+import {execute, subscribe} from 'graphql'
 import {mergeStrings} from 'gql-merge'
 import {merge} from 'lodash'
 import config from 'config'
+import { createServer } from 'http'
+import {getUserByToken, getTokenFromCookieString}  from '../../utils/authUtils'
+import {eventConnectionListener as timerListener} from '../../utils/blindTimers'
 
 import { schema as PostSchema, resolvers as PostResolvers } from './graphqlModels/Post'
 import { schema as CommentSchema, resolvers as CommentResolvers } from './graphqlModels/Comment'
 import { schema as PlayerSchema, resolvers as PlayerResolvers } from './graphqlModels/Player'
 import { schema as GameSchema, resolvers as GameResolvers } from './graphqlModels/Game'
 import { schema as UploadSchema, resolvers as UploadResolvers } from './graphqlModels/UploadedFile'
+import { schema as TimerSchema, resolvers as TimerResolvers } from './graphqlModels/Timer'
 
-const Schema = makeExecutableSchema({
+const schema = makeExecutableSchema({
   typeDefs: [mergeStrings([
     ...PostSchema,
     ...CommentSchema,
     ...PlayerSchema,
     ...GameSchema,
     ...UploadSchema,
+    ...TimerSchema,
   ])],
   resolvers: merge(
     PostResolvers,
@@ -24,15 +31,52 @@ const Schema = makeExecutableSchema({
     PlayerResolvers,
     GameResolvers,
     UploadResolvers,
+    TimerResolvers,
   ),
 })
 
-export default graphqlExpress(req=>{
+export const graphqlExpressMiddleware = graphqlExpress(req=>{
   return {
-    schema: Schema,
+    schema,
     pretty: config.NODE_ENV==='development'?true:false,
-    graphiql: config.NODE_ENV==='development'?true:false,
     printErrors: true,
     context: {user: req.user},
   }
 })
+
+export const createGraphqlSubscriptionsServer = (app) => {
+
+  const apolloPubSubServer = createServer(app)
+
+  SubscriptionServer.create({
+    schema,
+    execute,
+    subscribe,
+    onConnect: (connectionParams, webSocket) => {
+
+      return getUserByToken(connectionParams.jwt).then(user => {
+        const socketId = parseInt(webSocket._ultron.id)
+
+        timerListener.onConnect(user._id)
+        return {userId: user._id, socketId}
+      })
+    },
+    onDisconnect: (webSocket) => {
+      const {cookie} = webSocket.upgradeReq.headers
+      const token = getTokenFromCookieString(cookie)
+
+      getUserByToken(token).then(user => {
+        timerListener.onDisconnect(user._id)
+      }).catch(err => {
+        console.error(err)
+      })
+
+    },
+  },{
+    server: apolloPubSubServer,
+    path: '/subscriptions',
+  },
+  )
+
+  return apolloPubSubServer
+}
