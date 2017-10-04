@@ -55,7 +55,6 @@ export class TimerStore {
 
     this.subscriptionObserver.subscribe({
       next:({timerChanged})=>{
-        console.log('subscribe: ', timerChanged)
         if (timerChanged.currentTime != null){
           this.setTimer(timerChanged)
         }
@@ -68,8 +67,7 @@ export class TimerStore {
     clearInterval(this.interval)
 
     this.paused = false
-    this.updateTimer(false)
-
+    this.currentTime = new Date()
     const roundTime = this.getCurrentRound().time
     this.endTime = new Date(this.currentTime.getTime() + roundTime * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET)
     this.mutationTime = Date.now()
@@ -191,7 +189,7 @@ export class TimerStore {
     })
     .then(::this.checkMutationSuccess)
     .catch(err=>{
-      console.error("in pause()", err)
+      console.error('in pause()', err)
       this.fetchTimer()
     })
 
@@ -214,7 +212,7 @@ export class TimerStore {
     })
     .then(::this.checkMutationSuccess)
     .catch(err=>{
-      console.error(err)
+      console.error('addRound()' , err)
     })
   }
 
@@ -230,7 +228,7 @@ export class TimerStore {
     })
     .then(::this.checkMutationSuccess)
     .catch(err=>{
-      console.error(err)
+      console.error('removeRound()' ,err)
     })
   }
 
@@ -263,7 +261,7 @@ export class TimerStore {
     })
     .then(::this.checkMutationSuccess)
     .catch(err=>{
-      console.error(err)
+      console.error('in updateRound', err)
     })
   }
 
@@ -273,15 +271,17 @@ export class TimerStore {
       clearInterval(this.interval)
 
       this.paused = timer.paused
-      this.rounds = this.getRounds(timer.rounds)
       this.round = timer.round
       this.currentTime = new Date(parseInt(timer.currentTime))
       this.recovered = timer.recovered
 
+      if (timer.rounds != null){
+        this.rounds = this.getRounds(timer.rounds)
+      }
+
       // Can be undefined or null
       if (timer.endTime != null){
         this.endTime = new Date(parseInt(timer.endTime))
-        //this.offset = this.endTime.getTime() - new Date().getTime()
       }else{
         this.endTime = undefined
       }
@@ -306,17 +306,17 @@ export class TimerStore {
     .then(res => {
       this.setTimer(res.data.timer)
     }).catch(err => {
-      console.error(err);
+      console.error('in fetchTimer', err)
     })
   }
 
   @action.bound
   checkMutationSuccess(res){
-    // TODO do it better, the field in data is the name of the mutation defined in server's schema
+    // TODO do it better?, the field in data is the name of the mutation defined in server's schema
     const resTimet = res.data[Object.keys(res.data)[0]]
 
-    if (this.currentTime && this.mutationTime > parseInt(resTimet.currentTime)){
-      alert('Async problem')
+    // TODO mabey there is more correct way to check the mutation was submitted
+    if (parseInt(resTimet.currentTime) !== this.mutationTime){
       this.setTimer(resTimet)
     }
   }
@@ -338,7 +338,7 @@ export class TimerStore {
     })
     .then(::this.checkMutationSuccess)
     .catch(err=>{
-      console.error(err)
+      console.error('setResetRespose', err)
     })
   }
 
