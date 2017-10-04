@@ -6,6 +6,10 @@ const isSuperAdmin = (user) => {
 }
 
 const getUserByToken = (token) => {
+  if(token == null){
+    return {}
+  }
+
   const payload = jwt.verify(token, SECRET_KEY)
   return Db.models.Player.findById(payload.id).select('-password').then((user)=>{
     return {...user.toJSON(), fullname:user.fullname}
@@ -23,6 +27,9 @@ const getCookieByName = (cookieString, name) => {
     return cookieArray[0].trim()
   }
 
+  if (cookieString == undefined){
+    return null
+  }
   const cookies = cookieString.split(';')
 
   if (cookies == ''){

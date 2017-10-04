@@ -66,19 +66,22 @@ const onDisconnect = (timers, userId) => {
 
   const timer = timers[userId]
 
-  if (timer.userInstancesCounter > 0){
-    timer.userInstancesCounter--
-  }
+  if (timer){
 
-  const {timerState} = timer
+    if (timer.userInstancesCounter > 0){
+      timer.userInstancesCounter--
+    }
 
-  if (timer.userInstancesCounter == 0){
-    timer.setrecoveredTimeout = setTimeout(() => {
-      timerState.recovered = true
-    }, SET_TIMER_TO_BE_RECOVERED_DURATION)
-    timer.deteleTimerTimeout = setTimeout(() => {
-      timers[userId] = undefined
-    }, KEEP_ALIVE_TIMER_DURATION)
+    const {timerState} = timer
+
+    if (timer.userInstancesCounter == 0){
+      timer.setrecoveredTimeout = setTimeout(() => {
+        timerState.recovered = true
+      }, SET_TIMER_TO_BE_RECOVERED_DURATION)
+      timer.deteleTimerTimeout = setTimeout(() => {
+        timers[userId] = undefined
+      }, KEEP_ALIVE_TIMER_DURATION)
+    }
   }
 }
 
@@ -181,6 +184,7 @@ const isValidateCommand = (timer, commandTime) => {
 
 const timers = {}
 
+// TODO convert to Proxy?
 export const timerActions = {
   getTimer(userId){
 

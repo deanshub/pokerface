@@ -52,25 +52,26 @@ export const createGraphqlSubscriptionsServer = (app) => {
     schema,
     execute,
     subscribe,
-    onConnect: (connectionParams, webSocket) => {
+    onConnect: (connectionParams) => {
+      // clientSocketId is created in client so
+      // it could be sent with mutations
+      const { clientSocketId, jwt } = connectionParams
 
-      return getUserByToken(connectionParams.jwt).then(user => {
-        const socketId = parseInt(webSocket._ultron.id)
-
+      return getUserByToken(jwt).then(user => {
         timerListener.onConnect(user._id)
-        return {userId: user._id, socketId}
+        return {userId: user._id, clientSocketId}
       })
     },
     onDisconnect: (webSocket) => {
       const {cookie} = webSocket.upgradeReq.headers
       const token = getTokenFromCookieString(cookie)
-
-      getUserByToken(token).then(user => {
-        timerListener.onDisconnect(user._id)
-      }).catch(err => {
-        console.error(err)
-      })
-
+      if (token != null){
+        getUserByToken(token).then(user => {
+          timerListener.onDisconnect(user._id)
+        }).catch(err => {
+          console.error(err)
+        })
+      }
     },
   },{
     server: apolloPubSubServer,

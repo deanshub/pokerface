@@ -44,26 +44,31 @@ export const schema =  [`
     pauseTimer(
       currentTime: String!,
       round: Int!,
-      offset: String!
+      offset: String!,
+      clientSocketId: String!
     ): Timer
     resumeTimer(
       currentTime: String!,
       round: Int!,
-      endTime: String!
+      endTime: String!,
+      clientSocketId: String!
     ): Timer
     updateRound(
       currentTime: String!,
       round: Int!,
       paused: Boolean!
-      endTime: String
+      endTime: String,
+      clientSocketId: String!
     ): Timer
     updateTimerRounds(
       currentTime: String!,
-      rounds: TimerRoundsInput!
+      rounds: TimerRoundsInput!,
+      clientSocketId: String!
     ): Timer
     setResetClientResponse(
       currentTime: String!,
-      reset: Boolean!
+      reset: Boolean!,
+      clientSocketId: String!
     ): Timer
 
   }
@@ -85,44 +90,63 @@ export const resolvers = {
     },
   },
   Mutation: {
-    pauseTimer: (_, {currentTime, round, offset}, {user:{_id:userId}}) => {
+    pauseTimer: (_, args , {user:{_id:userId}}) => {
+      const {currentTime, round, offset, clientSocketId} = args
       const timer = timerActions.pause(userId, parseInt(currentTime), round, parseInt(offset))
 
-      pubsub.publish('timerChanged', {timerChanged: timer, userId})
+      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
-    resumeTimer: (_, {currentTime, round, endTime},{user:{_id:userId}}) => {
-      const timer = timerActions.resume(userId, parseInt(currentTime), round, parseInt(endTime))
+    resumeTimer: (_, args, {user:{_id:userId}}) => {
+      const {currentTime, round, endTime, clientSocketId} = args
+      const timer = timerActions.resume(
+        userId,
+        parseInt(currentTime),
+        round,
+        parseInt(endTime)
+      )
 
-      pubsub.publish('timerChanged', {timerChanged: timer, userId})
+      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
-    updateRound: (_, {currentTime, round, paused, endTime},{user:{_id:userId}}) => {
-      const timer = timerActions.updateRound(userId, parseInt(currentTime), round, paused, parseInt(endTime))
+    updateRound: (_, args ,{user:{_id:userId}}) => {
+      const {currentTime, round, paused, endTime, clientSocketId} = args
+      const timer = timerActions.updateRound(
+        userId,
+        parseInt(currentTime),
+        round,
+        paused,
+        parseInt(endTime)
+      )
 
-      pubsub.publish('timerChanged', {timerChanged: timer, userId})
+      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
-    updateTimerRounds: (_, {currentTime, rounds:{rounds}}, {user:{_id:userId}}) => {
+    updateTimerRounds: (_, args, {user:{_id:userId}}) => {
+      const {currentTime, rounds:{rounds}, clientSocketId} = args
       const timer = timerActions.updateTimerRounds(userId, parseInt(currentTime), rounds)
 
-      pubsub.publish('timerChanged', {timerChanged: timer, userId})
+      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
-    setResetClientResponse: (_, {currentTime, reset},{user:{_id:userId}}) => {
+    setResetClientResponse: (_, args, {user:{_id:userId}}) => {
+      const {currentTime, reset, clientSocketId} = args
       const timer = timerActions.setResetClientResponse(userId, parseInt(currentTime), reset)
 
-      pubsub.publish('timerChanged', {timerChanged: timer, userId})
+      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
   },
 
   Subscription: {
     timerChanged: {
-      subscribe: withFilter(() => pubsub.asyncIterator('timerChanged'), (payload ,_ ,{userId}) => {
-        const {userId:userIdSender}  = payload
-        return userIdSender == userId
-      }),
+      subscribe: withFilter(
+        () => pubsub.asyncIterator('timerChanged'),
+        (payload ,_ ,{userId, clientSocketId}) => {
+          const {userId:userIdPublisher, clientSocketId:socketIdPublisher} = payload
+          return (userIdPublisher == userId && clientSocketId != socketIdPublisher)
+        },
+      ),
     },
   },
 }
