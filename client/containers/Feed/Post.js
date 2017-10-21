@@ -162,7 +162,7 @@ export default class Post extends Component {
 
   sharePost(){
     const { post } = this.props
-    const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/post/${post.id}&title=Pokerface.io&description=Post by ${post.player.fullname}&picture=http://pokerface.io${require('file-loader!../../assets/fav2.jpg')}`
+    const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/post/${post.id}&title=Pokerface.io&description=Post by ${post.player.fullname}&picture=http://pokerface.io${require('file-loader!../../assets/logo.png')}`
     window.open(shareurl,'', 'height=570,width=520')
   }
 
