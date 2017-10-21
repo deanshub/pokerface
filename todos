@@ -8,6 +8,15 @@ fix the keys selection of emoji\ mention plugins within the post editor
 -------------------------------------------------------------------------------
 
 
+head
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Description of the page less than 150 characters">
+  <link rel="icon" type="image/png" href="https://example.com/favicon.png">
+  <link rel="apple-touch-icon" href="/custom-icon.png">
+
+
+
 in prod change deanshub user to pokerface (including username, first & last name, password)
   and add deanshub user
 fix NODE_APP_INSTANCE bug, when running pm2 with -i 0 there is an error (http://pm2.keymetrics.io/docs/usage/environment/#specific-environment-variables)

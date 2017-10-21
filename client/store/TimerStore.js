@@ -1,4 +1,5 @@
 import { observable, action, computed } from 'mobx'
+import {fillBlinds} from './blindsUtils/utils'
 
 export class TimerStore {
   @observable rounds
@@ -11,15 +12,15 @@ export class TimerStore {
   @observable settingsModalOpen
   @observable inverted
   @observable settingsModalMountNode
+  @observable autoUpdateBlinds
 
   MINIMAL_OFFSET = 10
   MINUTES_MULTIPLIER = 60 * 1000
   DEFAULT_INITIAL_ROUND ={
-    ante: 10,
-    smallBlind: 10,
-    bigBlind: 20,
-    time: 10,
-    key: Math.random(),
+    ante: 0,
+    smallBlind: 2,
+    bigBlind: 4,
+    time: 15,
   }
 
   constructor(){
@@ -32,29 +33,40 @@ export class TimerStore {
       this.rounds = [
         this.DEFAULT_INITIAL_ROUND,
         Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
-          key: Math.random(),
+          smallBlind: 4,
+          bigBlind: 8,
+        }),
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
+          smallBlind: 5,
+          bigBlind: 10,
+        }),
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
           smallBlind: 15,
           bigBlind: 30,
         }),
         Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
-          key: Math.random(),
-          smallBlind: 20,
-          bigBlind: 40,
-        }),
-        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
-          key: Math.random(),
           smallBlind: 30,
           bigBlind: 60,
         }),
         Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
-          key: Math.random(),
           smallBlind: 50,
           bigBlind: 100,
         }),
         Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
-          key: Math.random(),
+          smallBlind: 70,
+          bigBlind: 140,
+        }),
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
+          smallBlind: 100,
+          bigBlind: 200,
+        }),
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
           smallBlind: 150,
           bigBlind: 300,
+        }),
+        Object.assign({}, this.DEFAULT_INITIAL_ROUND, {
+          smallBlind: 200,
+          bigBlind: 400,
         }),
       ]
       this.updateLocalStorage()
@@ -67,6 +79,7 @@ export class TimerStore {
     this.inverted = false
     this.settingsModalMountNode = undefined
     this.blindsSound = new Audio(require('../assets/10.mp3'))
+    this.autoUpdateBlinds = true
   }
 
   @action start(){
@@ -128,7 +141,7 @@ export class TimerStore {
   }
 
   @action addRound(){
-    this.rounds.push(Object.assign({},this.getLastRound(),{key:Math.random()}))
+    this.rounds.push(Object.assign({},this.getLastRound()))
     this.updateLocalStorage()
   }
   @action removeRound(index){
@@ -136,7 +149,7 @@ export class TimerStore {
     this.updateLocalStorage()
   }
   @action addBreak(){
-    this.rounds.push({type:'break', time:10, key:Math.random()})
+    this.rounds.push({type:'break', time:10})
     this.updateLocalStorage()
   }
 
@@ -241,6 +254,20 @@ export class TimerStore {
   @action
   updateRound(round, propName, value){
     round[propName] = value
+    if (propName==='smallBlind'){
+      round['bigBlind'] = value*2
+    }
+
+    if (this.autoUpdateBlinds){
+      const changedRoundIndex = this.rounds.indexOf(round)
+      const oldSmallBlinds = this.rounds.slice(0, changedRoundIndex+1).map((round)=>round.smallBlind)
+      const newSmallBlinds = fillBlinds(oldSmallBlinds, this.rounds.length)
+      for(let index=changedRoundIndex+1; index<newSmallBlinds.length; index++){
+        this.rounds[index].smallBlind = newSmallBlinds[index]
+        this.rounds[index].bigBlind = this.rounds[index].smallBlind*2
+      }
+    }
+
     this.updateLocalStorage()
   }
 }

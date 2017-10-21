@@ -10,10 +10,6 @@ export default class BlindsTimer extends Component {
     round: PropTypes.object.isRequired,
   }
 
-  handleChange(ev, val){
-    console.log(ev,val);
-  }
-
   render() {
     const {timer, round, roundIndex} = this.props
 
@@ -41,34 +37,34 @@ export default class BlindsTimer extends Component {
         </Table.Cell>
         <Table.Cell>
           <Input
-              defaultValue={round.smallBlind}
               min={0}
               onChange={(ev,{value})=>timer.updateRound(round, 'smallBlind', parseInt(value))}
               type="number"
+              value={round.smallBlind}
           />
         </Table.Cell>
         <Table.Cell>
           <Input
-              defaultValue={round.bigBlind}
               min={0}
               onChange={(ev,{value})=>timer.updateRound(round, 'bigBlind', parseInt(value))}
               type="number"
+              value={round.bigBlind}
           />
         </Table.Cell>
         <Table.Cell>
           <Input
-              defaultValue={round.ante}
               min={0}
               onChange={(ev,{value})=>timer.updateRound(round, 'ante', parseInt(value))}
               type="number"
+              value={round.ante}
           />
         </Table.Cell>
         <Table.Cell>
           <Input
-              defaultValue={round.time}
               min={0}
               onChange={(ev,{value})=>timer.updateRound(round, 'time', parseInt(value))}
               type="number"
+              value={round.time}
           />
         </Table.Cell>
         <Table.Cell>
