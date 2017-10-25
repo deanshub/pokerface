@@ -15,7 +15,7 @@ let plugins = [
 if (NODE_ENV==='"development"'){
   plugins.push(new webpack.NamedModulesPlugin())
   plugins.push(new webpack.HotModuleReplacementPlugin())
-  devtool = 'inline-source-map'
+  devtool = 'eval-source-map'
   hotloaderEntries = [
     'react-hot-loader/patch',
     'webpack-hot-middleware/client',

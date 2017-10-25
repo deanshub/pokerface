@@ -9,6 +9,7 @@ import {
   timerResetResponseSetting,
 } from './mutations/timers'
 import { timerChanged } from './subscriptions/timers'
+import {fillBlinds} from './blindsUtils/utils'
 
 const DEFAULT_INITIAL_ROUND ={
   ante: 10,
@@ -32,10 +33,17 @@ export class TimerStore {
   @observable resetModalMountNode
   @observable recovered
   @observable loading
+  @observable autoUpdateBlinds
 
   MINIMAL_OFFSET = 10
   MINUTES_MULTIPLIER = 60 * 1000
   TIMER_INTERVAL = 100
+  DEFAULT_INITIAL_ROUND ={
+    ante: 0,
+    smallBlind: 2,
+    bigBlind: 4,
+    time: 15,
+  }
 
   constructor(){
 
@@ -45,6 +53,7 @@ export class TimerStore {
     this.resetModalMountNode = undefined
     this.loading = true
     this.blindsSound = new Audio(require('../assets/10.mp3'))
+    this.autoUpdateBlinds = true
     this.rounds = [DEFAULT_INITIAL_ROUND]
     this.paused = true
     this.offset = 0
@@ -201,7 +210,7 @@ export class TimerStore {
   }
 
   @action addRound(){
-    this.rounds.push(Object.assign({},this.getLastRound(),{key:Math.random()}))
+    this.rounds.push(Object.assign({},this.getLastRound()))
     this.mutationTime = Date.now()
 
     graphqlClient.mutate({
@@ -233,7 +242,7 @@ export class TimerStore {
   }
 
   @action addBreak(){
-    this.rounds.push({type:'break', time:10, key:Math.random()})
+    this.rounds.push({type:'break', time:10})
     this.mutationTime = Date.now()
 
     graphqlClient.mutate({
@@ -250,7 +259,22 @@ export class TimerStore {
   }
 
   @action updateRound(round, propName, value){
+    
     round[propName] = value
+    if (propName==='smallBlind'){
+      round['bigBlind'] = value*2
+    }
+
+    if (this.autoUpdateBlinds){
+      const changedRoundIndex = this.rounds.indexOf(round)
+      const oldSmallBlinds = this.rounds.slice(0, changedRoundIndex+1).map((round)=>round.smallBlind)
+      const newSmallBlinds = fillBlinds(oldSmallBlinds, this.rounds.length)
+      for(let index=changedRoundIndex+1; index<newSmallBlinds.length; index++){
+        this.rounds[index].smallBlind = newSmallBlinds[index]
+        this.rounds[index].bigBlind = this.rounds[index].smallBlind*2
+      }
+    }
+
     this.mutationTime = Date.now()
 
     graphqlClient.mutate({
