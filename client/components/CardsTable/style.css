@@ -32,6 +32,7 @@
 .hand:hover{
   font-weight: bold;
   background-color: #f2f2f2;
+  transform: scale(1.5);
 }
 
 .legend{

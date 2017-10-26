@@ -7,7 +7,7 @@ export const openRaiseSets = [
       'AKs','AQs','AJs','ATs',
       'AA','KK','QQ','JJ','TT','99','88','77',
     ],
-    color: '#F44336',
+    color: '#E53935',
     label: 'UTG Open-Raise',
   },
 
@@ -20,7 +20,7 @@ export const openRaiseSets = [
       'AKs','AQs','AJs','ATs',
       'AA','KK','QQ','JJ','TT','99','88','77',
     ],
-    color: '#673AB7',
+    color: '#EF9A9A',
     label: 'UTG+1 Open-Raise',
   },
 
@@ -33,7 +33,7 @@ export const openRaiseSets = [
       'AKs','AQs','AJs','ATs','A9s','A8s','A7s','A6s','A5s','A4s','A3s','A2s',
       'AA','KK','QQ','JJ','TT','99','88','77','66',
     ],
-    color: '#2196F3',
+    color: '#FF9800',
     label: 'MP1 Open-Raise',
   },
 
@@ -46,7 +46,7 @@ export const openRaiseSets = [
       'AKs','AQs','AJs','ATs','A9s','A8s','A7s','A6s','A5s','A4s','A3s','A2s',
       'AA','KK','QQ','JJ','TT','99','88','77','66',
     ],
-    color: '#00BCD4',
+    color: '#FFC107',
     label: 'MP2 Open-Raise',
   },
 
@@ -75,7 +75,7 @@ export const openRaiseSets = [
       'AKs','AQs','AJs','ATs','A9s','A8s','A7s','A6s','A5s','A4s','A3s','A2s',
       'AA','KK','QQ','JJ','TT','99','88','77','66','55','44','33','22',
     ],
-    color: '#FFEB3B',
+    color: '#8BC34A',
     label: 'CO Open-Raise',
   },
 
@@ -92,7 +92,7 @@ export const openRaiseSets = [
       'AKs','AQs','AJs','ATs','A9s','A8s','A7s','A6s','A5s','A4s','A3s','A2s',
       'AA','KK','QQ','JJ','TT','99','88','77','66','55','44','33','22',
     ],
-    color: '#FF9800',
+    color: '#4DD0E1',
     label: 'BU Open-Raise',
   },
 
@@ -109,7 +109,7 @@ export const openRaiseSets = [
       'AKs','AQs','AJs','ATs','A9s','A8s','A7s','A6s','A5s','A4s','A3s','A2s',
       'AA','KK','QQ','JJ','TT','99','88','77','66','55','44','33','22',
     ],
-    color: '#795548',
+    color: '#B2EBF2',
     label: 'SB Open-Raise',
   },
   /*
