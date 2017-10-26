@@ -1,4 +1,4 @@
-import ApolloClient from 'apollo-client'
+import ApolloClient, {createNetworkInterface} from 'apollo-client'
 import { createBatchingNetworkInterface  } from 'apollo-upload-client'
 import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws'
 import {getCookieByName} from '../utils/cookies'
@@ -13,6 +13,14 @@ const networkInterface = createBatchingNetworkInterface ({
   },
 })
 
+// const networkInterface = createNetworkInterface({
+//   uri: '/graphql',
+//   opts: {
+//     credentials: 'same-origin',
+//   },
+// })
+
+// TODO create stronger socket id
 const clientSocketId = Date.now().toString()
 
 const SOCKET_ID_ADDING_OPERATION = [
@@ -42,6 +50,16 @@ const socketIdAddingMiddleware = {
     next()
   },
 }
+
+// const socketIdAddingMiddleware = {
+//   applyMiddleware(req, next) {
+//     console.log('req', req);
+//     if (SOCKET_ID_ADDING_OPERATION.includes(req.request.operationName)){
+//       req.request.variables.clientSocketId = clientSocketId
+//     }
+//     next()
+//   },
+// }
 
 networkInterface.use([socketIdAddingMiddleware])
 

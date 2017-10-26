@@ -74,12 +74,12 @@ export const timerRoundsUpdate = gql`mutation updateTimerRounds(
     rounds: $rounds,
     clientSocketId: $clientSocketId,
   ){
+    currentTime,
     rounds{
       ante
       smallBlind
       bigBlind
       time
-      key
       type
     }
   }
@@ -106,7 +106,6 @@ export const timerResetResponseSetting = gql`mutation setResetClientResponse(
       smallBlind
       bigBlind
       time
-      key
       type
     }
   }

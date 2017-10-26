@@ -11,13 +11,6 @@ import {
 import { timerChanged } from './subscriptions/timers'
 import {fillBlinds} from './blindsUtils/utils'
 
-const DEFAULT_INITIAL_ROUND ={
-  ante: 10,
-  smallBlind: 10,
-  bigBlind: 20,
-  time: 10,
-  key: Math.random(),
-}
 
 export class TimerStore {
   @observable rounds
@@ -38,7 +31,7 @@ export class TimerStore {
   MINIMAL_OFFSET = 10
   MINUTES_MULTIPLIER = 60 * 1000
   TIMER_INTERVAL = 100
-  DEFAULT_INITIAL_ROUND ={
+  DEFAULT_INITIAL_ROUND = {
     ante: 0,
     smallBlind: 2,
     bigBlind: 4,
@@ -54,22 +47,33 @@ export class TimerStore {
     this.loading = true
     this.blindsSound = new Audio(require('../assets/10.mp3'))
     this.autoUpdateBlinds = true
-    this.rounds = [DEFAULT_INITIAL_ROUND]
+    this.rounds = [this.DEFAULT_INITIAL_ROUND]
     this.paused = true
     this.offset = 0
 
-    this.subscriptionObserver = graphqlClient.subscribe({
-      query:timerChanged,
-    })
+    // The subscription is lazy.
+    this.subscribe = false
+  }
 
-    this.subscriptionObserver.subscribe({
-      next:({timerChanged})=>{
-        if (timerChanged.currentTime != null){
-          this.setTimer(timerChanged)
-        }
-      },
-    })
-    this.fetchTimer()
+  @action startSubscription(){
+    if (!this.subscribe){
+      console.log("startSubscription");
+      this.subscriptionObserver = graphqlClient.subscribe({
+        query:timerChanged,
+      })
+
+      this.subscriptionObserver.subscribe({
+        next:({timerChanged})=>{
+          console.log('receive timer:', timerChanged)
+          if (timerChanged.currentTime != null){
+            this.setTimer(timerChanged)
+          }
+        },
+      })
+
+      this.subscribe = true
+      this.fetchTimer()
+    }
   }
 
   @action start(){
@@ -259,7 +263,7 @@ export class TimerStore {
   }
 
   @action updateRound(round, propName, value){
-    
+
     round[propName] = value
     if (propName==='smallBlind'){
       round['bigBlind'] = value*2

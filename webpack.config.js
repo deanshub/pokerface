@@ -13,6 +13,11 @@ let plugins = [
 ]
 
 if (NODE_ENV==='"development"'){
+
+  plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: Infinity,
+  }))
   plugins.push(new webpack.NamedModulesPlugin())
   plugins.push(new webpack.HotModuleReplacementPlugin())
   devtool = 'eval-source-map'

@@ -19,6 +19,7 @@ export default class BlindsTimer extends Component {
     const {timer} = this.props
     timer.settingsModalMountNode = ReactDOM.findDOMNode(this)
     timer.resetModalMountNode = ReactDOM.findDOMNode(this)
+    timer.startSubscription()
   }
 
   resetTimer(){
