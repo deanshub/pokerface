@@ -14,7 +14,6 @@ export const timerChanged = gql`
         smallBlind
         bigBlind
         time
-        key
         type
       }
     }

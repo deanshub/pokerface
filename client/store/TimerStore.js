@@ -473,14 +473,12 @@ export class TimerStore {
       smallBlind,
       bigBlind,
       time,
-      key,
       type,
     })=>({
       ante,
       smallBlind,
       bigBlind,
       time,
-      key,
       type,
     }))
   }
