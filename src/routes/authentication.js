@@ -2,7 +2,8 @@ import passport from 'passport'
 import {Strategy as JwtStrategy, ExtractJwt} from 'passport-jwt'
 import jwt  from 'jsonwebtoken'
 import DB from '../data/db'
-import {COOKIE_TOKEN_NAME, SECRET_KEY} from '../utils/authUtils'
+import {COOKIE_TOKEN_NAME} from '../utils/authUtils'
+import config from 'config'
 
 const initialize = () => {
   const initialize = passport.initialize()
@@ -17,7 +18,7 @@ const initialize = () => {
         }
         return token
       }]),
-      secretOrKey:SECRET_KEY,
+      secretOrKey: config.SECRET_KEY,
     },
       function (jwtPayload, done){
         DB.models.Player.findById(jwtPayload.id).select('-password').then((user)=>{
@@ -38,7 +39,7 @@ const login = (req, res) => {
   const {email, password} = req.body
 
   DB.models.Player.findOne({email,password}).select('-password').then((user)=>{
-    const token = jwt.sign({id: user._id}, SECRET_KEY)
+    const token = jwt.sign({id: user._id}, config.SECRET_KEY)
     res.json({token, user:{...user.toJSON(), fullname:user.fullname}})
   }).catch(e=>{
     console.error(e)

@@ -1,5 +1,6 @@
 import Db from '../data/db'
 import jwt  from 'jsonwebtoken'
+import config from 'config'
 
 const getCookieByName = (cookieString, name) => {
   const getCookieValues = (cookie) => {
@@ -31,13 +32,15 @@ export const isSuperAdmin = (user) => {
 }
 
 export const getUserByToken = (token) => {
-  if(token == null){
-    return {}
-  }
+  return new Promise((resolve)=>{
+    if(token == null){
+      return resolve({})
+    }
 
-  const payload = jwt.verify(token, SECRET_KEY)
-  return Db.models.Player.findById(payload.id).select('-password').then((user)=>{
-    return {...user.toJSON(), fullname:user.fullname}
+    const payload = jwt.verify(token, config.SECRET_KEY)
+    return Db.models.Player.findById(payload.id).select('-password').then((user)=>{
+      return {...user.toJSON(), fullname:user.fullname}
+    })
   })
 }
 
@@ -45,5 +48,4 @@ export const getTokenFromCookieString = (cookieString) => {
   return getCookieByName(cookieString, 'jwt')
 }
 
-export const SECRET_KEY = 'pa pa pokerface'
 export const COOKIE_TOKEN_NAME = 'jwt'
