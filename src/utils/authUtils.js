@@ -1,21 +1,6 @@
 import Db from '../data/db'
 import jwt  from 'jsonwebtoken'
 
-const isSuperAdmin = (user) => {
-  return user._id === 'deanshub'
-}
-
-const getUserByToken = (token) => {
-  if(token == null){
-    return {}
-  }
-
-  const payload = jwt.verify(token, SECRET_KEY)
-  return Db.models.Player.findById(payload.id).select('-password').then((user)=>{
-    return {...user.toJSON(), fullname:user.fullname}
-  })
-}
-
 const getCookieByName = (cookieString, name) => {
   const getCookieValues = (cookie) => {
     const cookieArray = cookie.split('=')
@@ -41,18 +26,24 @@ const getCookieByName = (cookieString, name) => {
   return (cookieValue === undefined) ? null : cookieValue
 }
 
+export const isSuperAdmin = (user) => {
+  return user._id === 'deanshub'
+}
 
-const getTokenFromCookieString = (cookieString) => {
+export const getUserByToken = (token) => {
+  if(token == null){
+    return {}
+  }
+
+  const payload = jwt.verify(token, SECRET_KEY)
+  return Db.models.Player.findById(payload.id).select('-password').then((user)=>{
+    return {...user.toJSON(), fullname:user.fullname}
+  })
+}
+
+export const getTokenFromCookieString = (cookieString) => {
   return getCookieByName(cookieString, 'jwt')
 }
 
-const SECRET_KEY = 'pa pa pokerface'
-const COOKIE_TOKEN_NAME = 'jwt'
-
-export {
-  getUserByToken,
-  isSuperAdmin,
-  getTokenFromCookieString,
-  SECRET_KEY,
-  COOKIE_TOKEN_NAME,
-}
+export const SECRET_KEY = 'pa pa pokerface'
+export const COOKIE_TOKEN_NAME = 'jwt'

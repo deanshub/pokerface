@@ -9,7 +9,6 @@ export const schema =  [`
     smallBlind: Int
     bigBlind: Int
     time: Int!
-    key: Float!
     type: String
   }
 
@@ -22,7 +21,6 @@ export const schema =  [`
     smallBlind: Int
     bigBlind: Int
     time: Int!
-    key: Float!
     type: String
   }
 

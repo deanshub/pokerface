@@ -1,6 +1,6 @@
 const MINIMAL_OFFSET = 10
 const MINUTES_MULTIPLIER = 60 * 1000
-const DEFAULT_INITIAL_ROUND ={
+const DEFAULT_INITIAL_ROUND = {
   ante: 0,
   smallBlind: 2,
   bigBlind: 4,
@@ -126,7 +126,7 @@ const updateTimerRounds = (timer, commandTime, rounds) => {
   const {timerState} = timer
 
   timerState.rounds = rounds
-  timerState.current = commandTime
+  timerState.currentTime = commandTime
 
   return timer.timerState
 }

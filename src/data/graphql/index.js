@@ -57,6 +57,10 @@ export const createGraphqlSubscriptionsServer = (app) => {
       // it could be sent with mutations
       const { clientSocketId, jwt } = connectionParams
 
+      if (jwt == null){
+        throw 'unauthorized user'
+      }
+
       return getUserByToken(jwt).then(user => {
         timerListener.onConnect(user._id)
         return {userId: user._id, clientSocketId}

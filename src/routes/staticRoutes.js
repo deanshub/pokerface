@@ -17,8 +17,9 @@ function isAuthenticated(req, res, next) {
     }else {
       res.redirect('/login')
     }
+  }else{
+    return next()
   }
-  return next()
 }
 
 function sendDocument(req, res, post) {
