@@ -50,7 +50,7 @@ const login = (req, res) => {
 const addUserToRequest = (req, res, next) => {
   passport.authenticate(COOKIE_TOKEN_NAME, (err, user) => {
     if (err){
-      console.log(err)
+      console.error(err)
     }
     req.user = user
     return next()

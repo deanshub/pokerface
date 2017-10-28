@@ -135,14 +135,13 @@ export const resolvers = {
       return timer
     },
   },
-
   Subscription: {
     timerChanged: {
       subscribe: withFilter(
         () => pubsub.asyncIterator('timerChanged'),
         (payload ,_ ,{userId, clientSocketId}) => {
           const {userId:userIdPublisher, clientSocketId:socketIdPublisher} = payload
-          return (userIdPublisher == userId && clientSocketId != socketIdPublisher)
+          return (userIdPublisher === userId && clientSocketId !== socketIdPublisher)
         },
       ),
     },

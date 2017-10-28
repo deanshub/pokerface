@@ -45,7 +45,6 @@ export const graphqlExpressMiddleware = graphqlExpress(req=>{
 })
 
 export const createGraphqlSubscriptionsServer = (app) => {
-
   const apolloPubSubServer = createServer(app)
 
   SubscriptionServer.create({
@@ -57,11 +56,7 @@ export const createGraphqlSubscriptionsServer = (app) => {
       // it could be sent with mutations
       const { clientSocketId, jwt } = connectionParams
 
-      if (jwt == null){
-        throw 'unauthorized user'
-      }
-
-      return getUserByToken(jwt).then(user => {
+      return getUserByToken(jwt).then((user) => {
         timerListener.onConnect(user._id)
         return {userId: user._id, clientSocketId}
       })
@@ -69,7 +64,7 @@ export const createGraphqlSubscriptionsServer = (app) => {
     onDisconnect: (webSocket) => {
       const {cookie} = webSocket.upgradeReq.headers
       const token = getTokenFromCookieString(cookie)
-      if (token != null){
+      if (token !== null){
         getUserByToken(token).then(user => {
           timerListener.onDisconnect(user._id)
         }).catch(err => {

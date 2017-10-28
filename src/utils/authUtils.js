@@ -2,23 +2,27 @@ import Db from '../data/db'
 import jwt  from 'jsonwebtoken'
 import config from 'config'
 
+const getCookieValues = (cookie) => {
+  const cookieArray = cookie.split('=')
+  const cookieValue = cookieArray[1]
+  if (typeof cookieValue==='string'){
+    return cookieValue.trim()
+  }else{
+    return undefined
+  }
+}
+const getCookieNames = (cookie) => {
+  const cookieArray = cookie.split('=')
+  return cookieArray[0].trim()
+}
+
 const getCookieByName = (cookieString, name) => {
-  const getCookieValues = (cookie) => {
-    const cookieArray = cookie.split('=')
-    return cookieArray[1].trim()
-  }
-
-  const getCookieNames = (cookie) => {
-    const cookieArray = cookie.split('=')
-    return cookieArray[0].trim()
-  }
-
-  if (cookieString == undefined){
+  if (cookieString === undefined){
     return null
   }
   const cookies = cookieString.split(';')
 
-  if (cookies == ''){
+  if (!Array.isArray(cookies)){
     return null
   }
 
@@ -32,20 +36,19 @@ export const isSuperAdmin = (user) => {
 }
 
 export const getUserByToken = (token) => {
-  return new Promise((resolve)=>{
-    if(token == null){
-      return resolve({})
-    }
+  if(token === null){
+    console.error('empty token')
+    return Promise.resolve({})
+  }
 
-    const payload = jwt.verify(token, config.SECRET_KEY)
-    return Db.models.Player.findById(payload.id).select('-password').then((user)=>{
-      return {...user.toJSON(), fullname:user.fullname}
-    })
+  const payload = jwt.verify(token, config.SECRET_KEY)
+  return Db.models.Player.findById(payload.id).select('-password').then((user)=>{
+    return {...user.toJSON(), fullname:user.fullname}
   })
 }
 
 export const getTokenFromCookieString = (cookieString) => {
-  return getCookieByName(cookieString, 'jwt')
+  return getCookieByName(cookieString, COOKIE_TOKEN_NAME)
 }
 
 export const COOKIE_TOKEN_NAME = 'jwt'

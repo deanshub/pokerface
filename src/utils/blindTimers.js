@@ -73,18 +73,16 @@ const onConnect = (timer) => {
 }
 
 const onDisconnect = (timers, userId) => {
-
   const timer = timers[userId]
 
   if (timer){
-
     if (timer.userInstancesCounter > 0){
       timer.userInstancesCounter--
     }
 
     const {timerState} = timer
 
-    if (timer.userInstancesCounter == 0){
+    if (timer.userInstancesCounter === 0){
       timer.setrecoveredTimeout = setTimeout(() => {
         timerState.recovered = true
       }, SET_TIMER_TO_BE_RECOVERED_DURATION)
@@ -99,7 +97,7 @@ const pause = (timer, commandTime, round, offset) => {
   const {timerState} = timer
 
   if (!isValidateCommand(timer, commandTime)){
-    console.log('Async error in pause')
+    console.error('Async error in pause')
   }else{
     clearInterval(timer.nextRountTimeout)
     timer.timerState = {...timerState, paused:true, currentTime:commandTime, offset, round}
@@ -109,9 +107,8 @@ const pause = (timer, commandTime, round, offset) => {
 }
 
 const resume = (timer, commandTime, round, endTime) => {
-
   if (!isValidateCommand(timer, commandTime)){
-    console.log('Async error in resume')
+    console.error('Async error in resume')
   }else{
     clearInterval(timer.nextRountTimeout)
 
@@ -135,7 +132,7 @@ const updateRound = (timer, commandTime, round, paused, endTime) => {
   const {timerState} = timer
 
   if (!isValidateCommand(timer, commandTime)){
-    console.log('Async error in nextRound')
+    console.error('Async error in nextRound')
   }else{
     clearInterval(timer.nextRountTimeout)
 
@@ -159,7 +156,7 @@ const updateRound = (timer, commandTime, round, paused, endTime) => {
 
 const setResetClientResponse = (timer, commandTime, reset) => {
   if (!isValidateCommand(timer, commandTime)){
-    console.log('Async error in setResetClientResponse')
+    console.error('Async error in setResetClientResponse')
   }else{
 
     if (reset){
