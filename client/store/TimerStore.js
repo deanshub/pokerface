@@ -52,26 +52,25 @@ export class TimerStore {
     this.offset = 0
 
     // The subscription is lazy.
-    this.subscribe = false
+    this.subscribed = false
   }
 
   @action startSubscription(){
-    if (!this.subscribe){
-      console.log("startSubscription");
+    if (!this.subscribed){
       this.subscriptionObserver = graphqlClient.subscribe({
         query:timerChanged,
       })
 
       this.subscriptionObserver.subscribe({
         next:({timerChanged})=>{
-          console.log('receive timer:', timerChanged)
-          if (timerChanged.currentTime != null){
+          // console.log('receive timer:', timerChanged)
+          if (timerChanged.currentTime !== null){
             this.setTimer(timerChanged)
           }
         },
       })
 
-      this.subscribe = true
+      this.subscribed = true
       this.fetchTimer()
     }
   }

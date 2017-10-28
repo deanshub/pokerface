@@ -25,7 +25,11 @@ changing game details after creating one
 use sticky from semantic-ui-react for the profile navbar
 add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
 allow cards to move up on click
-
+allow any url to get index.html but on the client side redirect to an error page or login or something
+first name on email of signup is undefined
+add /smart navigation Button
+replace cookie with authorization header
+allow this http://localhost:9031/favicon.ico  to work
 
 
 

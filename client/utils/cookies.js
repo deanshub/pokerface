@@ -1,17 +1,22 @@
+const getCookieValues = (cookie) => {
+  const cookieArray = cookie.split('=')
+  const cookieValue = cookieArray[1]
+  if (typeof cookieValue==='string'){
+    return cookieValue.trim()
+  }else{
+    return undefined
+  }
+}
+
+const getCookieNames = (cookie) => {
+  const cookieArray = cookie.split('=')
+  return cookieArray[0].trim()
+}
+
 export const getCookieByName = (name) => {
-  const getCookieValues = (cookie) => {
-    const cookieArray = cookie.split('=')
-    return cookieArray[1].trim()
-  }
-
-  const getCookieNames = (cookie) => {
-    const cookieArray = cookie.split('=')
-    return cookieArray[0].trim()
-  }
-
   const cookies = document.cookie.split(';')
 
-  if (cookies == ''){
+  if (!Array.isArray(cookies)){
     return null
   }
 

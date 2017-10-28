@@ -54,7 +54,7 @@ export default class Navigation extends Component {
         })
         routing.replace(query.url||'/')
       }).catch((err)=>{
-        console.log(err)
+        console.error(err)
         let loginFailMessage = viewParam('response.body.error', err)
         if (!loginFailMessage){
           loginFailMessage='An unknown error occurred, please try again later'

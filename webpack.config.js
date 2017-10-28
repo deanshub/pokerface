@@ -10,14 +10,12 @@ let plugins = [
   new webpack.DefinePlugin({
     'process.env': { NODE_ENV },
   }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+  }),
 ]
 
 if (NODE_ENV==='"development"'){
-
-  plugins.push(new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    minChunks: Infinity,
-  }))
   plugins.push(new webpack.NamedModulesPlugin())
   plugins.push(new webpack.HotModuleReplacementPlugin())
   devtool = 'eval-source-map'
@@ -28,7 +26,6 @@ if (NODE_ENV==='"development"'){
   plugins.push(new webpack.NoEmitOnErrorsPlugin())
   babelHotloader = ['react-hot-loader/webpack']
 }else{
-  // plugins.push(new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}))
   plugins.push(new webpack.optimize.DedupePlugin())
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compressor: {
