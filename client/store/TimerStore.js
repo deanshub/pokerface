@@ -39,7 +39,6 @@ export class TimerStore {
   }
 
   constructor(){
-
     this.settingsModalOpen = false
     this.inverted = false
     this.settingsModalMountNode = undefined
@@ -302,19 +301,19 @@ export class TimerStore {
       this.currentTime = new Date(parseInt(timer.currentTime))
       this.recovered = timer.recovered
 
-      if (timer.rounds != null){
+      if (timer.rounds){
         this.rounds = this.getRounds(timer.rounds)
       }
 
       // Can be undefined or null
-      if (timer.endTime != null){
+      if (timer.endTime){
         this.endTime = new Date(parseInt(timer.endTime))
       }else{
         this.endTime = undefined
       }
 
       // Can be undefined or null
-      if (timer.offset != null){
+      if (timer.offset!==undefined && timer.offset!==null){
         this.offset = parseInt(timer.offset)
       }
 
@@ -323,7 +322,8 @@ export class TimerStore {
           this.updateTimer()
         }, this.TIMER_INTERVAL)
       }
-      this.loading = false
+      
+      this.loading = false || timer.recovered
     }
   }
 
@@ -340,33 +340,44 @@ export class TimerStore {
   @action.bound
   checkMutationSuccess(res){
     // TODO do it better?, the field in data is the name of the mutation defined in server's schema
-    const resTimet = res.data[Object.keys(res.data)[0]]
+    const resTimer = res.data[Object.keys(res.data)[0]]
 
     // TODO mabey there is more correct way to check the mutation was submitted
-    if (parseInt(resTimet.currentTime) !== this.mutationTime){
-      this.setTimer(resTimet)
+    if (parseInt(resTimer.currentTime) !== this.mutationTime){
+      this.setTimer(resTimer)
     }
   }
 
   @action
   setResetRespose(reset){
     this.mutationTime = Date.now()
-    this.recovered=reset
+    this.recovered=false
 
     if (reset){
-      this.loading = true
+      const round = 1
+      const currentTime = new Date()
+      const endTime = new Date(currentTime + this.rounds[round-1].roundTime * this.MINUTES_MULTIPLIER)
+      this.setTimer({
+        paused: true,
+        round,
+        currentTime,
+        endTime,
+        recovered: false,
+      })
     }
 
     graphqlClient.mutate({
       mutation: timerResetResponseSetting,
       variables: {
-        currentTime:this.mutationTime.toString(),
-        reset},
+        currentTime: this.mutationTime.toString(),
+        reset,
+      },
     })
     .then(::this.checkMutationSuccess)
     .catch(err=>{
       console.error('setResetRespose', err)
     })
+    this.loading = false
   }
 
   @computed
