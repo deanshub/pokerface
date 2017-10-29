@@ -80,15 +80,21 @@ const onDisconnect = (timers, userId) => {
       timer.userInstancesCounter--
     }
 
-    const {timerState} = timer
-
     if (timer.userInstancesCounter === 0){
-      timer.setrecoveredTimeout = setTimeout(() => {
-        timerState.recovered = true
-      }, SET_TIMER_TO_BE_RECOVERED_DURATION)
-      timer.deteleTimerTimeout = setTimeout(() => {
-        timers[userId] = undefined
-      }, KEEP_ALIVE_TIMER_DURATION)
+      (function(timer){
+        clearInterval(timer.deteleTimerTimeout)
+        clearInterval(timer.setrecoveredTimeout)
+        timer.setrecoveredTimeout = setTimeout(() => {
+          if (timer.userInstancesCounter===0){
+            timer.timerState.recovered = true
+          }
+        }, SET_TIMER_TO_BE_RECOVERED_DURATION)
+        timer.deteleTimerTimeout = setTimeout(() => {
+          if (timer.userInstancesCounter===0){
+            timers[userId] = undefined
+          }
+        }, KEEP_ALIVE_TIMER_DURATION)
+      })(timer)
     }
   }
 }
