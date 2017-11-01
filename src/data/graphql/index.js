@@ -6,7 +6,7 @@ import {mergeStrings} from 'gql-merge'
 import {merge} from 'lodash'
 import config from 'config'
 import { createServer } from 'http'
-import {getUserByToken, getTokenFromCookieString}  from '../../utils/authUtils'
+import {getUserByToken}  from '../../utils/authUtils'
 import {eventConnectionListener as timerListener} from '../../utils/blindTimers'
 
 import { schema as PostSchema, resolvers as PostResolvers } from './graphqlModels/Post'
@@ -47,30 +47,28 @@ export const graphqlExpressMiddleware = graphqlExpress(req=>{
 export const createGraphqlSubscriptionsServer = (app) => {
   const apolloPubSubServer = createServer(app)
 
+  // For close
+  const socketToUserId = new WeakMap()
+
   SubscriptionServer.create({
     schema,
     execute,
     subscribe,
-    onConnect: (connectionParams) => {
+    onConnect: (connectionParams ,webSocket) => {
       // clientSocketId is created in client so
       // it could be sent with mutations
       const { clientSocketId, jwt } = connectionParams
 
       return getUserByToken(jwt).then((user) => {
         timerListener.onConnect(user._id)
+        socketToUserId.set(webSocket, user._id)
+
         return {userId: user._id, clientSocketId}
       })
     },
     onDisconnect: (webSocket) => {
-      const {cookie} = webSocket.upgradeReq.headers
-      const token = getTokenFromCookieString(cookie)
-      if (token !== null){
-        getUserByToken(token).then(user => {
-          timerListener.onDisconnect(user._id)
-        }).catch(err => {
-          console.error(err)
-        })
-      }
+      const userId = socketToUserId.get(webSocket)
+      timerListener.onDisconnect(userId)
     },
   },{
     server: apolloPubSubServer,

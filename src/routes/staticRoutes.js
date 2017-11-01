@@ -10,17 +10,17 @@ const metaFbUrl = '<meta property="og:url" content="http://pokerface.io"/>'
 const metaFbTitle = '<meta property="og:title" content="Welcome to Pokerface.io"/>'
 const metaFbImage = '<meta property="og:image" content="http://pokerface.io/images/fav2.jpg"/>'
 
-function isAuthenticated(req, res, next) {
-  if (!req.user) {
-    if (req.originalUrl.trim()!=='/'){
-      res.redirect(`/login?url=${req.originalUrl}`)
-    }else {
-      res.redirect('/login')
-    }
-  }else{
-    return next()
-  }
-}
+// function isAuthenticated(req, res, next) {
+//   if (!req.user) {
+//     if (req.originalUrl.trim()!=='/'){
+//       res.redirect(`/login?url=${req.originalUrl}`)
+//     }else {
+//       res.redirect('/login')
+//     }
+//   }else{
+//     return next()
+//   }
+// }
 
 function sendDocument(req, res, post) {
   const postUrl = `${req.protocol}://${req.get('Host')}${req.url}`
@@ -43,11 +43,11 @@ function sendDocument(req, res, post) {
 }
 
 const router = express.Router()
-router.use('/profile', isAuthenticated, express.static(INDEX_HTML_PATH))
-router.use('/timer', isAuthenticated, express.static(INDEX_HTML_PATH))
-router.use('/smart', isAuthenticated, express.static(INDEX_HTML_PATH))
-router.use('/profile/:username', isAuthenticated, express.static(INDEX_HTML_PATH))
-router.use('/events', isAuthenticated, express.static(INDEX_HTML_PATH))
+router.use('/profile', express.static(INDEX_HTML_PATH))
+router.use('/timer', express.static(INDEX_HTML_PATH))
+router.use('/smart', express.static(INDEX_HTML_PATH))
+router.use('/profile/:username', express.static(INDEX_HTML_PATH))
+router.use('/events', express.static(INDEX_HTML_PATH))
 router.use('/login', express.static(INDEX_HTML_PATH))
 router.get('/post/:id', function (req, res) {
 

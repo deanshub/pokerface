@@ -31,10 +31,6 @@ app.use(authentication.initialize())
 
 app.post('/login', authentication.login)
 
-app.get('/logout', authentication.logout, (req, res)=>{
-  res.redirect('/login')
-})
-
 app.use(authentication.addUserToRequest)
 
 app.use('/graphql',
@@ -44,7 +40,6 @@ app.use('/graphql',
     keepExtensions: true,
     maxFieldsSize: 5 * 1024 * 1024, // 5MB
   }),
-
   graphqlExpressMiddleware
 )
 
