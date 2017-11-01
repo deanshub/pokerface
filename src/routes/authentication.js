@@ -39,7 +39,7 @@ const login = (req, res) => {
 
   DB.models.Player.findOne({email,password}).select('-password').then((user)=>{
     if (!user){
-      res.status(401).json({message: 'Email or password are Incorrect .'})
+      res.status(401).json({error: 'Email or password are Incorrect .'})
     } else{
       const token = jwt.sign({id: user._id}, config.SECRET_KEY)
       res.json({token, user:{...user.toJSON(), fullname:user.fullname}})
