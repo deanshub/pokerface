@@ -57,8 +57,10 @@ export default class CardsTable extends Component {
 
   toggleSet(index){
     const {sets} = this.state
-    const newSet = {...sets[index], disabled:!sets[index].disabled}
-    const newSets = [ ...sets.slice(0, index), newSet, ...sets.slice(index + 1) ]
+    const newSets = sets.map((set, setIndex)=>{
+      set.disabled = setIndex!==index
+      return set
+    })
     this.setState({
       sets: newSets,
     })
