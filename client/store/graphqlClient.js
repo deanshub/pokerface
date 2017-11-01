@@ -60,14 +60,6 @@ const wsClient = new SubscriptionClient(`ws://${document.location.host}/subscrip
   },
 })
 
-const authMiddleware2 = {
-  applyMiddleware (options, next) {
-    console.log(options);
-    next()
-  },
-}
-
-wsClient.use([authMiddleware2])
 const graphqlClient = new ApolloClient({
   networkInterface: addGraphQLSubscriptions(
     networkInterface,
