@@ -41,8 +41,6 @@ export class AuthStore {
 
   @action
   logout(){
-
-    console.log('logout in AuthStore')
     this.user = {}
     close()
   }
