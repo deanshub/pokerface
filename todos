@@ -33,7 +33,6 @@ allow cards to move up on click
 allow any url to get index.html but on the client side redirect to an error page or login or something
 first name on email of signup is undefined
 add /smart navigation Button
-replace cookie with authorization header
 allow this http://localhost:9031/favicon.ico  to work
 
 

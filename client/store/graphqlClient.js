@@ -1,7 +1,6 @@
 import ApolloClient from 'apollo-client'
 import { createBatchingNetworkInterface  } from 'apollo-upload-client'
 import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws'
-import {getCookieByName} from '../utils/cookies'
 
 
 const networkInterface = createBatchingNetworkInterface ({
@@ -24,17 +23,6 @@ const SOCKET_ID_ADDING_OPERATION = [
   'setResetClientResponse',
 ]
 
-const wsClient = new SubscriptionClient(`ws://${document.location.host}/subscriptions`, {
-  reconnect: true,
-  lazy: true,
-  connectionParams: ()=> {
-    return {
-      jwt: getCookieByName('jwt'),
-      clientSocketId,
-    }
-  },
-})
-
 const socketIdAddingMiddleware = {
   applyBatchMiddleware(req, next) {
     req.requests.forEach(operation => {
@@ -42,16 +30,53 @@ const socketIdAddingMiddleware = {
         operation.variables.clientSocketId = clientSocketId
       }
     })
+
+    req.options.headers['authorization'] = localStorage.getItem('jwt')
     next()
   },
 }
-networkInterface.use([socketIdAddingMiddleware])
 
+const authMiddleware = {
+  applyBatchMiddleware(req, next) {
+    if (!req.options.headers) {
+      req.options.headers = {}
+    }
+    req.options.headers['authorization'] = localStorage.getItem('jwt')
+    next()
+  },
+}
+
+networkInterface.use([authMiddleware, socketIdAddingMiddleware])
+
+
+const wsClient = new SubscriptionClient(`ws://${document.location.host}/subscriptions`, {
+  reconnect: true,
+  lazy: true,
+  connectionParams: ()=> {
+    return {
+      jwt: localStorage.getItem('jwt'),
+      clientSocketId,
+    }
+  },
+})
+
+const authMiddleware2 = {
+  applyMiddleware (options, next) {
+    console.log(options);
+    next()
+  },
+}
+
+wsClient.use([authMiddleware2])
 const graphqlClient = new ApolloClient({
   networkInterface: addGraphQLSubscriptions(
     networkInterface,
     wsClient,
   ),
 })
+
+export const close = () => {
+  wsClient.close()
+}
 
 export default graphqlClient

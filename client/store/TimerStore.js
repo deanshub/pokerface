@@ -10,7 +10,7 @@ import {
 } from './mutations/timers'
 import { timerChanged } from './subscriptions/timers'
 import {fillBlinds} from './blindsUtils/utils'
-
+import debounce from '../utils/debounce'
 
 export class TimerStore {
   @observable rounds
@@ -52,6 +52,8 @@ export class TimerStore {
 
     // The subscription is lazy.
     this.subscribed = false
+
+    this.debouncedMutateRounds  = debounce(this.mutateRounds, 300)
   }
 
   @action startSubscription(){
@@ -277,18 +279,7 @@ export class TimerStore {
       }
     }
 
-    this.mutationTime = Date.now()
-
-    graphqlClient.mutate({
-      mutation: timerRoundsUpdate,
-      variables: {
-        currentTime:this.mutationTime.toString(),
-        rounds:{rounds:this.rounds}},
-    })
-    .then(::this.checkMutationSuccess)
-    .catch(err=>{
-      console.error('in updateRound', err)
-    })
+    this.debouncedMutateRounds()
   }
 
   @action setTimer(timer){
@@ -322,7 +313,7 @@ export class TimerStore {
           this.updateTimer()
         }, this.TIMER_INTERVAL)
       }
-      
+
       this.loading = false || timer.recovered
     }
   }
@@ -491,5 +482,20 @@ export class TimerStore {
       time,
       type,
     }))
+  }
+
+  // Send timerRoundsUpdate graghgl mutation
+  mutateRounds(){
+    this.mutationTime = Date.now()
+    graphqlClient.mutate({
+      mutation: timerRoundsUpdate,
+      variables: {
+        currentTime:this.mutationTime.toString(),
+        rounds:{rounds:this.rounds}},
+    })
+    .then(::this.checkMutationSuccess)
+    .catch(err=>{
+      console.error('in updateRound', err)
+    })
   }
 }

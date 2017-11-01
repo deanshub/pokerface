@@ -2,6 +2,7 @@
 
 import { observable, action } from 'mobx'
 import request from 'superagent'
+import { close } from './graphqlClient'
 
 export class AuthStore {
   @observable token
@@ -10,8 +11,7 @@ export class AuthStore {
   @observable authenticating: boolean
 
   constructor(){
-    this.user = {
-    }
+    this.user = {}
     this.authenticating = true
     // this.authenticate()
     this.opensourceModalOpen = false
@@ -29,7 +29,7 @@ export class AuthStore {
   authenticate(){
 
     this.authenticating = true
-    return request.post('/api/isAuthenticated').then((res)=>{
+    return request.post('/api/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
       this.authenticating = false
       const player = res.body
       return this.user=player
@@ -37,5 +37,13 @@ export class AuthStore {
       console.error(err)
       this.authenticating = false
     })
+  }
+
+  @action
+  logout(){
+
+    console.log('logout in AuthStore')
+    this.user = {}
+    close()
   }
 }

@@ -47,7 +47,7 @@ export default class Navigation extends Component {
       .then((res) => {
         const {token, user} = res.body
         this.props.auth.user= user
-        document.cookie = `jwt=${token}`
+        localStorage.setItem('jwt',token )
 
         this.setState({
           loggingInPorgress: false,
