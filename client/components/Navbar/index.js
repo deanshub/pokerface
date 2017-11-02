@@ -23,13 +23,11 @@ export default class Navbar extends Component {
   }
 
   handleLogout(){
-    const {routing} = this.props
-    request.get('/logout').then(()=>{
-      routing.replace('/login')
-    }).catch(err=>{
-      console.error(err)
-      routing.replace('/login')
-    })
+    const {routing, auth} = this.props
+
+    localStorage.removeItem('jwt')
+    auth.logout()
+    routing.replace('/login')
   }
 
   handleResultSelect(e, selected){

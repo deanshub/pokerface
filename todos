@@ -1,6 +1,12 @@
 FOR GA ONLY!!!
 --------------
 
+
+dont ask to reset when it's already reset (first round & 15 minutes ...)
+when logout you need to unsubscribe
+
+test what happens when the configuration changes (when dual sockets)
+
 add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
 change the script name to include hash (so when a new version comes it won't be cached)
@@ -17,15 +23,17 @@ head
 
 
 
-in prod change deanshub user to pokerface (including username, first & last name, password)
-  and add deanshub user
+change demo@pokerface.io password
 fix NODE_APP_INSTANCE bug, when running pm2 with -i 0 there is an error (http://pm2.keymetrics.io/docs/usage/environment/#specific-environment-variables)
 fix editor toolbar on RTL
 changing game details after creating one
 use sticky from semantic-ui-react for the profile navbar
 add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
 allow cards to move up on click
-
+allow any url to get index.html but on the client side redirect to an error page or login or something
+first name on email of signup is undefined
+add /smart navigation Button
+allow this http://localhost:9031/favicon.ico  to work
 
 
 

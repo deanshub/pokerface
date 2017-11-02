@@ -45,13 +45,16 @@ export default class Navigation extends Component {
       .accept('json')
       .type('json')
       .then((res) => {
-        this.props.auth.user= res.body
+        const {token, user} = res.body
+        this.props.auth.user= user
+        localStorage.setItem('jwt',token )
+
         this.setState({
           loggingInPorgress: false,
         })
         routing.replace(query.url||'/')
       }).catch((err)=>{
-        console.log(err)
+        console.error(err)
         let loginFailMessage = viewParam('response.body.error', err)
         if (!loginFailMessage){
           loginFailMessage='An unknown error occurred, please try again later'
