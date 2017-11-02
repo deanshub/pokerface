@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Modal, Button, Header, Icon, Table } from 'semantic-ui-react'
+import { Modal, Button, Header, Icon, Table, Checkbox, Segment } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import RoundSetting from './RoundSetting'
 
@@ -36,7 +36,21 @@ export default class BlindsTimer extends Component {
       >
         <Header content="Timer Settings" icon="time"/>
         <Modal.Content>
-          <p>Set timer settings,ante,blinds,rounds,breaks...</p>
+          <Segment.Group horizontal>
+            <Segment>
+              <Header size="small">
+                Set timer settings,ante,blinds,rounds,breaks...
+              </Header>
+            </Segment>
+            <Segment>
+              <Checkbox
+                  checked={timer.autoUpdateBlinds}
+                  label="Auto update blinds"
+                  onChange={()=>timer.autoUpdateBlinds = !timer.autoUpdateBlinds}
+              />
+            </Segment>
+          </Segment.Group>
+
           <Table
               basic="very"
               celled
@@ -66,7 +80,7 @@ export default class BlindsTimer extends Component {
             <Table.Body>
               {timer.rounds.map((round, roundIndex)=>
                 <RoundSetting
-                    key={round.key}
+                    key={Math.random()}
                     round={round}
                     roundIndex={roundIndex}
                 />)

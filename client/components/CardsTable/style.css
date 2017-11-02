@@ -1,0 +1,58 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5em;
+  height: 100%;
+  user-select: none;
+}
+
+.title{
+  font-weight: bold;
+  text-align: center;
+  margin: 10px;
+}
+.maintitle{
+  margin: 10px;
+  font-size: 2em;
+}
+
+.handchartContainer{
+  font-size: 4vmin;
+  flex:1;
+  display: grid;
+  grid-template: repeat(13, 1fr) / repeat(13, 1fr);
+}
+.hand{
+  border:1px solid black;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+}
+.hand:hover{
+  font-weight: bold;
+  background-color: #f2f2f2;
+  transform: scale(1.5);
+}
+
+.legend{
+  font-size: 2.2vmin;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-top:10px;
+}
+.label{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.label.disabled{
+  color: #ffffff;
+}
+.labelColor{
+  height:15px;
+  width:15px;
+  margin-right:5px;
+}

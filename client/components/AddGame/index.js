@@ -50,8 +50,8 @@ export default class AddGame extends Component {
 
   addGame(e: Object){
     e.preventDefault()
-    const { game, events, routing, handleClose, auth} = this.props
-    events.createGame(auth.user, game.currentGame)
+    const { game, events, routing, handleClose, players} = this.props
+    events.createGame(players.currentPlayers, game.currentGame)
     .then(res=>{
       if (!res.err){
         game.resetGame()

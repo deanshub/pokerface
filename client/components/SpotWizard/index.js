@@ -13,9 +13,14 @@ import utils from '../../containers/SpotPlayer/utils'
 @inject('players')
 @observer
 export default class SpotWizard extends Component {
+  componentWillMount(){
+    const {spotPlayer} = this.props
+    spotPlayer.initNewPost()
+  }
+
   cancel(){
     const {spotPlayer} = this.props
-    spotPlayer.spotWizardOpen=false
+    spotPlayer.cancelNewPost()
   }
   save(){
     const {spotPlayer} = this.props

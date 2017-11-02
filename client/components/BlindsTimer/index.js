@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import { Grid, Button, Header, Progress, Icon, Checkbox } from 'semantic-ui-react'
+import { Grid, Button, Header, Progress, Icon, Checkbox, Dimmer, Loader } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
 import './fullscreen-api-polyfill.min'
 import BlindsTimerSettingsModal from './BlindsTimerSettingsModal'
+import BlindTimerResetModal from './BlindTimerResetModal'
 
 @inject('timer')
 @observer
@@ -17,46 +18,33 @@ export default class BlindsTimer extends Component {
   componentDidMount(){
     const {timer} = this.props
     timer.settingsModalMountNode = ReactDOM.findDOMNode(this)
-  }
-
-  componentWillUnmount(){
-    this.pauseTimer()
+    timer.resetModalMountNode = ReactDOM.findDOMNode(this)
+    timer.startSubscription()
   }
 
   resetTimer(){
     const {timer} = this.props
-    clearInterval(this.interval)
     timer.start()
-    this.interval = setInterval(()=>{
-      timer.updateTimer()
-    }, 1000)
   }
 
   pauseTimer(){
     const {timer} = this.props
     timer.pause()
-    clearInterval(this.interval)
   }
 
   resumeTimer(){
     const {timer} = this.props
-    clearInterval(this.interval)
     timer.startOrResume()
-    this.interval = setInterval(()=>{
-      timer.updateTimer()
-    }, 1000)
   }
 
   previousRound(){
     const {timer} = this.props
-    timer.round--
-    this.pauseTimer()
+    timer.setRound(timer.round-1)
   }
 
   nextRound(){
     const {timer} = this.props
-    timer.round++
-    this.pauseTimer()
+    timer.setRound(timer.round+1)
   }
 
   toggleInverted(){
@@ -119,11 +107,18 @@ export default class BlindsTimer extends Component {
       null
 
     return (
-      <Grid
+      <Dimmer.Dimmable
+          as={Grid}
           className={classnames(style.fullScreen)}
+          dimmed={timer.loading}
           stretched
       >
-        <BlindsTimerSettingsModal mountNode={timer.settingsModalMountNode}/>
+       <Dimmer active={timer.loading} inverted>
+         <Loader>Loading</Loader>
+       </Dimmer>
+
+        <BlindTimerResetModal/>
+        <BlindsTimerSettingsModal/>
 
         <Grid.Row
             color={inverted?'black':undefined}
@@ -219,7 +214,11 @@ export default class BlindsTimer extends Component {
                 inverted={inverted}
                 style={{marginTop:100}}
             >
-              <Button inverted={inverted} onClick={::this.previousRound}>
+              <Button
+                  disabled={timer.round <= 1}
+                  inverted={inverted}
+                  onClick={::this.previousRound}
+              >
                   <Icon name="step backward"/>
               </Button>
               <Button inverted={inverted} onClick={::this.resetTimer}>
@@ -236,7 +235,7 @@ export default class BlindsTimer extends Component {
             }
           </Grid.Column>
         </Grid.Row>
-      </Grid>
+      </Dimmer.Dimmable>
     )
   }
 }

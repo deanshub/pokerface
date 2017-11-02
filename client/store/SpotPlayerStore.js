@@ -12,7 +12,10 @@ export class SpotPlayerStore{
   constructor(){
     this.speed = 1
     this.spotWizardOpen = false
+  }
 
+  @action
+  initNewPost(){
     this.newSpot = observable({
       spot:exampleSpot,
       step: 0,
@@ -23,6 +26,11 @@ export class SpotPlayerStore{
         // currency: '$',
       },
     })
+  }
+  @action
+  cancelNewPost(){
+    this.spotWizardOpen=false
+    this.newSpot = null
   }
 
   @action

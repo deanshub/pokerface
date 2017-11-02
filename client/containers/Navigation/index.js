@@ -9,7 +9,7 @@ import Feed from '../Feed'
 import Profile from '../../components/Profile'
 import Events from '../Events'
 import BlindsTimer from '../../components/BlindsTimer'
-import Lern from '../../components/Lern'
+import Learn from '../../components/Learn'
 
 import 'semantic-ui-css/semantic.min.css'
 import classnames from 'classnames'
@@ -57,7 +57,7 @@ export default class Navigation extends Component {
                   path="/timer"
               />
               <Route
-                  component={Lern}
+                  component={Learn}
                   exact
                   path="/smart"
               />
