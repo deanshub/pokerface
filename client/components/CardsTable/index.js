@@ -55,10 +55,19 @@ export default class CardsTable extends Component {
     )
   }
 
-  toggleSet(index){
+  toggleSet(index, e){
+    const {ctrlKey} = e
     const {sets} = this.state
-    const newSet = {...sets[index], disabled:!sets[index].disabled}
-    const newSets = [ ...sets.slice(0, index), newSet, ...sets.slice(index + 1) ]
+    const newSets = sets.map((set, setIndex)=>{
+      if (ctrlKey){
+        if (setIndex===index){
+          set.disabled = !set.disabled
+        }
+      }else{
+        set.disabled = setIndex!==index
+      }
+      return set
+    })
     this.setState({
       sets: newSets,
     })
@@ -72,7 +81,7 @@ export default class CardsTable extends Component {
             [style.disabled]: set.disabled,
           })}
           key={index}
-          onClick={()=>this.toggleSet(index)}
+          onClick={(e)=>this.toggleSet(index, e)}
       >
         <div className={classnames(style.labelColor)} style={{backgroundColor:set.color}} />
         {set.label}
