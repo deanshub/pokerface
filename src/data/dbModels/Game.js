@@ -56,7 +56,7 @@ const schema = mongoose.Schema({
 })
 schema.virtual('unresponsive').get(function(){
   return (this.invited).filter((player)=>{
-    return player.gust || ((!this.accepted.includes(player.username) && !this.declined.includes(player.username)))
+    return player.guest || ((!this.accepted.includes(player.username) && !this.declined.includes(player.username)))
   })
 })
 

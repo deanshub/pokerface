@@ -1,6 +1,7 @@
 {
   "DB_USER": "mongo",
   "DB_PASSWORD": "admin",
+  "SECRET_KEY": "admin",
   "NODE_ENV": "development",
   "PORT": "9031",
   "GMAIL_USER": "pokerfaceemail@gmail.com",

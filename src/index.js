@@ -1,18 +1,17 @@
 // @flow
 
 import express from 'express'
-import passport from 'passport'
 import fileUploadMiddleware from './utils/fileUploadMiddleware'
-import {Strategy as LocalStrategy} from 'passport-local'
+import authentication from './routes/authentication'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
-import expressSession from 'express-session'
+//import expressSession from 'express-session'
 import compression from 'compression'
 import config from 'config'
 import routes from './routes'
-import graphql from './data/graphql'
+import {graphiqlExpress } from 'apollo-server-express'
+import {graphqlExpressMiddleware, createGraphqlSubscriptionsServer} from './data/graphql'
 import {devMiddleware, hotMiddleware} from './routes/webpack.js'
-import Db from './data/db'
 
 const app = express()
 const PORT = config.port || 9031
@@ -22,61 +21,17 @@ app.use(cookieParser())
 // app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(expressSession({
-  secret: 'pa pa pa pokerface pa pa pokerface',
-  resave: true,
-  saveUninitialized: true,
-  // cookie: {secure:true},
-}))
-app.use(passport.initialize())
-app.use(passport.session())
 
 if (config.NODE_ENV==='development'){
   app.use(devMiddleware())
   app.use(hotMiddleware())
 }
 
+app.use(authentication.initialize())
 
-passport.serializeUser((user, done) => {
-  done(null, user._id)
-})
+app.post('/login', authentication.login)
 
-passport.deserializeUser((username, done) => {
-  Db.models.Player.findById(username).select('-password').then((user)=>{
-    return done(null, {...user.toJSON(), fullname:user.fullname})
-  }).catch(e=>{
-    console.error(e)
-    return done(null, false, {message: 'Email or password are Incorrect .'})
-  })
-})
-
-passport.use(new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password',
-},(email, password, done) => {
-  Db.models.Player.findOne({email,password}).select('-password').then((user)=>{
-    return done(null, {...user.toJSON(), fullname:user.fullname})
-  }).catch(e=>{
-    console.error(e)
-    return done(null, false, {message: 'Email or password are Incorrect .'})
-  })
-}))
-
-app.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user) => {
-    if (err) { return next(err) }
-    if (!user) { return res.status(403).json({error:'Email or password are Incorrect .'}) }
-    req.logIn(user, (err) => {
-      if (err) { return next(err) }
-      res.json(user)
-    })
-  })(req, res, next)
-})
-
-app.get('/logout', (req, res)=>{
-  req.logout()
-  res.redirect('/login')
-})
+app.use(authentication.addUserToRequest)
 
 app.use('/graphql',
   bodyParser.json(),
@@ -85,9 +40,15 @@ app.use('/graphql',
     keepExtensions: true,
     maxFieldsSize: 5 * 1024 * 1024, // 5MB
   }),
-  graphql
+  graphqlExpressMiddleware
 )
 
+if (config.NODE_ENV==='development'){
+  app.use('/graphiql', graphiqlExpress({
+    endpointURL: '/graphql',
+    subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`,
+  }))
+}
 routes.apiRoutes.then(apiRoutes=>{
   apiRoutes.forEach((route)=>{
     app.use('/api', route)
@@ -96,6 +57,11 @@ routes.apiRoutes.then(apiRoutes=>{
 
 app.use('/', routes.staticRoutes)
 
-app.listen(PORT, ()=>{
-  console.log(`Pokerface server listening on port ${PORT}`)
-})
+const wrappedServer = createGraphqlSubscriptionsServer(app, PORT)
+
+wrappedServer.listen(PORT, () =>
+  console.log(
+    `Websocket Server is now running on http://localhost:${PORT}`,
+    `Pokerface server listening on port ${PORT}`
+  )
+)

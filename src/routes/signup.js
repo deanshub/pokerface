@@ -1,5 +1,6 @@
 import express from 'express'
 import mailer from '../utils/mailer'
+
 const router = express.Router()
 
 router.post('/signup', (req, res)=>{
@@ -16,7 +17,10 @@ router.post('/signup', (req, res)=>{
 })
 
 router.post('/isAuthenticated', (req, res)=>{
-  if (req.isAuthenticated()){
+
+  if (!req.user) {
+    res.json({})
+  }else{
     const username = req.user._id
 
     let avatar = req.user.avatar
@@ -37,8 +41,6 @@ router.post('/isAuthenticated', (req, res)=>{
       coverImage = `/images/${coverImage}`
     }
     res.json({...req.user, username, avatar, coverImage})
-  }else{
-    res.json({})
   }
 })
 
