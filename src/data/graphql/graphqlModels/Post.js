@@ -84,7 +84,7 @@ export const resolvers = {
 
   Mutation: {
     createPost: (_, {content, photos}, context)=>{
-      const photosUrl = photos.map(photo=>{
+      const photosUrl = (photos||[]).map(photo=>{
         const filename = path.parse(photo.path).base
         return filename
       })
