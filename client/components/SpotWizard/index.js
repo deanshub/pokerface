@@ -189,6 +189,36 @@ export default class SpotWizard extends Component {
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     spotPlayer.newSpot.spotPlayerState.totalRaise = value
   }
+  dealer(cards){
+    const {spotPlayer} = this.props
+    const dealerMoves = spotPlayer.newSpot.spot.moves.filter((move)=>move.player===MOVES.DEALER)
+    const flop = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.FLOP)!==undefined
+    const turn = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.TURN)!==undefined
+    const river = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.RIVER)!==undefined
+    if (!flop){
+      spotPlayer.newSpot.spot.moves.push({
+        player: MOVES.DEALER,
+        action: MOVES.DEALER_ACTIONS.FLOP,
+        value: cards,
+      })
+    }else if(!turn){
+      spotPlayer.newSpot.spot.moves.push({
+        player: MOVES.DEALER,
+        action: MOVES.DEALER_ACTIONS.TURN,
+        value: cards,
+      })
+    }else if(!river){
+      spotPlayer.newSpot.spot.moves.push({
+        player: MOVES.DEALER,
+        action: MOVES.DEALER_ACTIONS.RIVER,
+        value: cards,
+      })
+    }else{
+      return undefined
+    }
+    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+  }
 
   render(){
     const {spotPlayer, players} = this.props
@@ -249,6 +279,8 @@ export default class SpotWizard extends Component {
             cancel={::this.cancel}
             saveDisabled={this.previousStepDisabled()}
             save={::this.save}
+            dealerDisabled={false}
+            dealerClick={::this.dealer}
         />
       </Modal>
     )

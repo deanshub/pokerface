@@ -12,6 +12,7 @@ export default class SpotWizard extends Component {
   constructor(props){
     super(props)
     this.state = {
+      dealerCards: undefined,
       raiseValue: 10,
       raiseOptions:[
         {
@@ -52,6 +53,12 @@ export default class SpotWizard extends Component {
     })
   }
 
+  dealerCardsChange(e, {value}){
+    this.setState({
+      dealerCards: value,
+    })
+  }
+
   render(){
     const {
       previousClick,
@@ -75,8 +82,10 @@ export default class SpotWizard extends Component {
       cancel,
       saveDisabled,
       save,
+      dealerDisabled,
+      dealerClick,
     } = this.props
-    const {raiseOptions, raiseValue} = this.state
+    const {raiseOptions, raiseValue, dealerCards} = this.state
 
     return (
       <Modal.Actions>
@@ -185,6 +194,19 @@ export default class SpotWizard extends Component {
           </Menu.Menu>
 
           <Menu.Menu position="right">
+            <Menu.Item
+                disabled={dealerDisabled}
+                name="showcards"
+                onClick={()=>{dealerClick(dealerCards)}}
+            >
+              <Icon name="announcement" />
+              Dealer
+              <Input
+                  onChange={::this.dealerCardsChange}
+                  onClick={(e)=>e.stopPropagation()}
+                  size="mini"
+              />
+            </Menu.Item>
             <Menu.Item
                 disabled={showCardsDisabled}
                 name="showcards"

@@ -72,7 +72,7 @@ const utils = {
   generateInitialState(spot){
     if (spot === undefined) return undefined
 
-    const {players, ante, currency, cards, moves } = spot
+    const {players, ante, currency, cards={}, moves } = spot
     const dealerPlayerIndex = utils.getDealerIndex(players, moves)
     const firstMove = utils.getFirstMove(moves)
 

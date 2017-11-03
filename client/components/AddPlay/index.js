@@ -39,8 +39,12 @@ export default class AddPlay extends Component {
 
   addPost(event){
     event.preventDefault()
-    const {feed, auth} = this.props
-    feed.addPost(auth.user, this.photosElm.files)
+    const {feed, auth, spotPlayer} = this.props
+    let newSpot
+    if(spotPlayer.newSpot.spot.moves.length>0){
+      newSpot=spotPlayer.newSpot.spot
+    }
+    feed.addPost(auth.user, this.photosElm.files, newSpot)
   }
 
   photosChanged(){
@@ -61,7 +65,7 @@ export default class AddPlay extends Component {
 
   addSpot(){
     const {spotPlayer} = this.props
-    spotPlayer.spotWizardOpen = true
+    spotPlayer.openSpotEditing()
   }
 
   render() {
