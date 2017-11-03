@@ -12,6 +12,7 @@ export default class SpotWizard extends Component {
   constructor(props){
     super(props)
     this.state = {
+      raiseValue: 10,
       raiseOptions:[
         {
           text: 10,
@@ -45,6 +46,12 @@ export default class SpotWizard extends Component {
     })
   }
 
+  changeRaise(e, {value}){
+    this.setState({
+      raiseValue: value,
+    })
+  }
+
   render(){
     const {
       previousClick,
@@ -69,7 +76,7 @@ export default class SpotWizard extends Component {
       saveDisabled,
       save,
     } = this.props
-    const {raiseOptions} = this.state
+    const {raiseOptions, raiseValue} = this.state
 
     return (
       <Modal.Actions>
@@ -155,7 +162,7 @@ export default class SpotWizard extends Component {
             <Menu.Item
                 disabled={raiseDisabled}
                 name="raise"
-                onClick={raiseClick}
+                onClick={()=>raiseClick(raiseValue)}
             >
               <Icon.Group>
                 <Icon name="hand lizard" />
@@ -168,6 +175,7 @@ export default class SpotWizard extends Component {
                   className={classnames(style.raiseDropdown)}
                   defaultValue={10}
                   onAddItem={::this.addingRaiseOption}
+                  onChange={::this.changeRaise}
                   options={raiseOptions}
                   search
                   selection

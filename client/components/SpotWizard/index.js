@@ -177,18 +177,17 @@ export default class SpotWizard extends Component {
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
   }
-  raise(){
+  raise(value){
     const {spotPlayer} = this.props
     const player = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
-    // TODO: change value
     spotPlayer.newSpot.spot.moves.push({
       player,
       action:MOVES.PLAYER_ACTIONS.RAISE,
-      value: 10 - spotPlayer.newSpot.spotPlayerState.players[player].bet,
+      value: value - spotPlayer.newSpot.spotPlayerState.players[player].bet,
     })
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    spotPlayer.newSpot.spotPlayerState.totalRaise = 10
+    spotPlayer.newSpot.spotPlayerState.totalRaise = value
   }
 
   render(){
