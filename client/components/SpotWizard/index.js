@@ -1,11 +1,12 @@
 // @flow
 
 import React, { Component, PropTypes } from 'react'
-import { Button, Modal, Step, Menu, Icon } from 'semantic-ui-react'
+import { Modal, Step } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import Spot from '../Spot'
 import GeneralSettings from './GeneralSettings'
 import SpotPlayer from '../../containers/SpotPlayer'
+import ActionBar from './ActionBar'
 import MOVES from '../../containers/SpotPlayer/constants'
 import utils from '../../containers/SpotPlayer/utils'
 
@@ -29,6 +30,7 @@ export default class SpotWizard extends Component {
 
   getMainContent(){
     const {spotPlayer} = this.props
+
     if (spotPlayer.newSpot.step===0){
       return (
         <GeneralSettings
@@ -191,6 +193,7 @@ export default class SpotWizard extends Component {
 
   render(){
     const {spotPlayer, players} = this.props
+    const {step} = spotPlayer.newSpot
 
     return (
       <Modal
@@ -201,20 +204,20 @@ export default class SpotWizard extends Component {
         <Modal.Header>
           <Step.Group fluid size="tiny">
             <Step
-                active={spotPlayer.newSpot.step===0}
+                active={step===0}
                 description="Configure general spot parameters"
                 icon="dollar"
                 title="General"
             />
             <Step
-                active={spotPlayer.newSpot.step===1}
+                active={step===1}
                 description="Set players moves"
                 disabled={players.currentPlayersArray.length<2}
                 icon="users"
                 title="Moves"
             />
             <Step
-                active={spotPlayer.newSpot.step===2}
+                active={step===2}
                 description="Verify spot details"
                 disabled
                 icon="unhide"
@@ -225,130 +228,29 @@ export default class SpotWizard extends Component {
         <Modal.Content style={{height:'80vh'}}>
           {this.getMainContent()}
         </Modal.Content>
-        <Modal.Actions>
-          <Menu>
-            <Menu.Menu>
-              <Menu.Item
-                  disabled={spotPlayer.newSpot.step<1}
-                  name="prev"
-                  onClick={::this.previousStep}
-              >
-                <Icon name="arrow left" />
-                Previous Step
-              </Menu.Item>
-              <Menu.Item
-                  disabled={this.nextStepDisabled()}
-                  name="next"
-                  onClick={::this.nextStep}
-              >
-                <Icon name="arrow right" />
-                Next Step
-              </Menu.Item>
-            </Menu.Menu>
-
-            <Menu.Menu style={{borderLeft:'3px solid rgba(34,36,38,.1)'}}>
-              <Menu.Item
-                  disabled={false}
-                  name="smallblind"
-                  onClick={::this.smallBlind}
-              >
-                <Icon.Group>
-                  <Icon name="money" />
-                  <Icon corner name="minus" />
-                </Icon.Group>
-                Small Blind
-              </Menu.Item>
-              <Menu.Item
-                  disabled={false}
-                  name="bigblind"
-                  onClick={::this.bigBlind}
-              >
-                <Icon.Group>
-                  <Icon name="money" />
-                  <Icon corner name="plus" />
-                </Icon.Group>
-                Big Blind
-              </Menu.Item>
-            </Menu.Menu>
-
-            <Menu.Menu position="right" style={{borderRight:'1px solid rgba(34,36,38,.1)'}}>
-              <Menu.Item
-                  disabled={false}
-                  name="fold"
-                  onClick={::this.fold}
-              >
-                <Icon.Group>
-                  <Icon name="hand paper" />
-                  <Icon corner name="dollar" />
-                </Icon.Group>
-                Fold
-              </Menu.Item>
-              <Menu.Item
-                  disabled={false}
-                  name="call"
-                  onClick={::this.call}
-              >
-                <Icon.Group>
-                  <Icon name="hand rock" />
-                  <Icon corner name="dollar" />
-                </Icon.Group>
-                Call
-              </Menu.Item>
-              <Menu.Item
-                  disabled={false}
-                  name="check"
-                  onClick={::this.check}
-              >
-                <Icon.Group>
-                  <Icon name="hand rock" />
-                  <Icon corner name="dollar" />
-                </Icon.Group>
-                Check
-              </Menu.Item>
-              <Menu.Item
-                  disabled={false}
-                  name="raise"
-                  onClick={::this.raise}
-              >
-                <Icon.Group>
-                  <Icon name="hand lizard" />
-                  <Icon corner name="dollar" />
-                </Icon.Group>
-                Raise
-              </Menu.Item>
-            </Menu.Menu>
-
-            <Menu.Menu position="right">
-              <Menu.Item
-                  disabled={false}
-                  name="showcards"
-                  onClick={::this.showCards}
-              >
-                <Icon name="eye" />
-                Show Cards
-              </Menu.Item>
-              <Menu.Item>
-                <Button
-                    content="Cancel"
-                    icon="close"
-                    labelPosition="right"
-                    negative
-                    onClick={::this.cancel}
-                />
-              </Menu.Item>
-              <Menu.Item>
-                <Button
-                    content="Save"
-                    disabled={this.previousStepDisabled()}
-                    icon="checkmark"
-                    labelPosition="right"
-                    onClick={::this.save}
-                    positive
-                />
-              </Menu.Item>
-            </Menu.Menu>
-          </Menu>
-        </Modal.Actions>
+        <ActionBar
+            previousClick={::this.previousStep}
+            previousDisabled={step<1}
+            nextClick={::this.nextStep}
+            nextDisabled={this.nextStepDisabled()}
+            smallBlindClick={::this.smallBlind}
+            smallBlindDisabled={false}
+            bigBlindClick={::this.bigBlind}
+            bigBlindDisabled={false}
+            foldClick={::this.fold}
+            foldDisabled={false}
+            callClick={::this.call}
+            callDisabled={false}
+            checkClick={::this.check}
+            checkDisabled={false}
+            raiseClick={::this.raise}
+            raiseDisabled={false}
+            showCardsClick={::this.showCards}
+            showCardsDisabled={false}
+            cancel={::this.cancel}
+            saveDisabled={this.previousStepDisabled()}
+            save={::this.save}
+        />
       </Modal>
     )
   }

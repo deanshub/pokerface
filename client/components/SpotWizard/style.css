@@ -30,3 +30,11 @@
 .cards{
   grid-area: cards;
 }
+
+
+.raiseDropdown{
+  padding: 10px 30px 10px 10px !important;
+  margin: -10px 10px !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+}

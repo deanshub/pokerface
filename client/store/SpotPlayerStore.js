@@ -12,25 +12,24 @@ export class SpotPlayerStore{
   constructor(){
     this.speed = 1
     this.spotWizardOpen = false
+    this.newSpot = this.initNewPost()
   }
 
-  @action
   initNewPost(){
-    this.newSpot = observable({
+    return observable({
       spot:exampleSpot,
       step: 0,
       generalSettings:{
         ante: 0,
         sb: 1,
         bb: 2,
-        // currency: '$',
       },
     })
   }
   @action
   cancelNewPost(){
     this.spotWizardOpen=false
-    this.newSpot = null
+    this.newSpot = this.initNewPost()
   }
 
   @action
