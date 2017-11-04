@@ -6,6 +6,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import { Provider } from 'mobx-react'
 import React,{Component} from 'react'
 import {Helmet} from 'react-helmet'
+import logger from '../../utils/logger'
 
 import Login from '../Login'
 import Navigation from '../Navigation'
@@ -41,6 +42,10 @@ const stores = {
 const history = syncHistoryWithStore(browserHistory, routingStore)
 
 export default class App extends Component {
+  logPageView(){
+    logger.logPageView(window.location.pathname + window.location.search)
+    return null
+  }
   render(){
     return(
         <Provider {...stores}>
@@ -66,24 +71,27 @@ export default class App extends Component {
             </Helmet>
 
             <Router history={history}>
-              <Switch>
-                <Route
-                    component={Login}
-                    exact
-                    path="/login"
-                />
+              <div>
+                <Route component={this.logPageView}/>
+                <Switch>
+                  <Route
+                      component={Login}
+                      exact
+                      path="/login"
+                  />
 
-                <Route
-                    component={StandalonePost}
-                    exact
-                    path="/post/:id"
-                />
+                  <Route
+                      component={StandalonePost}
+                      exact
+                      path="/post/:id"
+                  />
 
-                <PrivateRoute
-                    component={Navigation}
-                    path="/"
-                />
-              </Switch>
+                  <PrivateRoute
+                      component={Navigation}
+                      path="/"
+                  />
+                </Switch>
+              </div>
             </Router>
           </div>
       </Provider>

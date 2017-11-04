@@ -4,6 +4,7 @@ import { observable, action, toJS } from 'mobx'
 import graphqlClient from './graphqlClient'
 import {eventsQuery} from './queries/events'
 import {gameAttendanceUpdate, addGame, deleteGame} from './mutations/games'
+import logger from '../utils/logger'
 import moment from 'moment'
 
 export class EventStore {
@@ -42,6 +43,7 @@ export class EventStore {
 
   @action
   deleteGame(game){
+    logger.logEvent({category:'Game',action:'Delete'})
     this.games.delete(game.id)
     graphqlClient.mutate({mutation: deleteGame, variables: {gameId: game.id}})
     .then(res=>{
@@ -80,14 +82,17 @@ export class EventStore {
     })
 
     if (attendance===null){
+      logger.logEvent({category:'Game',action:'Attendance update', value:0})
       this.remove(user, game.accepted)
       this.remove(user, game.declined)
       this.add(user, game.unresponsive)
     }else if (attendance===true){
+      logger.logEvent({category:'Game',action:'Attendance update', value:1})
       this.add(user, game.accepted)
       this.remove(user, game.declined)
       this.remove(user, game.unresponsive)
     }else if (attendance===false){
+      logger.logEvent({category:'Game',action:'Attendance update', value:-1})
       this.remove(user, game.accepted)
       this.add(user, game.declined)
       this.remove(user, game.unresponsive)
@@ -104,6 +109,8 @@ export class EventStore {
       }
     })
     let currentGame = toJS(game)
+
+    logger.logEvent({category:'Game',action:'Create'})
     return graphqlClient.mutate({mutation: addGame, variables: {...currentGame, players:JSON.stringify(normalizedPlayers)}})
     .then((res)=>{
       this.setGame(res.data.addGame)

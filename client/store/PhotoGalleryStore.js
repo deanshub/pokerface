@@ -1,6 +1,7 @@
 // @flow
 
 import { observable, action } from 'mobx'
+import logger from '../utils/logger'
 
 export class PhotoGalleryStore {
   @observable photos: string[]
@@ -15,6 +16,7 @@ export class PhotoGalleryStore {
 
   @action
   openModal(photos, photoIndex=0){
+    logger.logEvent({category:'Photo Gallery',action:'open'})
     this.photos = photos
     this.open = true
     this.photoIndex = photoIndex

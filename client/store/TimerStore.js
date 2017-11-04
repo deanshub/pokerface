@@ -11,6 +11,7 @@ import {
 import { timerChanged } from './subscriptions/timers'
 import {fillBlinds} from './blindsUtils/utils'
 import debounce from '../utils/debounce'
+import logger from '../utils/logger'
 
 export class TimerStore {
   @observable rounds
@@ -78,6 +79,7 @@ export class TimerStore {
 
   @action start(){
     clearInterval(this.interval)
+    logger.logEvent({category:'Blinds timer',action:'Start'})
 
     this.paused = false
     this.currentTime = new Date()
@@ -106,6 +108,7 @@ export class TimerStore {
 
   @action resume(){
     clearInterval(this.interval)
+    logger.logEvent({category:'Blinds timer',action:'Resume'})
 
     this.updateTimer(false)
     this.endTime = new Date(this.currentTime.getTime() + this.offset)
@@ -155,6 +158,7 @@ export class TimerStore {
 
   @action pause(){
     clearInterval(this.interval)
+    logger.logEvent({category:'Blinds timer',action:'Pause'})
 
     this.currentTime = new Date()
     this.offset = this.endTime.getTime() - this.currentTime.getTime()
@@ -486,6 +490,7 @@ export class TimerStore {
 
   // Send timerRoundsUpdate graghgl mutation
   mutateRounds(){
+    logger.logEvent({category:'Blinds timer',action:'Change rounds'})
     this.mutationTime = Date.now()
     graphqlClient.mutate({
       mutation: timerRoundsUpdate,

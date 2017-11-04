@@ -7,6 +7,7 @@ import { parse } from 'qs'
 import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'semantic-ui-react'
 import request from 'superagent'
 import R from 'ramda'
+import logger from '../../utils/logger'
 import Footer from './Footer'
 import OpensourceModal from './OpensourceModal'
 
@@ -46,7 +47,8 @@ export default class Navigation extends Component {
       .type('json')
       .then((res) => {
         const {token, user} = res.body
-        this.props.auth.user= user
+        this.props.auth.user = user
+        logger.setField({user:user.username, email:user.email})
         localStorage.setItem('jwt',token )
 
         this.setState({
