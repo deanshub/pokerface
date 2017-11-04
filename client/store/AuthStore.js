@@ -44,7 +44,7 @@ export class AuthStore {
 
   @action
   logout(){
-    logger.logEvent({category:'User',action:'logout'})
+    logger.logEvent({category:'User',action:'Logout'})
     this.user = {}
     close()
   }

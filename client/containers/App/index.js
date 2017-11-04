@@ -1,7 +1,8 @@
 // @flow
 
-import { Router, Route, Switch } from 'react-router'
-import { RouterStore, syncHistoryWithStore } from 'mobx-react-router'
+import { Route, Switch } from 'react-router'
+import { BrowserRouter } from 'react-router-dom'
+import { syncHistoryWithStore } from 'mobx-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 import { Provider } from 'mobx-react'
 import React,{Component} from 'react'
@@ -13,33 +14,11 @@ import Navigation from '../Navigation'
 import PrivateRoute from './PrivateRoute'
 import StandalonePost from '../Feed/StandalonePost'
 
-import {AuthStore} from '../../store/AuthStore'
-import {GameStore} from '../../store/GameStore'
-import {PlayersStore} from '../../store/PlayersStore'
-import {ProfileStore} from '../../store/ProfileStore'
-import {TimerStore} from '../../store/TimerStore'
-import {FeedStore} from '../../store/FeedStore'
-import {PhotoGalleryStore} from '../../store/PhotoGalleryStore'
-import {PlayersSearchStore} from '../../store/PlayersSearchStore'
-import {EventStore} from '../../store/EventStore'
-import {SpotPlayerStore} from '../../store/SpotPlayerStore'
+
 
 const browserHistory = createBrowserHistory()
-const routingStore = new RouterStore()
-const stores = {
-  routing: routingStore,
-  auth: new AuthStore(),
-  game: new GameStore(),
-  players: new PlayersStore(),
-  profile: new ProfileStore(),
-  timer: new TimerStore(),
-  feed: new FeedStore(),
-  photoGallery: new PhotoGalleryStore(),
-  globalPlayersSearch: new PlayersSearchStore(),
-  events: new EventStore(),
-  spotPlayer: new SpotPlayerStore(),
-}
-const history = syncHistoryWithStore(browserHistory, routingStore)
+import stores from './stores'
+const history = syncHistoryWithStore(browserHistory, stores.routing)
 
 export default class App extends Component {
   logPageView(){
@@ -70,7 +49,7 @@ export default class App extends Component {
               />
             </Helmet>
 
-            <Router history={history}>
+            <BrowserRouter history={history}>
               <div>
                 <Route component={this.logPageView}/>
                 <Switch>
@@ -92,7 +71,7 @@ export default class App extends Component {
                   />
                 </Switch>
               </div>
-            </Router>
+            </BrowserRouter>
           </div>
       </Provider>
     )

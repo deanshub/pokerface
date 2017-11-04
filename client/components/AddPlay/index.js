@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Grid, Form, Button, Dropdown } from 'semantic-ui-react'
+import { Grid, Form, Button, Dropdown, Icon } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
 import CardSelection from './CardSelection'
@@ -69,7 +69,8 @@ export default class AddPlay extends Component {
   }
 
   render() {
-    const {feed} = this.props
+    const {feed, spotPlayer} = this.props
+    const hasSpot= spotPlayer.newSpot.spot.moves.length>0
 
     return (
       <Form>
@@ -166,12 +167,16 @@ export default class AddPlay extends Component {
             </Grid.Column>
             <Grid.Column width={3}>
               <Button
-                  content="Post"
-                  icon="share alternate"
+                  icon
                   labelPosition="left"
                   onClick={::this.addPost}
                   primary
-              />
+              >
+                <Icon
+                    name={hasSpot?'wizard':'share alternate'}
+                />
+                Post
+              </Button>
             </Grid.Column>
           </Grid.Row>
         </Grid>
