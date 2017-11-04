@@ -28,7 +28,7 @@ export default class Navigation extends Component {
             process.env.NODE_ENV==='development'?<DevTools/>:null
           }
           <Navbar />
-          <div className={classnames(style.container)} style={{paddingTop: 51}}>
+          <div className={classnames(style.container)} style={{paddingTop: 50}}>
             <Switch>
               <Route
                   component={Feed}

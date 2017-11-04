@@ -105,12 +105,16 @@ export class FeedStore {
   }
 
   @action
-  addPost(user, photos){
+  addPost(user, photos, spot){
     const editorState = this.newPost.content
     const content = editorState.getCurrentContent()
     if (content.hasText()){
-      const rawPostContent = convertToRaw(content)
+      let rawPostContent = convertToRaw(content)
       this.newPost.content = EditorState.createEmpty()
+
+      if(spot){
+        rawPostContent = {...rawPostContent,spot}
+      }
 
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
       graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(rawPostContent), photos}})

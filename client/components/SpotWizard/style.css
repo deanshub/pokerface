@@ -1,0 +1,40 @@
+.playerLabel>img{
+  display: inline-block !important;
+  margin-right: 5px;
+}
+
+.playerRow{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:
+    "avatar fullname"
+    "avatar bank"
+    "avatar cards";
+  margin-bottom: 5%;
+}
+
+.avatar{
+  grid-area: avatar;
+  max-height: 128px;
+  max-width: 128px;
+}
+.fullname{
+  grid-area: fullname;
+  margin: 0 !important;
+}
+.bank{
+  grid-area: bank;
+}
+.cards{
+  grid-area: cards;
+}
+
+
+.raiseDropdown{
+  padding: 10px 30px 10px 10px !important;
+  margin: -10px 10px !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+}
