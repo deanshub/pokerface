@@ -1,34 +1,37 @@
 import React, { Component, PropTypes } from 'react'
-import { Grid, Form, Button, Icon, Dropdown, Header } from 'semantic-ui-react'
+import { Grid, Form, Button, Dropdown } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
 import CardSelection from './CardSelection'
+import SpotWizard from '../SpotWizard'
 
-const shareWithOptions = [{
-  key: 'everyone',
-  text: 'Everyone',
-  value: 'public',
-  content: 'Everyone',
-  icon: 'world',
-},{
-  key: 'friends',
-  text: 'Friends',
-  value: 'friends',
-  content: 'Friends',
-  icon: 'users',
-  disabled: true,
-},{
-  key: 'private',
-  text: 'Private',
-  value: 'private',
-  content: 'Private',
-  icon: 'user',
-  disabled: true,
-}]
+// const shareWithOptions = [{
+//   key: 'everyone',
+//   text: 'Everyone',
+//   value: 'public',
+//   content: 'Everyone',
+//   icon: 'world',
+// },{
+//   key: 'friends',
+//   text: 'Friends',
+//   value: 'friends',
+//   content: 'Friends',
+//   icon: 'users',
+//   disabled: true,
+// },{
+//   key: 'private',
+//   text: 'Private',
+//   value: 'private',
+//   content: 'Private',
+//   icon: 'user',
+//   disabled: true,
+// }]
 
+@inject('spotPlayer')
 @inject('feed')
+@inject('auth')
 @observer
-export default class AddGame extends Component {
+export default class AddPlay extends Component {
   addPhoto(event){
     event.preventDefault()
     this.photosElm.click()
@@ -36,8 +39,12 @@ export default class AddGame extends Component {
 
   addPost(event){
     event.preventDefault()
-    const {feed} = this.props
-    feed.addPost(this.photosElm.files)
+    const {feed, auth, spotPlayer} = this.props
+    let newSpot
+    if(spotPlayer.newSpot.spot.moves.length>0){
+      newSpot=spotPlayer.newSpot.spot
+    }
+    feed.addPost(auth.user, this.photosElm.files, newSpot)
   }
 
   photosChanged(){
@@ -54,6 +61,11 @@ export default class AddGame extends Component {
     const {feed} = this.props
     feed.openCardSelection=false
     feed.addCard(card)
+  }
+
+  addSpot(){
+    const {spotPlayer} = this.props
+    spotPlayer.openSpotEditing()
   }
 
   render() {
@@ -109,7 +121,6 @@ export default class AddGame extends Component {
                   icon="users"
                   labelPosition="left"
                   onClick={::this.tagFriends}
-                  type="file"
               />
             </Grid.Column>
             <Grid.Column width={3}>
@@ -132,9 +143,16 @@ export default class AddGame extends Component {
                 </Dropdown.Menu>
               </Dropdown>
             </Grid.Column>
-            <Grid.Column width={1}/>
             <Grid.Column width={3}>
-              <Header size="small" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+              <Button
+                  content="Spot Wizard"
+                  icon="wizard"
+                  labelPosition="left"
+                  onClick={::this.addSpot}
+              />
+            </Grid.Column>
+            <Grid.Column width={1}>
+              {/* <Header size="small" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
                 <Icon name="world" />
                 <Header.Content>
                   <Dropdown
@@ -144,7 +162,7 @@ export default class AddGame extends Component {
                       options={shareWithOptions}
                   />
                 </Header.Content>
-              </Header>
+              </Header> */}
             </Grid.Column>
             <Grid.Column width={3}>
               <Button
@@ -157,6 +175,7 @@ export default class AddGame extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <SpotWizard/>
       </Form>
     )
   }

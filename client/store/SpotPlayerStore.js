@@ -2,12 +2,39 @@
 
 import { observable, action } from 'mobx'
 import utils from '../containers/SpotPlayer/utils'
+import initialSpot from '../containers/SpotPlayer/initialSpot'
 
 export class SpotPlayerStore{
   @observable speed
+  @observable spotWizardOpen
+  @observable newSpot
 
   constructor(){
     this.speed = 1
+    this.spotWizardOpen = false
+    this.newSpot = this.initNewPost()
+  }
+
+  initNewPost(){
+    return observable({
+      spot:initialSpot,
+      step: 0,
+      generalSettings:{
+        ante: 0,
+        sb: 1,
+        bb: 2,
+      },
+    })
+  }
+  @action
+  cancelNewPost(){
+    this.spotWizardOpen=false
+    this.newSpot = this.initNewPost()
+  }
+  @action
+  openSpotEditing(){
+    this.spotWizardOpen=true
+    this.newSpot = this.initNewPost()
   }
 
   @action
@@ -32,5 +59,6 @@ export class SpotPlayerStore{
   @action
   reset(post){
     post.spotPlayerState = utils.generateInitialState(post.spot)
+    return post
   }
 }

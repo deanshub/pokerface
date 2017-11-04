@@ -10,8 +10,10 @@ add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
 change the script name to include hash (so when a new version comes it won't be cached)
 fix the keys selection of emoji\ mention plugins within the post editor
+add GA UA-106222738-1
 -------------------------------------------------------------------------------
 
+leagal note on signup and login
 
 head
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -23,6 +25,9 @@ head
 
 
 change demo@pokerface.io password
+disable add post button when not text or spot or images added
+in prod change deanshub user to pokerface (including username, first & last name, password)
+  and add deanshub user
 fix NODE_APP_INSTANCE bug, when running pm2 with -i 0 there is an error (http://pm2.keymetrics.io/docs/usage/environment/#specific-environment-variables)
 fix editor toolbar on RTL
 changing game details after creating one
@@ -73,3 +78,6 @@ POST CREATION - ADD GAME
 have rich text header and selection toolbar
   allow bold, link, add images (with preview), friend tagging, youtube\url embedding
         italic, emojis, hashtag, linkify
+
+
+https://docs.google.com/spreadsheets/d/1zuSO8fMBcju5S-ZfDh3ffajnn2U2eau40CbtBnp4ubA/pubhtml#

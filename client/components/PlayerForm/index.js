@@ -32,8 +32,8 @@ export default class PlayerForm extends Component {
         </Grid.Column>
 
         <Grid.Column width={14}>
-          <BuyIns user={user}/>
-          <Winnings user={user}/>
+          {/* <BuyIns user={user}/>
+          <Winnings user={user}/> */}
         </Grid.Column>
       </Grid.Row>
     )
