@@ -8,6 +8,7 @@ import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike, postDelete} from './mutations/posts'
 import {commentCreate, setCommentLike, commentDelete} from './mutations/comments'
 import utils from '../containers/SpotPlayer/utils'
+import logger from '../utils/logger'
 import moment from 'moment'
 
 // const queryToObservable = (q, callbacks = {}) => {
@@ -96,6 +97,7 @@ export class FeedStore {
   @action
   deletePost(postId: String): void{
     const post = toJS(this.posts.get(postId))
+    logger.logEvent({category:'Post',action:'Delete'})
     graphqlClient.mutate({mutation: postDelete, variables: {postId}})
     .catch(err=>{
       console.error(err)
@@ -112,6 +114,7 @@ export class FeedStore {
       let rawPostContent = convertToRaw(content)
       this.newPost.content = EditorState.createEmpty()
 
+      logger.logEvent({category:'Post',action:'Create'})
       if(spot){
         rawPostContent = {...rawPostContent,spot}
       }
@@ -148,6 +151,7 @@ export class FeedStore {
   deleteComment(comment: Object): void{
     comment.deletePopupOpen = false
     let post = this.posts.get(comment.post.id)
+    logger.logEvent({category:'Comment',action:'Delete'})
     graphqlClient.mutate({mutation: commentDelete, variables: {commentId:comment.id}})
     .catch(err=>{
       console.error(err)
@@ -163,6 +167,7 @@ export class FeedStore {
     const content = commentState.getCurrentContent()
     if (content.hasText()){
       const rawComment = convertToRaw(content)
+      logger.logEvent({category:'Comment',action:'Create'})
       this.updatePost(this.commentDrafts.get(postId), {
         content:EditorState.createEmpty(),
         spot: undefined,
@@ -272,6 +277,7 @@ export class FeedStore {
 
   @action
   setPostLike(postId, like, user){
+    logger.logEvent({category:'Post',action:'Like',value:like?1:0})
     graphqlClient.mutate({mutation: setPostLike, variables: {post:postId, like}})
     .then(result=>{
       const newPost = this.parsePost(result.data.setPostLike)
@@ -297,6 +303,7 @@ export class FeedStore {
 
   @action
   setCommentLike(postId, commentId, like, user){
+    logger.logEvent({category:'Comment',action:'Like',value:like?1:0})
     graphqlClient.mutate({mutation: setCommentLike, variables: {comment:commentId, like}})
     .then(result=>{
       this.posts.set(result.data.setCommentLike.post.id, result.data.setCommentLike.post)
@@ -353,6 +360,7 @@ export class FeedStore {
 
   @action
   addCard(card){
+    logger.logEvent({category:'Post',action:'Add card',label:'through button'})
     const contentState = this.newPost.content.getCurrentContent()
     const targetRange = this.newPost.content.getSelection()
 

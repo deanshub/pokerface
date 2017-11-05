@@ -1,11 +1,10 @@
 FOR GA ONLY!!!
 --------------
 
+make hot reloading work with react Router
 
 dont ask to reset when it's already reset (first round & 15 minutes ...)
-when logout you need to unsubscribe
 
-test what happens when the configuration changes (when dual sockets)
 
 add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later

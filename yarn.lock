@@ -4476,6 +4476,12 @@ react-dom@^15.4.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
 
+react-ga@^2.3.5:
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.3.5.tgz#7c3d0c530b2bbe64ceb1faa79be340685aa84a9a"
+  dependencies:
+    object-assign "^4.1.1"
+
 react-helmet@^5.1.3:
   version "5.1.3"
   resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.1.3.tgz#cd40626593a29eecf684b6d38d711f44c48188af"
