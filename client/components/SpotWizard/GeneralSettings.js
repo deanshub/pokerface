@@ -36,6 +36,34 @@ export default class GeneralSettings extends Component {
     console.log(href);
   }
 
+  playersAmountChange(e, {value}){
+    const {players} = this.props
+    const newAmount = parseInt(value)
+    if (players.currentPlayersArray.length<newAmount){
+      const amountOfPlayerToAdd = newAmount - players.currentPlayersArray.length
+      const anonymosPlayers = players.currentPlayers.values().filter((player)=>/^Player (\d)+$/.test(player.fullname))
+      const lastIndex = anonymosPlayers.reduce((res,player)=>{
+        const curNumber = parseInt(player.fullname.substring('Player '.length))
+        if (res>curNumber){
+          return res
+        }else {
+          return curNumber
+        }
+      },0)
+      for (let index = 0; index<amountOfPlayerToAdd; index++) {
+        players.addGuest(`Player ${lastIndex + index+1}`)
+        players.setPlayer()
+      }
+    }else if(players.currentPlayersArray.length>newAmount && newAmount>0){
+      const amountOfPlayerToDelete = players.currentPlayersArray.length-newAmount
+
+      for (let index = 0; index<amountOfPlayerToDelete; index++) {
+        const key = players.currentPlayersArray[players.currentPlayersArray.length-1]
+        players.currentPlayers.delete(key)
+      }
+    }
+  }
+
   render(){
     const {players, settings} = this.props
     const searchPlayerOptions = players.searchPlayers.keys().map(username=>{
@@ -53,7 +81,7 @@ export default class GeneralSettings extends Component {
     // dealer
 
     return (
-      <Form>
+      <Form className={classnames(style.formContainer)}>
         <Form.Group widths="equal">
           <Form.Field
               control={Input}
@@ -91,9 +119,22 @@ export default class GeneralSettings extends Component {
               value={settings.bb}
           />
         </Form.Group>
-        <Grid>
+        <Grid className={classnames(style.gridCointainer)}>
           <Grid.Row stretched>
-            <Grid.Column width={2}>
+            <Grid.Column width={1}>
+              <Input
+                  error={players.currentPlayersArray.length>9}
+                  fluid
+                  onChange={::this.playersAmountChange}
+                  type="number"
+                  value={players.currentPlayersArray.length}
+              />
+            </Grid.Column>
+            <Grid.Column
+                textAlign="center"
+                verticalAlign="middle"
+                width={1}
+            >
               <Header>Players</Header>
             </Grid.Column>
             <Grid.Column width={14}>
@@ -120,7 +161,7 @@ export default class GeneralSettings extends Component {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row stretched>
+          <Grid.Row className={classnames(style.playersRow)} stretched>
             {
               // [username\guest name, bank, cards]
               players.currentPlayers.keys().map(username=>{
