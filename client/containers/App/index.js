@@ -1,7 +1,6 @@
 // @flow
 
-import { Route, Switch } from 'react-router'
-import { BrowserRouter } from 'react-router-dom'
+import { Route, Switch, Router } from 'react-router'
 import { syncHistoryWithStore } from 'mobx-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 import { Provider } from 'mobx-react'
@@ -49,7 +48,7 @@ export default class App extends Component {
               />
             </Helmet>
 
-            <BrowserRouter history={history}>
+            <Router history={history}>
               <div>
                 <Route component={this.logPageView}/>
                 <Switch>
@@ -71,7 +70,7 @@ export default class App extends Component {
                   />
                 </Switch>
               </div>
-            </BrowserRouter>
+            </Router>
           </div>
       </Provider>
     )
