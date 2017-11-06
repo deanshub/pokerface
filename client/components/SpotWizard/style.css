@@ -38,3 +38,19 @@
   min-height: 0 !important;
   min-width: 0 !important;
 }
+
+
+.formContainer{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.gridCointainer{
+  display: flex;
+  flex-direction: column !important;
+  flex: 1;
+}
+.playersRow{
+  overflow-y: auto;
+  flex: 1;
+}
