@@ -39,6 +39,13 @@
   min-width: 0 !important;
 }
 
+.dealerCardsInput{
+  margin:0 5px !important;
+}
+.dealerCardsInput>input{
+  width: 50px;
+}
+
 
 .formContainer{
   height: 100%;

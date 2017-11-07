@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
 import CardSelection from './CardSelection'
 import SpotWizard from '../SpotWizard'
+import SpotPlayer from '../../containers/SpotPlayer'
 
 // const shareWithOptions = [{
 //   key: 'everyone',
@@ -75,6 +76,15 @@ export default class AddPlay extends Component {
     return (
       <Form>
         <Grid container>
+          {
+            hasSpot?(
+              <Grid.Row stretched style={{padding:0, marginBottom:-15}}>
+                <Grid.Column width={16}>
+                  <SpotPlayer post={spotPlayer.newSpot}/>
+                </Grid.Column>
+              </Grid.Row>
+            ):null
+          }
           <Grid.Row stretched>
             <Grid.Column width={16}>
               <PostEditor
@@ -173,7 +183,7 @@ export default class AddPlay extends Component {
                   primary
               >
                 <Icon
-                    name={hasSpot?'wizard':'share alternate'}
+                    name="share alternate"
                 />
                 Post
               </Button>

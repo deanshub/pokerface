@@ -4,15 +4,15 @@ import { Button, Modal, Menu, Icon, Input, Dropdown } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
+import CardSelection from '../AddPlay/CardSelection'
 
 @inject('spotPlayer')
-@inject('players')
 @observer
 export default class SpotWizard extends Component {
   constructor(props){
     super(props)
     this.state = {
-      dealerCards: undefined,
+      dealerCards: [],
       raiseValue: 10,
       raiseOptions:[
         {
@@ -53,9 +53,11 @@ export default class SpotWizard extends Component {
     })
   }
 
-  dealerCardsChange(e, {value}){
+  dealerCardsChange(index, value){
+    let newDealerCards = [...this.state.dealerCards]
+    newDealerCards[index] = value
     this.setState({
-      dealerCards: value,
+      dealerCards: newDealerCards,
     })
   }
 
@@ -84,32 +86,23 @@ export default class SpotWizard extends Component {
       save,
       dealerDisabled,
       dealerClick,
+      dealerNextState,
     } = this.props
     const {raiseOptions, raiseValue, dealerCards} = this.state
+    const dealerCardPositions = dealerNextState==='Flop'?[undefined,undefined,undefined]:[undefined]
 
     return (
       <Modal.Actions>
         <Menu>
           <Menu.Menu>
             <Menu.Item
-                disabled={previousDisabled}
-                name="prev"
-                onClick={previousClick}
+                disabled={showCardsDisabled}
+                name="showcards"
+                onClick={showCardsClick}
             >
-              <Icon name="arrow left" />
-              Previous Step
+              <Icon name="eye" />
+              Show Cards
             </Menu.Item>
-            <Menu.Item
-                disabled={nextDisabled}
-                name="next"
-                onClick={nextClick}
-            >
-              <Icon name="arrow right" />
-              Next Step
-            </Menu.Item>
-          </Menu.Menu>
-
-          <Menu.Menu style={{borderLeft:'3px solid rgba(34,36,38,.1)'}}>
             <Menu.Item
                 disabled={smallBlindDisabled}
                 name="smallblind"
@@ -194,45 +187,58 @@ export default class SpotWizard extends Component {
           </Menu.Menu>
 
           <Menu.Menu position="right">
+            {dealerNextState!=='none'?(
+              <Menu.Item>
+                {dealerNextState}:
+                {dealerCardPositions.map((_,index)=>(
+                  <Input
+                      className={classnames(style.dealerCardsInput)}
+                      key={index}
+                      label={
+                        <Dropdown defaultValue="..." upward>
+                          <Dropdown.Menu>
+                            <Dropdown.Header content="Select a card" icon="tags" />
+                            <Dropdown.Divider />
+                            <CardSelection
+                                onCardSelected={(card)=>this.dealerCardsChange(index,card)}
+                            />
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      }
+                      labelPosition="right"
+                      onChange={(e, {value})=>this.dealerCardsChange(index,value)}
+                      onClick={(e)=>e.stopPropagation()}
+                      size="mini"
+                      value={dealerCards[index]}
+                  />
+                ))}
+                <Button
+                    color="green"
+                    disabled={dealerDisabled}
+                    icon="announcement"
+                    onClick={()=>{dealerClick(dealerCards.join(''))}}
+                    size="mini"
+                    style={{marginLeft:10}}
+                />
+              </Menu.Item>
+            ):null}
+          </Menu.Menu>
+          <Menu.Menu>
             <Menu.Item
-                disabled={dealerDisabled}
-                name="showcards"
-                onClick={()=>{dealerClick(dealerCards)}}
+                disabled={previousDisabled}
+                name="prev"
+                onClick={previousClick}
             >
-              <Icon name="announcement" />
-              Dealer
-              <Input
-                  onChange={::this.dealerCardsChange}
-                  onClick={(e)=>e.stopPropagation()}
-                  size="mini"
-              />
+              <Icon name="arrow left" />
+              Previous Step
             </Menu.Item>
             <Menu.Item
-                disabled={showCardsDisabled}
-                name="showcards"
-                onClick={showCardsClick}
+                disabled={nextDisabled}
+                name="next"
+                onClick={nextClick}
             >
-              <Icon name="eye" />
-              Show Cards
-            </Menu.Item>
-            <Menu.Item>
-              <Button
-                  content="Cancel"
-                  icon="close"
-                  labelPosition="right"
-                  negative
-                  onClick={cancel}
-              />
-            </Menu.Item>
-            <Menu.Item>
-              <Button
-                  content="Save"
-                  disabled={saveDisabled}
-                  icon="checkmark"
-                  labelPosition="right"
-                  onClick={save}
-                  positive
-              />
+              <Icon name="arrow right" />
+              Next Step
             </Menu.Item>
           </Menu.Menu>
         </Menu>
