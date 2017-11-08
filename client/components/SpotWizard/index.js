@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component, PropTypes } from 'react'
-import { Modal, Step } from 'semantic-ui-react'
+import { Modal, Step, Button } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import Spot from '../Spot'
 import GeneralSettings from './GeneralSettings'
@@ -46,11 +46,6 @@ export default class SpotWizard extends Component {
             players={spotPlayer.newSpot.spotPlayerState.players}
         />
       )
-    }else if (spotPlayer.newSpot.step===2) {
-      spotPlayer.reset(spotPlayer.newSpot)
-      return (
-        <SpotPlayer post={spotPlayer.newSpot} />
-      )
     }
   }
 
@@ -91,8 +86,11 @@ export default class SpotWizard extends Component {
       ]
 
       spotPlayer.reset(spotPlayer.newSpot)
+      spotPlayer.newSpot.step++
+    }else if(spotPlayer.newSpot.step===1){
+      this.save()
+      spotPlayer.newSpot.step=0
     }
-    spotPlayer.newSpot.step++
   }
 
   previousStep(){
@@ -220,52 +218,77 @@ export default class SpotWizard extends Component {
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
   }
 
+  isSmallBlindDisabled(){
+    const {spotPlayer} = this.props
+    const playersMoves = spotPlayer.newSpot.spot.moves.filter((move)=>{
+      return move.action!==MOVES.PLAYER_META_ACTIONS.DEALER &&
+            move.action!==MOVES.PLAYER_META_ACTIONS.SHOWS &&
+            move.action!==MOVES.PLAYER_META_ACTIONS.MOCKS
+    })
+    return playersMoves.length>0
+  }
+
+  isBigBlindDisabled(){
+    const {spotPlayer} = this.props
+    const playersMoves = spotPlayer.newSpot.spot.moves.filter((move)=>{
+      return move.action!==MOVES.PLAYER_META_ACTIONS.DEALER &&
+            move.action!==MOVES.PLAYER_META_ACTIONS.SHOWS &&
+            move.action!==MOVES.PLAYER_META_ACTIONS.MOCKS &&
+            move.action!==MOVES.PLAYER_ACTIONS.SMALLBLIND
+
+    })
+    return playersMoves.length>0
+  }
+
   render(){
     const {spotPlayer, players} = this.props
     const {step} = spotPlayer.newSpot
 
+    const dealerMoves = spotPlayer.newSpot.spot.moves.filter((move)=>move.player===MOVES.DEALER)
+    const flop = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.FLOP)!==undefined
+    const turn = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.TURN)!==undefined
+    const river = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.RIVER)!==undefined
+    let dealerNextState
+    if (!flop){
+      dealerNextState='Flop'
+    }else if(!turn){
+      dealerNextState='Turn'
+    }else if(!river){
+      dealerNextState='River'
+    }else{
+      dealerNextState='none'
+    }
+
+    const smallBlindDisabled = this.isSmallBlindDisabled()
+    const bigBlindDisabled = this.isBigBlindDisabled()
+
     return (
       <Modal
+          closeIcon={{
+            name: 'close',
+            onClick: ::this.cancel,
+          }}
           dimmer="blurring"
           open={spotPlayer.spotWizardOpen}
           size="fullscreen"
       >
         <Modal.Header>
-          <Step.Group fluid size="tiny">
-            <Step
-                active={step===0}
-                description="Configure general spot parameters"
-                icon="dollar"
-                title="General"
-            />
-            <Step
-                active={step===1}
-                description="Set players moves"
-                disabled={players.currentPlayersArray.length<2}
-                icon="users"
-                title="Moves"
-            />
-            <Step
-                active={step===2}
-                description="Verify spot details"
-                disabled
-                icon="unhide"
-                title="Overview"
-            />
-          </Step.Group>
+          Spot Wizard
         </Modal.Header>
+
         <Modal.Content style={{height:'80vh'}}>
           {this.getMainContent()}
         </Modal.Content>
         <ActionBar
+            step={spotPlayer.newSpot.step}
             previousClick={::this.previousStep}
             previousDisabled={step<1}
             nextClick={::this.nextStep}
             nextDisabled={this.nextStepDisabled()}
             smallBlindClick={::this.smallBlind}
-            smallBlindDisabled={false}
+            smallBlindDisabled={smallBlindDisabled}
             bigBlindClick={::this.bigBlind}
-            bigBlindDisabled={false}
+            bigBlindDisabled={bigBlindDisabled}
             foldClick={::this.fold}
             foldDisabled={false}
             callClick={::this.call}
@@ -276,11 +299,11 @@ export default class SpotWizard extends Component {
             raiseDisabled={false}
             showCardsClick={::this.showCards}
             showCardsDisabled={false}
-            cancel={::this.cancel}
             saveDisabled={this.previousStepDisabled()}
             save={::this.save}
             dealerDisabled={false}
             dealerClick={::this.dealer}
+            dealerNextState={dealerNextState}
         />
       </Modal>
     )

@@ -77,16 +77,15 @@
 .back{
   color: black;
   writing-mode: vertical-lr;
-  text-shadow: -1px -1px 0px white;
   font-size: 0;
   background:
   repeating-linear-gradient(135deg, white, white 1px, transparent 1px, transparent 6px),
 
   repeating-linear-gradient(45deg, white, white 1px, transparent 1px, transparent 6px),
 
-  repeating-linear-gradient(135deg, red, red 20px, transparent 20px, transparent 20px),
+  repeating-linear-gradient(135deg, #EF5350, #EF5350 20px, transparent 20px, transparent 20px),
 
-  repeating-linear-gradient(45deg, red, red 15px, white 15px, white 20px);
+  repeating-linear-gradient(45deg, #EF5350, #EF5350 15px, white 15px, white 20px);
 
 }
 .back:before,.back:after{
