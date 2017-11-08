@@ -218,6 +218,28 @@ export default class SpotWizard extends Component {
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
   }
 
+  isSmallBlindDisabled(){
+    const {spotPlayer} = this.props
+    const playersMoves = spotPlayer.newSpot.spot.moves.filter((move)=>{
+      return move.action!==MOVES.PLAYER_META_ACTIONS.DEALER &&
+            move.action!==MOVES.PLAYER_META_ACTIONS.SHOWS &&
+            move.action!==MOVES.PLAYER_META_ACTIONS.MOCKS
+    })
+    return playersMoves.length>0
+  }
+
+  isBigBlindDisabled(){
+    const {spotPlayer} = this.props
+    const playersMoves = spotPlayer.newSpot.spot.moves.filter((move)=>{
+      return move.action!==MOVES.PLAYER_META_ACTIONS.DEALER &&
+            move.action!==MOVES.PLAYER_META_ACTIONS.SHOWS &&
+            move.action!==MOVES.PLAYER_META_ACTIONS.MOCKS &&
+            move.action!==MOVES.PLAYER_ACTIONS.SMALLBLIND
+
+    })
+    return playersMoves.length>0
+  }
+
   render(){
     const {spotPlayer, players} = this.props
     const {step} = spotPlayer.newSpot
@@ -237,6 +259,9 @@ export default class SpotWizard extends Component {
       dealerNextState='none'
     }
 
+    const smallBlindDisabled = this.isSmallBlindDisabled()
+    const bigBlindDisabled = this.isBigBlindDisabled()
+
     return (
       <Modal
           closeIcon={{
@@ -255,14 +280,15 @@ export default class SpotWizard extends Component {
           {this.getMainContent()}
         </Modal.Content>
         <ActionBar
+            step={spotPlayer.newSpot.step}
             previousClick={::this.previousStep}
             previousDisabled={step<1}
             nextClick={::this.nextStep}
             nextDisabled={this.nextStepDisabled()}
             smallBlindClick={::this.smallBlind}
-            smallBlindDisabled={false}
+            smallBlindDisabled={smallBlindDisabled}
             bigBlindClick={::this.bigBlind}
-            bigBlindDisabled={false}
+            bigBlindDisabled={bigBlindDisabled}
             foldClick={::this.fold}
             foldDisabled={false}
             callClick={::this.call}

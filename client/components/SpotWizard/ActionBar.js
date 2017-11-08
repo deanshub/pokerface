@@ -63,6 +63,7 @@ export default class SpotWizard extends Component {
 
   render(){
     const {
+      step,
       previousClick,
       previousDisabled,
       nextClick,
@@ -94,136 +95,143 @@ export default class SpotWizard extends Component {
     return (
       <Modal.Actions>
         <Menu>
-          <Menu.Menu>
-            <Menu.Item
-                disabled={showCardsDisabled}
-                name="showcards"
-                onClick={showCardsClick}
-            >
-              <Icon name="eye" />
-              Show Cards
-            </Menu.Item>
-            <Menu.Item
-                disabled={smallBlindDisabled}
-                name="smallblind"
-                onClick={smallBlindClick}
-            >
-              <Icon.Group>
-                <Icon name="money" />
-                <Icon corner name="minus" />
-              </Icon.Group>
-              Small Blind
-            </Menu.Item>
-            <Menu.Item
-                disabled={bigBlindDisabled}
-                name="bigblind"
-                onClick={bigBlindClick}
-            >
-              <Icon.Group>
-                <Icon name="money" />
-                <Icon corner name="plus" />
-              </Icon.Group>
-              Big Blind
-            </Menu.Item>
-          </Menu.Menu>
+          {step!==0?(
+            <Menu.Menu>
+              <Menu.Item
+                  disabled={showCardsDisabled}
+                  name="showcards"
+                  onClick={showCardsClick}
+              >
+                <Icon name="eye" />
+                Show Cards
+              </Menu.Item>
+              <Menu.Item
+                  disabled={smallBlindDisabled}
+                  name="smallblind"
+                  onClick={smallBlindClick}
+              >
+                <Icon.Group>
+                  <Icon name="money" />
+                  <Icon corner name="minus" />
+                </Icon.Group>
+                Small Blind
+              </Menu.Item>
+              <Menu.Item
+                  disabled={bigBlindDisabled}
+                  name="bigblind"
+                  onClick={bigBlindClick}
+              >
+                <Icon.Group>
+                  <Icon name="money" />
+                  <Icon corner name="plus" />
+                </Icon.Group>
+                Big Blind
+              </Menu.Item>
+            </Menu.Menu>
+          ):null}
 
-          <Menu.Menu position="right" style={{borderRight:'1px solid rgba(34,36,38,.1)'}}>
-            <Menu.Item
-                disabled={foldDisabled}
-                name="fold"
-                onClick={foldClick}
-            >
-              <Icon.Group>
-                <Icon name="hand paper" />
-                <Icon corner name="dollar" />
-              </Icon.Group>
-              Fold
-            </Menu.Item>
-            <Menu.Item
-                disabled={callDisabled}
-                name="call"
-                onClick={callClick}
-            >
-              <Icon.Group>
-                <Icon name="hand rock" />
-                <Icon corner name="dollar" />
-              </Icon.Group>
-              Call
-            </Menu.Item>
-            <Menu.Item
-                disabled={checkDisabled}
-                name="check"
-                onClick={checkClick}
-            >
-              <Icon.Group>
-                <Icon name="hand rock" />
-                <Icon corner name="dollar" />
-              </Icon.Group>
-              Check
-            </Menu.Item>
-            <Menu.Item
-                disabled={raiseDisabled}
-                name="raise"
-                onClick={()=>raiseClick(raiseValue)}
-            >
-              <Icon.Group>
-                <Icon name="hand lizard" />
-                <Icon corner name="dollar" />
-              </Icon.Group>
-              Raise
-              <Dropdown
-                  additionLabel=""
-                  allowAdditions
-                  className={classnames(style.raiseDropdown)}
-                  defaultValue={10}
-                  onAddItem={::this.addingRaiseOption}
-                  onChange={::this.changeRaise}
-                  options={raiseOptions}
-                  search
-                  selection
-                  upward
-              />
-            </Menu.Item>
-          </Menu.Menu>
-
-          <Menu.Menu position="right">
-            {dealerNextState!=='none'?(
-              <Menu.Item>
-                {dealerNextState}:
-                {dealerCardPositions.map((_,index)=>(
-                  <Input
-                      className={classnames(style.dealerCardsInput)}
-                      key={index}
-                      label={
-                        <Dropdown defaultValue="..." upward>
-                          <Dropdown.Menu>
-                            <Dropdown.Header content="Select a card" icon="tags" />
-                            <Dropdown.Divider />
-                            <CardSelection
-                                onCardSelected={(card)=>this.dealerCardsChange(index,card)}
-                            />
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      }
-                      labelPosition="right"
-                      onChange={(e, {value})=>this.dealerCardsChange(index,value)}
-                      onClick={(e)=>e.stopPropagation()}
-                      size="mini"
-                      value={dealerCards[index]}
-                  />
-                ))}
-                <Button
-                    color="green"
-                    disabled={dealerDisabled}
-                    icon="announcement"
-                    onClick={()=>{dealerClick(dealerCards.join(''))}}
-                    size="mini"
-                    style={{marginLeft:10}}
+          {step!==0?(
+            <Menu.Menu position="right" style={{borderRight:'1px solid rgba(34,36,38,.1)'}}>
+              <Menu.Item
+                  disabled={foldDisabled}
+                  name="fold"
+                  onClick={foldClick}
+              >
+                <Icon.Group>
+                  <Icon name="hand paper" />
+                  <Icon corner name="dollar" />
+                </Icon.Group>
+                Fold
+              </Menu.Item>
+              <Menu.Item
+                  disabled={callDisabled}
+                  name="call"
+                  onClick={callClick}
+              >
+                <Icon.Group>
+                  <Icon name="hand rock" />
+                  <Icon corner name="dollar" />
+                </Icon.Group>
+                Call
+              </Menu.Item>
+              <Menu.Item
+                  disabled={checkDisabled}
+                  name="check"
+                  onClick={checkClick}
+              >
+                <Icon.Group>
+                  <Icon name="hand rock" />
+                  <Icon corner name="dollar" />
+                </Icon.Group>
+                Check
+              </Menu.Item>
+              <Menu.Item
+                  disabled={raiseDisabled}
+                  name="raise"
+                  onClick={()=>raiseClick(raiseValue)}
+              >
+                <Icon.Group>
+                  <Icon name="hand lizard" />
+                  <Icon corner name="dollar" />
+                </Icon.Group>
+                Raise
+                <Dropdown
+                    additionLabel=""
+                    allowAdditions
+                    className={classnames(style.raiseDropdown)}
+                    defaultValue={10}
+                    onAddItem={::this.addingRaiseOption}
+                    onChange={::this.changeRaise}
+                    options={raiseOptions}
+                    search
+                    selection
+                    upward
                 />
               </Menu.Item>
-            ):null}
-          </Menu.Menu>
-          <Menu.Menu>
+            </Menu.Menu>
+          ):null}
+
+          {step!==0?(
+            <Menu.Menu position="right">
+              {dealerNextState!=='none'?(
+                <Menu.Item style={{paddingTop:0,paddingBottom:0}}>
+                  {dealerNextState}:
+                  {dealerCardPositions.map((_,index)=>(
+                    <Input
+                        className={classnames(style.dealerCardsInput)}
+                        key={index}
+                        label={
+                          <Dropdown defaultValue="..." upward>
+                            <Dropdown.Menu>
+                              <Dropdown.Header content="Select a card" icon="tags" />
+                              <Dropdown.Divider />
+                              <CardSelection
+                                  onCardSelected={(card)=>this.dealerCardsChange(index,card)}
+                              />
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        }
+                        labelPosition="right"
+                        onChange={(e, {value})=>this.dealerCardsChange(index,value)}
+                        onClick={(e)=>e.stopPropagation()}
+                        size="mini"
+                        value={dealerCards[index]}
+                    />
+                  ))}
+                  <Button
+                      color="green"
+                      disabled={dealerDisabled}
+                      icon="announcement"
+                      onClick={()=>{dealerClick(dealerCards.join(''))}}
+                      size="mini"
+                      style={{marginLeft:10}}
+                  />
+                </Menu.Item>
+              ):null}
+            </Menu.Menu>
+          ):null}
+
+          <Menu.Menu position="right">
             <Menu.Item
                 disabled={previousDisabled}
                 name="prev"
