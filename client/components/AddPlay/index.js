@@ -46,6 +46,7 @@ export default class AddPlay extends Component {
       newSpot=spotPlayer.newSpot.spot
     }
     feed.addPost(auth.user, this.photosElm.files, newSpot)
+    spotPlayer.newSpot = spotPlayer.initNewPost()
   }
 
   photosChanged(){
@@ -71,7 +72,8 @@ export default class AddPlay extends Component {
 
   render() {
     const {feed, spotPlayer} = this.props
-    const hasSpot= spotPlayer.newSpot.spot.moves.length>0
+    const hasSpot = spotPlayer.newSpot.spot.moves.length>0
+    const hasText = feed.newPost.content.getCurrentContent().hasText()
 
     return (
       <Form>
@@ -177,6 +179,7 @@ export default class AddPlay extends Component {
             </Grid.Column>
             <Grid.Column width={3}>
               <Button
+                  disabled={!hasText}
                   icon
                   labelPosition="left"
                   onClick={::this.addPost}

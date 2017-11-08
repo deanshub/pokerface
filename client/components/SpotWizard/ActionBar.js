@@ -246,7 +246,7 @@ export default class SpotWizard extends Component {
                 onClick={nextClick}
             >
               <Icon name="arrow right" />
-              Next Step
+              {step===1?'Save':'Next Step'}
             </Menu.Item>
           </Menu.Menu>
         </Menu>
