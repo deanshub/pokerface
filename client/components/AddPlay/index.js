@@ -5,6 +5,8 @@ import PostEditor from '../PostEditor'
 import CardSelection from './CardSelection'
 import SpotWizard from '../SpotWizard'
 import SpotPlayer from '../../containers/SpotPlayer'
+import classnames from 'classnames'
+import style from './style.css'
 
 // const shareWithOptions = [{
 //   key: 'everyone',
@@ -82,6 +84,13 @@ export default class AddPlay extends Component {
             hasSpot?(
               <Grid.Row stretched style={{padding:0, marginBottom:-15}}>
                 <Grid.Column width={16}>
+                  <Icon
+                      bordered
+                      className={classnames(style.removeSpot)}
+                      link
+                      name="close"
+                      onClick={()=>spotPlayer.newSpot = spotPlayer.initNewPost()}
+                  />
                   <SpotPlayer post={spotPlayer.newSpot}/>
                 </Grid.Column>
               </Grid.Row>
