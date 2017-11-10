@@ -240,6 +240,22 @@ export default class SpotWizard extends Component {
     return playersMoves.length>0
   }
 
+  isDealerTurn(){
+    const {spotPlayer, players} = this.props
+    if (spotPlayer.newSpot.spotPlayerState){
+      return spotPlayer.newSpot.spotPlayerState.raiser===utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+    }
+    return false
+  }
+
+  isNoRaiser(){
+    const {spotPlayer, players} = this.props
+    if (spotPlayer.newSpot.spotPlayerState){
+      return spotPlayer.newSpot.spotPlayerState.raiser===undefined
+    }
+    return true
+  }
+
   render(){
     const {spotPlayer, players} = this.props
     const {step} = spotPlayer.newSpot
@@ -261,6 +277,8 @@ export default class SpotWizard extends Component {
 
     const smallBlindDisabled = this.isSmallBlindDisabled()
     const bigBlindDisabled = this.isBigBlindDisabled()
+    const dealerTurn = this.isDealerTurn()
+    const noRaiser = this.isNoRaiser()
 
     return (
       <Modal
@@ -290,18 +308,18 @@ export default class SpotWizard extends Component {
             bigBlindClick={::this.bigBlind}
             bigBlindDisabled={bigBlindDisabled}
             foldClick={::this.fold}
-            foldDisabled={false}
+            foldDisabled={dealerTurn}
             callClick={::this.call}
-            callDisabled={false}
+            callDisabled={dealerTurn || noRaiser}
             checkClick={::this.check}
-            checkDisabled={false}
+            checkDisabled={dealerTurn}
             raiseClick={::this.raise}
-            raiseDisabled={false}
+            raiseDisabled={dealerTurn}
             showCardsClick={::this.showCards}
             showCardsDisabled={false}
             saveDisabled={this.previousStepDisabled()}
             save={::this.save}
-            dealerDisabled={false}
+            dealerDisabled={!dealerTurn}
             dealerClick={::this.dealer}
             dealerNextState={dealerNextState}
         />

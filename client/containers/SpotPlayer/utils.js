@@ -281,6 +281,7 @@ const utils = {
       })
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.dealer.pot = totalPot
+      newSpotPlayerState.raiser = undefined
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
@@ -293,6 +294,7 @@ const utils = {
       })
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.dealer.pot = totalPot
+      newSpotPlayerState.raiser = undefined
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
@@ -305,6 +307,7 @@ const utils = {
       })
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.dealer.pot = totalPot
+      newSpotPlayerState.raiser = undefined
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
@@ -316,6 +319,7 @@ const utils = {
       })
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.dealer.pot = totalPot
+      newSpotPlayerState.raiser = undefined
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
