@@ -64,6 +64,21 @@ export default class GeneralSettings extends Component {
     }
   }
 
+  smallBlindChange(e, {value}){
+    const {settings} = this.props
+    const sb = parseInt(value)||0
+    settings.sb = sb
+    settings.bb = 2*sb
+  }
+
+  anteChange(e, {value}){
+    const {settings} = this.props
+    const ante = parseInt(value)||0
+    settings.ante = ante
+    settings.sb = ante
+    settings.bb = 2*settings.sb
+  }
+
   render(){
     const {players, settings} = this.props
     const searchPlayerOptions = players.searchPlayers.keys().map(username=>{
@@ -95,7 +110,7 @@ export default class GeneralSettings extends Component {
               control={Input}
               id="form-input-control-last-name"
               label="Ante"
-              onChange={(e,{value})=>settings.ante=parseInt(value)||0}
+              onChange={::this.anteChange}
               placeholder="0"
               type="number"
               value={settings.ante}
@@ -104,7 +119,7 @@ export default class GeneralSettings extends Component {
               control={Input}
               id="form-input-control-last-name"
               label="Small Blind"
-              onChange={(e,{value})=>settings.sb=parseInt(value)||0}
+              onChange={::this.smallBlindChange}
               placeholder="1"
               type="number"
               value={settings.sb}
