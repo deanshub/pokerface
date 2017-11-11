@@ -10,10 +10,17 @@ import BlindTimerResetModal from './BlindTimerResetModal'
 import logo from '../../assets/blue logo.png'
 
 @inject('timer')
+@inject('auth')
 @observer
 export default class BlindsTimer extends Component {
-  static propTypes ={
+  static propTypes = {
+    image: PropTypes.string,
     timer: PropTypes.shape(),
+    title: PropTypes.string,
+  }
+  static defaultProps = {
+    title: 'Pokerface.io',
+    image: logo,
   }
 
   componentDidMount(){
@@ -78,7 +85,7 @@ export default class BlindsTimer extends Component {
   }
 
   render() {
-    const {timer} = this.props
+    const {timer, title, image, auth} = this.props
     const inverted = timer.inverted
 
     const anteSection =
@@ -133,9 +140,9 @@ export default class BlindsTimer extends Component {
             <Image
                 centered
                 size="mini"
-                src={logo}
+                src={image}
             />
-            <Header inverted={inverted} style={{textDecoration: 'underline'}}>Pokerface.io</Header>
+            <Header inverted={inverted} style={{textDecoration: 'underline'}}>{title}</Header>
           </Grid.Column>
           <Grid.Column
               style={{ paddingRight:20 }}
