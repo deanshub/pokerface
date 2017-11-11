@@ -242,8 +242,18 @@ export default class SpotWizard extends Component {
 
   isDealerTurn(){
     const {spotPlayer, players} = this.props
-    if (spotPlayer.newSpot.spotPlayerState){
-      return spotPlayer.newSpot.spotPlayerState.raiser===utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+    if (spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.raiser!==undefined){
+      const playersInBets = spotPlayer.newSpot.spotPlayerState.players.filter(player=>!player.folded && player.bet!==undefined)
+      // all bets are the same
+      if (playersInBets.length>1){
+        const betValue = playersInBets[0].bet
+        if (betValue){
+          const differentBetPlayers = playersInBets.filter(player=>player.bet!==betValue)
+          return differentBetPlayers.length===0
+        }else{
+          return spotPlayer.newSpot.spotPlayerState.raiser===utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+        }
+      }
     }
     return false
   }
