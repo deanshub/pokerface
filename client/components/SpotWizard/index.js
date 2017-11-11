@@ -216,6 +216,7 @@ export default class SpotWizard extends Component {
     }
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    spotPlayer.newSpot.spotPlayerState.totalRaise = 0
   }
 
   isSmallBlindDisabled(){
@@ -242,22 +243,35 @@ export default class SpotWizard extends Component {
 
   isDealerTurn(){
     const {spotPlayer, players} = this.props
-    if (spotPlayer.newSpot.spotPlayerState){
-      return spotPlayer.newSpot.spotPlayerState.raiser===utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+    if (spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.raiser!==undefined){
+      const playersInBets = spotPlayer.newSpot.spotPlayerState.players.filter(player=>!player.folded && player.bet!==undefined)
+      // all bets are the same
+      if (playersInBets.length>1){
+        const betValue = playersInBets[0].bet
+        if (betValue){
+          const differentBetPlayers = playersInBets.filter(player=>player.bet!==betValue)
+          return differentBetPlayers.length===0
+        }else{
+          return spotPlayer.newSpot.spotPlayerState.raiser===utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+        }
+      }
     }
     return false
   }
 
   isNoRaiser(){
-    const {spotPlayer, players} = this.props
-    if (spotPlayer.newSpot.spotPlayerState){
-      return spotPlayer.newSpot.spotPlayerState.raiser===undefined
-    }
-    return true
+    const {spotPlayer} = this.props
+
+    return  spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise===0
+  }
+
+  hasRaise(){
+    const {spotPlayer} = this.props
+    return spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise>0
   }
 
   render(){
-    const {spotPlayer, players} = this.props
+    const {spotPlayer} = this.props
     const {step} = spotPlayer.newSpot
 
     const dealerMoves = spotPlayer.newSpot.spot.moves.filter((move)=>move.player===MOVES.DEALER)
@@ -279,6 +293,7 @@ export default class SpotWizard extends Component {
     const bigBlindDisabled = this.isBigBlindDisabled()
     const dealerTurn = this.isDealerTurn()
     const noRaiser = this.isNoRaiser()
+    const hasRaise = this.hasRaise()
 
     return (
       <Modal
@@ -312,7 +327,7 @@ export default class SpotWizard extends Component {
             callClick={::this.call}
             callDisabled={dealerTurn || noRaiser}
             checkClick={::this.check}
-            checkDisabled={dealerTurn}
+            checkDisabled={dealerTurn || hasRaise}
             raiseClick={::this.raise}
             raiseDisabled={dealerTurn}
             showCardsClick={::this.showCards}
