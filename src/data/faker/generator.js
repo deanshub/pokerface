@@ -39,6 +39,7 @@ const generateFakeData = (DB) => {
       avatar: faker.image.avatar(),
       coverImage: faker.image.image(),
       password: faker.internet.password(),
+      active: true,
     }).save()
   }
   function createDemoPlayer(){
@@ -50,6 +51,7 @@ const generateFakeData = (DB) => {
       avatar: 'dean2.jpg',
       coverImage: 'poker-1999643.jpg',
       password:'demo',
+      active: true,
     }).save()
   }
 

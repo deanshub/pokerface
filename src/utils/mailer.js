@@ -2,6 +2,11 @@ import emailjs from 'emailjs'
 import icalToolkit from 'ical-toolkit'
 import config from 'config'
 
+const hostLocation = (config.NODE_ENV==='development')?
+    `localhost:${config.PORT}`
+  :
+    'pokerface.io'
+
 // create reusable transporter object using the default SMTP transport
 const server = emailjs.server.connect({
   user: config.GMAIL_USER,
@@ -14,7 +19,7 @@ const generalSignupMessage = {
   from: '"Pokerface.io" <support@pokerface.io>', // sender address
   // to: 'bar@blurdybloop.com, baz@blurdybloop.com', // list of receivers
   subject: 'Pokerface.io Signup ✔', // Subject line
-  bcc: 'dean@pokerface.io',
+  //bcc: 'dean@pokerface.io',
   // text: 'Hello world ?', // plain text body
   // html: '<b>Hello world ?</b>' // html body
 }
@@ -221,13 +226,26 @@ function getAllPlayers(game, Db){
 }
 
 export default {
-  sendSignupMessage(firstname, lastname, email){
-    const htmlContent = `<h3>Sorry ${firstname} ${lastname},</h3>
-    <h4>Currently signup is via invitations only ☹</h4>
-    <div>But don't worry, we added you to the waiting list,<br/>we will send you an invite as soon as we open pokerface.io to the public.</div>
-    <br/>
-    <div>Thank you for signing up and have a good day!</div>
+  sendSignupMessage(firstname, lastname, email, uuid){
+    const htmlContent = `<h3>Hello ${firstname} ${lastname},</h3>
+    <p style="font-size: larger">Thank you for signing up to social platform pokerface.</p>
+    <p style="font-size: larger">
+      Click
+      <b> <a href="http://${hostLocation}/password/${uuid}">here</a> </b>
+      to set a password and start communicate with other poker players.
+    </p>
+    <h1 style="align-items:center;height:80px;display:flex;">
+  		<img src="http://pokerface.io/images/logo.png" style="height: inherit; "/>
+  		<div style="text-align: center;padding-left: .75rem; color: black;">
+  			<div style="font-size: xx-large;">Pokerface.io
+          <div style="font-size: medium; font-weight: normal; ">Social platform for Poker players</div>
+  			</div>
+  		</div>
+  	</h1>
     `
+
+
+
     const message = Object.assign({}, generalSignupMessage, {to:email, attachment:[{data:htmlContent, alternative:true}]})
 
     return new Promise((resolve, reject)=>{

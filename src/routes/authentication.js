@@ -1,8 +1,8 @@
 import passport from 'passport'
 import {Strategy as JwtStrategy, ExtractJwt} from 'passport-jwt'
-import jwt  from 'jsonwebtoken'
 import DB from '../data/db'
 import config from 'config'
+import {signTokenToUser} from '../utils/authUtils'
 
 const initialize = () => {
   const initialize = passport.initialize()
@@ -41,7 +41,7 @@ const login = (req, res) => {
     if (!user){
       res.status(401).json({error: 'Email or password are Incorrect .'})
     } else{
-      const token = jwt.sign({id: user._id}, config.SECRET_KEY)
+      const token = signTokenToUser(user)
       res.json({token, user:{...user.toJSON(), fullname:user.fullname}})
     }
   }).catch(e=>{
