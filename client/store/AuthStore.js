@@ -10,6 +10,7 @@ export class AuthStore {
   @observable token
   @observable user
   @observable opensourceModalOpen: boolean
+  @observable modalModalOpen: boolean
   @observable authenticating: boolean
 
   constructor(){
@@ -17,6 +18,7 @@ export class AuthStore {
     this.authenticating = true
     // this.authenticate()
     this.opensourceModalOpen = false
+    this.modalModalOpen = false
   }
 
   @action
@@ -31,6 +33,21 @@ export class AuthStore {
   authenticate(){
 
     this.authenticating = true
+    return request.post('/api/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
+      this.authenticating = false
+      const player = res.body
+      logger.setField({user:player.username, email:player.email})
+      return this.user=player
+    }).catch(err=>{
+      console.error(err)
+      this.authenticating = false
+    })
+  }
+
+  @action
+  authenticateByUuid(uuid){
+    this.authenticating = true
+
     return request.post('/api/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
       this.authenticating = false
       const player = res.body
