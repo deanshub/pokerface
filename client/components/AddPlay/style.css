@@ -25,3 +25,10 @@
 .selected{
   background-color: #c2c2c2;
 }
+
+.removeSpot{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 1;
+}

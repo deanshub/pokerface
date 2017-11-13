@@ -132,7 +132,24 @@ const utils = {
       return moves[nextPlayerMoveIndex-1].player
     }
 
+    // if there are no future moves
     nextPlayerMoveIndex = nextMoveIndex-1
+
+    if (nextPlayerMoveIndex>=0 && moves[nextPlayerMoveIndex].player===MOVES.DEALER){
+      let nextPlayerIndex = players.findIndex(player=>player.isDealer)
+      nextPlayerIndex++
+      if(nextPlayerIndex>=players.length){
+        nextPlayerIndex=0
+      }
+      while(players[nextPlayerIndex].folded){
+        nextPlayerIndex++
+        if(nextPlayerIndex>=players.length){
+          nextPlayerIndex=0
+        }
+      }
+      return nextPlayerIndex
+    }
+
     while(!playerFound && nextPlayerMoveIndex>=0){
       playerFound = moves[nextPlayerMoveIndex].player!==MOVES.DEALER
       nextPlayerMoveIndex--
@@ -149,30 +166,25 @@ const utils = {
           nextPlayerIndex=0
         }
       }
+
+      if (currentSpotPlayerState.raiser===nextPlayerIndex){
+        nextPlayerIndex = players.findIndex(player=>player.isDealer)
+        nextPlayerIndex++
+        if(nextPlayerIndex>=players.length){
+          nextPlayerIndex=0
+        }
+
+        while(players[nextPlayerIndex].folded){
+          nextPlayerIndex++
+          if(nextPlayerIndex>=players.length){
+            nextPlayerIndex=0
+          }
+        }
+      }
       return nextPlayerIndex
+    }else{
+      return 0
     }
-
-    return null
-
-    // if (moves.length>moveIndex+1){
-    //   return moves[moveIndex+1].player
-    // }else if (moves[moveIndex].player+1<players.length){
-    //   return moves[moveIndex].player+1
-    // }else{
-    //   return 0
-    // }
-
-    // let nextMoveIndex = moveIndex+1
-    // let playerFound = false
-    // while(!playerFound && moves.length>nextMoveIndex){
-    //   playerFound = moves[nextMoveIndex].player!==MOVES.DEALER
-    //   nextMoveIndex++
-    // }
-    // if (playerFound){
-    //   return moves[nextMoveIndex-1].player
-    // }else{
-    //   return null
-    // }
   },
 
   getNextStep(spot, currentSpotPlayerState, ereaseDescription=true){
@@ -269,6 +281,7 @@ const utils = {
       })
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.dealer.pot = totalPot
+      newSpotPlayerState.raiser = undefined
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
@@ -281,6 +294,7 @@ const utils = {
       })
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.dealer.pot = totalPot
+      newSpotPlayerState.raiser = undefined
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
@@ -293,6 +307,7 @@ const utils = {
       })
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.dealer.pot = totalPot
+      newSpotPlayerState.raiser = undefined
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
@@ -304,6 +319,7 @@ const utils = {
       })
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.dealer.pot = totalPot
+      newSpotPlayerState.raiser = undefined
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }

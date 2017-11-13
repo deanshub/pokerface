@@ -1,16 +1,15 @@
 FOR GA ONLY!!!
 --------------
 
-make hot reloading work with react Router
-
 dont ask to reset when it's already reset (first round & 15 minutes ...)
+
+currency in spot wizard should be add-able Dropdown
 
 
 add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
 change the script name to include hash (so when a new version comes it won't be cached)
 fix the keys selection of emoji\ mention plugins within the post editor
-add GA UA-106222738-1
 -------------------------------------------------------------------------------
 
 leagal note on signup and login

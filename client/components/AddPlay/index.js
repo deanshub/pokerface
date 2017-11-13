@@ -4,6 +4,9 @@ import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
 import CardSelection from './CardSelection'
 import SpotWizard from '../SpotWizard'
+import SpotPlayer from '../../containers/SpotPlayer'
+import classnames from 'classnames'
+import style from './style.css'
 
 // const shareWithOptions = [{
 //   key: 'everyone',
@@ -45,6 +48,7 @@ export default class AddPlay extends Component {
       newSpot=spotPlayer.newSpot.spot
     }
     feed.addPost(auth.user, this.photosElm.files, newSpot)
+    spotPlayer.newSpot = spotPlayer.initNewPost()
   }
 
   photosChanged(){
@@ -70,11 +74,28 @@ export default class AddPlay extends Component {
 
   render() {
     const {feed, spotPlayer} = this.props
-    const hasSpot= spotPlayer.newSpot.spot.moves.length>0
+    const hasSpot = spotPlayer.newSpot.spot.moves.length>0
+    const hasText = feed.newPost.content.getCurrentContent().hasText()
 
     return (
       <Form>
         <Grid container>
+          {
+            hasSpot?(
+              <Grid.Row stretched style={{padding:0, marginBottom:-15}}>
+                <Grid.Column width={16}>
+                  <Icon
+                      bordered
+                      className={classnames(style.removeSpot)}
+                      link
+                      name="close"
+                      onClick={()=>spotPlayer.newSpot = spotPlayer.initNewPost()}
+                  />
+                  <SpotPlayer post={spotPlayer.newSpot}/>
+                </Grid.Column>
+              </Grid.Row>
+            ):null
+          }
           <Grid.Row stretched>
             <Grid.Column width={16}>
               <PostEditor
@@ -167,13 +188,14 @@ export default class AddPlay extends Component {
             </Grid.Column>
             <Grid.Column width={3}>
               <Button
+                  disabled={!hasText}
                   icon
                   labelPosition="left"
                   onClick={::this.addPost}
                   primary
               >
                 <Icon
-                    name={hasSpot?'wizard':'share alternate'}
+                    name="share alternate"
                 />
                 Post
               </Button>
