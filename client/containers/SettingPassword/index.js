@@ -166,7 +166,7 @@ export default class SettingPassword extends Component {
               Enjoy using pokerface
             </Modal.Content>
             <Modal.Actions>
-              <Button content="OK" primary onClick={::this.onCloseModal}/>
+              <Button onClick={::this.onCloseModal} primary>OK</Button>
             </Modal.Actions>
           </Modal>
         </Grid>

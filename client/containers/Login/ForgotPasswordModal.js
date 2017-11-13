@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Button, Modal, Form, Message, Dimmer, Loader } from 'semantic-ui-react'
 import request from 'superagent'
-import {viewParam} from '../../utils/generalUtils'
+import {viewParam, isEmailPattern} from '../../utils/generalUtils'
 
 export default class LoginForm extends Component {
   constructor(props){
@@ -14,19 +14,23 @@ export default class LoginForm extends Component {
   handleSending(){
     const {email} = this.state
 
-    this.setState({loading:true})
-    request.post('/api/forgotPassword').send({
-      email,
-    }).then(() => {
-      this.setState({success:true,loading:false})
-    }).catch((err) => {
-      let errorMessage = viewParam('response.body.error', err)
-      if (!errorMessage){
-        errorMessage='An unknown error occurred, please try again later'
-      }
+    if (!isEmailPattern(email)){
+      this.setState({error:true, errorMessage:'Invalid email'})
+    }else{
+      this.setState({loading:true})
+      request.post('/api/forgotPassword').send({
+        email,
+      }).then(() => {
+        this.setState({success:true,loading:false})
+      }).catch((err) => {
+        let errorMessage = viewParam('response.body.error', err)
+        if (!errorMessage){
+          errorMessage='An unknown error occurred, please try again later'
+        }
 
-      this.setState({error:true, errorMessage,loading:false})
-    })
+        this.setState({error:true, errorMessage,loading:false})
+      })
+    }
   }
 
   handleInputChange(e, {name, value}){
@@ -34,6 +38,7 @@ export default class LoginForm extends Component {
       [name]: value,
     })
   }
+
 
   onClose(){
     this.setState({success:false,error:false,loading:false})
@@ -89,7 +94,7 @@ export default class LoginForm extends Component {
           {
             success?
               <Modal.Actions>
-                <Button onClick={::this.onClose}>OK</Button>
+                <Button onClick={::this.onClose} primary>OK</Button>
               </Modal.Actions>
             :
               <Modal.Actions>
