@@ -12,6 +12,14 @@ change the script name to include hash (so when a new version comes it won't be 
 fix the keys selection of emoji\ mention plugins within the post editor
 -------------------------------------------------------------------------------
 
+spot player imporvements
+* names should not ovverride bank
+* titles should not move cards when appear
+* make back of card appear on download
+* better responsiveness
+
+
+
 leagal note on signup and login
 
 head

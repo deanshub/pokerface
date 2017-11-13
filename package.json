@@ -50,6 +50,7 @@
   "dependencies": {
     "apollo-client": "^1.9.1",
     "apollo-upload-client": "^5.1.1",
+    "dom-to-image": "^2.6.0",
     "draft-js": "^0.10.0",
     "draft-js-buttons": "^2.0.0-beta6",
     "draft-js-emoji-plugin": "beta",
@@ -60,6 +61,7 @@
     "draft-js-mention-plugin": "beta",
     "draft-js-plugins-editor": "beta",
     "draft-js-video-plugin": "beta",
+    "gif.js.optimized": "^1.0.1",
     "graphql-subscriptions": "^0.4.4",
     "graphql-tag": "^2.4.2",
     "history": "^4.6.2",
