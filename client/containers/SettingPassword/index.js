@@ -40,7 +40,7 @@ export default class SettingPassword extends Component {
 
         if (success) {
           localStorage.setItem('jwt',token )
-          this.setState({settingSuccesseded:true})
+          this.setState({settingSuccessed:true})
         }else{
           this.setState({settingFailed:true})
         }
