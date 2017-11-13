@@ -3,12 +3,13 @@
 import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
 import { parse } from 'qs'
-
+import ForgotPasswordModal from './ForgotPasswordModal'
 import { Grid, Header, Form, Segment, Button, Icon, Message, Divider } from 'semantic-ui-react'
 import request from 'superagent'
 import logger from '../../utils/logger'
 import viewParam from '../../utils/generalUtils'
-
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('routing')
 @inject('auth')
@@ -20,6 +21,7 @@ export default class LoginForm extends Component {
       loggingInPorgress: false,
       loggingInFail: false,
       loginFailMessage: null,
+      forgotPasswordModalOpen: false,
     }
   }
 
@@ -67,11 +69,16 @@ export default class LoginForm extends Component {
     })
   }
 
+  forgotPassord(){
+
+  }
+
   render() {
     const {
       loggingInPorgress,
       loggingInFail,
       loginFailMessage,
+      forgotPasswordModalOpen,
     } = this.state
 
     return (
@@ -96,7 +103,14 @@ export default class LoginForm extends Component {
             required
             type="password"
         />
+
         <Button primary type="submit">Login</Button>
+        <a
+            className={classnames(style.forgotPassord)}
+            onClick={() => this.setState({forgotPasswordModalOpen:true})}
+        >
+          Forgot password?
+        </a>
 
         <Divider horizontal>Or</Divider>
 
@@ -113,6 +127,10 @@ export default class LoginForm extends Component {
             content={loginFailMessage}
             error
             header="Login Error!"
+        />
+        <ForgotPasswordModal
+            onClose={() => this.setState({forgotPasswordModalOpen:false})}
+            open={forgotPasswordModalOpen}
         />
       </Form>
     )

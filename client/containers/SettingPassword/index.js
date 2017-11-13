@@ -26,16 +26,13 @@ export default class SettingPassword extends Component {
 
   handleSettingPassowrd(){
 
-    const {password, confirmPassword} = this.state
-
-    if (password !== confirmPassword){
-      this.setState({undeterminedError:true, errorMessage:'Passwords are not equals.'})
-    }else{
+    if (this.passwordClientCheck()){
       const { uuid } = this.props.match.params
+      const {password} = this.state
 
       this.setState({settingChecking:true})
 
-      request.post('/api/isUuidAuthenticated').send({
+      request.post('/api/setPassword').send({
         uuid,
         password,
       }).then((res) => {
@@ -72,6 +69,29 @@ export default class SettingPassword extends Component {
     routing.push('/') // TODO change to replace on it will work
   }
 
+  signUpRedirect(){
+    const { routing } = this.props
+
+    routing.push('/login') // TODO change to replace on it will work
+  }
+
+  passwordClientCheck(){
+    const {password, confirmPassword} = this.state
+    let errorMessage
+
+    if (password !== confirmPassword){
+      errorMessage = 'Passwords are not equal.'
+    }else if (password.length < 6){
+      errorMessage = 'Your password must be at least 6 characters long.'
+    }
+
+    if (errorMessage){
+      this.setState({undeterminedError:true, errorMessage})
+      return false
+    }
+    return true
+  }
+
   render() {
     const {
       settingChecking,
@@ -81,6 +101,7 @@ export default class SettingPassword extends Component {
       settingSuccessed,
     } = this.state
 
+
     return (
       <PublicPageTemplate horizontal>
         <Grid stretched verticalAlign="middle">
@@ -89,7 +110,14 @@ export default class SettingPassword extends Component {
               {
                 settingFailed?
                   <Container>
-                    <p>unauthorization</p>
+                    <Header size="large">
+                      The setting password failed.
+                    </Header>
+                    <Header size="medium">
+                     The Registration might expired. <br/> Check your email for another messages or
+                     try to sign up again:
+                    </Header>
+                    <Button onClick={::this.signUpRedirect} primary>Sign-up</Button>
                   </Container>
                 :
                   <Form
