@@ -7,7 +7,7 @@ import ForgotPasswordModal from './ForgotPasswordModal'
 import { Grid, Header, Form, Segment, Button, Icon, Message, Divider } from 'semantic-ui-react'
 import request from 'superagent'
 import logger from '../../utils/logger'
-import viewParam from '../../utils/generalUtils'
+import {viewParam} from '../../utils/generalUtils'
 import classnames from 'classnames'
 import style from './style.css'
 

@@ -5,7 +5,7 @@ import { Header, Form, Button, Message } from 'semantic-ui-react'
 import request from 'superagent'
 
 import logger from '../../utils/logger'
-import viewParam from '../../utils/generalUtils'
+import {viewParam} from '../../utils/generalUtils'
 
 export default class SignupForm extends Component {
   constructor(props){

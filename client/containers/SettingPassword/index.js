@@ -7,7 +7,7 @@ import { Grid, Header, Form, Container, Button, Message, Modal } from 'semantic-
 import request from 'superagent'
 import logger from '../../utils/logger'
 import PublicPageTemplate from '../../components/PublicPageTemplate'
-import viewParam from '../../utils/generalUtils'
+import {viewParam} from '../../utils/generalUtils'
 
 @inject('routing')
 @inject('auth')
