@@ -225,40 +225,72 @@ function getAllPlayers(game, Db){
   })
 }
 
-export default {
-  sendSignupMessage(firstname, lastname, email, uuid){
-    const htmlContent = `<h3>Hello ${firstname} ${lastname},</h3>
-    <p style="font-size: larger">Thank you for signing up to social platform pokerface.</p>
-    <p style="font-size: larger">
-      Click
-      <b> <a href="http://${hostLocation}/password/${uuid}">here</a> </b>
-      to set a password and start communicate with other poker players.
-    </p>
-    <h1 style="align-items:center;height:80px;display:flex;">
-  		<img src="http://pokerface.io/images/logo.png" style="height: inherit; "/>
-  		<div style="text-align: center;padding-left: .75rem; color: black;">
-  			<div style="font-size: xx-large;">Pokerface.io
-          <div style="font-size: medium; font-weight: normal; ">Social platform for Poker players</div>
-  			</div>
-  		</div>
-  	</h1>
-    `
+function sendSignupMessage(firstname, lastname, email, uuid){
+  const htmlContent = `<h3>Hello ${firstname} ${lastname},</h3>
+  <p style="font-size: larger">Thank you for signing up to social platform pokerface.</p>
+  <p style="font-size: larger">
+    Click
+    <b> <a href="http://${hostLocation}/password/${uuid}">here</a> </b>
+    to set a password and start communicate with other poker players.
+  </p>
+  <h1 style="align-items:center;height:80px;display:flex;">
+    <img src="http://pokerface.io/images/logo.png" style="height: inherit; "/>
+    <div style="text-align: center;padding-left: .75rem; color: black;">
+      <div style="font-size: xx-large;">Pokerface.io
+        <div style="font-size: medium; font-weight: normal; ">Social platform for Poker players</div>
+      </div>
+    </div>
+  </h1>
+  `
+  const message = Object.assign({}, generalSignupMessage, {to:email, attachment:[{data:htmlContent, alternative:true}]})
 
-
-
-    const message = Object.assign({}, generalSignupMessage, {to:email, attachment:[{data:htmlContent, alternative:true}]})
-
-    return new Promise((resolve, reject)=>{
-      // send mail with defined transport object
-      server.send(message, (error, message) => {
-        if (error) {
-          reject(error)
-        }else{
-          resolve(message)
-        }
-      })
+  return new Promise((resolve, reject)=>{
+    // send mail with defined transport object
+    server.send(message, (error, message) => {
+      if (error) {
+        reject(error)
+      }else{
+        resolve(message)
+      }
     })
-  },
+  })
+}
+
+function sendResetPasswordMessage(firstname, lastname, email, uuid){
+  const htmlContent = `<h3>Hello ${firstname} ${lastname},</h3>
+  <p style="font-size: larger">You propbably have a bad memory so you forgot your password to Pokerface.</p>
+  <p style="font-size: larger">
+    Click
+    <b> <a href="http://${hostLocation}/password/${uuid}">here</a> </b>
+    to reset your password.
+  </p>
+  <h1 style="align-items:center;height:80px;display:flex;">
+    <img src="http://pokerface.io/images/logo.png" style="height: inherit; "/>
+    <div style="text-align: center;padding-left: .75rem; color: black;">
+      <div style="font-size: xx-large;">Pokerface.io
+        <div style="font-size: medium; font-weight: normal; ">Social platform for Poker players</div>
+      </div>
+    </div>
+  </h1>
+  `
+  const message = Object.assign({}, generalSignupMessage, {to:email, attachment:[{data:htmlContent, alternative:true}]})
+
+  return new Promise((resolve, reject)=>{
+    // send mail with defined transport object
+    server.send(message, (error, message) => {
+      if (error) {
+        reject(error)
+      }else{
+        resolve(message)
+      }
+    })
+  })
+}
+
+
+export default {
+  sendSignupMessage,
+  sendResetPasswordMessage,
   sendGameInvite(game, Db){
     return getAllPlayers(game, Db).then(({players,orgenizer})=>{
       return Promise.all(players.map(player=>sendPersonalGameInvite(orgenizer, game, player)))

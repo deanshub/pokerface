@@ -39,7 +39,46 @@ router.post('/signup', (req, res)=>{
   })
 })
 
-router.post('/isUuidAuthenticated', (req, res) =>{
+router.post('/forgotPassword', (req, res) => {
+  const { email } = req.body
+  const uuid =  uuidv1()
+
+  // TODO Didn't select the password?
+  DB.models.Player.findOne({email, active:true}).then((user) => {
+    if (!user) {
+      // If player not exists send OK but don't do any thing
+      res.json({success:true})
+    } else {
+      const currentDate = Date.now()
+
+      user.tempuuid = uuid
+      user.tempuuiddate = currentDate
+      user.updated = currentDate
+
+      user.save().then((user) => {
+        const {
+          firstname,
+          lastname,
+          email,
+          tempuuid,
+        } = user
+
+        // TODO the current catching error in mailer not enable to know error occurred
+        return mailer.sendResetPasswordMessage(firstname, lastname, email, tempuuid)
+      }).then(() => {
+        res.json({success:true})
+      }).catch(err=>{
+        console.log(err)
+        res.status(500).json({error:err})
+      })
+    }
+  }).catch(err=>{
+    console.log(err)
+    res.status(500).json({error:err})
+  })
+})
+
+router.post('/setPassword', (req, res) =>{
   const {uuid, password} = req.body
 
   DB.models.Player.findOne({tempuuid:uuid}).select('-password').then((user) => {
@@ -52,6 +91,7 @@ router.post('/isUuidAuthenticated', (req, res) =>{
       user.tempuuiddate = undefined
       user.active = true
       user.password = password
+      user.updated = Date.now()
 
       return user.save()
     }
@@ -65,6 +105,8 @@ router.post('/isUuidAuthenticated', (req, res) =>{
   })
 })
 
+
+// TODO find other place
 router.post('/isAuthenticated', (req, res)=>{
 
   if (!req.user) {
