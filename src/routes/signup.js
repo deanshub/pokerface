@@ -5,6 +5,8 @@ import uuidv1 from 'uuid/v1'
 import moment from 'moment'
 import {signTokenToUser} from '../utils/authUtils'
 
+const MINUTES_UUID_EXPIRATION = 15
+
 const router = express.Router()
 
 router.post('/signup', (req, res)=>{
@@ -13,7 +15,7 @@ router.post('/signup', (req, res)=>{
 
   DB.models.Player.findOne({email}).select('active').then((user) => {
     if (user && user.active) {
-      res.status(403).json({error:'Current email already existed.'})
+      res.status(403).json({error:'Current email already existes.'})
     } else {
 
       // Add player to db
@@ -83,8 +85,11 @@ router.post('/setPassword', (req, res) =>{
 
   DB.models.Player.findOne({tempuuid:uuid}).select('-password').then((user) => {
 
+    const currnetTime = moment()
+    const expirationTime = moment(user.tempguiddate).add(MINUTES_UUID_EXPIRATION, 'minutes')
+
     // if user not found of the time to set password has expired.
-    if (!user || moment() > moment(user.tempguiddate).add(15, 'minutes')) {
+    if (!user || currnetTime > expirationTime) {
       res.json({success:false})
     }else{
       user.tempuuid = undefined
@@ -98,7 +103,7 @@ router.post('/setPassword', (req, res) =>{
   }).then((user) => {
     if (user) {
       const token = signTokenToUser(user)
-      res.json({success:true, token})
+      res.json({success:true, token, email:user.email})
     }
   }).catch(err=>{
     res.json({error:err})

@@ -37,7 +37,7 @@ const login = (req, res) => {
 
   const {email, password} = req.body
 
-  DB.models.Player.findOne({email,password}).select('-password').then((user)=>{
+  DB.models.Player.findOne({email,password,active:true}).select('-password').then((user)=>{
     if (!user){
       res.status(401).json({error: 'Email or password are Incorrect .'})
     } else{
