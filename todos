@@ -15,9 +15,8 @@ fix the keys selection of emoji\ mention plugins within the post editor
 spot player imporvements
 * names should not ovverride bank
 * titles should not move cards when appear
-* make back of card appear on download
 * better responsiveness
-
+logger.event for spot creation and downloading and facebook share
 
 
 leagal note on signup and login
