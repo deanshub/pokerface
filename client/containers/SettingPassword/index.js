@@ -27,7 +27,7 @@ export default class SettingPassword extends Component {
   handleSettingPassowrd(){
 
     if (this.passwordClientCheck()){
-      const { uuid } = this.props.match.params
+      const { routing , match:{params:{uuid}} } = this.props
       const {password} = this.state
 
       this.setState({settingChecking:true})
@@ -36,11 +36,12 @@ export default class SettingPassword extends Component {
         uuid,
         password,
       }).then((res) => {
-        const {success, token} = res.body
+        const {success, token, email} = res.body
 
         if (success) {
+          logger.logEvent({category:'User',action:'Reset password', value:email})
           localStorage.setItem('jwt',token )
-          this.setState({settingSuccessed:true})
+          routing.push('/')
         }else{
           this.setState({settingFailed:true})
         }
@@ -62,16 +63,8 @@ export default class SettingPassword extends Component {
     })
   }
 
-  onCloseModal(){
-    const { routing } = this.props
-
-    this.setState({settingSuccessed:false})
-    routing.push('/') // TODO change to replace on it will work
-  }
-
   signUpRedirect(){
     const { routing } = this.props
-
     routing.push('/login') // TODO change to replace on it will work
   }
 
@@ -98,7 +91,6 @@ export default class SettingPassword extends Component {
       undeterminedError,
       errorMessage,
       settingFailed,
-      settingSuccessed,
     } = this.state
 
 
@@ -153,22 +145,6 @@ export default class SettingPassword extends Component {
               }
             </Grid.Column>
           </Grid.Row>
-          <Modal
-              dimmer="inverted"
-              onClose={::this.onCloseModal}
-              open={settingSuccessed}
-              size="mini"
-          >
-            <Modal.Header>
-              Setting password successful
-            </Modal.Header>
-            <Modal.Content>
-              Enjoy using pokerface
-            </Modal.Content>
-            <Modal.Actions>
-              <Button onClick={::this.onCloseModal} primary>OK</Button>
-            </Modal.Actions>
-          </Modal>
         </Grid>
     </PublicPageTemplate>
     )

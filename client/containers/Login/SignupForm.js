@@ -31,6 +31,7 @@ export default class SignupForm extends Component {
         lastName,
         email,
       }).then(() => {
+        logger.logEvent({category:'User',action:'Sign-Up', value:email})
         this.setState({
           signingupInPorgress: false,
           signingupSuccess: true,

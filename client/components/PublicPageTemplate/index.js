@@ -1,8 +1,9 @@
 // @flow
 
 import React, { Component, PropTypes } from 'react'
-import { Dimmer, Grid, Header, Loader, Image } from 'semantic-ui-react'
+import { Dimmer, Grid, Loader } from 'semantic-ui-react'
 import Footer from '../../containers/PublicPageFooter'
+import Logo from '../Logo'
 
 export default class PublicPageTemplate extends Component {
 
@@ -16,16 +17,7 @@ export default class PublicPageTemplate extends Component {
         </Dimmer>
         <Grid.Row columns={1}>
           <Grid.Column>
-
-            <Header
-                size="huge"
-                textAlign="center"
-            >
-              <Image src="/images/logo.png"/>
-              <Header.Content>
-                <Header content="Pokerface.io" subheader="Social platform for Poker players"/>
-            </Header.Content>
-            </Header>
+            <Logo/>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row centered columns="equal">
