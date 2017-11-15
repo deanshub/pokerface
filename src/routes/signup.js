@@ -13,27 +13,30 @@ router.post('/signup', (req, res)=>{
   const {firstName, lastName, email} = req.body
   const uuid =  uuidv1()
 
-  DB.models.Player.findOne({email}).select('active').then((user) => {
-    if (user && user.active) {
+  DB.models.Player.findOne({email}).select('active').then((player) => {
+    if (player && player.active) {
       res.status(403).json({error:'Current email already existes.'})
-    } else {
-
-      // Add player to db
-      new DB.models.Player({
+    }
+    return player
+  }).then((player) => {
+    // Add player to db
+    if (!player){
+      return new DB.models.Player({
         _id: `${firstName}.${lastName}`.toLowerCase(), // TODO add counter
         firstname:firstName,
         lastname:lastName,
         email: email.toLowerCase(),
         tempuuid:uuid,
         tempuuiddate: Date.now(),
-      }).save().then(() => {
-        return mailer.sendSignupMessage(firstName, lastName, email, uuid)
-      }).then(() => {
-        res.json({success:true})
-      }).catch(err=>{
-        console.log(err)
-        res.status(500).json({error:err})
-      })
+      }).save()
+    }
+  }).then((player) => {
+    if (player){
+      return mailer.sendSignupMessage(firstName, lastName, email, uuid)
+    }
+  }).then((mailRes) => {
+    if (mailRes){
+      res.json({success:true})
     }
   }).catch(err=>{
     console.log(err)
@@ -46,33 +49,38 @@ router.post('/forgotPassword', (req, res) => {
   const uuid =  uuidv1()
 
   // TODO Didn't select the password?
-  DB.models.Player.findOne({email, active:true}).then((user) => {
-    if (!user) {
+  DB.models.Player.findOne({email, active:true}).then((player) => {
+    if (!player) {
       // If player not exists send OK but don't do any thing
       res.json({success:true})
-    } else {
+    }
+    return player
+  }).then((player) => {
+    // Update the player's documant
+    if (player){
       const currentDate = Date.now()
 
-      user.tempuuid = uuid
-      user.tempuuiddate = currentDate
-      user.updated = currentDate
+      player.tempuuid = uuid
+      player.tempuuiddate = currentDate
+      player.updated = currentDate
+      return player.save()
+    }
+  }).then((player) => {
+    // Send mail to the player
+    if (player){
+      const {
+        firstname,
+        lastname,
+        email,
+        tempuuid,
+      } = player
 
-      user.save().then((user) => {
-        const {
-          firstname,
-          lastname,
-          email,
-          tempuuid,
-        } = user
-
-        // TODO the current catching error in mailer not enable to know error occurred
-        return mailer.sendResetPasswordMessage(firstname, lastname, email, tempuuid)
-      }).then(() => {
-        res.json({success:true})
-      }).catch(err=>{
-        console.log(err)
-        res.status(500).json({error:err})
-      })
+      // TODO the current catching error in mailer not enable to know error occurred
+      return mailer.sendResetPasswordMessage(firstname, lastname, email, tempuuid)
+    }
+  }).then((mailRes) => {
+    if (mailRes){
+      res.json({success:true})
     }
   }).catch(err=>{
     console.log(err)
@@ -83,27 +91,27 @@ router.post('/forgotPassword', (req, res) => {
 router.post('/setPassword', (req, res) =>{
   const {uuid, password} = req.body
 
-  DB.models.Player.findOne({tempuuid:uuid}).select('-password').then((user) => {
+  DB.models.Player.findOne({tempuuid:uuid}).select('-password').then((player) => {
 
     const currnetTime = moment()
-    const expirationTime = moment(user.tempguiddate).add(MINUTES_UUID_EXPIRATION, 'minutes')
+    const expirationTime = moment(player.tempguiddate).add(MINUTES_UUID_EXPIRATION, 'minutes')
 
-    // if user not found of the time to set password has expired.
-    if (!user || currnetTime > expirationTime) {
+    // if player not found of the time to set password has expired.
+    if (!player || currnetTime > expirationTime) {
       res.json({success:false})
     }else{
-      user.tempuuid = undefined
-      user.tempuuiddate = undefined
-      user.active = true
-      user.password = password
-      user.updated = Date.now()
+      player.tempuuid = undefined
+      player.tempuuiddate = undefined
+      player.active = true
+      player.password = password
+      player.updated = Date.now()
 
-      return user.save()
+      return player.save()
     }
-  }).then((user) => {
-    if (user) {
-      const token = signTokenToUser(user)
-      res.json({success:true, token, email:user.email})
+  }).then((player) => {
+    if (player) {
+      const token = signTokenToUser(player)
+      res.json({success:true, token, email:player.email})
     }
   }).catch(err=>{
     res.json({error:err})
