@@ -96,7 +96,7 @@
   border: 2px solid #dd282a;
   height: 90%;
   border-radius: 5px;
-  text-overflow: ellipsis;
+  text-align: center;
   color: #dd282a;
   text-shadow: none;
   line-height: 0.8;

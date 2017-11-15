@@ -186,7 +186,7 @@ export default class Post extends Component {
     const postElement = ReactDOM.findDOMNode(this.postEditorElement)
     let gif = new GIF({
       workers: 2,
-      quality: 15,
+      quality: 17,
       width: postElement.offsetWidth,
       height: postElement.offsetHeight,
       workerScript,

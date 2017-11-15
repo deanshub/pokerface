@@ -21,8 +21,14 @@ export default class PokerTable extends Component {
             {[style.standalone]:standalone}
           )}
       >
-        {title}
         {children}
+        <div className={classnames(style.edge)}>
+          <div className={classnames(style.fabric)}>
+            <div className={classnames(style.text)}>
+              {title}
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

@@ -1,11 +1,10 @@
 .playerSpace{
   position: absolute;
-  width: 17%;
-  height: 30%;
-  line-height: normal;
-  font-size: 30%;
+  width: 18vmin;
+  height: 13vmin;
   color: #2f2f2f;
-  text-shadow: 0 0 3px white;
+  background: rgba(255,255,255,0.5);
+  border-radius: 10%;
 
   display: flex;
   flex-direction: row;
@@ -47,14 +46,15 @@
   color: white;
   border-radius: 5%;
   padding: 5px;
+  min-height: 3vh;
 }
 
 .avatarOverlay{
-  width: 75%;
-  height: 70%;
   border-radius: 50%;
-  position: relative;
+  width: 7vmin;
+  height: 7vmin;
   margin: 0 auto;
+  position: relative;
 }
 .avatarImage{
   width: 100%;
@@ -63,7 +63,8 @@
 }
 
 .playerDescription{
-  margin: 0 auto;
+  text-align: center;
+  font-size: 1.5vmin;
 }
 
 .bottomClass{
@@ -78,23 +79,21 @@
 }
 
 .dealer{
-  height: 25%;
-  width: 15%;
+  height: 3vmin;
+  width: 3vmin;
   background-color: white;
   border: 1px solid #2f2f2f;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 30%;
   box-shadow: 1px 1px 3px #2f2f2f;
   text-shadow: 1px 1px 0px #2f2f2f;
   font-weight: bold;
   margin: -15% -10%;
-  position: absolute;
 }
 .bottomDealer{
-  margin: -50% -20%;
+  margin: -170% -20%;
 }
 
 .foldedClass:after{
@@ -105,7 +104,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(130, 130, 130, 0.9);
   border-radius: 50%;
   display: flex;
   justify-content: center;
