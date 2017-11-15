@@ -19,7 +19,7 @@ const generalSignupMessage = {
   from: '"Pokerface.io" <support@pokerface.io>', // sender address
   // to: 'bar@blurdybloop.com, baz@blurdybloop.com', // list of receivers
   subject: 'Pokerface.io Signup ✔', // Subject line
-  bcc: 'dean@pokerface.io',
+  bcc: 'support@pokerface.io',
   // text: 'Hello world ?', // plain text body
   // html: '<b>Hello world ?</b>' // html body
 }
