@@ -3,7 +3,7 @@
   width: 90%;
   height: 60%;
   border-radius: 45%;
-  background: grey;
+  background: #353535;
   box-shadow: 0 0 0.1vw 0.1vw #000000;
   display: flex;
   justify-content: center;
@@ -11,10 +11,10 @@
   position: relative;
 }
 .edge{
-  background: green;
+  background: #388E3C;
   width: 98%;
   height: 90%;
-  box-shadow: 0 0 2px 1px #000000 inset;
+  box-shadow: 0 0 0.5vw 0.2vw #000000 inset;
   border-radius: 45%;
   display: flex;
   justify-content: center;
@@ -22,7 +22,7 @@
 }
 .fabric{
   border-radius: 45%;
-  background: green;
+  background: #388E3C;
   width: 92%;
   height: 80%;
   box-shadow: 0 0 2px 1px #ffffff;
