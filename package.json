@@ -34,6 +34,7 @@
     "jdenticon": "^1.7.2",
     "mkdirp": "^0.5.1",
     "mongodb-migrations": "https://github.com/emirotin/mongodb-migrations#run-custom-sets",
+    "moment": "^2.19.1",
     "mongoose": "^4.11.6",
     "nodemon": "^1.11.0",
     "object-path": "^0.11.4",

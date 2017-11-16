@@ -41,10 +41,18 @@ const schema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
+  },
+  active: {
+    type: Boolean,
   },
   coverImage: {
     type: String,
+  },
+  tempuuid: {
+    type: String,
+  },
+  tempuuiddate:{
+    type: Date,
   },
   updated: { type: Date, default: Date.now },
   created: { type: Date, default: Date.now },

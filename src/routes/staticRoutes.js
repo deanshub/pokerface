@@ -49,6 +49,8 @@ router.use('/smart', express.static(INDEX_HTML_PATH))
 router.use('/profile/:username', express.static(INDEX_HTML_PATH))
 router.use('/events', express.static(INDEX_HTML_PATH))
 router.use('/login', express.static(INDEX_HTML_PATH))
+router.use('/password', express.static(INDEX_HTML_PATH))
+router.use('/password/:uuid', express.static(INDEX_HTML_PATH))
 router.get('/post/:id', function (req, res) {
 
 

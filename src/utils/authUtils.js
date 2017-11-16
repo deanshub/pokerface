@@ -17,3 +17,10 @@ export const getUserByToken = (token) => {
     return {...user.toJSON(), fullname:user.fullname}
   })
 }
+
+export const signTokenToUser = (user) => {
+  // TODO may check _id !== null or change the sign attribute
+  if (user){
+    return jwt.sign({id: user._id}, config.SECRET_KEY)
+  }
+}
