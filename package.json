@@ -8,6 +8,7 @@
   "author": "Dean Shub (dean@shubapp.com)",
   "scripts": {
     "test": "jest",
+    "migrate": "mm migrate",
     "start": "nodemon src/index.js",
     "debug": "nodemon --inspect --debug-brk src/index.js",
     "build": "cross-env NODE_ENV=production babel src -d dist",
@@ -32,6 +33,7 @@
     "iterall": "^1.1.2",
     "jdenticon": "^1.7.2",
     "mkdirp": "^0.5.1",
+    "mongodb-migrations": "https://github.com/emirotin/mongodb-migrations#run-custom-sets",
     "mongoose": "^4.11.6",
     "nodemon": "^1.11.0",
     "object-path": "^0.11.4",
