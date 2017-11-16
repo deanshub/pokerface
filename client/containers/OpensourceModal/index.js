@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react'
 
 @inject('auth')
 @observer
-export default class Footer extends Component {
+export default class OpensourceModal extends Component {
   render() {
     const {auth} = this.props
 
