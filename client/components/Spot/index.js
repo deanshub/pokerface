@@ -124,9 +124,7 @@ export default class Spot extends Component {
 
   render() {
     const { players, standalone } = this.props
-    // players {username, fullname, name, bank, description ('bb'\'sb'\'ante'\...), avatar, bet, folded, myTurn, isDealer}
     const dealerComponent = this.buildDealerComponent()
-    // dealer {pot, cards, }
 
     return (
       <PokerTable standalone={standalone}>

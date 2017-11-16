@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import classnames from 'classnames'
 import style from './style.css'
+import pokerfaceLogo from '../../assets/logo.png'
 
 export default class PokerTable extends Component {
   static propTypes = {
     edgeColor: PropTypes.string,
     fabricColor: PropTypes.string,
+    logo: PropTypes.string,
     standalone: PropTypes.bool,
     title: PropTypes.string,
   }
@@ -14,10 +16,11 @@ export default class PokerTable extends Component {
     edgeColor: '#353535',
     title: 'Pokerface.io',
     standalone: false,
+    logo: pokerfaceLogo,
   }
 
   render() {
-    const {children, title, standalone, fabricColor, edgeColor} = this.props
+    const {children, title, standalone, fabricColor, edgeColor, logo} = this.props
     return (
       <div
           className={classnames(
@@ -26,14 +29,19 @@ export default class PokerTable extends Component {
           )}
           style={{backgroundColor: edgeColor}}
       >
-        {children}
         <div className={classnames(style.edge)} style={{backgroundColor: fabricColor}}>
           <div className={classnames(style.fabric)} style={{backgroundColor: fabricColor}}>
             <div className={classnames(style.text)}>
               {title}
             </div>
+            {
+              logo ?
+              <div className={style.logo} style={{backgroundImage:`url('${logo}')`}}/>
+              : null
+            }
           </div>
         </div>
+        {children}
       </div>
     )
   }
