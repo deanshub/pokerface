@@ -10,10 +10,10 @@ import {Helmet} from 'react-helmet'
 import logger from '../../utils/logger'
 
 import Login from '../Login'
+import SettingPassword from '../SettingPassword'
 import Navigation from '../Navigation'
 import PrivateRoute from './PrivateRoute'
 import StandalonePost from '../Feed/StandalonePost'
-
 
 
 const browserHistory = createBrowserHistory()
@@ -58,13 +58,16 @@ export default class App extends Component {
                       exact
                       path="/login"
                   />
-
+                  <Route
+                      component={SettingPassword}
+                      exact
+                      path="/password/:uuid"
+                  />
                   <Route
                       component={StandalonePost}
                       exact
                       path="/post/:id"
                   />
-
                   <PrivateRoute
                       component={Navigation}
                       path="/"
