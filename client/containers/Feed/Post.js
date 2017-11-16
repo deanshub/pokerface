@@ -227,6 +227,12 @@ export default class Post extends Component {
     window.open(shareurl,'', 'height=570,width=520')
   }
 
+  getLink(){
+    const { post } = this.props
+    const postUrl = `${location.protocol}//${location.host}/post/${post.id}`
+    window.prompt('Copy to clipboard: Ctrl+C, Enter', postUrl)
+  }
+
   render() {
     const { post, auth, standalone } = this.props
     const { replying } = post
@@ -304,11 +310,15 @@ export default class Post extends Component {
                   <Icon className={classnames(style.icon)} name="share" />
                   Facebook
                 </Dropdown.Item>
-              <Dropdown.Item onClick={::this.downloadGif}>
-                <Icon className={classnames(style.icon)} name="download" />
-                Download
-              </Dropdown.Item>
-            </Dropdown.Menu>
+                <Dropdown.Item onClick={::this.downloadGif}>
+                  <Icon className={classnames(style.icon)} name="download" />
+                  Download
+                </Dropdown.Item>
+                <Dropdown.Item onClick={::this.getLink}>
+                  <Icon className={classnames(style.icon)} name="linkify" />
+                  Get link
+                </Dropdown.Item>
+              </Dropdown.Menu>
             </Dropdown>
             {/* <Feed.Like
                 className={classnames(

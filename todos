@@ -15,7 +15,6 @@ fix the keys selection of emoji\ mention plugins within the post editor
 spot player imporvements
 * re render of cards (images requested multiple times)
 * better responsiveness (vertical phone)
-* add link copy to share dropdown
 logger.event for spot creation and downloading and facebook share
 
 
