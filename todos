@@ -13,9 +13,9 @@ fix the keys selection of emoji\ mention plugins within the post editor
 -------------------------------------------------------------------------------
 
 spot player imporvements
-* re render of cards (images requested multiple times)
+* create constants for all logger categories and such
+* re render of cards (images requested multiple times) when exporting gif
 * better responsiveness (vertical phone)
-logger.event for spot creation and downloading and facebook share
 
 
 leagal note on signup and login

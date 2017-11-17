@@ -15,6 +15,7 @@ import PostImage from './PostImage'
 import PostEditor from '../../components/PostEditor'
 import classnames from 'classnames'
 import style from './style.css'
+import logger from '../../utils/logger'
 
 TimeAgo.locale(timeAgoEnLocale)
 
@@ -180,6 +181,7 @@ export default class Post extends Component {
 
   downloadGif(){
     const { post, spotPlayer } = this.props
+    logger.logEvent({category:'Post',action:'Download gif'})
     this.setState({
       busy: true,
     })
@@ -223,12 +225,14 @@ export default class Post extends Component {
   }
   sharePostOnFacebook(){
     const { post } = this.props
+    logger.logEvent({category:'Post',action:'Facebook share'})
     const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/post/${post.id}&title=Pokerface.io&description=Post by ${post.player.fullname}&picture=http://pokerface.io${require('file-loader!../../assets/logo.png')}`
     window.open(shareurl,'', 'height=570,width=520')
   }
 
   getLink(){
     const { post } = this.props
+    logger.logEvent({category:'Post',action:'Get link'})
     const postUrl = `${location.protocol}//${location.host}/post/${post.id}`
     window.prompt('Copy to clipboard: Ctrl+C, Enter', postUrl)
   }
@@ -320,19 +324,6 @@ export default class Post extends Component {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            {/* <Feed.Like
-                className={classnames(
-                  style.unselectable,
-                  style.blackIcons,
-                  {
-                    [style.standaloneUnselectable]: standalone,
-                  }
-                )}
-                onClick={::this.downloadGif}
-            >
-              <Icon className={classnames(style.icon)} name="share" />
-              Share
-            </Feed.Like> */}
           </Feed.Meta>
           <Feed.Extra>
             <Comments
