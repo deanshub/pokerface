@@ -5,13 +5,14 @@ import fileUploadMiddleware from './utils/fileUploadMiddleware'
 import authentication from './routes/authentication'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
-//import expressSession from 'express-session'
+import expressSession from 'express-session'
 import compression from 'compression'
 import config from 'config'
 import routes from './routes'
 import {graphiqlExpress } from 'apollo-server-express'
 import {graphqlExpressMiddleware, createGraphqlSubscriptionsServer} from './data/graphql'
 import {devMiddleware, hotMiddleware} from './routes/webpack.js'
+import loginRoute from './routes/login'
 
 const app = express()
 const PORT = config.port || 9031
@@ -21,6 +22,7 @@ app.use(cookieParser())
 // app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(expressSession({ secret: 'admin', resave: true, saveUninitialized: true }))
 
 if (config.NODE_ENV==='development'){
   app.use(devMiddleware())
@@ -29,7 +31,7 @@ if (config.NODE_ENV==='development'){
 
 app.use(authentication.initialize())
 
-app.post('/login', authentication.login)
+app.use('/login', loginRoute)
 
 app.use(authentication.addUserToRequest)
 
