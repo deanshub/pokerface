@@ -35,7 +35,7 @@ export default class LoginForm extends Component {
       loggingInFail: false,
       loginFailMessage: null,
     })
-    request.post('/login')
+    request.post('/login/local')
       .send({email, password})
       .accept('json')
       .type('json')
@@ -69,8 +69,11 @@ export default class LoginForm extends Component {
     })
   }
 
-  forgotPassord(){
-
+  handleFacebookLogin(e){
+    //e.preventDefault();
+    request.get('/login/facebook').then((res) => {
+      console.log(res);
+    })
   }
 
   render() {
@@ -115,9 +118,10 @@ export default class LoginForm extends Component {
         <Divider horizontal>Or</Divider>
 
         <Form.Group inline>
-          <Button color="facebook">
+          <Button as="a" color="facebook" href="/login/facebook">
             <Icon name="facebook" /> Facebook
           </Button>
+
           <Button color="google plus">
             <Icon name="google" /> Google
           </Button>
