@@ -1,14 +1,15 @@
 // @flow
 
 import React, { Component, PropTypes } from 'react'
-import { Modal, Step, Button } from 'semantic-ui-react'
+import { Modal } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import Spot from '../Spot'
 import GeneralSettings from './GeneralSettings'
-import SpotPlayer from '../../containers/SpotPlayer'
 import ActionBar from './ActionBar'
 import MOVES from '../../containers/SpotPlayer/constants'
 import utils from '../../containers/SpotPlayer/utils'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('spotPlayer')
 @inject('players')
@@ -309,7 +310,7 @@ export default class SpotWizard extends Component {
           Spot Wizard
         </Modal.Header>
 
-        <Modal.Content style={{height:'80vh'}}>
+        <Modal.Content className={classnames(style.spotContainer)} style={{height:'80vh'}}>
           {this.getMainContent()}
         </Modal.Content>
         <ActionBar

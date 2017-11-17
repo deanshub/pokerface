@@ -12,6 +12,12 @@ change the script name to include hash (so when a new version comes it won't be 
 fix the keys selection of emoji\ mention plugins within the post editor
 -------------------------------------------------------------------------------
 
+spot player imporvements
+* create constants for all logger categories and such
+* re render of cards (images requested multiple times) when exporting gif
+* better responsiveness (vertical phone)
+
+
 leagal note on signup and login
 
 head

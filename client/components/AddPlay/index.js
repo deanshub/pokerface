@@ -91,7 +91,7 @@ export default class AddPlay extends Component {
                       name="close"
                       onClick={()=>spotPlayer.newSpot = spotPlayer.initNewPost()}
                   />
-                  <SpotPlayer post={spotPlayer.newSpot}/>
+                  <SpotPlayer post={spotPlayer.newSpot} style={{height:'70vh'}}/>
                 </Grid.Column>
               </Grid.Row>
             ):null

@@ -4,8 +4,8 @@ import { Sidebar, Segment } from 'semantic-ui-react'
 import Spot from '../../components/Spot'
 import StepsPlayer from '../../components/StepsPlayer'
 
-// import classnames from 'classnames'
-// import style from './style.css'
+import classnames from 'classnames'
+import cssStyle from './style.css'
 
 @inject('spotPlayer')
 @observer
@@ -27,7 +27,7 @@ export default class SpotPlayer extends Component {
               onReset={()=>spotPlayer.reset(post)}
           />
         </Sidebar>
-        <Sidebar.Pusher style={{height:'100%'}}>
+        <Sidebar.Pusher className={classnames(cssStyle.spotPlayerContainer)}>
           <Spot
               currency={post.spotPlayerState.currency}
               dealer={post.spotPlayerState.dealer}
