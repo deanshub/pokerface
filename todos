@@ -13,6 +13,7 @@ fix the keys selection of emoji\ mention plugins within the post editor
 -------------------------------------------------------------------------------
 
 spot player imporvements
+* last image of gif (shows) player cards black - maybe setTimeout before taking every image
 * create constants for all logger categories and such
 * re render of cards (images requested multiple times) when exporting gif
 * better responsiveness (vertical phone)
