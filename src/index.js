@@ -53,9 +53,8 @@ routes.apiRoutes.then(apiRoutes=>{
   apiRoutes.forEach((route)=>{
     app.use('/api', route)
   })
+  app.use('/', routes.staticRoutes)
 })
-
-app.use('/', routes.staticRoutes)
 
 const wrappedServer = createGraphqlSubscriptionsServer(app, PORT)
 

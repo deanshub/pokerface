@@ -1,3 +1,5 @@
+import staticRoutes from './staticRoutes'
+
 const routesConfig = [{
   name: 'signup',
   // disabled: true,
@@ -5,8 +7,6 @@ const routesConfig = [{
   name:'avatarGenerator',
   // disabled: true,
 }]
-
-import staticRoutes from './staticRoutes'
 
 const enableModules = routesConfig
   .filter(route=>route.disabled!==true)
