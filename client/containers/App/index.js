@@ -15,7 +15,6 @@ import Navigation from '../Navigation'
 import PrivateRoute from './PrivateRoute'
 import StandalonePost from '../Feed/StandalonePost'
 
-
 const browserHistory = createBrowserHistory()
 import stores from './stores'
 const history = syncHistoryWithStore(browserHistory, stores.routing)

@@ -342,6 +342,9 @@ export class FeedStore {
         this.standalonePost.loading = false
         throw new Error('Post doesn\'t exists anymore')
       }
+    }).catch(err=>{
+      this.standalonePost.loading = false
+      console.error(err)
     })
   }
 

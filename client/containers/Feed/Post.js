@@ -179,7 +179,7 @@ export default class Post extends Component {
           return resolve(img)
         })
         .catch(reject)
-      },50)
+      },100)
     })
   }
 
