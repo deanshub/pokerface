@@ -170,13 +170,17 @@ export default class Post extends Component {
   }
 
   generateImage(postElement){
-    return domtoimage.toPng(postElement)
-    .then((dataUrl)=>{
-      const img = new Image()
-      img.src = dataUrl
-      return img
+    return new Promise((resolve, reject)=>{
+      setTimeout(()=>{
+        return domtoimage.toPng(postElement)
+        .then((dataUrl)=>{
+          const img = new Image()
+          img.src = dataUrl
+          return resolve(img)
+        })
+        .catch(reject)
+      },50)
     })
-    .catch(console.error)
   }
 
   downloadGif(){

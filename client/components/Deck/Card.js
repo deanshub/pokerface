@@ -18,7 +18,7 @@ export default class Card extends Component {
   }
   static defaultProps = {
     active: false,
-    covered: false,
+    covered: true,
     coveredText: 'Poker face',
     noHoverEffect: false,
     size: 3.5,
