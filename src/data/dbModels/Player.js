@@ -54,6 +54,12 @@ const schema = mongoose.Schema({
   tempuuiddate:{
     type: Date,
   },
+  gender:{
+    type:String,
+  },
+  birthday:{
+    type: Date,
+  },
   updated: { type: Date, default: Date.now },
   created: { type: Date, default: Date.now },
 })

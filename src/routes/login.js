@@ -5,11 +5,15 @@ const router = express.Router()
 
 router.post('/local', authentication.login)
 router.get('/facebook', authentication.facebookLogin)
-router.get('/facebook/callback', authentication.copyFacebookUser, (req, res) => {
+
+// authenticate with facebook to get the token
+router.get('/facebook/callback', authentication.authenticateWithFacebook, (req, res) => {
+  res.cookie('jwt-facebook', req.user.token, {maxAge:1000*600})
   res.redirect('/')
 })
 
-router.post('/isAuthenticated', (req, res)=>{
+// TODO consider merge the middlewares
+router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
 
   if (!req.user) {
     res.json({})

@@ -30,10 +30,9 @@ if (config.NODE_ENV==='development'){
 }
 
 app.use(authentication.initialize())
+//app.use(authentication.addUserToRequest)
 
 app.use('/login', loginRoute)
-
-app.use(authentication.addUserToRequest)
 
 app.use('/graphql',
   bodyParser.json(),
