@@ -2,8 +2,6 @@
 
 import React, { Component, PropTypes } from 'react'
 // import { observer, inject } from 'mobx-react'
-// import { parse } from 'qs'
-
 // import { Grid, Header, Form, Segment, Button, Icon, Divider, Message } from 'semantic-ui-react'
 import { Segment } from 'semantic-ui-react'
 // import request from 'superagent'
@@ -13,13 +11,13 @@ import PublicPageTemplate from '../../components/PublicPageTemplate'
 import SignupForm from './SignupForm'
 import LoginForm from './LoginForm'
 
-export default (props) => (
-  <PublicPageTemplate horizontal={true}>
+export default () => (
+  <PublicPageTemplate horizontal>
       <Segment basic>
-        <LoginForm {...props}/>
+        <LoginForm/>
       </Segment>
       <Segment basic>
-        <SignupForm {...props}/>
+        <SignupForm/>
       </Segment>
   </PublicPageTemplate>
 )
