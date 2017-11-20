@@ -1,3 +1,6 @@
-/*.spotPlayerContainer{
-  height: 80vh;
-}*/
+.spotPlayerContainer{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

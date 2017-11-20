@@ -53,8 +53,10 @@ export default class Bet extends Component {
             style={style}
         >
           {chipsComponents}
-          <div className={classnames(betStyle.betLabel,{[betStyle.dealerBet]:dealerBet})}>
-            {dealerBet?'Pot:':''}{amount}{currency}
+          <div className={classnames(betStyle.betLabelContainer,{[betStyle.dealerBetContainer]:dealerBet})}>
+            <div className={classnames(betStyle.betLabel,{[betStyle.dealerBet]:dealerBet})}>
+              {dealerBet?'Pot:':''}{amount}{currency}
+            </div>
           </div>
         </div>
       )

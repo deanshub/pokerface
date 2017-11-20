@@ -26,14 +26,22 @@ const utils = {
     return cards
   },
 
+  stillLooking(action){
+    return (
+      action===MOVES.PLAYER_META_ACTIONS.SHOWS ||
+      action===MOVES.PLAYER_META_ACTIONS.DEALER ||
+      action===MOVES.PLAYER_ACTIONS.ANTE
+    )
+  },
+
   getPlayersShowingCards(moves){
     let index = 0
     let stillLooking = true
     let playersShowingCards = {}
 
     while(stillLooking && moves.length>index){
-      stillLooking = moves[index].action===MOVES.PLAYER_META_ACTIONS.SHOWS
-      if (stillLooking){
+      stillLooking = this.stillLooking(moves[index].action)
+      if (moves[index].action===MOVES.PLAYER_META_ACTIONS.SHOWS){
         playersShowingCards[moves[index].player]=true
       }
       index++
@@ -46,11 +54,7 @@ const utils = {
     let stillLooking = true
 
     while(stillLooking && moves.length>index){
-      stillLooking = (
-        moves[index].action===MOVES.PLAYER_META_ACTIONS.SHOWS ||
-        moves[index].action===MOVES.PLAYER_META_ACTIONS.DEALER ||
-        moves[index].action===MOVES.PLAYER_ACTIONS.ANTE
-      )
+      stillLooking = this.stillLooking(moves[index].action)
       if (!stillLooking){
         return moves[index]
       }

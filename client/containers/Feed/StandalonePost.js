@@ -48,9 +48,9 @@ export default class StandalonePost extends Component {
             />
             :
             <div>
-              <Header size="huge">Post have been removed or is private...</Header>
+              <Header size="huge">Post has been removed or is private...</Header>
               <Header>Login and try again</Header>
-              <a href="/login">
+              <a href="/">
                 <Icon
                     color="red"
                     link
