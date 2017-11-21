@@ -35,8 +35,16 @@ export class AuthStore {
     this.authenticating = true
     return request.post('/login/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
       this.authenticating = false
-      const player = res.body
+
+      const {refreshToken, user} = res.body
+
+      const player = user
       logger.setField({user:player.username, email:player.email})
+
+      if (refreshToken){
+        localStorage.setItem('jwt',refreshToken)
+      }
+
       return this.user=player
     }).catch(err=>{
       console.error(err)
