@@ -8,6 +8,11 @@ import { download } from '../utils/diskWriting'
 import uuidv1 from 'uuid/v1'
 import {createPlayer} from '../data/helping/player'
 
+// TODO merge with mailer.sj
+const hostLocation = (config.NODE_ENV==='development')?
+    `localhost:${config.PORT}`
+  :
+    'pokerface.io'
 
 const initialize = () => {
   const initialize = passport.initialize()
@@ -51,7 +56,7 @@ const initialize = () => {
     {
       clientID: '471349949896195',
       clientSecret: '23da997ccb85a542a193b8cbac4a31dd',
-      callbackURL: 'http://localhost:9031/login/facebook/callback',
+      callbackURL: `http://${hostLocation}/login/facebook/callback`,
       profileFields: [
         'id',
         'email',
@@ -82,8 +87,7 @@ const initialize = () => {
 
         const pictureUuid = uuidv1()
 
-        // TODO check what happens if there is no picture
-        if (!player.avatar && picture.data){
+        if (!player.avatar){
           download(
             picture.data.url,
             '../client/static/images/avatars',
@@ -100,7 +104,7 @@ const initialize = () => {
           )
         }
 
-        if (!player.coverImage && cover.source){
+        if (!player.coverImage && cover){
           download(
             cover.source,
             '../client/static/images/covers',
