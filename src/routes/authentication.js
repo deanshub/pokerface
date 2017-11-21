@@ -54,8 +54,8 @@ const initialize = () => {
 
   passport.use(new FacebookStrategy(
     {
-      clientID: '471349949896195',
-      clientSecret: '23da997ccb85a542a193b8cbac4a31dd',
+      clientID: config.FACEBOOK_APP_ID,
+      clientSecret: config.FACEBOOK_SECRET_ID,
       callbackURL: `http://${hostLocation}/login/facebook/callback`,
       profileFields: [
         'id',
