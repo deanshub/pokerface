@@ -12,7 +12,6 @@ router.get('/facebook/callback', authentication.authenticateWithFacebook, (req, 
   res.redirect('/')
 })
 
-// TODO consider merge the middlewares
 router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
 
   if (!req.user) {
@@ -37,7 +36,10 @@ router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
     }else if (!coverImage.includes('http')) {
       coverImage = `/images/${coverImage}`
     }
-    res.json({...req.user, username, avatar, coverImage})
+
+    const refreshToken = req.refreshToken
+
+    res.json({refreshToken, user:{...req.user, username, avatar, coverImage}})
   }
 })
 

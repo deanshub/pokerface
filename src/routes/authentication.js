@@ -4,6 +4,10 @@ import DB from '../data/db'
 import config from 'config'
 import {signTokenToUser} from '../utils/authUtils'
 import {Strategy as FacebookStrategy} from 'passport-facebook'
+import { download } from '../utils/diskWriting'
+import uuidv1 from 'uuid/v1'
+import {createPlayer} from '../data/helping/player'
+
 
 const initialize = () => {
   const initialize = passport.initialize()
@@ -55,38 +59,64 @@ const initialize = () => {
         'picture.width(240).height(240)',
         'name',
         'gender',
-        'birthday',
       ],
     },
     function(accessToken, refreshToken, profile, cb) {
-      const {_json:fbUser} = profile
+      const {
+        email,
+        first_name:firstname,
+        last_name:lastname,
+        gender,
+        picture,
+        cover,
+      } = profile._json
 
-      const player = {
-        _id: `${fbUser.first_name}.${fbUser.last_name}`.toLowerCase(), // TODO add counter
-        email:fbUser.email,
-        firstname:fbUser.first_name,
-        lastname:fbUser.last_name,
-        gender:fbUser.gender,
-        //birthday:moment(fbUser.birthday, 'MM/DD/YYYY'),
-        updated:Date.now(),
-      }
+      DB.models.Player.findOne({email}).then((existedPlayer) => {
 
-      DB.models.Player.findOneAndUpdate(
-        {email:player.email},
-        player,
-        {new:true,upsert:true},
-      ).then((player) => {
+        if (existedPlayer){
+          return existedPlayer
+        }else {
+          return createPlayer({email, firstname, lastname, gender})
+        }
+      }).then((player) => {
+
+        const pictureUuid = uuidv1()
 
         // TODO check what happens if there is no picture
-        if (fbUser.picture.data){
-          player.avatar = fbUser.picture.data.url
+        if (!player.avatar && picture.data){
+          download(
+            picture.data.url,
+            '../client/static/images/avatars',
+            `${pictureUuid}.jpg`,
+            (err) => {
+              if (!err){
+                player.avatar = `avatars/${pictureUuid}.jpg`
+                player.updated = Date.now()
+                player.save()
+              }else {
+                console.error(err)
+              }
+            }
+          )
         }
 
-        if (fbUser.cover.source){
-          player.avatar = fbUser.picture.data.url
+        if (!player.coverImage && cover.source){
+          download(
+            cover.source,
+            '../client/static/images/covers',
+            `${pictureUuid}.jpg`,
+            (err) => {
+              if (!err){
+                player.coverImage = `covers/${pictureUuid}.jpg`
+                player.updated = Date.now()
+                player.save()
+              }else {
+                console.error(err)
+              }
+            }
+          )
         }
         const token = signTokenToUser(player)
-        player.save()
 
         return cb(null, {token, user:{...player.toJSON(), password:undefined}})
       }).catch(e=>{
@@ -138,6 +168,7 @@ const addUserToRequest = (req, res, next) => {
     req.user = user
 
     if (user && req.cookies['jwt-facebook']){
+      req.refreshToken = req.cookies['jwt-facebook']
       res.clearCookie('jwt-facebook')
     }
 

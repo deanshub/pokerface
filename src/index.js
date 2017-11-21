@@ -30,9 +30,7 @@ if (config.NODE_ENV==='development'){
 }
 
 app.use(authentication.initialize())
-//app.use(authentication.addUserToRequest)
-
-app.use('/login', loginRoute)
+app.use(authentication.addUserToRequest)
 
 app.use('/graphql',
   bodyParser.json(),
@@ -51,10 +49,13 @@ if (config.NODE_ENV==='development'){
   }))
 }
 routes.apiRoutes.then(apiRoutes=>{
+  app.use('/login', loginRoute)
+
   apiRoutes.forEach((route)=>{
     app.use('/api', route)
   })
   app.use('/', routes.staticRoutes)
+
 })
 
 const wrappedServer = createGraphqlSubscriptionsServer(app, PORT)
