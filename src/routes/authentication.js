@@ -92,16 +92,13 @@ const initialize = () => {
             picture.data.url,
             '../client/static/images/avatars',
             `${pictureUuid}.jpg`,
-            (err) => {
-              if (!err){
-                player.avatar = `avatars/${pictureUuid}.jpg`
-                player.updated = Date.now()
-                player.save()
-              }else {
-                console.error(err)
-              }
-            }
-          )
+          ).then(() => {
+            player.avatar = `avatars/${pictureUuid}.jpg`
+            player.updated = Date.now()
+            player.save()
+          }).catch((err) => {
+            console.error(err)
+          })
         }
 
         if (!player.coverImage && cover){
@@ -109,16 +106,13 @@ const initialize = () => {
             cover.source,
             '../client/static/images/covers',
             `${pictureUuid}.jpg`,
-            (err) => {
-              if (!err){
-                player.coverImage = `covers/${pictureUuid}.jpg`
-                player.updated = Date.now()
-                player.save()
-              }else {
-                console.error(err)
-              }
-            }
-          )
+          ).then(() => {
+            player.coverImage = `covers/${pictureUuid}.jpg`
+            player.updated = Date.now()
+            player.save()
+          }).catch((err) => {
+            console.error(err)
+          })
         }
         const token = signTokenToUser(player)
 

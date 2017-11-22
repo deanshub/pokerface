@@ -3,16 +3,16 @@ import request from 'request'
 import mkdirp from 'mkdirp'
 
 
-export const download = (uri, destDirPath, destFileName, callback) => {
+export const download = (uri, destDirPath, destFileName) => {
+  return new Promise((resolve, reject)=>{
+    mkdirp(destDirPath, function(err) {
+      if (err) return reject(err)
 
-  mkdirp(destDirPath, function(err) {
-    if (err) return callback(err)
+      request.head(uri, function(err){
+        if (err) return reject(err)
 
-    request.head(uri, function(err){
-      if (err) return callback(err)
-
-      request(uri).pipe(fs.createWriteStream(`${destDirPath}/${destFileName}`)).on('close', callback)
+        request(uri).pipe(fs.createWriteStream(`${destDirPath}/${destFileName}`)).on('close', resolve)
+      })
     })
   })
-
 }
