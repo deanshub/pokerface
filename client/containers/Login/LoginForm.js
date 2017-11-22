@@ -69,13 +69,6 @@ export default class LoginForm extends Component {
     })
   }
 
-  handleFacebookLogin(e){
-    //e.preventDefault();
-    request.get('/login/facebook').then((res) => {
-      console.log(res);
-    })
-  }
-
   render() {
     const {
       loggingInPorgress,
