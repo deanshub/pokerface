@@ -12,6 +12,10 @@ change the script name to include hash (so when a new version comes it won't be 
 fix the keys selection of emoji\ mention plugins within the post editor
 -------------------------------------------------------------------------------
 
+editor improvements
+* when clicked the scroll moves away from the relevent element
+* add range on hover for ranges within []
+
 spot player imporvements
 * create constants for all logger categories and such
 * re render of cards (images requested multiple times) when exporting gif

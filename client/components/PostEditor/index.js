@@ -176,7 +176,7 @@ export default class PostEditor extends Component {
             plugins={this.plugins}
             readOnly={readOnly}
             ref={(element) => {
-              if (element)
+              if (element && !this.editor)
                 this.editor = element
             }}
         />
