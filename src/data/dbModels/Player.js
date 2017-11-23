@@ -60,6 +60,9 @@ const schema = mongoose.Schema({
   birthday:{
     type: Date,
   },
+  facebookId: {
+    type: String,
+  },
   updated: { type: Date, default: Date.now },
   created: { type: Date, default: Date.now },
 })

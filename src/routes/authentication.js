@@ -68,6 +68,7 @@ const initialize = () => {
     },
     function(accessToken, refreshToken, profile, cb) {
       const {
+        id:facebookId,
         email,
         first_name:firstname,
         last_name:lastname,
@@ -87,11 +88,15 @@ const initialize = () => {
 
         const pictureUuid = uuidv1()
 
+        if (!player.facebookId){
+          player.facebookId = facebookId
+        }
+
         if (!player.avatar){
           download(
             picture.data.url,
             '../client/static/images',
-            `${pictureUuid}.jpg`,
+            `avater${pictureUuid}.jpg`,
           ).then(() => {
             player.avatar = `${pictureUuid}.jpg`
             player.updated = Date.now()
@@ -105,7 +110,7 @@ const initialize = () => {
           download(
             cover.source,
             '../client/static/images',
-            `${pictureUuid}.jpg`,
+            `cover${pictureUuid}.jpg`,
           ).then(() => {
             player.coverImage = `${pictureUuid}.jpg`
             player.updated = Date.now()
@@ -122,7 +127,6 @@ const initialize = () => {
         return cb(null, {user:{}})
       })
     }))
-
 
   passport.serializeUser((player, done) => {
     done(null, player.user._id)
@@ -179,11 +183,12 @@ const facebookLogin = passport.authenticate('facebook', {scope: ['public_profile
 
 const authenticateWithFacebook = passport.authenticate('facebook', { failureRedirect: '/login' })
 
-
 export default {
   initialize,
   login,
   facebookLogin,
   authenticateWithFacebook,
   addUserToRequest,
+  // googleLogin,
+  // authenticateWithGoogle,
 }
