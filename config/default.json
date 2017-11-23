@@ -5,5 +5,7 @@
   "NODE_ENV": "development",
   "PORT": "9031",
   "GMAIL_USER": "pokerfaceemail@gmail.com",
-  "GMAIL_PASSWORD": "kodszhadkclrkpyb"
+  "GMAIL_PASSWORD": "kodszhadkclrkpyb",
+  "FACEBOOK_APP_ID": "471349949896195",
+  "FACEBOOK_SECRET_ID": "23da997ccb85a542a193b8cbac4a31dd"
 }

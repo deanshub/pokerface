@@ -54,12 +54,21 @@ const schema = mongoose.Schema({
   tempuuiddate:{
     type: Date,
   },
+  gender:{
+    type:String,
+  },
+  birthday:{
+    type: Date,
+  },
+  facebookId: {
+    type: String,
+  },
   updated: { type: Date, default: Date.now },
   created: { type: Date, default: Date.now },
 })
 
 schema.virtual('fullname').get(function(){
-  return `${this.firstname} ${this.lastname}`
+  return `${this.firstname}${this.lastname?` ${this.lastname}`:''}`
 })
 
 const Player = mongoose.model('Player', schema)

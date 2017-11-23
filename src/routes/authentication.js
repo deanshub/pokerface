@@ -3,20 +3,42 @@ import {Strategy as JwtStrategy, ExtractJwt} from 'passport-jwt'
 import DB from '../data/db'
 import config from 'config'
 import {signTokenToUser} from '../utils/authUtils'
+import {Strategy as FacebookStrategy} from 'passport-facebook'
+import { download } from '../utils/diskWriting'
+import uuidv1 from 'uuid/v1'
+import {createPlayer} from '../data/helping/player'
+
+// TODO merge with mailer.sj
+const hostLocation = (config.NODE_ENV==='development')?
+    `localhost:${config.PORT}`
+  :
+    'pokerface.io'
 
 const initialize = () => {
   const initialize = passport.initialize()
 
+  const cookieExtractor = (req) =>  {
+    let  token = null
+    if (req && req.cookies)
+    {
+      token = req.cookies['jwt-facebook']
+    }
+    return token
+  }
+
   passport.use(
     new JwtStrategy({
-      jwtFromRequest: ExtractJwt.fromExtractors([(req) => {
-        let token = null
-        if (req && req.headers)
-        {
-          token = req.headers.authorization
-        }
-        return token
-      }]),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req) => {
+          let token = null
+          if (req && req.headers)
+          {
+            token = req.headers.authorization
+          }
+          return token
+        },
+        cookieExtractor,
+      ]),
       secretOrKey: config.SECRET_KEY,
     },
       function (jwtPayload, done){
@@ -30,11 +52,104 @@ const initialize = () => {
     )
   )
 
+  passport.use(new FacebookStrategy(
+    {
+      clientID: config.FACEBOOK_APP_ID,
+      clientSecret: config.FACEBOOK_SECRET_ID,
+      callbackURL: `http://${hostLocation}/login/facebook/callback`,
+      profileFields: [
+        'id',
+        'email',
+        'cover',
+        'picture.width(240).height(240)',
+        'name',
+        'gender',
+      ],
+    },
+    function(accessToken, refreshToken, profile, cb) {
+      const {
+        id:facebookId,
+        email,
+        first_name:firstname,
+        last_name:lastname,
+        gender,
+        picture,
+        cover,
+      } = profile._json
+
+      DB.models.Player.findOne({email}).then((existedPlayer) => {
+
+        if (existedPlayer){
+          return existedPlayer
+        }else {
+          return createPlayer({email, firstname, lastname, gender})
+        }
+      }).then((player) => {
+
+        const pictureUuid = uuidv1()
+
+        if (!player.facebookId){
+          player.facebookId = facebookId
+        }
+
+        if (!player.avatar){
+
+          const avatarFilename = `avater${pictureUuid}.jpg`
+          download(
+            picture.data.url,
+            '../client/static/images',
+            avatarFilename,
+          ).then(() => {
+            player.avatar = avatarFilename
+            player.updated = Date.now()
+            player.save()
+          }).catch((err) => {
+            console.error(err)
+          })
+        }
+
+        if (!player.coverImage && cover){
+
+          const coverFileName = `cover${pictureUuid}.jpg`
+          download(
+            cover.source,
+            '../client/static/images',
+            coverFileName,
+          ).then(() => {
+            player.coverImage = coverFileName
+            player.updated = Date.now()
+            player.save()
+          }).catch((err) => {
+            console.error(err)
+          })
+        }
+        const token = signTokenToUser(player)
+
+        return cb(null, {token, user:{...player.toJSON(), password:undefined}})
+      }).catch(e=>{
+        console.error(e)
+        return cb(null, {user:{}})
+      })
+    }))
+
+  passport.serializeUser((player, done) => {
+    done(null, player.user._id)
+  })
+
+  passport.deserializeUser((user, done) => {
+    DB.models.Player.findById(user).select('-password').then((user)=>{
+      const token = signTokenToUser(user)
+      return done(null, {token, user:{...user.toJSON(), fullname:user.fullname}})
+    }).catch(e=>{
+      console.error(e)
+      return done(null, false, {message: 'Email or password are Incorrect .'})
+    })
+  })
+
   return initialize
 }
 
 const login = (req, res) => {
-
   const {email, password} = req.body
 
   DB.models.Player.findOne({email,password,active:true}).select('-password').then((user)=>{
@@ -55,13 +170,29 @@ const addUserToRequest = (req, res, next) => {
     if (err){
       console.error(err)
     }
+
     req.user = user
+
+    if (user && req.cookies['jwt-facebook']){
+      req.refreshToken = req.cookies['jwt-facebook']
+      res.clearCookie('jwt-facebook')
+    }
+
     return next()
   })(req, res, next)
 }
 
+//'user_friends',
+const facebookLogin = passport.authenticate('facebook', {scope: ['public_profile', 'email']})
+
+const authenticateWithFacebook = passport.authenticate('facebook', { failureRedirect: '/login' })
+
 export default {
   initialize,
   login,
+  facebookLogin,
+  authenticateWithFacebook,
   addUserToRequest,
+  // googleLogin,
+  // authenticateWithGoogle,
 }
