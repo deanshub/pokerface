@@ -1,6 +1,6 @@
 // @flow
 
-import { Route, Switch } from 'react-router'
+import { Route, Switch, Redirect } from 'react-router'
 import { Router } from 'react-router-dom'
 import { syncHistoryWithStore } from 'mobx-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -51,6 +51,10 @@ export default class App extends Component {
             <Router history={history}>
               <div>
                 <Route component={this.logPageView}/>
+                <Route
+                    path="/"
+                    render={({location}) => {return (location.hash==='#_=_')?<Redirect to="/"/>:null}}
+                />
                 <Switch>
                   <Route
                       component={Login}

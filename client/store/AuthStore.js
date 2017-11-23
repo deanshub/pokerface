@@ -33,10 +33,18 @@ export class AuthStore {
   authenticate(){
 
     this.authenticating = true
-    return request.post('/api/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
+    return request.post('/login/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
       this.authenticating = false
-      const player = res.body
+
+      const {refreshToken, user} = res.body
+
+      const player = user
       logger.setField({user:player.username, email:player.email})
+
+      if (refreshToken){
+        localStorage.setItem('jwt',refreshToken)
+      }
+
       return this.user=player
     }).catch(err=>{
       console.error(err)
@@ -44,20 +52,20 @@ export class AuthStore {
     })
   }
 
-  @action
-  authenticateByUuid(uuid){
-    this.authenticating = true
-
-    return request.post('/api/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
-      this.authenticating = false
-      const player = res.body
-      logger.setField({user:player.username, email:player.email})
-      return this.user=player
-    }).catch(err=>{
-      console.error(err)
-      this.authenticating = false
-    })
-  }
+  // @action
+  // authenticateByUuid(uuid){
+  //   this.authenticating = true
+  //
+  //   return request.post('/login/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
+  //     this.authenticating = false
+  //     const player = res.body
+  //     logger.setField({user:player.username, email:player.email})
+  //     return this.user=player
+  //   }).catch(err=>{
+  //     console.error(err)
+  //     this.authenticating = false
+  //   })
+  // }
 
   @action
   logout(){
