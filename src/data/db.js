@@ -8,6 +8,9 @@ import Comment from './dbModels/Comment'
 import Game from './dbModels/Game'
 // import generateFakeData from './faker/generator'
 
+// import mongooseErd from 'mongoose-erd'
+// console.log(mongooseErd.toFile(mongoose))
+
 const connString = `mongodb://${config.DB_USER}:${config.DB_PASSWORD}@localhost/pokerface`
 // mongoose.set('debug', true)
 mongoose.connection.once('open', function() {

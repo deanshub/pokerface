@@ -46,7 +46,7 @@ router.post('/signup', (req, res)=>{
   }).then(() => {
     res.json({success:true})
   }).catch(err=>{
-    console.log(err)
+    console.error(err)
     if (err instanceof KnownError){
       res.status(err.status).json(err.response)
     }else{
@@ -88,7 +88,7 @@ router.post('/forgotPassword', (req, res) => {
   }).then(() => {
     res.json({success:true})
   }).catch(err=>{
-    console.log(err)
+    console.error(err)
 
     if (err instanceof KnownError){
       res.status(err.status).json(err.response)

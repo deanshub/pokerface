@@ -61,8 +61,5 @@ routes.apiRoutes.then(apiRoutes=>{
 const wrappedServer = createGraphqlSubscriptionsServer(app, PORT)
 
 wrappedServer.listen(PORT, () =>
-  console.log(
-    `Websocket Server is now running on http://localhost:${PORT}`,
-    `Pokerface server listening on port ${PORT}`
-  )
+  console.log(`Pokerface server listening on port ${PORT}`)
 )
