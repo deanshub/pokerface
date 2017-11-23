@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react'
 import { observer, inject } from 'mobx-react'
 import { parse } from 'qs'
 import ForgotPasswordModal from './ForgotPasswordModal'
-import { Grid, Header, Form, Segment, Button, Icon, Message, Divider } from 'semantic-ui-react'
+import { Header, Form, Button, Icon, Message, Divider } from 'semantic-ui-react'
 import request from 'superagent'
 import logger from '../../utils/logger'
 import {viewParam} from '../../utils/generalUtils'
@@ -27,15 +27,15 @@ export default class LoginForm extends Component {
 
   handleLogin(event){
     event.preventDefault()
-    const { routing, location } = this.props
+    const { routing } = this.props
     const {email, password} = this.state
-    const query = parse(location.search.substr(1))
+    const query = parse(routing.location.search.substr(1))
     this.setState({
       loggingInPorgress: true,
       loggingInFail: false,
       loginFailMessage: null,
     })
-    request.post('/login')
+    request.post('/login/local')
       .send({email, password})
       .accept('json')
       .type('json')
@@ -67,10 +67,6 @@ export default class LoginForm extends Component {
     this.setState({
       [name]: value,
     })
-  }
-
-  forgotPassord(){
-
   }
 
   render() {
@@ -115,9 +111,10 @@ export default class LoginForm extends Component {
         <Divider horizontal>Or</Divider>
 
         <Form.Group inline>
-          <Button color="facebook">
+          <Button as="a" color="facebook" href="/login/facebook">
             <Icon name="facebook" /> Facebook
           </Button>
+
           <Button color="google plus">
             <Icon name="google" /> Google
           </Button>
