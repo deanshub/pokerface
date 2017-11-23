@@ -90,10 +90,10 @@ const initialize = () => {
         if (!player.avatar){
           download(
             picture.data.url,
-            '../client/static/images/avatars',
+            '../client/static/images',
             `${pictureUuid}.jpg`,
           ).then(() => {
-            player.avatar = `avatars/${pictureUuid}.jpg`
+            player.avatar = `${pictureUuid}.jpg`
             player.updated = Date.now()
             player.save()
           }).catch((err) => {
@@ -104,10 +104,10 @@ const initialize = () => {
         if (!player.coverImage && cover){
           download(
             cover.source,
-            '../client/static/images/covers',
+            '../client/static/images',
             `${pictureUuid}.jpg`,
           ).then(() => {
-            player.coverImage = `covers/${pictureUuid}.jpg`
+            player.coverImage = `${pictureUuid}.jpg`
             player.updated = Date.now()
             player.save()
           }).catch((err) => {

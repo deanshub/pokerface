@@ -65,7 +65,7 @@ const schema = mongoose.Schema({
 })
 
 schema.virtual('fullname').get(function(){
-  return `${this.firstname} ${this.lastname}`
+  return `${this.firstname}${this.lastname?` ${this.lastname}`:''}`
 })
 
 const Player = mongoose.model('Player', schema)
