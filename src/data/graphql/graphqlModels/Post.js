@@ -72,6 +72,7 @@ export const resolvers = {
           .sort('-created')
         })
       }else{
+        // TODO: limit the number of posts
         query = DB.models.Post.find()
       }
 
