@@ -5,6 +5,9 @@
   height: 100%;
   user-select: none;
 }
+.inFeed.container{
+  font-size: 1em;
+}
 
 .title{
   font-weight: bold;
@@ -15,12 +18,18 @@
   margin: 10px;
   font-size: 2em;
 }
+.inFeed.maintitle{
+  font-size: 1.5em;
+}
 
 .handchartContainer{
   font-size: 4vmin;
   flex:1;
   display: grid;
   grid-template: repeat(13, 1fr) / repeat(13, 1fr);
+}
+.inFeed.handchartContainer{
+  font-size: 2vmin;
 }
 .hand{
   border:1px solid black;

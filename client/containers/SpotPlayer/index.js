@@ -12,7 +12,6 @@ import cssStyle from './style.css'
 export default class SpotPlayer extends Component {
   render() {
     const {spotPlayer, style, standalone, post} = this.props
-
     return (
       <Sidebar.Pushable as={Segment} style={style}>
         <Sidebar

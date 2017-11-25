@@ -39,7 +39,7 @@ export default function(editorState){
         .set('anchorOffset', start)
         .set('focusOffset', end)
       const cardsText = plainText.substring(start, end)
-      const contentStateWithEntity = newContentState.createEntity('card', 'IMMUTABLE', { cardsText })
+      const contentStateWithEntity = newContentState.createEntity('card', 'SEGMENTED', { cardsText })
       const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
 
       newContentState = Modifier.replaceText(
