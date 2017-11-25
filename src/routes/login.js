@@ -1,6 +1,8 @@
 import express from 'express'
 import authentication from './authentication'
 
+const TOKEN_EXPIRATION_DURATION = 1000*600
+
 const router = express.Router()
 
 router.post('/local', authentication.login)
@@ -9,12 +11,12 @@ router.get('/googlepluse', authentication.googleLogin)
 
 // authenticate with facebook to get the token
 router.get('/facebook/callback', authentication.authenticateWithFacebook, (req, res) => {
-  res.cookie('jwt', req.user.token, {maxAge:1000*600})
+  res.cookie('jwt', req.user.token, {maxAge:TOKEN_EXPIRATION_DURATION})
   res.redirect('/')
 })
 
 router.get('/googlepluse/callback', authentication.authenticateWithGoogle, (req, res) => {
-  res.cookie('jwt', req.user.token, {maxAge:1000*600})
+  res.cookie('jwt', req.user.token, {maxAge:TOKEN_EXPIRATION_DURATION})
   res.redirect('/')
 })
 
