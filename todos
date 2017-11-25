@@ -18,7 +18,7 @@ editor improvements
 * cards should be like inline stickers
 
 spot wizard improvments
-* show cards should be disabled on players that don't have cards or has already shown
+* allow checkbox for who's dealer
 * bb and sb should have disable checkbox in general settings (0 will behave as disabled)
 * bb and sb should be placed on init of spot (if they exist)
 * integrate lior's timeline component to go back or place an undo button
