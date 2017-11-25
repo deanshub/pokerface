@@ -5,67 +5,77 @@ const validateEmail = (email)=> {
   return re.test(email)
 }
 
-const schema = mongoose.Schema({
-  _id: {
-    alias: 'username',
-    type: String,
-    lowercase: true,
-    index: true,
-    unique: true,
-    required: [true, 'Username is required'],
-    // validate: [validateUsername, 'This username already exists, username must be unique'],
-    trim: true,
+const schema = mongoose.Schema(
+  {
+    _id: {
+      alias: 'username',
+      type: String,
+      lowercase: true,
+      index: true,
+      unique: true,
+      required: [true, 'Username is required'],
+      // validate: [validateUsername, 'This username already exists, username must be unique'],
+      trim: true,
+    },
+    firstname: {
+      type: String,
+      required: [true, 'Firstname is required'],
+      index: true,
+      trim: true,
+    },
+    lastname: {
+      type: String,
+      trim: true,
+      index: true,
+    },
+    email:{
+      type: String,
+      trim: true,
+      lowercase: true,
+      required: [true, 'Email address is required'],
+      validate: [validateEmail, 'Please fill a valid email address'],
+      index: true,
+      unique: true,
+    },
+    avatar: {
+      type: String,
+    },
+    password: {
+      type: String,
+    },
+    active: {
+      type: Boolean,
+    },
+    coverImage: {
+      type: String,
+    },
+    tempuuid: {
+      type: String,
+    },
+    tempuuiddate:{
+      type: Date,
+    },
+    gender:{
+      type:String,
+    },
+    birthday:{
+      type: Date,
+    },
+    facebookId: {
+      type: String,
+    },
+    googleId: {
+      type: String,
+    },
+    updated: { type: Date, default: Date.now },
+    created: { type: Date, default: Date.now },
   },
-  firstname: {
-    type: String,
-    required: [true, 'Firstname is required'],
-    index: true,
-    trim: true,
-  },
-  lastname: {
-    type: String,
-    trim: true,
-    index: true,
-  },
-  email:{
-    type: String,
-    trim: true,
-    lowercase: true,
-    required: [true, 'Email address is required'],
-    validate: [validateEmail, 'Please fill a valid email address'],
-    index: true,
-    unique: true,
-  },
-  avatar: {
-    type: String,
-  },
-  password: {
-    type: String,
-  },
-  active: {
-    type: Boolean,
-  },
-  coverImage: {
-    type: String,
-  },
-  tempuuid: {
-    type: String,
-  },
-  tempuuiddate:{
-    type: Date,
-  },
-  gender:{
-    type:String,
-  },
-  birthday:{
-    type: Date,
-  },
-  facebookId: {
-    type: String,
-  },
-  updated: { type: Date, default: Date.now },
-  created: { type: Date, default: Date.now },
-})
+  {
+    toJSON: {
+      virtuals: true,
+    },
+  }
+)
 
 schema.virtual('fullname').get(function(){
   return `${this.firstname}${this.lastname?` ${this.lastname}`:''}`

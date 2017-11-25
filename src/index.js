@@ -30,6 +30,8 @@ if (config.NODE_ENV==='development'){
 }
 
 app.use(authentication.initialize())
+
+app.use('/login', loginRoute)
 app.use(authentication.addUserToRequest)
 
 app.use('/graphql',
@@ -49,7 +51,6 @@ if (config.NODE_ENV==='development'){
   }))
 }
 routes.apiRoutes.then(apiRoutes=>{
-  app.use('/login', loginRoute)
 
   apiRoutes.forEach((route)=>{
     app.use('/api', route)
