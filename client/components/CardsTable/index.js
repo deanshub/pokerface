@@ -14,6 +14,13 @@ const getRankValue = (rank)=>{
 }
 
 export default class CardsTable extends Component {
+  static defaultProps = {
+    inFeed: false,
+  }
+  static propTypes = {
+    inFeed: PropTypes.bool,
+  }
+
   constructor(props){
     super(props)
     this.state={
@@ -90,7 +97,7 @@ export default class CardsTable extends Component {
   }
 
   render() {
-    const {title, subtitle} = this.props
+    const {title, subtitle, inFeed} = this.props
     const {sets} = this.state
     const normalizedSets = sets.map(set=>{
       if (!Array.isArray(set.cards)){
@@ -103,13 +110,18 @@ export default class CardsTable extends Component {
     })
     return (
       <div className={classnames(style.container)}>
-        <div className={classnames(style.title, style.maintitle)}>
+        <div className={classnames(style.title, style.maintitle, {[style.inFeed]:inFeed})}>
           {title}
         </div>
-        <div className={classnames(style.title, style.subtitle)}>
+        <div className={classnames(style.title, style.subtitle, {[style.inFeed]:inFeed})}>
           {subtitle}
         </div>
-        <div className={classnames(style.handchartContainer)}>
+        <div
+            className={classnames({
+              [style.handchartContainer]:true,
+              [style.inFeed]: inFeed,
+            })}
+        >
           {
             ranks.map((rank1)=>{
               return ranks.map((rank2)=>{
@@ -118,9 +130,13 @@ export default class CardsTable extends Component {
             })
           }
         </div>
-        <div className={classnames(style.legend)}>
-          {normalizedSets.map(this.getLegend.bind(this))}
-        </div>
+        {
+          normalizedSets.length>1?
+          <div className={classnames(style.legend)}>
+            {normalizedSets.map(this.getLegend.bind(this))}
+          </div>
+          :null
+        }
       </div>
     )
   }

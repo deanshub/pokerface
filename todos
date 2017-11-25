@@ -1,25 +1,36 @@
 FOR GA ONLY!!!
 --------------
 
+make bundles smaller!
+
 dont ask to reset when it's already reset (first round & 15 minutes ...)
 
 currency in spot wizard should be add-able Dropdown
 
+allow unsubscribe email for players (not including signup)
 
-add user (with temp until verified)
 error message (store), an error occurred please refresh or try again later
 change the script name to include hash (so when a new version comes it won't be cached)
 fix the keys selection of emoji\ mention plugins within the post editor
 -------------------------------------------------------------------------------
 
 editor improvements
-* when clicked the scroll moves away from the relevent element
 * add range on hover for ranges within []
+* cards should be like inline stickers
+
+spot wizard improvments
+* show cards should be disabled on players that don't have cards or has already shown
+* bb and sb should have disable checkbox in general settings (0 will behave as disabled)
+* bb and sb should be placed on init of spot (if they exist)
+* integrate lior's timeline component to go back or place an undo button
 
 spot player imporvements
-* create constants for all logger categories and such
+* implement the back button
+* integrate lior's timeline to move around
 * re render of cards (images requested multiple times) when exporting gif
 * better responsiveness (vertical phone)
+* create constants for all logger categories and such
+
 
 leagal note on signup and login
 
