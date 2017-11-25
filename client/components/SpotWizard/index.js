@@ -67,26 +67,24 @@ export default class SpotWizard extends Component {
       spotPlayer.newSpot.spot.currency=MOVES.CURRENCIES.DOLLAR
       spotPlayer.newSpot.spot.moves=[
         {
-          player:0,
+          player:spotPlayer.newSpot.generalSettings.dealer,
           action:MOVES.PLAYER_META_ACTIONS.DEALER,
         },
         // {
         //   player:0,
         //   action:MOVES.PLAYER_META_ACTIONS.SHOWS,
         // },
-        // {
-        //   player:1,
-        //   action:MOVES.PLAYER_ACTIONS.SMALLBLIND,
-        //   value: spotPlayer.newSpot.generalSettings.sb,
-        // },
-        // {
-        //   player:0,
-        //   action:MOVES.PLAYER_ACTIONS.BIGBLIND,
-        //   value: spotPlayer.newSpot.generalSettings.bb,
-        // },
       ]
-
       spotPlayer.reset(spotPlayer.newSpot)
+      spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+
+      if (spotPlayer.newSpot.generalSettings.sb){
+        this.smallBlind()
+      }
+
+      if (spotPlayer.newSpot.generalSettings.bb){
+        this.bigBlind()
+      }
       spotPlayer.newSpot.step++
     }else if(spotPlayer.newSpot.step===1){
       this.save()

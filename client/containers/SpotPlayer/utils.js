@@ -109,8 +109,13 @@ const utils = {
       }
     })
 
+    let nextMoveIndex = moves.indexOf(firstMove)
+    if (firstMove.action===MOVES.PLAYER_META_ACTIONS.DEALER){
+      nextMoveIndex++
+    }
+
     return {
-      nextMoveIndex: moves.indexOf(firstMove),
+      nextMoveIndex,
       players: playersState,
       currency,
       dealer:{
@@ -245,19 +250,19 @@ const utils = {
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.SMALLBLIND:{
-      newPlayersState[move.player].bet+=move.value
-      newPlayersState[move.player].bank-=move.value
-      newSpotPlayerState.raiser = move.player
-      newPlayersState[move.player].description = 'Small Blind'
+      newPlayersState[nextPlayer].bet+=move.value
+      newPlayersState[nextPlayer].bank-=move.value
+      newSpotPlayerState.raiser = nextPlayer
+      newPlayersState[nextPlayer].description = 'Small Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.BIGBLIND:{
-      newPlayersState[move.player].bet+=move.value
-      newPlayersState[move.player].bank-=move.value
-      newSpotPlayerState.raiser = move.player
-      newPlayersState[move.player].description = 'Big Blind'
+      newPlayersState[nextPlayer].bet+=move.value
+      newPlayersState[nextPlayer].bank-=move.value
+      newSpotPlayerState.raiser = nextPlayer
+      newPlayersState[nextPlayer].description = 'Big Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState

@@ -15,15 +15,22 @@ fix the keys selection of emoji\ mention plugins within the post editor
 -------------------------------------------------------------------------------
 
 editor improvements
-* cards should be like inline stickers
+* cards should be like inline stickers? can also be hover cards
+* log to editor to spot parser
+* allow edit post
 
 spot wizard improvments
-* show cards should be disabled on players that don't have cards or has already shown
+* checkbox on generalSettings of show cards before-hand
+* consider all-in both on wizard and on player
+* user select none on spot wizard avatars
+* when clicking the input of number of players on the generalSettings in spot wizard it should select the number
 * bb and sb should have disable checkbox in general settings (0 will behave as disabled)
 * bb and sb should be placed on init of spot (if they exist)
 * integrate lior's timeline component to go back or place an undo button
 
 spot player imporvements
+* disable the forward button when riching the end
+* show who won at the end
 * implement the back button
 * integrate lior's timeline to move around
 * re render of cards (images requested multiple times) when exporting gif
