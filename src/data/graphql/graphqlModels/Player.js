@@ -55,10 +55,10 @@ export const resolvers = {
         return '/images/avatar.png'
       }else if (!player.avatar){
         return `/api/avatarGenerator?username=${player.username}`
-      }else if (!player.avatar.includes('http')) {
-        return `/images/${player.avatar}`
+      }else if (player.avatar.startsWith('http')) {
+        return player.avatar
       }
-      return player.avatar
+      return `/images/${player.avatar}`
     },
     coverImage: (player)=>{
       if (!player.coverImage && !player.username){
