@@ -131,7 +131,7 @@ const utils = {
   getNextPlayer(moves, currentSpotPlayerState){
     const {nextMoveIndex, players} = currentSpotPlayerState
 
-    let nextPlayerMoveIndex = nextMoveIndex
+    let nextPlayerMoveIndex = nextMoveIndex+1
     let playerFound = false
     while(!playerFound && moves.length>nextPlayerMoveIndex){
       playerFound = moves[nextPlayerMoveIndex].player!==MOVES.DEALER
@@ -201,9 +201,9 @@ const utils = {
     const nextPlayer = utils.getNextPlayer(spot.moves, currentSpotPlayerState)
     let newSpotPlayerState = Object.assign({}, currentSpotPlayerState)
     let newPlayersState = currentSpotPlayerState.players.map((player, playerIndex)=>{
+      player.myTurn=nextPlayer===playerIndex
       if (ereaseDescription){
         player.description=undefined
-        player.myTurn=nextPlayer===playerIndex
       }
       return player
     })
@@ -250,19 +250,19 @@ const utils = {
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.SMALLBLIND:{
-      newPlayersState[nextPlayer].bet+=move.value
-      newPlayersState[nextPlayer].bank-=move.value
-      newSpotPlayerState.raiser = nextPlayer
-      newPlayersState[nextPlayer].description = 'Small Blind'
+      newPlayersState[move.player].bet+=move.value
+      newPlayersState[move.player].bank-=move.value
+      newSpotPlayerState.raiser = move.player
+      newPlayersState[move.player].description = 'Small Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.BIGBLIND:{
-      newPlayersState[nextPlayer].bet+=move.value
-      newPlayersState[nextPlayer].bank-=move.value
-      newSpotPlayerState.raiser = nextPlayer
-      newPlayersState[nextPlayer].description = 'Big Blind'
+      newPlayersState[move.player].bet+=move.value
+      newPlayersState[move.player].bank-=move.value
+      newSpotPlayerState.raiser = move.player
+      newPlayersState[move.player].description = 'Big Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState

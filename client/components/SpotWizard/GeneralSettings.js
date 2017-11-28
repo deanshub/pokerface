@@ -42,6 +42,11 @@ export default class GeneralSettings extends Component {
     const {players} = this.props
     const newAmount = parseInt(value)
     if (players.currentPlayersArray.length<newAmount){
+      // for (let index = players.currentPlayersArray.length+1; index<=newAmount; index++) {
+      //   players.addGuest(`Player ${index}`)
+      //   players.setPlayer()
+      // }
+
       const amountOfPlayerToAdd = newAmount - players.currentPlayersArray.length
       const anonymosPlayers = players.currentPlayers.values().filter((player)=>/^Player (\d)+$/.test(player.fullname))
       const lastIndex = anonymosPlayers.reduce((res,player)=>{
