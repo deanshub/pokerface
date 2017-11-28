@@ -23,8 +23,8 @@ router.get('/googlepluse/callback', authentication.authenticateWithGoogle, (req,
 
 
 router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
-
   if (!req.user) {
+    res.clearCookie('jwt')
     res.json({user:{}})
   }else{
     const username = req.user._id
