@@ -1,21 +1,30 @@
 import express from 'express'
 import authentication from './authentication'
 
+const TOKEN_EXPIRATION_DURATION = 1000*600
+
 const router = express.Router()
 
 router.post('/local', authentication.login)
 router.get('/facebook', authentication.facebookLogin)
+router.get('/googlepluse', authentication.googleLogin)
 
 // authenticate with facebook to get the token
 router.get('/facebook/callback', authentication.authenticateWithFacebook, (req, res) => {
-  res.cookie('jwt-facebook', req.user.token, {maxAge:1000*600})
+  res.cookie('jwt', req.user.token, {maxAge:TOKEN_EXPIRATION_DURATION})
   res.redirect('/')
 })
 
-router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
+router.get('/googlepluse/callback', authentication.authenticateWithGoogle, (req, res) => {
+  res.cookie('jwt', req.user.token, {maxAge:TOKEN_EXPIRATION_DURATION})
+  res.redirect('/')
+})
 
+
+
+router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
   if (!req.user) {
-    res.json({})
+    res.json({user:{}})
   }else{
     const username = req.user._id
 
@@ -38,8 +47,10 @@ router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
     }
 
     const refreshToken = req.refreshToken
+    const {email, fullname, firstname, lastname} = req.user
+    const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage}
 
-    res.json({refreshToken, user:{...req.user, username, avatar, coverImage}})
+    res.json({refreshToken, user:userToClient})
   }
 })
 

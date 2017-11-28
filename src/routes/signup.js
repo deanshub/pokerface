@@ -101,7 +101,7 @@ router.post('/forgotPassword', (req, res) => {
 router.post('/setPassword', (req, res) =>{
   const {uuid, password} = req.body
 
-  DB.models.Player.findOne({tempuuid:uuid}).select('-password').then((player) => {
+  DB.models.Player.findOne({tempuuid:uuid}).then((player) => {
 
     const currnetTime = moment()
     const expirationTime = moment(player.tempguiddate).add(MINUTES_UUID_EXPIRATION, 'minutes')

@@ -3,7 +3,7 @@ import jwt  from 'jsonwebtoken'
 import config from 'config'
 
 export const isSuperAdmin = (user) => {
-  return user._id === 'deanshub'
+  return user.username === 'deanshub'
 }
 
 export const getUserByToken = (token) => {
@@ -12,15 +12,20 @@ export const getUserByToken = (token) => {
     return Promise.resolve({})
   }
 
-  const payload = jwt.verify(token, config.SECRET_KEY)
-  return Db.models.Player.findById(payload.id).select('-password').then((user)=>{
-    return {...user.toJSON(), fullname:user.fullname}
+  const {username, password} = jwt.verify(token, config.SECRET_KEY)
+  return Db.models.Player.findById(username).then((user)=>{
+    if (user && user.password !== password){
+      return {}
+    }
+
+    return {...user.toJSON()}
   })
 }
 
 export const signTokenToUser = (user) => {
   // TODO may check _id !== null or change the sign attribute
   if (user){
-    return jwt.sign({id: user._id}, config.SECRET_KEY)
+    const {username, password} = user
+    return jwt.sign({username, password}, config.SECRET_KEY)
   }
 }
