@@ -40,9 +40,9 @@ export default class LoginForm extends Component {
       .accept('json')
       .type('json')
       .then((res) => {
-        const {token, user} = res.body
-        this.props.auth.user = user
-        logger.setField({user:user.username, email:user.email})
+        const {token} = res.body
+        // this.props.auth.user = user
+        // logger.setField({user:user.username, email:user.email})
         localStorage.setItem('jwt',token )
 
         this.setState({
@@ -115,7 +115,7 @@ export default class LoginForm extends Component {
             <Icon name="facebook" /> Facebook
           </Button>
 
-          <Button color="google plus">
+          <Button as="a" color="google plus" href="/login/googlepluse">
             <Icon name="google" /> Google
           </Button>
         </Form.Group>

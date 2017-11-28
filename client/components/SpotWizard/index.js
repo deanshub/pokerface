@@ -10,6 +10,8 @@ import MOVES from '../../containers/SpotPlayer/constants'
 import utils from '../../containers/SpotPlayer/utils'
 import classnames from 'classnames'
 import style from './style.css'
+import {getUnimportantCard} from '../../components/Deck/consts'
+const unimportantCard = getUnimportantCard()
 
 @inject('spotPlayer')
 @inject('players')
@@ -269,6 +271,22 @@ export default class SpotWizard extends Component {
     return spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise>0
   }
 
+  canShowCards(){
+    const {spotPlayer} = this.props
+    if (spotPlayer.newSpot.spotPlayerState){
+      const playerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+      const player = spotPlayer.newSpot.spotPlayerState.players[playerIndex]
+      if (player.cards && player.cards[0].rank!==unimportantCard.rank){
+        const playersShowMoves = spotPlayer.newSpot.spot.moves.find((move)=>{
+          return move.action===MOVES.PLAYER_META_ACTIONS.SHOWS &&
+                move.player===playerIndex
+        })
+        return playersShowMoves===undefined
+      }
+    }
+    return false
+  }
+
   render(){
     const {spotPlayer} = this.props
     const {step} = spotPlayer.newSpot
@@ -293,6 +311,7 @@ export default class SpotWizard extends Component {
     const dealerTurn = this.isDealerTurn()
     const noRaiser = this.isNoRaiser()
     const hasRaise = this.hasRaise()
+    const showCardsDisabled = !this.canShowCards()
 
     return (
       <Modal
@@ -330,7 +349,7 @@ export default class SpotWizard extends Component {
             raiseClick={::this.raise}
             raiseDisabled={dealerTurn}
             showCardsClick={::this.showCards}
-            showCardsDisabled={false}
+            showCardsDisabled={showCardsDisabled}
             saveDisabled={this.previousStepDisabled()}
             save={::this.save}
             dealerDisabled={!dealerTurn}
