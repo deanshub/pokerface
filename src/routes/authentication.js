@@ -46,7 +46,7 @@ const initialize = () => {
     },
       function ({username, password}, done){
         DB.models.Player.findById(username).then((user)=>{
-          if (user && user.password !== password){
+          if (!user || user.password !== password){
             return done(null, false, {message: 'Wrong token was received'})
           }
 
@@ -263,9 +263,12 @@ const addUserToRequest = (req, res, next) => {
 
     req.user = user
 
-    if (user && req.cookies['jwt']){
-      req.refreshToken = req.cookies['jwt']
+    if (req.cookies['jwt']){
       res.clearCookie('jwt')
+
+      if (user){
+        req.refreshToken = req.cookies['jwt']
+      }
     }
 
     return next()
