@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 mongoose.Promise = Promise
 import config from 'config'
+import connectMongo from 'connect-mongo'
 
 import Player from './dbModels/Player'
 import Post from './dbModels/Post'
@@ -55,5 +56,8 @@ const DB = {
 }
 
 // generateFakeData(DB).catch(console.error)
-
+export const getSessionStore = (session) => {
+  const MongoStore = connectMongo(session)
+  return new MongoStore({mongooseConnection: mongoose.connection})
+}
 export default DB

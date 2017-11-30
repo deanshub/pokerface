@@ -263,14 +263,6 @@ const addUserToRequest = (req, res, next) => {
 
     req.user = user
 
-    if (req.cookies['jwt']){
-      res.clearCookie('jwt')
-
-      if (user){
-        req.refreshToken = req.cookies['jwt']
-      }
-    }
-
     return next()
   })(req, res, next)
 }
