@@ -19,6 +19,7 @@
     "body-parser": "^1.16.1",
     "compression": "^1.6.2",
     "config": "^1.26.2",
+    "connect-mongo": "^2.0.0",
     "cookie-parser": "^1.4.3",
     "emailjs": "^1.0.8",
     "express": "^4.14.1",

@@ -9,6 +9,7 @@ import expressSession from 'express-session'
 import compression from 'compression'
 import config from 'config'
 import routes from './routes'
+import {getSessionStore} from './data/db'
 import {graphiqlExpress } from 'apollo-server-express'
 import {graphqlExpressMiddleware, createGraphqlSubscriptionsServer} from './data/graphql'
 import {devMiddleware, hotMiddleware} from './routes/webpack.js'
@@ -22,7 +23,13 @@ app.use(cookieParser())
 // app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(expressSession({ secret: 'admin', resave: true, saveUninitialized: true }))
+
+app.use(expressSession({
+  secret: config.SESSION_SECRET_KEY,
+  resave: false,
+  saveUninitialized: false,
+  store: getSessionStore(expressSession),
+}))
 
 if (config.NODE_ENV==='development'){
   app.use(devMiddleware())
