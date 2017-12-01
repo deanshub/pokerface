@@ -3,11 +3,11 @@ import style from './style.css'
 
 export default class CardBlock extends Component {
   render(){
-    const { decoratedText } = this.props
+    const { children } = this.props
 
     return(
       <span className={style.cardBlock}>
-        {decoratedText}
+        {children}
       </span>
     )
   }

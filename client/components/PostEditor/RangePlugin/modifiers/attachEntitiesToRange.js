@@ -22,11 +22,12 @@ const addEntityToRange = (start, end, block, plainText, newContentState) => {
     // avoid manipulation in case the emoji already has an entity
     const entity = newContentState.getEntity(existingEntityKey)
     if (entity && entity.get('type') === 'range') {
-      return
+      return null
     }
   }
 
-  const selection = SelectionState.createEmpty(block.getKey())
+  const blockKey = block.getKey()
+  const selection = SelectionState.createEmpty(blockKey)
     .set('anchorOffset', start)
     .set('focusOffset', end)
   const rangeText = plainText.substring(start, end)
@@ -40,6 +41,16 @@ const addEntityToRange = (start, end, block, plainText, newContentState) => {
     null,
     entityKey,
   )
+
+  const blockSize = block.getLength()
+  if (end === blockSize) {
+    newContentState = Modifier.insertText(
+      newContentState,
+      newContentState.getSelectionAfter(),
+      ' ',
+    )
+  }
+  return newContentState
 }
 
 export default function(editorState){
@@ -49,7 +60,12 @@ export default function(editorState){
 
   blocks.forEach((block) => {
     const plainText = block.getText()
-    findWithRegex(rangeBlockRegex, block, (start,end)=>addEntityToRange(start,end,block,plainText, newContentState))
+    findWithRegex(rangeBlockRegex, block, (start,end)=>{
+      const contentStateWithEntities = addEntityToRange(start,end,block,plainText, newContentState)
+      if (contentStateWithEntities){
+        newContentState = contentStateWithEntities
+      }
+    })
   })
 
   if (!newContentState.equals(contentState)) {
@@ -58,7 +74,8 @@ export default function(editorState){
       newContentState,
       'convert-to-immutable-range',
     )
-    return EditorState.moveFocusToEnd(newEditorState)
+    return newEditorState
+    // return EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter())
   }
 
   return editorState
