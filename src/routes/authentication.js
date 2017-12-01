@@ -42,7 +42,7 @@ const initialize = () => {
           return token
         },
       ]),
-      secretOrKey: config.SECRET_KEY,
+      secretOrKey: config.JWT_SECRET_KEY,
     },
       function ({username, password}, done){
         DB.models.Player.findById(username).then((user)=>{
@@ -262,14 +262,6 @@ const addUserToRequest = (req, res, next) => {
     }
 
     req.user = user
-
-    if (req.cookies['jwt']){
-      res.clearCookie('jwt')
-
-      if (user){
-        req.refreshToken = req.cookies['jwt']
-      }
-    }
 
     return next()
   })(req, res, next)

@@ -46,11 +46,10 @@ router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
       coverImage = `/images/${coverImage}`
     }
 
-    const refreshToken = req.refreshToken
     const {email, fullname, firstname, lastname} = req.user
     const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage}
 
-    res.json({refreshToken, user:userToClient})
+    res.json({user:userToClient})
   }
 })
 
