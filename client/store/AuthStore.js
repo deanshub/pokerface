@@ -4,7 +4,7 @@ import { observable, action } from 'mobx'
 import request from 'superagent'
 import { close } from './graphqlClient'
 import logger from '../utils/logger'
-
+import {deleteCookie, getCookieByName} from '../utils/cookies'
 
 export class AuthStore {
   @observable token
@@ -36,13 +36,15 @@ export class AuthStore {
     return request.post('/login/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
       this.authenticating = false
 
-      const {refreshToken, user} = res.body
+      const {user} = res.body
 
       const player = user
       logger.setField({user:player.username, email:player.email})
 
-      if (refreshToken){
-        localStorage.setItem('jwt',refreshToken)
+      const cookieJwt = getCookieByName('jwt')
+      if (cookieJwt !== null){
+        localStorage.setItem('jwt',cookieJwt)
+        deleteCookie('jwt')
       }
 
       return this.user=player
