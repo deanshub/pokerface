@@ -24,6 +24,7 @@ export class SpotPlayerStore{
         ante: 0,
         sb: 1,
         bb: 2,
+        dealer: 0,
       },
     })
   }

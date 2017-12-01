@@ -7,12 +7,8 @@ import CardsTable from '../../CardsTable'
 import style from './style.css'
 
 export default class RangeBlock extends Component {
-  static propTypes = {
-    decoratedText: PropTypes.string,
-  }
-
   render(){
-    const { decoratedText  } = this.props
+    const { children, decoratedText  } = this.props
 
     const rangeText = decoratedText.substring(1,decoratedText.length-1)
     let range
@@ -24,7 +20,7 @@ export default class RangeBlock extends Component {
     if (!range){
       return (
         <span className={classnames(style.rangeBlock)}>
-          {decoratedText}
+          {children}
         </span>
       )
     }else{
@@ -32,7 +28,7 @@ export default class RangeBlock extends Component {
         <Popup
             flowing
             hoverable
-            trigger={<span className={classnames(style.rangeBlock)}>{decoratedText}</span>}
+            trigger={<span className={classnames(style.rangeBlock)}>{children}</span>}
         >
           <CardsTable
               inFeed

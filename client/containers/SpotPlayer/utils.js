@@ -109,8 +109,13 @@ const utils = {
       }
     })
 
+    let nextMoveIndex = moves.indexOf(firstMove)
+    if (firstMove.action===MOVES.PLAYER_META_ACTIONS.DEALER){
+      nextMoveIndex++
+    }
+
     return {
-      nextMoveIndex: moves.indexOf(firstMove),
+      nextMoveIndex,
       players: playersState,
       currency,
       dealer:{
@@ -126,7 +131,7 @@ const utils = {
   getNextPlayer(moves, currentSpotPlayerState){
     const {nextMoveIndex, players} = currentSpotPlayerState
 
-    let nextPlayerMoveIndex = nextMoveIndex
+    let nextPlayerMoveIndex = nextMoveIndex+1
     let playerFound = false
     while(!playerFound && moves.length>nextPlayerMoveIndex){
       playerFound = moves[nextPlayerMoveIndex].player!==MOVES.DEALER
@@ -196,9 +201,9 @@ const utils = {
     const nextPlayer = utils.getNextPlayer(spot.moves, currentSpotPlayerState)
     let newSpotPlayerState = Object.assign({}, currentSpotPlayerState)
     let newPlayersState = currentSpotPlayerState.players.map((player, playerIndex)=>{
+      player.myTurn=nextPlayer===playerIndex
       if (ereaseDescription){
         player.description=undefined
-        player.myTurn=nextPlayer===playerIndex
       }
       return player
     })

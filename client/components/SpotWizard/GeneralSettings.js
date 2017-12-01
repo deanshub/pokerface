@@ -31,15 +31,22 @@ export default class GeneralSettings extends Component {
     players.setAuthenticatedUser(auth.user)
   }
 
-  handleAvatarClick(e, href){
+  handleAvatarClick(e, href, playerIndex){
+    const {settings} = this.props
     e.preventDefault()
     console.log(href);
+    settings.dealer = playerIndex
   }
 
   playersAmountChange(e, {value}){
     const {players} = this.props
     const newAmount = parseInt(value)
     if (players.currentPlayersArray.length<newAmount){
+      // for (let index = players.currentPlayersArray.length+1; index<=newAmount; index++) {
+      //   players.addGuest(`Player ${index}`)
+      //   players.setPlayer()
+      // }
+
       const amountOfPlayerToAdd = newAmount - players.currentPlayersArray.length
       const anonymosPlayers = players.currentPlayers.values().filter((player)=>/^Player (\d)+$/.test(player.fullname))
       const lastIndex = anonymosPlayers.reduce((res,player)=>{
@@ -141,6 +148,7 @@ export default class GeneralSettings extends Component {
                   error={players.currentPlayersArray.length>9}
                   fluid
                   onChange={::this.playersAmountChange}
+                  onClick={(e)=>e.target.select()}
                   type="number"
                   value={players.currentPlayersArray.length}
               />
@@ -179,9 +187,10 @@ export default class GeneralSettings extends Component {
           <Grid.Row className={classnames(style.playersRow)} stretched>
             {
               // [username\guest name, bank, cards]
-              players.currentPlayers.keys().map(username=>{
+              players.currentPlayers.keys().map((username, playerIndex)=>{
                 const user=players.currentPlayers.get(username)
                 const href=`/profile/${username}`
+                const dealerIndex = settings.dealer||0
                 return (
                     <Grid.Column
                         key={username}
@@ -191,10 +200,10 @@ export default class GeneralSettings extends Component {
                           className={style.playerRow}
                       >
                         <Image
-                            className={style.avatar}
+                            className={classnames(style.avatar,{[style.dealerAvatar]:dealerIndex===playerIndex})}
                             href={href}
                             inline
-                            onClick={(e)=>{this.handleAvatarClick(e, href)}}
+                            onClick={(e)=>{this.handleAvatarClick(e, href, playerIndex)}}
                             shape="circular"
                             size="small"
                             spaced
