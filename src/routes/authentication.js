@@ -42,7 +42,7 @@ const initialize = () => {
           return token
         },
       ]),
-      secretOrKey: config.SECRET_KEY,
+      secretOrKey: config.JWT_SECRET_KEY,
     },
       function ({username, password}, done){
         DB.models.Player.findById(username).then((user)=>{

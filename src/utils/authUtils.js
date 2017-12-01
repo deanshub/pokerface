@@ -12,7 +12,7 @@ export const getUserByToken = (token) => {
     return Promise.resolve({})
   }
 
-  const {username, password} = jwt.verify(token, config.SECRET_KEY)
+  const {username, password} = jwt.verify(token, config.JWT_SECRET_KEY)
   return Db.models.Player.findById(username).then((user)=>{
     if (user && user.password !== password){
       return {}
@@ -26,6 +26,6 @@ export const signTokenToUser = (user) => {
   // TODO may check _id !== null or change the sign attribute
   if (user){
     const {username, password} = user
-    return jwt.sign({username, password}, config.SECRET_KEY)
+    return jwt.sign({username, password}, config.JWT_SECRET_KEY)
   }
 }

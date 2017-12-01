@@ -25,7 +25,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(expressSession({
-  secret: 'admin',
+  secret: config.SESSION_SECRET_KEY,
   resave: false,
   saveUninitialized: false,
   store: getSessionStore(expressSession),
