@@ -15,11 +15,13 @@ const unimportantCard = getUnimportantCard()
 
 @inject('spotPlayer')
 @inject('players')
+@inject('auth')
 @observer
 export default class SpotWizard extends Component {
   componentWillMount(){
-    const {spotPlayer} = this.props
+    const {spotPlayer, players, auth} = this.props
     spotPlayer.initNewPost()
+    players.setAuthenticatedUser(auth.user)
   }
 
   cancel(){

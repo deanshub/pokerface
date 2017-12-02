@@ -62,20 +62,17 @@ export class PlayersStore {
 
   getPlayer(username){
     const player = this.searchPlayers.get(username)
-
     return player
-    // return Object.assign({},player,{
-    //   buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-    //   winnings: [{value: this.initialWin, key:Math.random()}],
-    // })
   }
 
   @action
   setPlayer(users){
     const players = users.reduce((res, user)=>{
       const player = this.getPlayer(user)
-      if (player){
+      if (player && !this.currentPlayers.has(user)){
         res[user] = player
+      }else if (this.currentPlayers.has(user)){
+        res[user] = this.currentPlayers.get(user)
       }
       return res
     },{})

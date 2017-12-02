@@ -6,7 +6,6 @@ import classnames from 'classnames'
 import style from './style.css'
 
 @inject('players')
-@inject('auth')
 @observer
 export default class GeneralSettings extends Component {
   renderLabel(label: Object){
@@ -26,11 +25,6 @@ export default class GeneralSettings extends Component {
 
   selectPlayer(e: Object, player: Object){
     console.log(player);
-  }
-
-  componentWillMount(){
-    const {auth, players} = this.props
-    players.setAuthenticatedUser(auth.user)
   }
 
   handleAvatarClick(e, href, playerIndex){
