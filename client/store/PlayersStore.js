@@ -18,23 +18,42 @@ export class PlayersStore {
     this.searchLoading = false
   }
 
+  extendPlayer(player){
+    return Object.assign({},{
+      // buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+      // winnings: [{value: this.initialWin, key:Math.random()}],
+      guest: false,
+      cards: '',
+      showCards: false,
+      bank: 100,
+    }, player)
+  }
+
   @action
   search(phrase){
     this.searchLoading = true
     this.searchValue = phrase
     graphqlClient.query({query: playersQuery, variables: {phrase}}).then((result)=>{
-      let playersObj = {}
+      // let playersObj = {}
+      // if (result.data.players){
+      //   playersObj = result.data.players.reduce((res, player)=>{
+      //     res[player.username] = Object.assign({},player,{
+      //       buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+      //       winnings: [{value: this.initialWin, key:Math.random()}],
+      //     })
+      //     return res
+      //   },{})
+      // }
+      // this.searchPlayers.replace(Object.assign({},playersObj, toJS(this.currentPlayers)))
+
       if (result.data.players){
-        playersObj = result.data.players.reduce((res, player)=>{
-          res[player.username] = Object.assign({},player,{
-            buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-            winnings: [{value: this.initialWin, key:Math.random()}],
-          })
-          return res
-        },{})
+        result.data.players.forEach((player)=>{
+          if (!this.searchPlayers.has(player.username)){
+            this.searchPlayers.set(player.username, this.extendPlayer(player))
+          }
+        })
       }
 
-      this.searchPlayers.replace(Object.assign({},playersObj, toJS(this.currentPlayers)))
       this.searchLoading = false
     }).catch((err)=>{
       console.error(err)
@@ -67,12 +86,12 @@ export class PlayersStore {
   @action
   addGuest(name){
     const guestKey = `guest${Math.random().toString()}`
-    const guest = {
+    const guest = this.extendPlayer({
       guest: true,
       username:guestKey,
       fullname:name,
       avatar: avatarImage,
-    }
+    })
     this.searchPlayers.set(guestKey, guest)
     this.currentPlayers.set(guestKey, guest)
   }
@@ -104,7 +123,8 @@ export class PlayersStore {
 
   @action
   setAuthenticatedUser(user){
-    this.searchPlayers.set(user.username, user)
-    this.currentPlayers.set(user.username, user)
+    const extendedUser = this.extendPlayer(user)
+    this.searchPlayers.set(extendedUser.username, extendedUser)
+    this.currentPlayers.set(extendedUser.username, extendedUser)
   }
 }

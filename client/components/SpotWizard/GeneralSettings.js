@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Form, Input, Grid, Dropdown, Header, Image, Checkbox } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
+import PlayerField from './PlayerField'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -185,60 +186,14 @@ export default class GeneralSettings extends Component {
               // [username\guest name, bank, cards]
               players.currentPlayers.keys().map((username, playerIndex)=>{
                 const user=players.currentPlayers.get(username)
-                const href=`/profile/${username}`
                 const dealerIndex = settings.dealer||0
                 return (
-                    <Grid.Column
-                        key={username}
-                        width={5}
-                    >
-                      <div
-                          className={style.playerRow}
-                      >
-                        <Image
-                            avatar
-                            centered
-                            className={classnames(style.avatar,{[style.dealerAvatar]:dealerIndex===playerIndex})}
-                            href={href}
-                            onClick={(e)=>{this.handleAvatarClick(e, href, playerIndex)}}
-                            src={user.avatar}
-                            target="_blank"
-                        />
-                        <Header
-                            className={style.fullname}
-                            size="large"
-                        >
-                          {user.fullname}
-                        </Header>
-                        <Form.Field
-                            className={style.bank}
-                            control={Input}
-                            inline
-                            label="Bank"
-                            onChange={(e,{value})=>user.bank=parseInt(value)}
-                            placeholder="100"
-                            type="number"
-                            value={user.bank}
-                        />
-                        <Form.Field
-                            className={style.cards}
-                            control={Input}
-                            inline
-                            label="Cards"
-                            onChange={(e,{value})=>user.cards=value}
-                            placeholder="Ac Ah"
-                            value={user.cards}
-                        />
-                        <Form.Field
-                            checked={user.showCards}
-                            className={style.cardsShow}
-                            control={Checkbox}
-                            inline
-                            label="Show cards upfront"
-                            onChange={(e,{checked})=>user.showCards=checked}
-                        />
-                      </div>
-                    </Grid.Column>
+                  <PlayerField
+                      isDealer={dealerIndex===playerIndex}
+                      key={username}
+                      playerIndex={playerIndex}
+                      user={user}
+                  />
                 )
               })
             }
