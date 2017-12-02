@@ -13,22 +13,33 @@
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 2fr 2fr;
   grid-template-areas:
-    "avatar fullname"
+    "fullname none"
     "avatar bank"
     "avatar cards";
-  margin-bottom: 5%;
 }
 
 .avatar{
   grid-area: avatar;
   max-height: 128px;
   max-width: 128px;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+.avatar>img{
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
 }
 .fullname{
   grid-area: fullname;
-  margin: 0 !important;
+  margin: 0 auto !important;
 }
 .bank{
   grid-area: bank;

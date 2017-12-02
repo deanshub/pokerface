@@ -21,7 +21,7 @@ editor improvements
 
 spot wizard improvments
 * checkbox on generalSettings of show cards before-hand
-* user select none on spot wizard avatars
+* allow draging to re-order players sitting
 * handle everyone folding and only one player left
 * consider all-in both on wizard and on player
 * bb and sb should have disable checkbox in general settings (0 will behave as disabled)
