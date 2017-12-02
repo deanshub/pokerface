@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
-import { Form, Input, Grid, Dropdown, Header, Image } from 'semantic-ui-react'
+import { Form, Input, Grid, Dropdown, Header, Image, Checkbox } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
+import PlayerField from './PlayerField'
 import classnames from 'classnames'
 import style from './style.css'
 
 @inject('players')
-@inject('auth')
 @observer
 export default class GeneralSettings extends Component {
   renderLabel(label: Object){
@@ -17,18 +17,14 @@ export default class GeneralSettings extends Component {
     }
   }
 
-  searchChange(e: Object, phrase: string){
+  searchChange(e: Object, data: string){
     const {players} = this.props
+    const phrase = data.searchQuery
     players.search(phrase)
   }
 
   selectPlayer(e: Object, player: Object){
     console.log(player);
-  }
-
-  componentWillMount(){
-    const {auth, players} = this.props
-    players.setAuthenticatedUser(auth.user)
   }
 
   handleAvatarClick(e, href, playerIndex){
@@ -42,10 +38,6 @@ export default class GeneralSettings extends Component {
     const {players} = this.props
     const newAmount = parseInt(value)
     if (players.currentPlayersArray.length<newAmount){
-      // for (let index = players.currentPlayersArray.length+1; index<=newAmount; index++) {
-      //   players.addGuest(`Player ${index}`)
-      //   players.setPlayer()
-      // }
 
       const amountOfPlayerToAdd = newAmount - players.currentPlayersArray.length
       const anonymosPlayers = players.currentPlayers.values().filter((player)=>/^Player (\d)+$/.test(player.fullname))
@@ -59,7 +51,6 @@ export default class GeneralSettings extends Component {
       },0)
       for (let index = 0; index<amountOfPlayerToAdd; index++) {
         players.addGuest(`Player ${lastIndex + index+1}`)
-        players.setPlayer()
       }
     }else if(players.currentPlayersArray.length>newAmount && newAmount>0){
       const amountOfPlayerToDelete = players.currentPlayersArray.length-newAmount
@@ -189,54 +180,14 @@ export default class GeneralSettings extends Component {
               // [username\guest name, bank, cards]
               players.currentPlayers.keys().map((username, playerIndex)=>{
                 const user=players.currentPlayers.get(username)
-                const href=`/profile/${username}`
                 const dealerIndex = settings.dealer||0
                 return (
-                    <Grid.Column
-                        key={username}
-                        width={5}
-                    >
-                      <div
-                          className={style.playerRow}
-                      >
-                        <Image
-                            className={classnames(style.avatar,{[style.dealerAvatar]:dealerIndex===playerIndex})}
-                            href={href}
-                            inline
-                            onClick={(e)=>{this.handleAvatarClick(e, href, playerIndex)}}
-                            shape="circular"
-                            size="small"
-                            spaced
-                            src={user.avatar}
-                            target="_blank"
-                        />
-                        <Header
-                            className={style.fullname}
-                            size="large"
-                        >
-                          {user.fullname}
-                        </Header>
-                        <Form.Field
-                            className={style.bank}
-                            control={Input}
-                            inline
-                            label="bank"
-                            onChange={(e,{value})=>user.bank=parseInt(value)}
-                            placeholder="100"
-                            type="number"
-                            value={user.bank}
-                        />
-                        <Form.Field
-                            className={style.cards}
-                            control={Input}
-                            inline
-                            label="cards"
-                            onChange={(e,{value})=>user.cards=value}
-                            placeholder="Ac Ah"
-                            value={user.cards}
-                        />
-                      </div>
-                    </Grid.Column>
+                  <PlayerField
+                      isDealer={dealerIndex===playerIndex}
+                      key={username}
+                      playerIndex={playerIndex}
+                      user={user}
+                  />
                 )
               })
             }

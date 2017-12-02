@@ -3,7 +3,6 @@
 import { observable, action, computed, toJS } from 'mobx'
 import graphqlClient from './graphqlClient'
 import {playersQuery} from './queries/players'
-import { fromJS } from 'immutable'
 import logger from '../utils/logger'
 
 const searchTimeoutTime = 200
@@ -53,6 +52,6 @@ export class PlayersSearchStore {
         link: `/profile/${player.username}`,
       }
     })
-    return fromJS(suggestedPlayers)
+    return suggestedPlayers
   }
 }

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, PropTypes } from 'react'
-import { Button, Modal, Menu, Icon, Input, Dropdown } from 'semantic-ui-react'
+import { Button, Modal, Menu, Icon, Input, Dropdown, Popup } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -13,44 +13,23 @@ export default class SpotWizard extends Component {
     super(props)
     this.state = {
       dealerCards: [],
-      raiseValue: 10,
-      raiseOptions:[
-        {
-          text: 10,
-          value: 10,
-          key: 10,
-        },
-        {
-          text: 20,
-          value: 20,
-          key: 20,
-        },
-        {
-          text: 50,
-          value: 50,
-          key: 50,
-        },
-        {
-          text: 100,
-          value: 100,
-          key: 100,
-        },
-      ],
+      raiseValue: props.minimumRaise||0,
     }
   }
 
-  addingRaiseOption(e, {value}){
-    const {raiseOptions} = this.state
-
+  componentWillReceiveProps(props){
     this.setState({
-      raiseOptions:[...raiseOptions, {text:value, value, key:value}],
+      raiseValue: props.minimumRaise||0,
     })
   }
 
   changeRaise(e, {value}){
-    this.setState({
-      raiseValue: value,
-    })
+    const raiseValue = parseInt(value)
+    if (raiseValue){
+      this.setState({
+        raiseValue,
+      })
+    }
   }
 
   dealerCardsChange(index, value){
@@ -80,6 +59,8 @@ export default class SpotWizard extends Component {
       checkDisabled,
       raiseClick,
       raiseDisabled,
+      minimumRaise,
+      maximumRaise,
       showCardsClick,
       showCardsDisabled,
       cancel,
@@ -175,18 +156,30 @@ export default class SpotWizard extends Component {
                   <Icon corner name="dollar" />
                 </Icon.Group>
                 Raise
-                <Dropdown
-                    additionLabel=""
-                    allowAdditions
-                    className={classnames(style.raiseDropdown)}
-                    defaultValue={10}
-                    onAddItem={::this.addingRaiseOption}
-                    onChange={::this.changeRaise}
-                    options={raiseOptions}
-                    search
-                    selection
-                    upward
-                />
+                <Popup
+                    flowing
+                    hoverable
+                    on={['hover', 'focus', 'click']}
+                    position="top center"
+                    trigger={(
+                      <Input
+                          className={classnames(style.raiseInput)}
+                          onChange={::this.changeRaise}
+                          onClick={(e)=>e.stopPropagation()}
+                          type="number"
+                          value={raiseValue}
+                      />
+                    )}
+                >
+                  <Input
+                      className={classnames(style.raiseRange)}
+                      max={maximumRaise}
+                      min={minimumRaise}
+                      onChange={::this.changeRaise}
+                      type="range"
+                      value={raiseValue}
+                  />
+                </Popup>
               </Menu.Item>
             </Menu.Menu>
           ):null}

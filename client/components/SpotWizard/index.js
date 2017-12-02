@@ -15,11 +15,13 @@ const unimportantCard = getUnimportantCard()
 
 @inject('spotPlayer')
 @inject('players')
+@inject('auth')
 @observer
 export default class SpotWizard extends Component {
   componentWillMount(){
-    const {spotPlayer} = this.props
+    const {spotPlayer, players, auth} = this.props
     spotPlayer.initNewPost()
+    players.setAuthenticatedUser(auth.user)
   }
 
   cancel(){
@@ -67,16 +69,17 @@ export default class SpotWizard extends Component {
       spotPlayer.newSpot.spot.ante=spotPlayer.newSpot.generalSettings.ante||0
       // TODO:normalize spotPlayer.newSpot.generalSettings.currency
       spotPlayer.newSpot.spot.currency=MOVES.CURRENCIES.DOLLAR
-      spotPlayer.newSpot.spot.moves=[
-        {
-          player:spotPlayer.newSpot.generalSettings.dealer,
-          action:MOVES.PLAYER_META_ACTIONS.DEALER,
-        },
-        // {
-        //   player:0,
-        //   action:MOVES.PLAYER_META_ACTIONS.SHOWS,
-        // },
-      ]
+      spotPlayer.newSpot.spot.moves = players.currentPlayers.values().filter(player=>player.showCards&&player.cards)
+        .map((player, playerIndex)=>{
+          return {
+            player: playerIndex,
+            action:MOVES.PLAYER_META_ACTIONS.SHOWS,
+          }
+        })
+      spotPlayer.newSpot.spot.moves.push({
+        player:spotPlayer.newSpot.generalSettings.dealer,
+        action:MOVES.PLAYER_META_ACTIONS.DEALER,
+      })
       spotPlayer.reset(spotPlayer.newSpot)
       spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
 
@@ -287,6 +290,26 @@ export default class SpotWizard extends Component {
     return false
   }
 
+  getCurrentPlayerBank(){
+    const {spotPlayer} = this.props
+    if (spotPlayer.newSpot.spotPlayerState){
+      const currentPlayerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+      const player = spotPlayer.newSpot.spotPlayerState.players[currentPlayerIndex]
+      if (player){
+        return player.bank
+      }
+    }
+    return 0
+  }
+
+  getMinimumRaise(){
+    const {spotPlayer} = this.props
+    if (spotPlayer.newSpot.spotPlayerState){
+      return (spotPlayer.newSpot.spotPlayerState.totalRaise||0)+(spotPlayer.newSpot.generalSettings.bb||0)
+    }
+    return 0
+  }
+
   render(){
     const {spotPlayer} = this.props
     const {step} = spotPlayer.newSpot
@@ -312,6 +335,8 @@ export default class SpotWizard extends Component {
     const noRaiser = this.isNoRaiser()
     const hasRaise = this.hasRaise()
     const showCardsDisabled = !this.canShowCards()
+    const currentPlayerBank = this.getCurrentPlayerBank()
+    const minimumRaise = this.getMinimumRaise()
 
     return (
       <Modal
@@ -319,7 +344,6 @@ export default class SpotWizard extends Component {
             name: 'close',
             onClick: ::this.cancel,
           }}
-          dimmer="blurring"
           open={spotPlayer.spotWizardOpen}
           size="fullscreen"
       >
@@ -348,6 +372,8 @@ export default class SpotWizard extends Component {
             checkDisabled={dealerTurn || hasRaise}
             raiseClick={::this.raise}
             raiseDisabled={dealerTurn}
+            minimumRaise={minimumRaise}
+            maximumRaise={currentPlayerBank}
             showCardsClick={::this.showCards}
             showCardsDisabled={showCardsDisabled}
             saveDisabled={this.previousStepDisabled()}

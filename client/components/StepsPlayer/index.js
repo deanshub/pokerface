@@ -7,6 +7,7 @@ import style from './style.css'
 
 export default class StepsPlayer extends Component {
   static propTypes = {
+    hasNextStep: PropTypes.bool,
     onNextStep: PropTypes.func.isRequired,
     onPreviousStep: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
@@ -67,6 +68,7 @@ export default class StepsPlayer extends Component {
     const {
       onNextStep,
       onPreviousStep,
+      hasNextStep,
     } = this.props
     const {speed, auto} = this.state
 
@@ -124,6 +126,7 @@ export default class StepsPlayer extends Component {
           </Menu.Item>
         }
         <Menu.Item
+            disabled={!hasNextStep}
             name="forward"
             onClick={onNextStep}
         >

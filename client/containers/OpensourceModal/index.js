@@ -55,7 +55,6 @@ export default class OpensourceModal extends Component {
               <List.Item href="http://docs.sequelizejs.com/en/v3/" target="_blank" >sequelize</List.Item>
               <List.Item href="https://github.com/halt-hammerzeit/javascript-time-ago" target="_blank" >javascript-time-ago</List.Item>
               <List.Item href="https://github.com/marak/Faker.js/" target="_blank" >faker.js</List.Item>
-              <List.Item href="https://github.com/kadirahq/lokka" target="_blank" >lokka</List.Item>
               <List.Item href="https://github.com/expressjs/multer" target="_blank" >multer</List.Item>
               <List.Item href="https://jdenticon.com/js-get-started.html" target="_blank" >jdenticon</List.Item>
               <List.Item href="https://github.com/nfl/react-helmet" target="_blank" >react-helmet</List.Item>

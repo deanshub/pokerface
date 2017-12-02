@@ -15,7 +15,6 @@ export default class PlayerSearchResult extends Component {
       <Header as="h4">
         <Image
             avatar
-            shape="circular"
             src={avatar}
             style={{float:'none', width:'3em', height:'3em', borderRadius:'500rem'}}
         />
