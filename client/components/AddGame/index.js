@@ -43,8 +43,9 @@ export default class AddGame extends Component {
     console.log(player);
   }
 
-  searchChange(e: Object, phrase: string){
+  searchChange(e: Object, data: string){
     const {players} = this.props
+    const phrase = data.searchQuery
     players.search(phrase)
   }
 

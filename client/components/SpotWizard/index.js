@@ -288,6 +288,26 @@ export default class SpotWizard extends Component {
     return false
   }
 
+  getCurrentPlayerBank(){
+    const {spotPlayer} = this.props
+    if (spotPlayer.newSpot.spotPlayerState){
+      const currentPlayerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+      const player = spotPlayer.newSpot.spotPlayerState.players[currentPlayerIndex]
+      if (player){
+        return player.bank
+      }
+    }
+    return 0
+  }
+
+  getMinimumRaise(){
+    const {spotPlayer} = this.props
+    if (spotPlayer.newSpot.spotPlayerState){
+      return (spotPlayer.newSpot.spotPlayerState.totalRaise||0)+(spotPlayer.newSpot.generalSettings.bb||0)
+    }
+    return 0
+  }
+
   render(){
     const {spotPlayer} = this.props
     const {step} = spotPlayer.newSpot
@@ -313,6 +333,8 @@ export default class SpotWizard extends Component {
     const noRaiser = this.isNoRaiser()
     const hasRaise = this.hasRaise()
     const showCardsDisabled = !this.canShowCards()
+    const currentPlayerBank = this.getCurrentPlayerBank()
+    const minimumRaise = this.getMinimumRaise()
 
     return (
       <Modal
@@ -320,7 +342,6 @@ export default class SpotWizard extends Component {
             name: 'close',
             onClick: ::this.cancel,
           }}
-          dimmer="blurring"
           open={spotPlayer.spotWizardOpen}
           size="fullscreen"
       >
@@ -349,6 +370,8 @@ export default class SpotWizard extends Component {
             checkDisabled={dealerTurn || hasRaise}
             raiseClick={::this.raise}
             raiseDisabled={dealerTurn}
+            minimumRaise={minimumRaise}
+            maximumRaise={currentPlayerBank}
             showCardsClick={::this.showCards}
             showCardsDisabled={showCardsDisabled}
             saveDisabled={this.previousStepDisabled()}

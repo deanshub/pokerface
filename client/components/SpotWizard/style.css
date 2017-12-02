@@ -19,12 +19,15 @@
     "avatar bank"
     "avatar cards"
     "avatar cardsShow";
+  align-items: center;
+  margin-bottom: 2vh;
 }
 
 .avatar{
   grid-area: avatar;
-  max-height: 128px;
-  max-width: 128px;
+  text-align: center;
+  width: 100% !important;
+  height: 100% !important;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -32,6 +35,10 @@
   user-drag: none;
 }
 .avatar>img{
+  width: auto !important;
+  height: auto !important;
+  max-width: 100%;
+  max-height: 100%;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
@@ -52,11 +59,9 @@
   grid-area: cardsShow;
 }
 
-.raiseDropdown{
-  padding: 10px 30px 10px 10px !important;
-  margin: -10px 10px !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
+.raiseInput>input{
+  width: 5vw;
+  padding: 0 5px;
 }
 
 .dealerCardsInput{
@@ -94,7 +99,7 @@
   background: rgba(255,255,255,0.7);
   text-align: center;
   font-size: 2em;
-  color: black;
+  color: #5f5f5f;
   font-weight: bold;
   font-style: italic;
 }

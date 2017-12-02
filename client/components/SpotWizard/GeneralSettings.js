@@ -17,8 +17,9 @@ export default class GeneralSettings extends Component {
     }
   }
 
-  searchChange(e: Object, phrase: string){
+  searchChange(e: Object, data: string){
     const {players} = this.props
+    const phrase = data.searchQuery
     players.search(phrase)
   }
 
@@ -200,13 +201,11 @@ export default class GeneralSettings extends Component {
                           className={style.playerRow}
                       >
                         <Image
+                            avatar
+                            centered
                             className={classnames(style.avatar,{[style.dealerAvatar]:dealerIndex===playerIndex})}
                             href={href}
-                            inline
                             onClick={(e)=>{this.handleAvatarClick(e, href, playerIndex)}}
-                            shape="circular"
-                            size="small"
-                            spaced
                             src={user.avatar}
                             target="_blank"
                         />

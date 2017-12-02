@@ -44,10 +44,10 @@ export default class RSVPGroupBox extends Component {
                     on="hover"
                     trigger={
                       <Image
+                          circular
                           href={href}
                           inline
                           onClick={(e)=>{this.handleAvatarClick(e, href)}}
-                          shape="circular"
                           size="mini"
                           spaced
                           src={avatar}
