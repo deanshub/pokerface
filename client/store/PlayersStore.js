@@ -42,35 +42,26 @@ export class PlayersStore {
   }
 
   getPlayer(username){
-    let player = this.searchPlayers.get(username)
-    if (player===undefined){
-      player = {
-        guest: true,
-        username,
-        fullname:username,
-        avatar: avatarImage,
-      }
-    }
+    const player = this.searchPlayers.get(username)
 
-    return Object.assign({},player,{
-      buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-      winnings: [{value: this.initialWin, key:Math.random()}],
-    })
+    return player
+    // return Object.assign({},player,{
+    //   buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+    //   winnings: [{value: this.initialWin, key:Math.random()}],
+    // })
   }
 
   @action
   setPlayer(users){
-    if (this.guest){
-      this.currentPlayers.set(this.guest.username, this.guest)
-      this.guest = null
-    }else{
-      const players = users.reduce((res, user)=>{
-        res[user] = this.getPlayer(user)
-        return res
-      },{})
+    const players = users.reduce((res, user)=>{
+      const player = this.getPlayer(user)
+      if (player){
+        res[user] = player
+      }
+      return res
+    },{})
 
-      this.currentPlayers.replace(players)
-    }
+    this.currentPlayers.replace(players)
   }
 
   @action
@@ -83,7 +74,7 @@ export class PlayersStore {
       avatar: avatarImage,
     }
     this.searchPlayers.set(guestKey, guest)
-    this.guest = guest
+    this.currentPlayers.set(guestKey, guest)
   }
 
   @computed
@@ -113,6 +104,7 @@ export class PlayersStore {
 
   @action
   setAuthenticatedUser(user){
+    this.searchPlayers.set(user.username, user)
     this.currentPlayers.set(user.username, user)
   }
 }
