@@ -13,11 +13,12 @@
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr 2fr 2fr;
+  grid-template-rows: 1fr 2fr 2fr 1fr;
   grid-template-areas:
     "fullname none"
     "avatar bank"
-    "avatar cards";
+    "avatar cards"
+    "avatar cardsShow";
 }
 
 .avatar{
@@ -47,7 +48,9 @@
 .cards{
   grid-area: cards;
 }
-
+.cardsShow{
+  grid-area: cardsShow;
+}
 
 .raiseDropdown{
   padding: 10px 30px 10px 10px !important;

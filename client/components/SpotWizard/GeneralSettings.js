@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Form, Input, Grid, Dropdown, Header, Image } from 'semantic-ui-react'
+import { Form, Input, Grid, Dropdown, Header, Image, Checkbox } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -220,7 +220,7 @@ export default class GeneralSettings extends Component {
                             className={style.bank}
                             control={Input}
                             inline
-                            label="bank"
+                            label="Bank"
                             onChange={(e,{value})=>user.bank=parseInt(value)}
                             placeholder="100"
                             type="number"
@@ -230,10 +230,18 @@ export default class GeneralSettings extends Component {
                             className={style.cards}
                             control={Input}
                             inline
-                            label="cards"
+                            label="Cards"
                             onChange={(e,{value})=>user.cards=value}
                             placeholder="Ac Ah"
                             value={user.cards}
+                        />
+                        <Form.Field
+                            checked={user.showCards}
+                            className={style.cardsShow}
+                            control={Checkbox}
+                            inline
+                            label="Show cards upfront"
+                            onChange={(e,{checked})=>user.showCards=checked}
                         />
                       </div>
                     </Grid.Column>
