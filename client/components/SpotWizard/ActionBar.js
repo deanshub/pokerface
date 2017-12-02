@@ -17,10 +17,20 @@ export default class SpotWizard extends Component {
     }
   }
 
-  changeRaise(e, {value}){
+  componentWillReceiveProps(props){
     this.setState({
-      raiseValue: value,
+      dealerCards: [],
+      raiseValue: props.minimumRaise||0,
     })
+  }
+
+  changeRaise(e, {value}){
+    const raiseValue = parseInt(value)
+    if (raiseValue){
+      this.setState({
+        raiseValue,
+      })
+    }
   }
 
   dealerCardsChange(index, value){
