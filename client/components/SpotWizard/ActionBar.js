@@ -19,7 +19,6 @@ export default class SpotWizard extends Component {
 
   componentWillReceiveProps(props){
     this.setState({
-      dealerCards: [],
       raiseValue: props.minimumRaise||0,
     })
   }
