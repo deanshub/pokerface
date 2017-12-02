@@ -20,7 +20,6 @@ editor improvements
 * allow edit post
 
 spot wizard improvments
-* checkbox on generalSettings of show cards before-hand
 * allow draging to re-order players sitting
 * handle everyone folding and only one player left
 * consider all-in both on wizard and on player
@@ -28,13 +27,12 @@ spot wizard improvments
 * integrate lior's timeline component to go back or place an undo button
 
 spot player imporvements
-* disable the forward button when reaching the end
 * implement the back button
 * show who won at the end
 * integrate lior's timeline to move around
+* create constants for all logger categories and such
 * re render of cards (images requested multiple times) when exporting gif
 * better responsiveness (vertical phone)
-* create constants for all logger categories and such
 
 
 leagal note on signup

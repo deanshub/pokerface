@@ -21,6 +21,7 @@ export default class SpotPlayer extends Component {
             visible
         >
           <StepsPlayer
+              hasNextStep={post.spotPlayerState.nextMoveIndex<post.spot.moves.length}
               onNextStep={()=>spotPlayer.nextStep(post)}
               onPreviousStep={()=>spotPlayer.previousStep(post)}
               onReset={()=>spotPlayer.reset(post)}
