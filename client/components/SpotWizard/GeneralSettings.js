@@ -183,6 +183,7 @@ export default class GeneralSettings extends Component {
                 const dealerIndex = settings.dealer||0
                 return (
                   <PlayerField
+                      handleAvatarClick={::this.handleAvatarClick}
                       isDealer={dealerIndex===playerIndex}
                       key={username}
                       playerIndex={playerIndex}

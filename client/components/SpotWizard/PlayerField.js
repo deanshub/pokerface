@@ -7,7 +7,7 @@ import style from './style.css'
 @observer
 export default class PlayerField extends Component {
   render(){
-    const {playerIndex, isDealer, user} = this.props
+    const {playerIndex, isDealer, user, handleAvatarClick} = this.props
     const href=`/profile/${user.username}`
 
     return (
@@ -20,7 +20,7 @@ export default class PlayerField extends Component {
                 centered
                 className={classnames(style.avatar,{[style.dealerAvatar]:isDealer})}
                 href={href}
-                onClick={(e)=>{this.handleAvatarClick(e, href, playerIndex)}}
+                onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
                 src={user.avatar}
                 target="_blank"
             />
