@@ -43,20 +43,20 @@ export default class Post extends Component {
   goto(event){
     const {post, routing, auth} = this.props
     event.preventDefault()
-    if (post.player.username===auth.user.username){
+    if (post.owner.username===auth.user.username){
       routing.push('/profile')
     }else{
-      routing.push(`/profile/${post.player.username}`)
+      routing.push(`/profile/${post.owner.username}`)
     }
   }
 
   getUserFullName(){
     const { post, auth } = this.props
-    return post.player.username===auth.user.username?'You':post.player.fullname
+    return post.owner.username===auth.user.username?'You':post.owner.fullname
   }
   getUserImageUrl(){
     const { post } = this.props
-    return post.player.avatar
+    return post.owner.avatar
   }
 
   openDeletePopup(){
@@ -118,7 +118,7 @@ export default class Post extends Component {
 
     let titleComponents = [(
       <Feed.User
-          href={`/profile/${post.player.username}`}
+          href={`/profile/${post.owner.username}`}
           key="1"
           onClick={::this.goto}
       >
@@ -139,7 +139,7 @@ export default class Post extends Component {
         {titleComponents}
         <Feed.Date className={classnames({[style.standaloneSummaryDate]: standalone})}>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
         {
-          post.player.username===auth.user.username?
+          post.owner.username===auth.user.username?
           deleteButton
           :
           null
@@ -230,7 +230,7 @@ export default class Post extends Component {
   sharePostOnFacebook(){
     const { post } = this.props
     logger.logEvent({category:'Post',action:'Facebook share'})
-    const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/post/${post.id}&title=Pokerface.io&description=Post by ${post.player.fullname}&picture=http://pokerface.io${require('file-loader!../../assets/logo.png')}`
+    const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/post/${post.id}&title=Pokerface.io&description=Post by ${post.owner.fullname}&picture=http://pokerface.io${require('file-loader!../../assets/logo.png')}`
     window.open(shareurl,'', 'height=570,width=520')
   }
 

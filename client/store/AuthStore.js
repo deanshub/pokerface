@@ -38,8 +38,7 @@ export class AuthStore {
 
       const {user} = res.body
 
-      const player = user
-      logger.setField({user:player.username, email:player.email})
+      logger.setField({user:user.username, email:user.email})
 
       const cookieJwt = getCookieByName('jwt')
       if (cookieJwt !== null){
@@ -47,27 +46,12 @@ export class AuthStore {
         deleteCookie('jwt')
       }
 
-      return this.user=player
+      return this.user=user
     }).catch(err=>{
       console.error(err)
       this.authenticating = false
     })
   }
-
-  // @action
-  // authenticateByUuid(uuid){
-  //   this.authenticating = true
-  //
-  //   return request.post('/login/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
-  //     this.authenticating = false
-  //     const player = res.body
-  //     logger.setField({user:player.username, email:player.email})
-  //     return this.user=player
-  //   }).catch(err=>{
-  //     console.error(err)
-  //     this.authenticating = false
-  //   })
-  // }
 
   @action
   logout(){

@@ -27,20 +27,20 @@ export default class PostComment extends Component {
 
   goto(){
     const {comment, routing, auth} = this.props
-    if (comment.player.username===auth.user.username){
+    if (comment.owner.username===auth.user.username){
       routing.push('/profile')
     }else{
-      routing.push(`/profile/${comment.player.username}`)
+      routing.push(`/profile/${comment.owner.username}`)
     }
   }
 
   getUserFullName(){
     const { comment, auth } = this.props
-    return comment.player.username===auth.user.username?'You':comment.player.fullname
+    return comment.owner.username===auth.user.username?'You':comment.owner.fullname
   }
   getUserImageUrl(){
     const { comment } = this.props
-    return comment.player.avatar
+    return comment.owner.avatar
   }
 
   setLike(){
@@ -120,7 +120,7 @@ export default class PostComment extends Component {
             <div>{this.timeAgo.format(new Date(comment.createdAt))}</div>
           </Comment.Metadata>
           {
-            comment.player.username===auth.user.username?
+            comment.owner.username===auth.user.username?
             deleteButton
             :
             null
