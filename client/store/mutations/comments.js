@@ -21,13 +21,13 @@ export const commentCreate = gql`mutation addComment($post: String!, $comment: S
         avatar
       }
       content
-      player{
+      owner{
         username
         fullname
         avatar
       }
     }
-    player{
+    owner{
       username
       fullname
       avatar
@@ -65,13 +65,13 @@ export const setCommentLike = gql`mutation setCommentLike($comment: String!, $li
           avatar
         }
         content
-        player{
+        owner{
           username
           fullname
           avatar
         }
       }
-      player{
+      owner{
         username
         fullname
         avatar

@@ -141,7 +141,7 @@ export class FeedStore {
         photos: [],
         likes:[],
         comments:[],
-        player:user,
+        owner:user,
       })
       this.uploadImages=[]
     }
@@ -199,7 +199,7 @@ export class FeedStore {
         content: commentState,
         photos:[],
         likes:[],
-        player:{
+        owner:{
           username: this.currentUser,
           fullname: 'Dean Shub',
           avatar: '/images/dean2.jpg',

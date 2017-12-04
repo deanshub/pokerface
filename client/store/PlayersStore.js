@@ -3,7 +3,7 @@
 import { observable, action, computed, toJS } from 'mobx'
 import avatarImage from '../assets/images/avatar.png'
 import graphqlClient from './graphqlClient'
-import {playersQuery} from './queries/players'
+import {usersQuery} from './queries/users'
 
 export class PlayersStore {
   @observable currentPlayers
@@ -33,7 +33,7 @@ export class PlayersStore {
   search(phrase){
     this.searchLoading = true
     this.searchValue = phrase
-    graphqlClient.query({query: playersQuery, variables: {phrase}}).then((result)=>{
+    graphqlClient.query({query: usersQuery, variables: {phrase}}).then((result)=>{
       // let playersObj = {}
       // if (result.data.players){
       //   playersObj = result.data.players.reduce((res, player)=>{
@@ -46,10 +46,10 @@ export class PlayersStore {
       // }
       // this.searchPlayers.replace(Object.assign({},playersObj, toJS(this.currentPlayers)))
 
-      if (result.data.players){
-        result.data.players.forEach((player)=>{
-          if (!this.searchPlayers.has(player.username)){
-            this.searchPlayers.set(player.username, this.extendPlayer(player))
+      if (result.data.users){
+        result.data.users.forEach((user)=>{
+          if (!this.searchPlayers.has(user.username)){
+            this.searchPlayers.set(user.username, this.extendPlayer(user))
           }
         })
       }

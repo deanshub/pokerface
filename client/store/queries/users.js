@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
-export const playersQuery = gql`
+export const usersQuery = gql`
   query _($phrase: String, $username: String) {
-    players(phrase: $phrase, username: $username){
+    users(phrase: $phrase, username: $username){
       username
       fullname
       avatar

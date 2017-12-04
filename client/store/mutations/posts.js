@@ -22,13 +22,13 @@ export const postCreate = gql`mutation createPost($post: String!, $photos: [Uplo
         avatar
       }
       content
-      player{
+      owner{
         username
         fullname
         avatar
       }
     }
-    player{
+    owner{
       username
       fullname
       avatar
@@ -67,13 +67,13 @@ export const setPostLike = gql`mutation setPostLike($post: String!, $like: Boole
         avatar
       }
       content
-      player{
+      owner{
         username
         fullname
         avatar
       }
     }
-    player{
+    owner{
       username
       fullname
       avatar

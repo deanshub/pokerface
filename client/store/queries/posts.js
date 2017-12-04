@@ -20,7 +20,7 @@ export const postsQuery = gql`
           avatar
         }
         content
-        player{
+        owner{
           username
           fullname
           avatar
@@ -29,7 +29,7 @@ export const postsQuery = gql`
           id
         }
       }
-      player{
+      owner{
         username
         fullname
         avatar
