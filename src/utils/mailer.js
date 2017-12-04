@@ -205,12 +205,12 @@ function getAllPlayers(game, Db){
   const invitedUsers = game.invited.filter(player=>!player.guest).map(player=>player.username)
   const invitedGuests = game.invited.filter(player=>player.guest)
 
-  return Db.models.Player.find({
+  return Db.models.User.find({
     _id: {
-      $in: [...invitedUsers, game.player],
+      $in: [...invitedUsers, game.owner],
     },
   }).then(players=>{
-    const orgenizer = players.filter(player=>player.username===game.player)[0]
+    const orgenizer = players.filter(player=>player.username===game.owner)[0]
 
     const additionalPlayers = invitedGuests.filter(player=>emailRegex.test(player.fullname)).map(player=>{
       return {

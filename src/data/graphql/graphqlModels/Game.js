@@ -1,6 +1,6 @@
 import DB from '../../db'
 import mailer from '../../../utils/mailer'
-import {schema as Player} from './Player'
+import {schema as User} from './User'
 
 export const schema =  [`
   type Game {
@@ -12,13 +12,13 @@ export const schema =  [`
     location: String
     from: String
     to: String
-    invited: [Player]
-    accepted: [Player]
-    declined: [Player]
-    unresponsive: [Player]
+    invited: [User]
+    accepted: [User]
+    declined: [User]
+    unresponsive: [User]
     updatedAt: String
     createdAt: String
-    creator: Player
+    creator: User
   }
 
   type Query {
@@ -44,7 +44,7 @@ export const schema =  [`
       gameId: String!
     ): Game
   }
-`, ...Player]
+`, ...User]
 
 export const resolvers = {
   Game:{
@@ -59,7 +59,7 @@ export const resolvers = {
     invited: (game)=>{
       const invitedUsers = game.invited.filter(player=>!player.guest).map(player=>player.username)
       const invitedGuests = game.invited.filter(player=>player.guest)
-      return DB.models.Player.find({
+      return DB.models.User.find({
         _id: {
           $in: invitedUsers,
         },
@@ -67,12 +67,12 @@ export const resolvers = {
         return players.concat(invitedGuests)
       })
     },
-    accepted: (game)=>DB.models.Player.find({
+    accepted: (game)=>DB.models.User.find({
       _id: {
         $in: game.accepted,
       },
     }),
-    declined: (game)=>DB.models.Player.find({
+    declined: (game)=>DB.models.User.find({
       _id: {
         $in: game.declined,
       },
@@ -81,7 +81,7 @@ export const resolvers = {
       const invitedUsers = game.unresponsive.filter(player=>!player.guest).map(player=>player.username)
       const invitedGuests = game.unresponsive.filter(player=>player.guest)
 
-      return DB.models.Player.find({
+      return DB.models.User.find({
         _id: {
           $in: invitedUsers,
         },
@@ -91,7 +91,7 @@ export const resolvers = {
     },
     updatedAt: (game)=>game.updated,
     createdAt: (game)=>game.created,
-    creator: (game)=>DB.models.Player.findById(game.player),
+    creator: (game)=>DB.models.User.findById(game.owner),
   },
 
   Query: {
@@ -104,7 +104,7 @@ export const resolvers = {
       .or([{
         invited: context.user._id,
       },{
-        player: context.user._id,
+        owner: context.user._id,
       }])
       .limit(20)
       .sort('-startDate')
@@ -158,7 +158,7 @@ export const resolvers = {
     },
     addGame: (_, {title, description, type, subtype, location, from, to, invited}, context)=>{
       return new DB.models.Game({
-        player: context.user._id,
+        owner: context.user._id,
         title,
         description,
         type,
@@ -175,7 +175,7 @@ export const resolvers = {
     },
     deleteGame: (_, args, context)=>{
       return DB.models.Game.findById(args.gameId).then(game=>{
-        if (game.player===context.user._id){
+        if (game.owner===context.user._id){
           return mailer.sendGameCancelled(game, DB).catch((err)=>{
             console.error(err)
             return game.remove()

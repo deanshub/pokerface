@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 
 const schema = mongoose.Schema({
-  player: {
+  owner: {
     type: String,
-    ref: 'Player',
+    ref: 'User',
     required: true,
   },
   title:{
@@ -41,13 +41,13 @@ const schema = mongoose.Schema({
   }],
   accepted:[{
     type: String,
-    ref: 'Player',
+    ref: 'User',
     required: true,
     default: [],
   }],
   declined:[{
     type: String,
-    ref: 'Player',
+    ref: 'User',
     required: true,
     default: [],
   }],
@@ -55,8 +55,8 @@ const schema = mongoose.Schema({
   created: { type: Date, default: Date.now },
 })
 schema.virtual('unresponsive').get(function(){
-  return (this.invited).filter((player)=>{
-    return player.guest || ((!this.accepted.includes(player.username) && !this.declined.includes(player.username)))
+  return (this.invited).filter((user)=>{
+    return user.guest || ((!this.accepted.includes(user.username) && !this.declined.includes(user.username)))
   })
 })
 

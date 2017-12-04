@@ -1,6 +1,6 @@
 import path from 'path'
 import DB from '../../db'
-// import {schema as Player} from './Player'
+// import {schema as User} from './User'
 // import {schema as Comment} from './Comment'
 
 export const schema =  [`
@@ -9,8 +9,8 @@ export const schema =  [`
     createdAt: String
     content: String
     photos: [String]
-    likes: [Player]
-    player: Player
+    likes: [User]
+    owner: User
     comments: [Comment]
   }
 
@@ -43,12 +43,12 @@ export const resolvers = {
     createdAt: (post)=>post.created,
     content: (post)=>JSON.stringify(post.content),
     photos: (post)=>post.photos.map(photo=>`/images/${photo}`),
-    likes: (post)=>DB.models.Player.find({
+    likes: (post)=>DB.models.User.find({
       _id:{
         $in: post.likes,
       },
     }),
-    player: (post)=>DB.models.Player.findById(post.player),
+    owner: (post)=>DB.models.User.findById(post.owner),
     comments: (post)=>DB.models.Comment.find({post:post._id})
       .sort('created'),
   },
@@ -59,11 +59,11 @@ export const resolvers = {
       if (id!==undefined){
         query = DB.models.Post.find({_id: id})
       }else if (username!==undefined) {
-        return DB.models.Comment.find({player: username}).then((comments)=>{
+        return DB.models.Comment.find({owner: username}).then((comments)=>{
           const posts = comments.map(comment=>comment.post)
           return DB.models.Post.find({
             $or:[
-              {player: username},
+              {owner: username},
               {_id:{$in:posts}},
             ],
           })
@@ -91,13 +91,13 @@ export const resolvers = {
       })
       return new DB.models.Post({
         content: JSON.parse(content),
-        player: context.user._id,
+        owner: context.user._id,
         photos: photosUrl,
       }).save()
     },
     deletePost:(_, {postId}, context)=>{
       return DB.models.Post.findById(postId).then(post=>{
-        if (post.player===context.user._id){
+        if (post.owner===context.user._id){
           return post.remove()
         }else{
           throw new Error('Can\'t delete post of another user')

@@ -7,7 +7,7 @@ import {Strategy as FacebookStrategy} from 'passport-facebook'
 import {Strategy as GoogleStrategy} from 'passport-google-oauth20'
 import { download } from '../utils/diskWriting'
 import uuidv1 from 'uuid/v1'
-import {createPlayer} from '../data/helping/player'
+import {createUser} from '../data/helping/user'
 
 // TODO merge with mailer.sj
 const hostLocation = (config.NODE_ENV==='development')?
@@ -45,7 +45,7 @@ const initialize = () => {
       secretOrKey: config.JWT_SECRET_KEY,
     },
       function ({username, password}, done){
-        DB.models.Player.findById(username).then((user)=>{
+        DB.models.User.findById(username).then((user)=>{
           if (!user || user.password !== password){
             return done(null, false, {message: 'Wrong token was received'})
           }
@@ -84,22 +84,22 @@ const initialize = () => {
         cover,
       } = profile._json
 
-      DB.models.Player.findOne({email}).then((existedPlayer) => {
+      DB.models.User.findOne({email}).then((existedUser) => {
 
-        if (existedPlayer){
-          return existedPlayer
+        if (existedUser){
+          return existedUser
         } else {
-          return createPlayer({email, firstname, lastname, gender})
+          return createUser({email, firstname, lastname, gender})
         }
-      }).then((player) => {
+      }).then((user) => {
 
         const pictureUuid = uuidv1()
 
-        if (!player.facebookId){
-          player.facebookId = facebookId
+        if (!user.facebookId){
+          user.facebookId = facebookId
         }
 
-        if (!player.avatar){
+        if (!user.avatar){
 
           const avatarFilename = `avater${pictureUuid}.jpg`
           download(
@@ -107,15 +107,15 @@ const initialize = () => {
             '../client/static/images',
             avatarFilename,
           ).then(() => {
-            player.avatar = avatarFilename
-            player.updated = Date.now()
-            player.save()
+            user.avatar = avatarFilename
+            user.updated = Date.now()
+            user.save()
           }).catch((err) => {
             console.error(err)
           })
         }
 
-        if (!player.coverImage && cover){
+        if (!user.coverImage && cover){
 
           const coverFileName = `cover${pictureUuid}.jpg`
           download(
@@ -123,16 +123,16 @@ const initialize = () => {
             '../client/static/images',
             coverFileName,
           ).then(() => {
-            player.coverImage = coverFileName
-            player.updated = Date.now()
-            player.save()
+            user.coverImage = coverFileName
+            user.updated = Date.now()
+            user.save()
           }).catch((err) => {
             console.error(err)
           })
         }
-        const token = signTokenToUser(player)
+        const token = signTokenToUser(user)
 
-        return cb(null, {token, user:{...player.toJSON()}})
+        return cb(null, {token, user:{...user.toJSON()}})
       }).catch(e=>{
         console.error(e)
         return cb(null, {user:{}})
@@ -157,29 +157,29 @@ const initialize = () => {
 
       const email = emails[0].value
 
-      DB.models.Player.findOne({email}).then((existedPlayer) => {
+      DB.models.User.findOne({email}).then((existedUser) => {
 
-        if (existedPlayer){
-          return existedPlayer
+        if (existedUser){
+          return existedUser
         }else {
-          return createPlayer({
+          return createUser({
             email,
             firstname:name.givenName,
             lastname:name.familyName,
             gender,
           })
         }
-      }).then((player) => {
+      }).then((user) => {
 
-        if (!player.googleId){
-          player.googleId = googleId
-          player.save()
+        if (!user.googleId){
+          user.googleId = googleId
+          user.save()
         }
 
         const pictureUuid = uuidv1()
 
         // TODO try to check anonimic picture
-        // if (!player.avatar){
+        // if (!user.avatar){
         //   // replace size parameter, search 'sz' after ?
         //   const avatarUrl = avatar.url.replace(/(sz=\d+$)(?=\\?)/g, `sz=${AVATAR_SIZE}`)
         //
@@ -189,15 +189,15 @@ const initialize = () => {
         //     '../client/static/images',
         //     avatarFilename,
         //   ).then(() => {
-        //     player.avatar = avatarFilename
-        //     player.updated = Date.now()
-        //     player.save()
+        //     user.avatar = avatarFilename
+        //     user.updated = Date.now()
+        //     user.save()
         //   }).catch((err) => {
         //     console.error(err)
         //   })
         // }
 
-        if (!player.coverImage && cover){
+        if (!user.coverImage && cover){
 
           const coverFileName = `cover${pictureUuid}.jpg`
           download(
@@ -205,29 +205,29 @@ const initialize = () => {
             '../client/static/images',
             coverFileName,
           ).then(() => {
-            player.coverImage = coverFileName
-            player.updated = Date.now()
-            player.save()
+            user.coverImage = coverFileName
+            user.updated = Date.now()
+            user.save()
           }).catch((err) => {
             console.error(err)
           })
         }
 
-        const token = signTokenToUser(player)
+        const token = signTokenToUser(user)
 
-        return cb(null, {token, user:{...player.toJSON()}})
+        return cb(null, {token, user:{...user.toJSON()}})
       }).catch(e=>{
         console.error(e)
         return cb(null, {user:{}})
       })
     }))
 
-  passport.serializeUser((player, done) => {
-    done(null, player.user._id)
+  passport.serializeUser((user, done) => {
+    done(null, user.user._id)
   })
 
   passport.deserializeUser((user, done) => {
-    DB.models.Player.findById(user).then((user)=>{
+    DB.models.User.findById(user).then((user)=>{
       const token = signTokenToUser(user)
       return done(null, {token, user:{...user.toJSON()}})
     }).catch(e=>{
@@ -242,7 +242,7 @@ const initialize = () => {
 const login = (req, res) => {
   const {email, password} = req.body
 
-  DB.models.Player.findOne({email,password,active:true}).then((user)=>{
+  DB.models.User.findOne({email,password,active:true}).then((user)=>{
     if (!user){
       res.status(401).json({error: 'Email or password are Incorrect .'})
     } else{

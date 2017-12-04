@@ -6,7 +6,7 @@ import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
 
 export const schema =  [`
-  type Player {
+  type User {
     username: String
     guest: Boolean
     firstname: String
@@ -20,65 +20,65 @@ export const schema =  [`
   }
 
   type Query {
-    players(
+    users(
       phrase: String,
       username: String
-    ): [Player]
+    ): [User]
   }
 
   type Mutation{
-    createPlayer(
+    createUser(
       username: String!,
       firstname: String!,
       lastName: String,
       email: String!
-    ): Player
+    ): User
     updatePersonalInfo(
       firstname: String,
       lastname: String,
       cover: Upload,
       avatar: Upload
-    ): Player
+    ): User
   }
 `, Upload]
 
 export const resolvers = {
-  Player:{
-    username: (player)=>player.username,
-    guest: (player)=>!!player.guest,
-    firstname: (player)=>player.firstname,
-    lastname: (player)=>player.lastname,
-    fullname: (player)=>player.fullname,
-    email: (player)=> player.email,
-    avatar: (player)=>{
-      if (!player.avatar && !player.username){
+  User:{
+    username: (user)=>user.username,
+    guest: (user)=>!!user.guest,
+    firstname: (user)=>user.firstname,
+    lastname: (user)=>user.lastname,
+    fullname: (user)=>user.fullname,
+    email: (user)=> user.email,
+    avatar: (user)=>{
+      if (!user.avatar && !user.username){
         return '/images/avatar.png'
-      }else if (!player.avatar){
-        return `/api/avatarGenerator?username=${player.username}`
-      }else if (player.avatar.startsWith('http')) {
-        return player.avatar
+      }else if (!user.avatar){
+        return `/api/avatarGenerator?username=${user.username}`
+      }else if (user.avatar.startsWith('http')) {
+        return user.avatar
       }
-      return `/images/${player.avatar}`
+      return `/images/${user.avatar}`
     },
-    coverImage: (player)=>{
-      if (!player.coverImage && !player.username){
+    coverImage: (user)=>{
+      if (!user.coverImage && !user.username){
         return '/images/cover.jpg'
-      }else if (!player.coverImage){
-        return `/api/avatarGenerator?username=${player.username}`
-      }else if (!player.coverImage.includes('http')) {
-        return `/images/${player.coverImage}`
+      }else if (!user.coverImage){
+        return `/api/avatarGenerator?username=${user.username}`
+      }else if (!user.coverImage.includes('http')) {
+        return `/images/${user.coverImage}`
       }
-      return player.coverImage
+      return user.coverImage
     },
-    posts: (player)=> DB.models.Post.find({player: player._id}),
-    comments: (player)=> DB.models.Comment.find({player: player._id}),
+    posts: (user)=> DB.models.Post.find({user: user._id}),
+    comments: (user)=> DB.models.Comment.find({user: user._id}),
   },
   Query: {
-    players: (_, {phrase, username})=>{
+    users: (_, {phrase, username})=>{
       if (username){
-        return DB.models.Player.find({_id:username})
+        return DB.models.User.find({_id:username})
       }else if (phrase){
-        return DB.models.Player.find()
+        return DB.models.User.find()
           .or([{
             _id: new RegExp(phrase,'i'),
           },{
@@ -91,9 +91,9 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createPlayer: (_, {username, firstname, lastName, email}, context)=>{
+    createUser: (_, {username, firstname, lastName, email}, context)=>{
       if (authUtils.isSuperAdmin(context.user)){
-        return new DB.models.Player({
+        return new DB.models.User({
           _id: username,
           firstname,
           lastName,
@@ -103,23 +103,23 @@ export const resolvers = {
       return new Error('Only super admins are allowed to this API')
     },
     updatePersonalInfo:(rootValue, {firstname, lastname, cover, avatar}, context)=>{
-      return DB.models.Player.findById(context.user._id).then(player=>{
+      return DB.models.User.findById(context.user._id).then(user=>{
         if (firstname){
-          player.set('firstname',firstname)
+          user.set('firstname',firstname)
         }
         if (lastname){
-          player.set('lastname',lastname)
+          user.set('lastname',lastname)
         }
         if (cover){
           const filename = path.parse(cover.path).base
-          player.set('coverImage', filename)
+          user.set('coverImage', filename)
         }
         if (avatar){
           const filename = path.parse(avatar.path).base
-          player.set('avatar', filename)
+          user.set('avatar', filename)
         }
 
-        return player.save()
+        return user.save()
       })
     },
   },
