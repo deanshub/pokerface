@@ -13,7 +13,7 @@ export const getUserByToken = (token) => {
   }
 
   const {username, password} = jwt.verify(token, config.JWT_SECRET_KEY)
-  return Db.models.Player.findById(username).then((user)=>{
+  return Db.models.User.findById(username).then((user)=>{
     if (user && user.password !== password){
       return {}
     }

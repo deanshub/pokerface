@@ -30,8 +30,8 @@ function dropCollection(model){
 
 
 const generateFakeData = (DB) => {
-  function createPlayer(){
-    return new DB.models.Player({
+  function createUser(){
+    return new DB.models.User({
       username: faker.internet.userName(),
       firstname: faker.name.firstName(),
       lastname: faker.name.lastName(),
@@ -42,8 +42,8 @@ const generateFakeData = (DB) => {
       active: true,
     }).save()
   }
-  function createDemoPlayer(){
-    return new DB.models.Player({
+  function createDemoUser(){
+    return new DB.models.User({
       username: 'deanshub',
       firstname: 'Dean',
       lastname: 'Shub',
@@ -58,7 +58,7 @@ const generateFakeData = (DB) => {
   function createGame(players){
     const invited = getRandomItems(players, 5).map(user=>user.username)
     return new DB.models.Game({
-      player: getRandomItems(players)[0].username,
+      owner: getRandomItems(players)[0].username,
       title: faker.lorem.sentence(),
       description: faker.lorem.paragraph(),
       type: 'Texas Hold\'em',
@@ -92,43 +92,43 @@ const generateFakeData = (DB) => {
     return dropCollection(DB.models[modelName])
   }))
   .then(()=>{
-    let playersCreatetion = generateArray(20).map(createPlayer)
-    playersCreatetion.push(createDemoPlayer())
+    let usersCreatetion = generateArray(20).map(createUser)
+    usersCreatetion.push(createDemoUser())
 
-    return Promise.all(playersCreatetion)
-    .then(players=>{
-      return Promise.all(generateRandomArray(25).map(()=>createGame(players)))
+    return Promise.all(usersCreatetion)
+    .then(users=>{
+      return Promise.all(generateRandomArray(25).map(()=>createGame(users)))
       .then((games)=>{
-        return {players,games}
+        return {users,games}
       })
       //   return Promise.all(generateArray(150).map(createPost)).then((posts)=>{
-      //     return {players,posts}
+      //     return {users,posts}
       //   })
     })
-    // .then(({players,games})=>{
+    // .then(({users,games})=>{
     //   const addingGames = games.map(game=>{
-    //     const player = getRandomItems(players)[0]
-    //     return player.addGame(game)
+    //     const users = getRandomItems(users)[0]
+    //     return users.addGame(game)
     //   })
     //   return Promise.all(addingGames)
     // })
-    // .then(({players,posts})=>{
+    // .then(({users,posts})=>{
     //   return Promise.all(generateArray(60).map(createComment)).then((comments)=>{
-    //     return {players,posts,comments}
+    //     return {users,posts,comments}
     //   })
     // })
-    // .then(({players,posts,comments})=>{
+    // .then(({users,posts,comments})=>{
     //   posts.forEach((post)=>{
-    //     const player = getRandomItem(players)
-    //     // post.setPlayer(player)
-    //     player.addPost(post)
+    //     const users = getRandomItem(users)
+    //     // post.setUser(users)
+    //     users.addPost(post)
     //   })
     //   comments.forEach((comment)=>{
-    //     const player = getRandomItem(players)
+    //     const user = getRandomItem(users)
     //     const post = getRandomItem(posts)
-    //     // comment.setPlayer(player)
+    //     // comment.setUser(user)
     //     // comment.setPost(post)
-    //     player.addComment(comment)
+    //     user.addComment(comment)
     //     post.addComment(comment)
     //   })
     // })

@@ -81,6 +81,6 @@ schema.virtual('fullname').get(function(){
   return `${this.firstname}${this.lastname?` ${this.lastname}`:''}`
 })
 
-const Player = mongoose.model('Player', schema)
+const User = mongoose.model('User', schema)
 
-export default Player
+export default User

@@ -4,7 +4,7 @@ import DB from '../data/db'
 import uuidv1 from 'uuid/v1'
 import moment from 'moment'
 import {signTokenToUser} from '../utils/authUtils'
-import {createPlayer} from '../data/helping/player'
+import {createUser} from '../data/helping/user'
 
 const MINUTES_UUID_EXPIRATION = 15
 
@@ -19,28 +19,28 @@ router.post('/signup', (req, res)=>{
   const {firstName, lastName, email} = req.body
   const uuid =  uuidv1()
 
-  DB.models.Player.findOne({email}).select('active').then((player) => {
-    if (player && player.active) {
+  DB.models.User.findOne({email}).select('active').then((user) => {
+    if (user && user.active) {
       throw new KnownError(403, {error:'Current email already existes.'})
-    }else if (player){
+    }else if (user){
       const currentDate = Date.now()
 
-      player.firstname = firstName
-      player.lastname = lastName
-      player.tempuuid = uuid
-      player.tempuuiddate = currentDate
-      player.updated = currentDate
-      return player.save()
+      user.firstname = firstName
+      user.lastname = lastName
+      user.tempuuid = uuid
+      user.tempuuiddate = currentDate
+      user.updated = currentDate
+      return user.save()
     }
 
-    const newPlayer = {
+    const newUser = {
       email:email.toLowerCase(),
       firstname:firstName,
       lastname:lastName,
       tempuuid:uuid,
       tempuuiddate: Date.now(),
     }
-    return createPlayer(newPlayer)
+    return createUser(newUser)
   }).then(() => {
     return mailer.sendSignupMessage(firstName, lastName, email, uuid)
   }).then(() => {
@@ -60,28 +60,28 @@ router.post('/forgotPassword', (req, res) => {
   const uuid =  uuidv1()
 
   // TODO Didn't select the password?
-  DB.models.Player.findOne({email, active:true}).then((player) => {
-    if (!player) {
-      // If player not exists send OK but don't do any thing
+  DB.models.User.findOne({email, active:true}).then((user) => {
+    if (!user) {
+      // If user not exists send OK but don't do any thing
       throw new KnownError(20, {success:true})
     }
-    return player
-  }).then((player) => {
-    // Update the player's documant
+    return user
+  }).then((user) => {
+    // Update the user's documant
     const currentDate = Date.now()
 
-    player.tempuuid = uuid
-    player.tempuuiddate = currentDate
-    player.updated = currentDate
-    return player.save()
-  }).then((player) => {
-    // Send mail to the player
+    user.tempuuid = uuid
+    user.tempuuiddate = currentDate
+    user.updated = currentDate
+    return user.save()
+  }).then((user) => {
+    // Send mail to the user
     const {
       firstname,
       lastname,
       email,
       tempuuid,
-    } = player
+    } = user
 
     // TODO the current catching error in mailer not enable to know error occurred
     return mailer.sendResetPasswordMessage(firstname, lastname, email, tempuuid)
@@ -101,27 +101,27 @@ router.post('/forgotPassword', (req, res) => {
 router.post('/setPassword', (req, res) =>{
   const {uuid, password} = req.body
 
-  DB.models.Player.findOne({tempuuid:uuid}).then((player) => {
+  DB.models.User.findOne({tempuuid:uuid}).then((user) => {
 
     const currnetTime = moment()
-    const expirationTime = moment(player.tempguiddate).add(MINUTES_UUID_EXPIRATION, 'minutes')
+    const expirationTime = moment(user.tempguiddate).add(MINUTES_UUID_EXPIRATION, 'minutes')
 
-    // if player not found of the time to set password has expired.
-    if (!player || currnetTime > expirationTime) {
+    // if user not found of the time to set password has expired.
+    if (!user || currnetTime > expirationTime) {
       res.json({success:false})
     }else{
-      player.tempuuid = undefined
-      player.tempuuiddate = undefined
-      player.active = true
-      player.password = password
-      player.updated = Date.now()
+      user.tempuuid = undefined
+      user.tempuuiddate = undefined
+      user.active = true
+      user.password = password
+      user.updated = Date.now()
 
-      return player.save()
+      return user.save()
     }
-  }).then((player) => {
-    if (player) {
-      const token = signTokenToUser(player)
-      res.json({success:true, token, email:player.email})
+  }).then((user) => {
+    if (user) {
+      const token = signTokenToUser(user)
+      res.json({success:true, token, email:user.email})
     }
   }).catch(err=>{
     res.json({error:err})

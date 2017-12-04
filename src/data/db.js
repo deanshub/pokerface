@@ -3,7 +3,7 @@ mongoose.Promise = Promise
 import config from 'config'
 import connectMongo from 'connect-mongo'
 
-import Player from './dbModels/Player'
+import User from './dbModels/User'
 import Post from './dbModels/Post'
 import Comment from './dbModels/Comment'
 import Game from './dbModels/Game'
@@ -48,7 +48,7 @@ mongoose.connect(connString,{
 
 const DB = {
   models:{
-    Player,
+    User,
     Post,
     Comment,
     Game,

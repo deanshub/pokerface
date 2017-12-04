@@ -1,5 +1,5 @@
 import DB from '../../db'
-import {schema as Player} from './Player'
+import {schema as User} from './User'
 import {schema as Post} from './Post'
 
 export const schema =  [`
@@ -8,8 +8,8 @@ export const schema =  [`
     createdAt: String
     content: String
     photos: [String]
-    likes: [Player]
-    player: Player
+    likes: [User]
+    owner: User
     post: Post
   }
 
@@ -33,7 +33,7 @@ export const schema =  [`
       comment: String!
     ): Comment
   }
-`, ...Player, ...Post]
+`, ...User, ...Post]
 
 export const resolvers = {
   Comment:{
@@ -41,12 +41,12 @@ export const resolvers = {
     createdAt: (comment)=>comment.created,
     content: (comment)=>JSON.stringify(comment.content),
     photos: (comment)=>comment.photos,
-    likes: (comment)=>DB.models.Player.find({
+    likes: (comment)=>DB.models.User.find({
       _id:{
         $in: comment.likes,
       },
     }),
-    player: (comment)=>DB.models.Player.findById(comment.player),
+    owner: (comment)=>DB.models.User.findById(comment.owner),
     post: (comment)=>DB.models.Post.findById(comment.post),
   },
 
@@ -60,7 +60,7 @@ export const resolvers = {
     addComment: (_, {content, photos, post}, context)=>{
       return new DB.models.Comment({
         content: JSON.parse(content),
-        player: context.user._id,
+        owner: context.user._id,
         post,
         photos,
       }).save()
@@ -70,7 +70,7 @@ export const resolvers = {
     },
     deleteComment:(_, {commentId}, context)=>{
       return DB.models.Comment.findById(commentId).then(comment=>{
-        if (comment.player===context.user._id){
+        if (comment.owner===context.user._id){
           return comment.remove()
         }else{
           throw new Error('Can\'t delete comment of another user')

@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 
 const schema = mongoose.Schema({
-  player: {
+  owner: {
     type: String,
-    ref: 'Player',
+    ref: 'User',
     required: true,
   },
   post: {
@@ -22,7 +22,7 @@ const schema = mongoose.Schema({
   }],
   likes: [{
     type: String,
-    ref: 'Player',
+    ref: 'User',
     required: true,
     default: [],
   }],

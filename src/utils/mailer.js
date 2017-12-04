@@ -205,7 +205,7 @@ function getAllPlayers(game, Db){
   const invitedUsers = game.invited.filter(player=>!player.guest).map(player=>player.username)
   const invitedGuests = game.invited.filter(player=>player.guest)
 
-  return Db.models.Player.find({
+  return Db.models.User.find({
     _id: {
       $in: [...invitedUsers, game.player],
     },

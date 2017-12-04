@@ -11,7 +11,7 @@ import {eventConnectionListener as timerListener} from '../../utils/blindTimers'
 
 import { schema as PostSchema, resolvers as PostResolvers } from './graphqlModels/Post'
 import { schema as CommentSchema, resolvers as CommentResolvers } from './graphqlModels/Comment'
-import { schema as PlayerSchema, resolvers as PlayerResolvers } from './graphqlModels/Player'
+import { schema as UserSchema, resolvers as UserResolvers } from './graphqlModels/User'
 import { schema as GameSchema, resolvers as GameResolvers } from './graphqlModels/Game'
 import { schema as UploadSchema, resolvers as UploadResolvers } from './graphqlModels/UploadedFile'
 import { schema as TimerSchema, resolvers as TimerResolvers } from './graphqlModels/Timer'
@@ -20,7 +20,7 @@ const schema = makeExecutableSchema({
   typeDefs: [mergeStrings([
     ...PostSchema,
     ...CommentSchema,
-    ...PlayerSchema,
+    ...UserSchema,
     ...GameSchema,
     ...UploadSchema,
     ...TimerSchema,
@@ -28,7 +28,7 @@ const schema = makeExecutableSchema({
   resolvers: merge(
     PostResolvers,
     CommentResolvers,
-    PlayerResolvers,
+    UserResolvers,
     GameResolvers,
     UploadResolvers,
     TimerResolvers,

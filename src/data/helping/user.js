@@ -1,22 +1,22 @@
 import DB from '../db'
 
-export const createPlayer = (player) => {
+export const createUser = (user) => {
   const {
     firstname,
     lastname,
-  } = player
+  } = user
 
-  return DB.models.Player.find({
+  return DB.models.User.find({
     firstname: {$regex: firstname, $options: 'i'},
     lastname:{$regex: lastname, $options: 'i'},
   }).count().then((count) => {
     const username = `${firstname}.${lastname}.${count+1}`.toLowerCase().replace(/ /g,'.')
 
-    const newPlayer = {
+    const newUser = {
       _id: username,
-      ...player,
+      ...user,
     }
 
-    return new DB.models.Player(newPlayer).save()
+    return new DB.models.User(newUser).save()
   })
 }
