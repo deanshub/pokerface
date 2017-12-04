@@ -40,8 +40,8 @@ export const gameAttendanceUpdate = gql`mutation gameAttendanceUpdate($gameId: S
 }
 `
 
-export const addGame = gql`mutation addGame($title: String!, $description: String, $type: String, $subtype: String, $location: String, $startDate: String!, $endDate: String, $players: String!){
-  addGame(title:$title, description:$description, type:$type, subtype:$subtype, location:$location, from: $startDate, to:$endDate, invited: $players){
+export const addGame = gql`mutation addGame($title: String!, $description: String, $type: String, $subType: String, $location: String, $startDate: String!, $endDate: String, $players: String!){
+  addGame(title:$title, description:$description, type:$type, subtype:$subType, location:$location, from: $startDate, to:$endDate, invited: $players){
     id
     creator{
       username
