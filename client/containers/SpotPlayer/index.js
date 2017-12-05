@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import { Sidebar, Segment } from 'semantic-ui-react'
 import Spot from '../../components/Spot'

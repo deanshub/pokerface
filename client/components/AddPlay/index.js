@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import { Grid, Form, Button, Dropdown, Icon } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'

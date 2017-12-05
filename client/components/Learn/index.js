@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import { Container } from 'semantic-ui-react'
 import CardsTable from '../CardsTable'
 import {openRaiseSets} from './openRaiseSets'

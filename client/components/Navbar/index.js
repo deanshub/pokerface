@@ -1,8 +1,9 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import { Menu, Button, Input, Icon, Label, Search, Image } from 'semantic-ui-react'
-import request from 'superagent'
+// import request from 'superagent'
 import { observer, inject } from 'mobx-react'
 import PlayerSearchResult from './PlayerSearchResult'
 import classnames from 'classnames'
