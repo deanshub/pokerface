@@ -17,6 +17,21 @@ const schema = mongoose.Schema(
       // validate: [validateUsername, 'This username already exists, username must be unique'],
       trim: true,
     },
+    organiztion: {
+      type: Boolean,
+    },
+    players: [{
+      type: String,
+      ref: 'User',
+    }],
+    owner:{
+      type: String,
+      ref: 'User',
+    },
+    organiztions: [{
+      type: String,
+      ref: 'User',
+    }],
     firstname: {
       type: String,
       required: [true, 'Firstname is required'],
@@ -49,17 +64,37 @@ const schema = mongoose.Schema(
     coverImage: {
       type: String,
     },
+    phonenumber:{
+      type: String,
+    },
+    permissions:[{
+      type: String,
+    }],
+    rebrandingDetails:{
+      primeryColor: {
+        type: String,
+      },
+      secondaryColor: {
+        type: String,
+      },
+    },
+    gender:{
+      type:String,
+    },
+    lastPulseCheck:{
+      type:Date,
+    },
     tempuuid: {
       type: String,
     },
     tempuuiddate:{
       type: Date,
     },
-    gender:{
-      type:String,
+    unsbscribe: {
+      type: Boolean,
     },
-    birthday:{
-      type: Date,
+    unsbscribeuuid: {
+      type: String,
     },
     facebookId: {
       type: String,
