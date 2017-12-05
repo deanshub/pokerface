@@ -41,6 +41,15 @@ export default class SpotWizard extends Component {
     })
   }
 
+  publishDealerCards(){
+    const {dealerClick} = this.props
+    const {dealerCards} = this.state
+    dealerClick(dealerCards.join(''))
+    this.setState({
+      dealerCards:[],
+    })
+  }
+
   render(){
     const {
       step,
@@ -68,7 +77,6 @@ export default class SpotWizard extends Component {
       saveDisabled,
       save,
       dealerDisabled,
-      dealerClick,
       dealerNextState,
     } = this.props
     const {raiseOptions, raiseValue, dealerCards} = this.state
@@ -216,7 +224,7 @@ export default class SpotWizard extends Component {
                       color="green"
                       disabled={dealerDisabled}
                       icon="announcement"
-                      onClick={()=>{dealerClick(dealerCards.join(''))}}
+                      onClick={::this.publishDealerCards}
                       size="mini"
                       style={{marginLeft:10}}
                   />
