@@ -29,7 +29,7 @@ export class PlayersSearchStore {
       this.timeout = setTimeout(()=>{
         logger.logEvent({category:'Players search',action:'search'})
         graphqlClient.query({query: usersQuery, variables: {phrase}}).then((result)=>{
-          this.availablePlayers.replace(result.data.players.map(player=>{
+          this.availablePlayers.replace(result.data.users.map(player=>{
             return {...player, childKey:player.username}
           }))
           this.loading = false
