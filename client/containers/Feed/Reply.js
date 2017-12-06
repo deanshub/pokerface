@@ -1,5 +1,6 @@
 // @flow
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import { Form, Button, Image, Divider } from 'semantic-ui-react'
 import PostEditor from '../../components/PostEditor'

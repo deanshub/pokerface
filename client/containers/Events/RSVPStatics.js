@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import RSVPGroupBox from './RSVPGroupBox'
 import classnames from 'classnames'
 import style from './style.css'

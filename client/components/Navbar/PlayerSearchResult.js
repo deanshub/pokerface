@@ -1,6 +1,7 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Header, Image } from 'semantic-ui-react'
 
 export default class PlayerSearchResult extends Component {

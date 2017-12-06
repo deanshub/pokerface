@@ -1,5 +1,6 @@
 // @flow
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 import DevTools from 'mobx-react-devtools'
 import { Route, Switch } from 'react-router-dom'

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import { Button, Modal, Form, Message, Dimmer, Loader } from 'semantic-ui-react'
 import request from 'superagent'
 import {viewParam, isEmailPattern} from '../../utils/generalUtils'
