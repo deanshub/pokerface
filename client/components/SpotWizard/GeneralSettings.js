@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import { Form, Input, Grid, Dropdown, Header, Image, Checkbox } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PlayerField from './PlayerField'

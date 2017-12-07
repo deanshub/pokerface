@@ -1,7 +1,8 @@
 // @flow
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import { Feed, Icon, Button, Popup, Dropdown, Dimmer, Segment, Loader } from 'semantic-ui-react'
+import { Feed, Icon, Button, Popup, Dropdown, Dimmer, Loader } from 'semantic-ui-react'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import ReactDOM from 'react-dom'

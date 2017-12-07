@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Modal, Button, Header, Icon, Table, Checkbox, Segment } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import RoundSetting from './RoundSetting'

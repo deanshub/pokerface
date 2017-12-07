@@ -1,12 +1,13 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import { parse } from 'qs'
 import ForgotPasswordModal from './ForgotPasswordModal'
 import { Header, Form, Button, Icon, Message, Divider } from 'semantic-ui-react'
 import request from 'superagent'
-import logger from '../../utils/logger'
+// import logger from '../../utils/logger'
 import {viewParam} from '../../utils/generalUtils'
 import classnames from 'classnames'
 import style from './style.css'
