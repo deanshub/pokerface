@@ -6,17 +6,47 @@ import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
 
 export const schema =  [`
-  type User {
+  type RebrandingDetails {
+    primarycolor: String!
+    secondarycolor: String!
+  }
+
+  interface User {
     username: String
-    guest: Boolean
-    firstname: String
-    lastname: String
     fullname: String
     email: String
     avatar: String
     coverImage: String
     posts: [Post]
     comments: [Comment]
+    rebrandingdetails: RebrandingDetails
+  }
+
+  type Organization implements User {
+    username: String
+    fullname: String
+    email: String
+    avatar: String
+    coverImage: String
+    posts: [Post]
+    comments: [Comment]
+    rebrandingdetails: RebrandingDetails
+    players: [Player]
+  }
+
+  type Player implements User {
+    username: String
+    fullname: String
+    email: String
+    avatar: String
+    coverImage: String
+    posts: [Post]
+    comments: [Comment]
+    rebrandingdetails: RebrandingDetails
+    firstname: String
+    lastname: String
+    guest: Boolean
+    organiztions: [Organization]
   }
 
   type Query {
@@ -44,10 +74,21 @@ export const schema =  [`
 
 export const resolvers = {
   User:{
-    username: (user)=>user.username,
-    guest: (user)=>!!user.guest,
+    __resolveType(user){
+      if(user.organization){
+        return 'Organization'
+      }
+
+      return 'Player'
+    },
+  },
+  Player:{
+    organiztions: (player) => player.organiztions,
     firstname: (user)=>user.firstname,
     lastname: (user)=>user.lastname,
+    guest: (user)=>!!user.guest,
+
+    username: (user)=>user.username,
     fullname: (user)=>user.fullname,
     email: (user)=> user.email,
     avatar: (user)=>{
@@ -73,10 +114,13 @@ export const resolvers = {
     posts: (user)=> DB.models.Post.find({user: user._id}),
     comments: (user)=> DB.models.Comment.find({user: user._id}),
   },
+  Organization:{
+    players: (organiztion) => organiztion.players,
+  },
   Query: {
     users: (_, {phrase, username})=>{
       if (username){
-        return DB.models.User.find({_id:username})
+        return DB.models.User.find({_id:username}).populate('organiztions')
       }else if (phrase){
         return DB.models.User.find()
           .or([{

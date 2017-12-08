@@ -71,7 +71,7 @@ const schema = mongoose.Schema(
       type: String,
     }],
     rebrandingDetails:{
-      primeryColor: {
+      primaryColor: {
         type: String,
       },
       secondaryColor: {
