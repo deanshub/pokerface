@@ -46,7 +46,7 @@ export const schema =  [`
     firstname: String
     lastname: String
     guest: Boolean
-    organiztions: [Organization]
+    organizations: [Organization]
   }
 
   type Query {
@@ -72,6 +72,33 @@ export const schema =  [`
   }
 `, Upload]
 
+
+const getAvatar = (user) => {
+  if (!user.avatar && !user.username){
+    return '/images/avatar.png'
+  }else if (!user.avatar){
+    return `/api/avatarGenerator?username=${user.username}`
+  }else if (user.avatar.startsWith('http')) {
+    return user.avatar
+  }
+  return `/images/${user.avatar}`
+}
+
+const getCoverImage = (user)=>{
+  if (!user.coverImage && !user.username){
+    return '/images/cover.jpg'
+  }else if (!user.coverImage){
+    return `/api/avatarGenerator?username=${user.username}`
+  }else if (!user.coverImage.includes('http')) {
+    return `/images/${user.coverImage}`
+  }
+  return user.coverImage
+}
+
+const getPosts = (user) => DB.models.Post.find({user: user._id})
+
+const getComments = (user) => DB.models.Comment.find({user: user._id})
+
 export const resolvers = {
   User:{
     __resolveType(user){
@@ -83,44 +110,29 @@ export const resolvers = {
     },
   },
   Player:{
-    organiztions: (player) => player.organiztions,
+    organizations: (player) => player.organizations,
     firstname: (user)=>user.firstname,
     lastname: (user)=>user.lastname,
     guest: (user)=>!!user.guest,
-
     username: (user)=>user.username,
     fullname: (user)=>user.fullname,
     email: (user)=> user.email,
-    avatar: (user)=>{
-      if (!user.avatar && !user.username){
-        return '/images/avatar.png'
-      }else if (!user.avatar){
-        return `/api/avatarGenerator?username=${user.username}`
-      }else if (user.avatar.startsWith('http')) {
-        return user.avatar
-      }
-      return `/images/${user.avatar}`
-    },
-    coverImage: (user)=>{
-      if (!user.coverImage && !user.username){
-        return '/images/cover.jpg'
-      }else if (!user.coverImage){
-        return `/api/avatarGenerator?username=${user.username}`
-      }else if (!user.coverImage.includes('http')) {
-        return `/images/${user.coverImage}`
-      }
-      return user.coverImage
-    },
-    posts: (user)=> DB.models.Post.find({user: user._id}),
-    comments: (user)=> DB.models.Comment.find({user: user._id}),
+    avatar: getAvatar,
+    coverImage: getCoverImage,
+    posts: getPosts,
+    comments: getComments,
   },
   Organization:{
-    players: (organiztion) => organiztion.players,
+    players: (organization) => organization.players,
+    avatar: getAvatar,
+    coverImage: getCoverImage,
+    posts: getPosts,
+    comments: getComments,
   },
   Query: {
     users: (_, {phrase, username})=>{
       if (username){
-        return DB.models.User.find({_id:username}).populate('organiztions')
+        return DB.models.User.find({_id:username}).populate('organizations')
       }else if (phrase){
         return DB.models.User.find()
           .or([{

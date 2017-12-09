@@ -20,3 +20,17 @@ export const createUser = (user) => {
     return new DB.models.User(newUser).save()
   })
 }
+
+export const findPopulatedUser = (where) => {
+  return DB.models.User.findOne(where).populate([
+    {path:'organizations'},
+    {path:'players'},
+  ])
+}
+
+export const findPopulatedUserById = (id) => {
+  return DB.models.User.findById(id).populate([
+    {path:'organizations', select:'firstname avatar'},
+    {path:'players'},
+  ])
+}

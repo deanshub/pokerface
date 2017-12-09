@@ -7,7 +7,7 @@ import {Strategy as FacebookStrategy} from 'passport-facebook'
 import {Strategy as GoogleStrategy} from 'passport-google-oauth20'
 import { download } from '../utils/diskWriting'
 import uuidv1 from 'uuid/v1'
-import {createUser} from '../data/helping/user'
+import {createUser, findPopulatedUser, findPopulatedUserById} from '../data/helping/user'
 
 // TODO merge with mailer.sj
 const hostLocation = (config.NODE_ENV==='development')?
@@ -45,7 +45,8 @@ const initialize = () => {
       secretOrKey: config.JWT_SECRET_KEY,
     },
       function ({username, password}, done){
-        DB.models.User.findById(username).then((user)=>{
+
+        findPopulatedUserById(username).then((user)=>{
           if (!user || user.password !== password){
             return done(null, false, {message: 'Wrong token was received'})
           }
@@ -84,7 +85,7 @@ const initialize = () => {
         cover,
       } = profile._json
 
-      DB.models.User.findOne({email}).then((existedUser) => {
+      findPopulatedUser({email}).then((existedUser) => {
 
         if (existedUser){
           return existedUser
@@ -157,7 +158,7 @@ const initialize = () => {
 
       const email = emails[0].value
 
-      DB.models.User.findOne({email}).then((existedUser) => {
+      findPopulatedUser({email}).then((existedUser) => {
 
         if (existedUser){
           return existedUser
@@ -222,12 +223,12 @@ const initialize = () => {
       })
     }))
 
-  passport.serializeUser((user, done) => {
-    done(null, user.user._id)
+  passport.serializeUser((payload, done) => {
+    done(null, payload.user._id)
   })
 
-  passport.deserializeUser((user, done) => {
-    DB.models.User.findById(user).then((user)=>{
+  passport.deserializeUser((userId, done) => {
+    findPopulatedUserById(userId).then((user)=>{
       const token = signTokenToUser(user)
       return done(null, {token, user:{...user.toJSON()}})
     }).catch(e=>{
@@ -242,6 +243,7 @@ const initialize = () => {
 const login = (req, res) => {
   const {email, password} = req.body
 
+  // TODO may we need to populate organization ehere too
   DB.models.User.findOne({email,password,active:true}).then((user)=>{
     if (!user){
       res.status(401).json({error: 'Email or password are Incorrect .'})
@@ -253,6 +255,18 @@ const login = (req, res) => {
     console.error(e)
     res.json(e)
   })
+}
+
+const switchToOrganization = (req, res) => {
+  const {user:currentUser} = req
+  const {organizationId} = req.body
+  if (!currentUser || !currentUser.organizations || currentUser.organizations.includes(organizationId)){
+    res.status(401).json({error: 'Oragnization is not allowed to player'})
+  }else{
+    // Organization don't have passowrd so we need only the id (unsername) for signing
+    const token = signTokenToUser({username:organizationId})
+    res.json({token})
+  }
 }
 
 const addUserToRequest = (req, res, next) => {
@@ -283,4 +297,5 @@ export default {
   addUserToRequest,
   googleLogin,
   authenticateWithGoogle,
+  switchToOrganization,
 }

@@ -1,11 +1,12 @@
 import mongoose from 'mongoose'
+const Schema = mongoose.Schema
 
 const validateEmail = (email)=> {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return re.test(email)
 }
 
-const schema = mongoose.Schema(
+const schema = Schema(
   {
     _id: {
       alias: 'username',
@@ -17,7 +18,7 @@ const schema = mongoose.Schema(
       // validate: [validateUsername, 'This username already exists, username must be unique'],
       trim: true,
     },
-    organiztion: {
+    organization: {
       type: Boolean,
     },
     players: [{
@@ -28,9 +29,11 @@ const schema = mongoose.Schema(
       type: String,
       ref: 'User',
     },
-    organiztions: [{
-      type: String,
+    organizations: [{
+      type: String, //Schema.Types.ObjectId,
       ref: 'User',
+      // required: true,
+      // default: [],
     }],
     firstname: {
       type: String,
@@ -50,7 +53,7 @@ const schema = mongoose.Schema(
       required: [true, 'Email address is required'],
       validate: [validateEmail, 'Please fill a valid email address'],
       index: true,
-      unique: true,
+      // unique: true,
     },
     avatar: {
       type: String,
