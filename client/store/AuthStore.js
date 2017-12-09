@@ -54,9 +54,29 @@ export class AuthStore {
   }
 
   @action
+  switchToOrganization(organization){
+    this.authenticating = true
+    const {id:organizationId} = organization
+    return request.post('/login/switchToOrganization').send({organizationId}).set('Authorization', localStorage.getItem('jwt')).then((res)=>{
+      this.authenticating = false
+
+      const {token} = res.body
+      localStorage.setItem('jwt',token)
+    }).catch(err=>{
+      console.error(err)
+      this.authenticating = false
+    })
+  }
+
+  @action
   logout(){
     logger.logEvent({category:'User',action:'Logout'})
     this.user = {}
     close()
+  }
+
+  @action
+  refesh(){
+    this.authenticate()
   }
 }

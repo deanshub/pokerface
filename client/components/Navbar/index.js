@@ -2,12 +2,13 @@
 
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Menu, Button, Input, Icon, Label, Search, Image } from 'semantic-ui-react'
+import { Menu, Button, Input, Icon, Label, Search, Image, Dropdown } from 'semantic-ui-react'
 // import request from 'superagent'
 import { observer, inject } from 'mobx-react'
 import PlayerSearchResult from './PlayerSearchResult'
 import classnames from 'classnames'
 import style from './style.css'
+import UserSmallCard from '../UserSmallCard'
 
 @inject('globalPlayersSearch')
 @inject('routing')
@@ -25,7 +26,7 @@ export default class Navbar extends Component {
 
   handleLogout(){
     const {routing, auth} = this.props
-
+    const user =
     localStorage.removeItem('jwt')
     auth.logout()
     routing.replace('/login')
@@ -54,7 +55,7 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {globalPlayersSearch, auth, events} = this.props
+    const {globalPlayersSearch, auth, events, routing} = this.props
 
     return (
         <Menu
@@ -116,12 +117,30 @@ export default class Navbar extends Component {
             >
               <Icon name="clock"/> Blinds Timer
             </Menu.Item>
-            <Menu.Item
-                className={classnames(style.navbarMenuItemAnchor)}
-                onClick={::this.handleLogout}
+            <Dropdown
+                className="link item"
+                compact
+                icon={<Icon name="user" size="large"/>}
             >
-              <Button>logout</Button>
-            </Menu.Item>
+              <Dropdown.Menu style={{minWidth:'max-content'}}>
+                {auth.user.organizations && auth.user.organizations.map((org, index) => (
+                  <Dropdown.Item key={index} onClick={() => {
+                    auth.switchToOrganization(org).then(() => {
+                      routing.replace('/')
+                      auth.refresh()
+                    })
+                  }}>
+                    <UserSmallCard user={org}/>
+                  </Dropdown.Item>
+                ))}
+                <Dropdown.Item
+                    className={classnames(style.navbarMenuItemAnchor)}
+                    onClick={::this.handleLogout}
+                >
+                  logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
             <Menu.Item>
               <Search
                   as={Input}

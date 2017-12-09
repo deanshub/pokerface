@@ -3,9 +3,9 @@
 import React, { Component, PropTypes } from 'react'
 import { Header, Image } from 'semantic-ui-react'
 
-export default class PlayerSearchResult extends Component {
+export default class UserSmallCard extends Component {
   static propTypes = {
-    user: PropTypes.object,
+    //user: PropTypes.object,
   }
   render(){
     const {user} = this.props
@@ -18,11 +18,6 @@ export default class PlayerSearchResult extends Component {
             style={{float:'none', width:'3em', height:'3em', borderRadius:'500rem'}}
         />
         {user.fullname}
-        <Header.Subheader
-            style={{marginTop:7,marginBottom:-7}}
-        >
-          {user.fullname}
-        </Header.Subheader>
       </Header>
     )
   }
