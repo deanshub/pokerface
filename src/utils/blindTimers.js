@@ -4,13 +4,12 @@ const DEFAULT_INITIAL_ROUND = {
   ante: 0,
   smallBlind: 2,
   bigBlind: 4,
-  time: 15,
+  time: 5,
 }
 
 const getDefualtTimerState = () => ({
   paused:true,
   round:1,
-  currentTime: Date.now(),
   offset:DEFAULT_INITIAL_ROUND.time * MINUTES_MULTIPLIER + MINIMAL_OFFSET,
   recovered:false,
   rounds:[
@@ -187,12 +186,11 @@ const nextRound = (timer) => {
   const roundDuration = timerState.rounds[roundIndex].time * MINUTES_MULTIPLIER + MINIMAL_OFFSET
   timer.nextRountTimeout = setTimeout(() => nextRound(timer), roundDuration)
 
-  const currentTime = Date.now()
-  timerState.endTime = currentTime + roundDuration
+  timerState.endTime = timerState.endTime + roundDuration
 }
 
-const isValidateCommand = (timer, commandTime) => {
-  return (commandTime > timer.timerState.currentTime)
+const isValidateCommand = ({timerState}, commandTime) => {
+  return (!timerState.currentTime || commandTime > timerState.currentTime)
 }
 
 const timers = {}
