@@ -4,7 +4,7 @@ const DEFAULT_INITIAL_ROUND = {
   ante: 0,
   smallBlind: 2,
   bigBlind: 4,
-  time: 5,
+  time: 15,
 }
 
 const getDefualtTimerState = () => ({
