@@ -1,6 +1,12 @@
 .spotPlayerContainer{
   height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+}
+
+.spotContainer{
+  flex: 1;
+}
+.stepsPlayerContainer{
+  height: 6vh;
 }

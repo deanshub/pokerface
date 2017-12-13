@@ -216,12 +216,14 @@ const utils = {
     case MOVES.PLAYER_ACTIONS.FOLD:{
       newPlayersState[move.player].folded=true
       newPlayersState[move.player].description = 'Fold'
+      newPlayersState[move.player].lastAction = 'Fold'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.CHECK:{
       newPlayersState[move.player].description = 'Check'
+      newPlayersState[move.player].lastAction = 'Check'
       if (newSpotPlayerState.raiser===undefined){
         newSpotPlayerState.raiser = move.player
       }
@@ -232,6 +234,7 @@ const utils = {
       newPlayersState[move.player].bet+=move.value
       newPlayersState[move.player].bank-=move.value
       newPlayersState[move.player].description = 'Call'
+      newPlayersState[move.player].lastAction = 'Call'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
@@ -241,12 +244,15 @@ const utils = {
       newPlayersState[move.player].bank-=move.value
       newSpotPlayerState.raiser = move.player
       newPlayersState[move.player].description = 'Raise'
+      newPlayersState[move.player].lastAction = 'Raise'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.ANTE:{
       newSpotPlayerState.nextMoveIndex++
+      // newPlayersState[move.player].description = 'Ante'
+      newPlayersState[move.player].lastAction = 'Ante'
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.SMALLBLIND:{
@@ -254,6 +260,7 @@ const utils = {
       newPlayersState[move.player].bank-=move.value
       newSpotPlayerState.raiser = move.player
       newPlayersState[move.player].description = 'Small Blind'
+      newPlayersState[move.player].lastAction = 'Small Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
@@ -263,6 +270,7 @@ const utils = {
       newPlayersState[move.player].bank-=move.value
       newSpotPlayerState.raiser = move.player
       newPlayersState[move.player].description = 'Big Blind'
+      newPlayersState[move.player].lastAction = 'Big Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
@@ -285,6 +293,7 @@ const utils = {
       newSpotPlayerState.dealer.cards=utils.stringToCards(move.value)
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
+        player.lastAction=undefined
         totalPot += player.bet
         player.bet = 0
       })
@@ -298,6 +307,7 @@ const utils = {
       newSpotPlayerState.dealer.cards=[...newSpotPlayerState.dealer.cards,...utils.stringToCards(move.value)]
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
+        player.lastAction=undefined
         totalPot += player.bet
         player.bet = 0
       })
@@ -311,6 +321,7 @@ const utils = {
       newSpotPlayerState.dealer.cards=[...newSpotPlayerState.dealer.cards,...utils.stringToCards(move.value)]
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
+        player.lastAction=undefined
         totalPot += player.bet
         player.bet = 0
       })
@@ -323,6 +334,7 @@ const utils = {
     case MOVES.DEALER_META_ACTIONS.END:{
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
+        player.lastAction=undefined
         totalPot += player.bet
         player.bet = 0
       })

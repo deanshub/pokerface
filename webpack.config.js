@@ -115,8 +115,8 @@ const config = {
       },
       {
         test: /\.svg(\?.*)?$/,
-        loader: 'url-loader?limit=10000&mimetype=image/svg+xml&name=images/[name].[ext]',
         include: path.resolve(__dirname, 'client', 'assets'),
+        loader: 'svg-url-loader?limit=1024&noquotes&name=images/[name].[ext]',
       }, {
         test: /\.png$/,
         loader: 'url-loader?limit=8192&mimetype=image/png&name=images/[name].[ext]',
@@ -132,10 +132,15 @@ const config = {
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
+        loader: 'url-loader?limit=1024&mimetype=application/font-woff',
       },
       {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader',
+        exclude: path.resolve(__dirname, 'client', 'assets'),
+      },
+      {
+        test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader',
       },
       {

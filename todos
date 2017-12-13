@@ -5,21 +5,26 @@ make bundles smaller!
 
 dont ask to reset when it's already reset (first round & 15 minutes ...)
 
-currency in spot wizard should be add-able Dropdown
-
 allow unsubscribe email for players (not including signup)
 
 error message (store), an error occurred please refresh or try again later
 change the script name to include hash (so when a new version comes it won't be cached)
-fix the keys selection of emoji\ mention plugins within the post editor
+use cloud front as cdn?
+upgrade node version
 -------------------------------------------------------------------------------
 
+* FeedStore addComment function uses dean image
+* download as gif
+* /profile should not be used, only /profile/:username
+* error on editor focus
+
 editor improvements
-* cards should be like inline stickers? can also be hover cards
 * log to editor to spot parser
+- cards should be like inline stickers? can also be hover cards
 * allow edit post
 
 spot wizard improvments
+* currency in spot wizard should be add-able Dropdown
 * all-in button
 * allow draging to re-order players sitting
 * handle everyone folding and only one player left
@@ -35,6 +40,10 @@ spot player imporvements
 * re render of cards (images requested multiple times) when exporting gif
 * better responsiveness (vertical phone)
 
+events
+* event should not have an end time on creation
+
+
 
 leagal note on signup
 
@@ -48,25 +57,16 @@ head
 
 
 change demo@pokerface.io password
-disable add post button when not text or spot or images added
-in prod change deanshub user to pokerface (including username, first & last name, password)
-  and add deanshub user
 fix NODE_APP_INSTANCE bug, when running pm2 with -i 0 there is an error (http://pm2.keymetrics.io/docs/usage/environment/#specific-environment-variables)
 fix editor toolbar on RTL
-changing game details after creating one
-use sticky from semantic-ui-react for the profile navbar
+allow changing game details after creating one
 add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
 allow cards to move up on click
-allow any url to get index.html but on the client side redirect to an error page or login or something
-first name on email of signup is undefined
-add /smart navigation Button
 allow this http://localhost:9031/favicon.ico  to work
-
 
 
 add graphql fregments
 add game statistics (maybe it should look like a poker table and you can click the players to see stats)
-remove the profile sub navigation
 
 remove dependencies from when webpack server side
 

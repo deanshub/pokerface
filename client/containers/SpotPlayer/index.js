@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import { Sidebar, Segment } from 'semantic-ui-react'
 import Spot from '../../components/Spot'
 import StepsPlayer from '../../components/StepsPlayer'
 
@@ -14,21 +13,19 @@ export default class SpotPlayer extends Component {
   render() {
     const {spotPlayer, style, standalone, post} = this.props
     return (
-      <Sidebar.Pushable as={Segment} style={style}>
-        <Sidebar
-            animation="push"
-            direction="bottom"
-            icon="labeled"
-            visible
-        >
+      <div
+          className={classnames(cssStyle.spotPlayerContainer)}
+          style={style}
+      >
+        <div className={classnames(cssStyle.stepsPlayerContainer)}>
           <StepsPlayer
               hasNextStep={post.spotPlayerState.nextMoveIndex<post.spot.moves.length}
               onNextStep={()=>spotPlayer.nextStep(post)}
               onPreviousStep={()=>spotPlayer.previousStep(post)}
               onReset={()=>spotPlayer.reset(post)}
           />
-        </Sidebar>
-        <Sidebar.Pusher className={classnames(cssStyle.spotPlayerContainer)}>
+        </div>
+        <div className={classnames(cssStyle.spotContainer)}>
           <Spot
               currency={post.spotPlayerState.currency}
               dealer={post.spotPlayerState.dealer}
@@ -36,8 +33,8 @@ export default class SpotPlayer extends Component {
               players={post.spotPlayerState.players}
               standalone={standalone}
           />
-        </Sidebar.Pusher>
-      </Sidebar.Pushable>
+        </div>
+      </div>
     )
   }
 }

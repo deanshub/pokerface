@@ -25,7 +25,8 @@ export default class CardsPreview extends Component {
     return (
       <Cards
           cards={cards}
-          hand
+          clickable
+          compressed
           key={index}
       />
     )

@@ -1,142 +1,123 @@
-.playerSpace{
-  position: absolute;
-  width: 18vmin;
-  height: 13vmin;
-  color: #2f2f2f;
-  background: rgba(255,255,255,0.5);
-  border-radius: 10%;
-
-  display: flex;
-  flex-direction: row;
-}
-.playerSpaceItem{
-  flex: 1;
-}
-.playerSideSection{
-  font-size: initial;
-}
-
-.dealerSpace{
-  position: absolute;
-  top: 26%;
-  left: 28%;
-  width: 45%;
-  height: 30%;
-  line-height: normal;
-  color: #2f2f2f;
-  text-shadow: 0 0 3px white;
-
-  display: flex;
-  flex-direction: column;
-  z-index: 0;
-
-  /*border: 1px dashed black;*/
-}
-.dealerCards{
-  flex: 2;
-  font-size: initial;
-}
-.dealerPot{
-  flex: 1;
-}
-
-.description{
-  font-size: initial;
-  background-color: black;
-  color: white;
-  border-radius: 5%;
-  padding: 5px;
-  min-height: 3vh;
-}
-
-.avatarOverlay{
-  border-radius: 50%;
-  width: 7vmin;
-  height: 7vmin;
-  margin: 0 auto;
-  position: relative;
-}
-.avatarImage{
+.spot{
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-}
-
-.playerDescription{
-  text-align: center;
-  font-size: 1.5vmin;
-}
-
-.bottomClass{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
-.turnClass{
-  box-shadow: 0 0 15px #ff0000;
-  border: 1px solid #ff0000;
-}
-
-.dealer{
-  height: 3vmin;
-  width: 3vmin;
-  background-color: white;
-  border: 1px solid #2f2f2f;
-  border-radius: 50%;
+.playersList{
+  padding: 10px 0;
+  flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
-  box-shadow: 1px 1px 3px #2f2f2f;
-  text-shadow: 1px 1px 0px #2f2f2f;
-  font-weight: bold;
-  margin: -15% -10%;
 }
-.bottomDealer{
-  margin: -170% -20%;
+.reversed{
+  flex-direction: row-reverse;
 }
 
-.foldedClass:after{
-  content: 'FOLD';
-  font-size: initial;
+.playerSpace{
+  width: 20%;
+  max-width: 110px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  margin: 0 5%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.avatar{
+  cursor: pointer;
+  flex: 39;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-position: top;
+  border-radius: 8px 8px 0 0;
+}
+
+.cards{
+  flex: 32;
+  border-bottom: 1px solid #e4e4e4;
+  border-top: 1px solid #e4e4e4;
+}
+
+.folded:after{
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(130, 130, 130, 0.9);
-  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
+  border-radius: 8px;
+  content: '';
+  z-index: 1;
+}
+
+.descriptionContainer{
+  flex: 29;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: rgba(255,255,255,0.95);
+  border-radius: 0px 0px 8px 8px;
+  position: relative;
+}
+.currentAction{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #41c86a;
+  font-weight: bold;
+  font-size: 1.2em;
+  opacity: 0;
+  transition: opacity 300ms ease-in;
+  border-radius: 0 0 8px 8px;
+  z-index: 2;
 }
 
-.bet{
-  position: absolute;
+.name{
+  color: #24222e;
+  flex: 1;
   display: flex;
   justify-content: center;
-  line-height: normal;
-  font-size: 30%;
-  color: #2f2f2f;
-  width: 20%;
-  height: 30%;
-  z-index: 1;
-  flex-wrap: wrap;
-  align-content: flex-start;
-
-  /*border: 1px dashed black;*/
-}
-.bottomBet{
   align-items: flex-end;
-  flex-wrap: wrap-reverse;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
-.dealerBet{
+.bank{
+  color: #a0a0b5;
+  font-size: 0.9em;
+  flex: 1;
   display: flex;
   justify-content: center;
-  line-height: normal;
-  font-size: 30%;
-  color: #2f2f2f;
-  z-index: 0;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  align-items: flex-start;
+  text-overflow: ellipsis;
+  /*white-space: nowrap;*/
+  overflow: hidden;
+}
+
+.symbol{
+  background-color: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  box-shadow: 0 0 6px 0 rgba(0,0,0, 0.5);
+  width: 2em;
+  height: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
 }

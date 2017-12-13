@@ -1,5 +1,17 @@
 // @flow
 
+import clubSvg from '../../assets/symbols/club.svg'
+import spadeSvg from '../../assets/symbols/spade.svg'
+import heartSvg from '../../assets/symbols/heart.svg'
+import dimondSvg from '../../assets/symbols/dimond.svg'
+
+export const SVG_SUITES = {
+  hearts: heartSvg,
+  diams: dimondSvg,
+  spades: spadeSvg,
+  clubs: clubSvg,
+}
+
 export const SUITES = {
   hearts: '♥',
   diams: '♦',
