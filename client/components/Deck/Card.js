@@ -77,7 +77,7 @@ export default class Card extends PureComponent {
 
     const scale = 70/52
     const width = originalHeight&&(originalHeight/scale)
-    const fontSize = originalHeight&&`${scale*1.6}em`
+    const fontSize = originalHeight&&`${scale*0.75}em`
 
     const normalizedRank = normalizeRank(rank)
     const normalizedSuit = normalizeSuite(suit)

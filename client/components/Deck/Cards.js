@@ -6,7 +6,6 @@ import Card from './Card'
 
 export default class Cards extends PureComponent {
   static propTypes = {
-    cards: PropTypes.array,
     clickable: PropTypes.bool,
     compressed: PropTypes.bool,
     covered: PropTypes.bool,

@@ -1,3 +1,16 @@
 $gray: #dfdfdf;
 $titleColor: #fff;
 $lightGreen50: #F1F8E9;
+
+/* spot player */
+$activeButton: #41c86a;
+$divider: #e4e4e4;
+$disabled: #24222e;
+
+/* player space current action */
+$callColor: #25aae1;
+$foldColor: #a0a0b5;
+$checkColor: #41c86a;
+$allinColor: #e65cc5;
+$raiseColor: #ae73e6;
+$betColor: #e3d357;

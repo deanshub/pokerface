@@ -58,9 +58,6 @@
 
 .card:before, .card:after {
   position: absolute;
-  line-height: 85%;
-  font-size: 40%;
-  width: 1.175em;
   word-wrap: break-word;
 }
 

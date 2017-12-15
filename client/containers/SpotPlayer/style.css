@@ -8,5 +8,6 @@
   flex: 1;
 }
 .stepsPlayerContainer{
-  height: 6vh;
+  margin-top: 15px;
+  margin-bottom: 20px;
 }
