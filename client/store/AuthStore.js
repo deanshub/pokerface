@@ -54,9 +54,8 @@ export class AuthStore {
   }
 
   @action
-  switchToOrganization(organization){
+  switchToOrganization(organizationId){
     this.authenticating = true
-    const {id:organizationId} = organization
     return request.post('/login/switchToOrganization').send({organizationId}).set('Authorization', localStorage.getItem('jwt')).then((res)=>{
       this.authenticating = false
 
@@ -76,7 +75,7 @@ export class AuthStore {
   }
 
   @action
-  refesh(){
-    this.authenticate()
+  refresh(){
+    return this.authenticate()
   }
 }

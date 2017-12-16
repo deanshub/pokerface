@@ -14,6 +14,8 @@ import UserSmallCard from '../UserSmallCard'
 @inject('routing')
 @inject('auth')
 @inject('events')
+@inject('feed')
+@inject('timer')
 @observer
 export default class Navbar extends Component {
   componentDidMount(){
@@ -26,7 +28,6 @@ export default class Navbar extends Component {
 
   handleLogout(){
     const {routing, auth} = this.props
-    const user =
     localStorage.removeItem('jwt')
     auth.logout()
     routing.replace('/login')
@@ -36,6 +37,23 @@ export default class Navbar extends Component {
     const {routing, globalPlayersSearch} = this.props
     globalPlayersSearch.searchValue = ''
     routing.push(`/profile/${selected.result.username}`)
+  }
+
+  handleUserSwitch(user){
+    const {
+      routing,
+      auth,
+      feed,
+      events,
+      timer,
+    } = this.props
+
+    auth.switchToOrganization(user.id).then(() => auth.refresh()).then(() => {
+      // feed.refresh()
+      events.refresh()
+      timer.refresh()
+      routing.replace('/')
+    })
   }
 
   resultRenderer({username, fullname, avatar}){
@@ -125,10 +143,7 @@ export default class Navbar extends Component {
               <Dropdown.Menu style={{minWidth:'max-content'}}>
                 {auth.user.organizations && auth.user.organizations.map((org, index) => (
                   <Dropdown.Item key={index} onClick={() => {
-                    auth.switchToOrganization(org).then(() => {
-                      routing.replace('/')
-                      auth.refresh()
-                    })
+                    this.handleUserSwitch(org)
                   }}>
                     <UserSmallCard user={org}/>
                   </Dropdown.Item>

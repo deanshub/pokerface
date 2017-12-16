@@ -11,6 +11,7 @@ import request from 'superagent'
 import {viewParam} from '../../utils/generalUtils'
 import classnames from 'classnames'
 import style from './style.css'
+import SelectUserModal from './SelectUserModal'
 
 @inject('routing')
 @inject('auth')
@@ -18,11 +19,17 @@ import style from './style.css'
 export default class LoginForm extends Component {
   constructor(props){
     super(props)
+    const { routing } = this.props
+
+    const query = parse(routing.location.search.substr(1))
+
     this.state = {
       loggingInPorgress: false,
       loggingInFail: false,
       loginFailMessage: null,
       forgotPasswordModalOpen: false,
+      selectUserModalOpen: query.selectuser,
+      redirectUrl: query.url || '/',
     }
   }
 
@@ -41,15 +48,20 @@ export default class LoginForm extends Component {
       .accept('json')
       .type('json')
       .then((res) => {
-        const {token} = res.body
+        const {token, user} = res.body
         // this.props.auth.user = user
         // logger.setField({user:user.username, email:user.email})
         localStorage.setItem('jwt',token )
 
-        this.setState({
-          loggingInPorgress: false,
-        })
-        routing.replace(query.url||'/')
+        if (user.organizations.length === 0){
+          routing.replace(query.url || '/')
+        }else{
+          this.setState({
+            loggingInPorgress: false,
+            selectUserModalOpen: true,
+          })
+        }
+
       }).catch((err)=>{
         console.error(err)
         let loginFailMessage = viewParam('response.body.error', err)
@@ -76,6 +88,8 @@ export default class LoginForm extends Component {
       loggingInFail,
       loginFailMessage,
       forgotPasswordModalOpen,
+      selectUserModalOpen,
+      redirectUrl,
     } = this.state
 
     return (
@@ -130,6 +144,13 @@ export default class LoginForm extends Component {
             onClose={() => this.setState({forgotPasswordModalOpen:false})}
             open={forgotPasswordModalOpen}
         />
+        {
+          selectUserModalOpen &&
+          <SelectUserModal
+              onClose={() => this.setState({selectUserModalOpen:false})}
+              redirectUrl={redirectUrl}
+          />
+        }
       </Form>
     )
   }

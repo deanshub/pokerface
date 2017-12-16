@@ -235,7 +235,7 @@ export class FeedStore {
   }
 
   @action
-  fetchEvents(username: String): void{
+  fetchPosts(username: String): void{
     if (this.loading) return undefined
     if (this.currentUser===username && this.noMorePosts) return undefined
 
@@ -392,5 +392,10 @@ export class FeedStore {
     )
 
     this.newPost.content = newEditorState
+  }
+
+  @action
+  refresh(){
+    this.fetchPosts()
   }
 }
