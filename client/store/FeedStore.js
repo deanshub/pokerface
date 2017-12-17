@@ -236,8 +236,8 @@ export class FeedStore {
 
   @action
   fetchPosts(username: String): void{
-    if (this.loading) return undefined
-    if (this.currentUser===username && this.noMorePosts) return undefined
+    //if (this.loading) return undefined
+    if (this.currentUser===username && (this.noMorePosts || this.loading)) return undefined
 
     this.loading = true
     if (this.currentUser!==username){

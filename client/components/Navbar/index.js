@@ -8,7 +8,8 @@ import { observer, inject } from 'mobx-react'
 import PlayerSearchResult from './PlayerSearchResult'
 import classnames from 'classnames'
 import style from './style.css'
-import UserSmallCard from '../UserSmallCard'
+import SelectUser from '../../containers/SelectUser'
+//import UserSmallCard from '../UserSmallCard'
 
 @inject('globalPlayersSearch')
 @inject('routing')
@@ -39,17 +40,15 @@ export default class Navbar extends Component {
     routing.push(`/profile/${selected.result.username}`)
   }
 
-  handleUserSwitch(user){
+  handleUserSwitch(userId){
     const {
       routing,
       auth,
-      feed,
       events,
       timer,
     } = this.props
 
-    auth.switchToOrganization(user.id).then(() => auth.refresh()).then(() => {
-      // feed.refresh()
+    auth.switchToOrganization(userId).then(() => auth.refresh()).then(() => {
       events.refresh()
       timer.refresh()
       routing.replace('/')
@@ -137,17 +136,12 @@ export default class Navbar extends Component {
             </Menu.Item>
             <Dropdown
                 className="link item"
-                compact
                 icon={<Icon name="user" size="large"/>}
             >
               <Dropdown.Menu style={{minWidth:'max-content'}}>
-                {auth.user.organizations && auth.user.organizations.map((org, index) => (
-                  <Dropdown.Item key={index} onClick={() => {
-                    this.handleUserSwitch(org)
-                  }}>
-                    <UserSmallCard user={org}/>
-                  </Dropdown.Item>
-                ))}
+                {auth.user.organizations.length > 0 &&<Dropdown.Item>
+                      <SelectUser withoutCurrentUser onSelectUser={::this.handleUserSwitch}/>
+                </Dropdown.Item>}
                 <Dropdown.Item
                     className={classnames(style.navbarMenuItemAnchor)}
                     onClick={::this.handleLogout}

@@ -130,7 +130,7 @@ export default class LoginForm extends Component {
             <Icon name="facebook" /> Facebook
           </Button>
 
-          <Button as="a" color="google plus" href="/login/googlepluse">
+          <Button as="a" color="google plus" href="/login/googleplus">
             <Icon name="google" /> Google
           </Button>
         </Form.Group>

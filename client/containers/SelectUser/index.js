@@ -10,12 +10,16 @@ import UserSmallCard from '../../components/UserSmallCard'
 export default class SelectUser extends Component {
 
   render(){
-    const {auth:{user}, onSelectUser} = this.props
+    const {auth:{user}, onSelectUser, withoutCurrentUser} = this.props
+
+    const currentUser = withoutCurrentUser?null:
+      <List.Item key={user.id} onClick={() => onSelectUser(user.id)}>
+        <UserSmallCard user={user}/>
+      </List.Item>
+
     return (
       <List selection>
-        <List.Item key={user.id} onClick={() => onSelectUser(user.id)}>
-          <UserSmallCard user={user}/>
-        </List.Item>
+        {currentUser}
         {user.organizations && user.organizations.map((org) => (
           <List.Item key={org.id} onClick={() => onSelectUser(org.id)}>
             <List.Content>
