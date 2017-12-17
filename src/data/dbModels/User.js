@@ -32,8 +32,8 @@ const schema = Schema(
     organizations: [{
       type: String, //Schema.Types.ObjectId,
       ref: 'User',
-      // required: true,
-      // default: [],
+      required: true,
+      default: [],
     }],
     firstname: {
       type: String,

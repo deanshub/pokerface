@@ -27,22 +27,25 @@ const prepareCoverImage = (coverImage, username) => {
   return coverImage
 }
 
+const redirectExternalLogin = ((req, res) => {
+  const {user, token} = req.user
+  res.cookie('jwt', token, {maxAge:TOKEN_EXPIRATION_DURATION})
+
+  const url = (user.organizations.length === 0)?'/':'/login?selectuser=true'
+
+  res.redirect(url)
+})
+
 const router = express.Router()
 
 router.post('/local', authentication.login)
 router.get('/facebook', authentication.facebookLogin)
-router.get('/googlepluse', authentication.googleLogin)
+router.get('/googleplus', authentication.googleLogin)
 
 // authenticate with facebook to get the token
-router.get('/facebook/callback', authentication.authenticateWithFacebook, (req, res) => {
-  res.cookie('jwt', req.user.token, {maxAge:TOKEN_EXPIRATION_DURATION})
-  res.redirect('/')
-})
+router.get('/facebook/callback', authentication.authenticateWithFacebook, redirectExternalLogin)
 
-router.get('/googlepluse/callback', authentication.authenticateWithGoogle, (req, res) => {
-  res.cookie('jwt', req.user.token, {maxAge:TOKEN_EXPIRATION_DURATION})
-  res.redirect('/')
-})
+router.get('/googleplus/callback', authentication.authenticateWithGoogle, redirectExternalLogin)
 
 router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
   if (!req.user) {

@@ -143,7 +143,7 @@ const initialize = () => {
   passport.use(new GoogleStrategy({
     clientID: config.GOOGLE_APP_ID,
     clientSecret: config.GOOGLE_SECRET_ID,
-    callbackURL: `http://${hostLocation}/login/googlepluse/callback`,
+    callbackURL: `http://${hostLocation}/login/googleplus/callback`,
   },
     function(accessToken, refreshToken, profile, cb) {
 
@@ -249,7 +249,7 @@ const login = (req, res) => {
       res.status(401).json({error: 'Email or password are Incorrect .'})
     } else{
       const token = signTokenToUser(user)
-      res.json({token})
+      res.json({user, token})
     }
   }).catch(e=>{
     console.error(e)
