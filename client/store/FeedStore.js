@@ -306,7 +306,8 @@ export class FeedStore {
     logger.logEvent({category:'Comment',action:'Like',value:like?1:0})
     graphqlClient.mutate({mutation: setCommentLike, variables: {comment:commentId, like}})
     .then(result=>{
-      this.posts.set(result.data.setCommentLike.post.id, result.data.setCommentLike.post)
+      const newPost = this.parsePost(result.data.setCommentLike.post)
+      this.posts.set(result.data.setCommentLike.post.id, newPost)
     })
     .catch(err=>{
       console.error(err);
