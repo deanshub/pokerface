@@ -5,6 +5,7 @@ import Cards from '../Deck/Cards'
 import classnames from 'classnames'
 import style from './style.css'
 import { observer, inject } from 'mobx-react'
+import {textToAction,selectColor} from '../../utils/actionsHelper'
 
 @inject('routing')
 @observer
@@ -41,6 +42,7 @@ export default class PlayerSpace extends Component {
 
   render(){
     const { currency, player} = this.props
+    const backgroundColor = selectColor(textToAction(player.description))
 
     return (
       <div
@@ -73,7 +75,7 @@ export default class PlayerSpace extends Component {
           <div className={classnames(style.bank)}>
             {player.bank}{currency}
           </div>
-          <div className={classnames(style.currentAction)} style={{opacity:player.description?1:undefined}}>
+          <div className={classnames(style.currentAction)} style={{opacity:player.description?1:undefined, backgroundColor}}>
             {player.description}
           </div>
         </div>

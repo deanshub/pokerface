@@ -14,7 +14,6 @@ upgrade node version
 -------------------------------------------------------------------------------
 
 * FeedStore addComment function uses dean image
-* download as gif
 * /profile should not be used, only /profile/:username
 * error on editor focus
 

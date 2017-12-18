@@ -1,3 +1,5 @@
+@import '../../constants/styles.css';
+
 .spotPlayerContainer{
   height: 100%;
   display: flex;
@@ -6,6 +8,7 @@
 
 .spotContainer{
   flex: 1;
+  background-color: $white;
 }
 .stepsPlayerContainer{
   margin-top: 15px;

@@ -74,6 +74,7 @@
     "mobx-react-router": "^4.0.1",
     "mobx-utils": "^3.2.2",
     "moment": "^2.19.3",
+    "postcss-icss-values": "^2.0.1",
     "qs": "^6.5.0",
     "ramda": "^0.23.0",
     "react-addons-shallow-compare": "^15.6.2",

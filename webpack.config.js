@@ -116,7 +116,8 @@ const config = {
       {
         test: /\.svg(\?.*)?$/,
         include: path.resolve(__dirname, 'client', 'assets'),
-        loader: 'svg-url-loader?limit=1024&noquotes&name=images/[name].[ext]',
+        loader: 'url-loader?limit=1024&name=images/[name].[ext]',
+        // loader: 'svg-url-loader?limit=1024&noquotes&name=images/[name].[ext]',
       }, {
         test: /\.png$/,
         loader: 'url-loader?limit=8192&mimetype=image/png&name=images/[name].[ext]',

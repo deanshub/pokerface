@@ -42,7 +42,7 @@ export default class SpotPlayer extends Component {
               steps={steps}
           />
         </div>
-        <div className={classnames(cssStyle.spotContainer)}>
+        <article className={classnames(cssStyle.spotContainer)}>
           <Spot
               currency={post.spotPlayerState.currency}
               dealer={post.spotPlayerState.dealer}
@@ -50,7 +50,7 @@ export default class SpotPlayer extends Component {
               players={post.spotPlayerState.players}
               standalone={standalone}
           />
-        </div>
+        </article>
       </div>
     )
   }

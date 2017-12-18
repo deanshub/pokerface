@@ -32,26 +32,28 @@ export default class Spot extends Component {
     const { players, standalone, currency, dealer} = this.props
     const {upperPlayers, lowerPlayers, upperPlayersAmount} = this.splitPlayers(players)
 
+    // <foreignObject x="0" y="0" width="100%" height="80%">
     return (
-      <div className={classnames(style.spot)}>
-        <PlayersList
-            currency={currency}
-            playerStartIndex={0}
-            players={upperPlayers}
-        />
-        <PokerTable
-            currency={currency}
-            dealer={dealer}
-            lowerPlayers={lowerPlayers}
-            standalone={standalone}
-            upperPlayers={upperPlayers}
-        />
-        <PlayersList
-            currency={currency}
-            playerStartIndex={upperPlayersAmount}
-            players={lowerPlayers}
-        />
-      </div>
+        <div className={classnames(style.spot)}>
+          <PlayersList
+              currency={currency}
+              playerStartIndex={0}
+              players={upperPlayers}
+          />
+          <PokerTable
+              currency={currency}
+              dealer={dealer}
+              lowerPlayers={lowerPlayers}
+              standalone={standalone}
+              upperPlayers={upperPlayers}
+          />
+          <PlayersList
+              currency={currency}
+              playerStartIndex={upperPlayersAmount}
+              players={lowerPlayers}
+          />
+        </div>
     )
+  // </foreignObject>
   }
 }
