@@ -3,8 +3,8 @@
 import { observable, action } from 'mobx'
 import * as ProfileConsts from '../constants/profile'
 import graphqlClient from './graphqlClient'
-import {playersQuery} from './queries/players'
-import {updatePersonalInfoMutation} from './mutations/players'
+import {usersQuery} from './queries/users'
+import {updatePersonalInfoMutation} from './mutations/users'
 
 export class ProfileStore {
   @observable currentTab: string
@@ -23,9 +23,9 @@ export class ProfileStore {
   @action
   setCurrentUser(user): void{
     if (typeof user === 'string'){
-      graphqlClient.query({query: playersQuery, variables: {username:user}}).then((result)=>{
-        const player = result.data.players[0]
-        this.currentUser = observable.map(player)
+      graphqlClient.query({query: usersQuery, variables: {username:user}}).then((result)=>{
+        const user = result.data.users[0]
+        this.currentUser = observable.map(user)
         this.setImageFiles()
       })
     }else{

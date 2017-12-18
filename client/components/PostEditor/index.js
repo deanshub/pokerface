@@ -1,6 +1,7 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { observer, inject } from 'mobx-react'
 
@@ -18,6 +19,7 @@ import createHashtagPlugin from 'draft-js-hashtag-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import createVideoPlugin from 'draft-js-video-plugin'
 import createCardsPlugin from './CardsPlugin'
+import createRangePlugin from './RangePlugin'
 
 import {
   ItalicButton,
@@ -91,6 +93,7 @@ export default class PostEditor extends Component {
     })
     const videoPlugin = createVideoPlugin()
     const cardsPlugin = createCardsPlugin()
+    const rangePlugin = createRangePlugin()
 
     this.plugins = [
       focusPlugin,
@@ -101,6 +104,7 @@ export default class PostEditor extends Component {
       linkifyPlugin,
       videoPlugin,
       cardsPlugin,
+      rangePlugin,
     ]
     this.InlineToolbar = InlineToolbar
     this.EmojiSuggestions =EmojiSuggestions
@@ -176,7 +180,7 @@ export default class PostEditor extends Component {
             plugins={this.plugins}
             readOnly={readOnly}
             ref={(element) => {
-              if (element)
+              if (element && !this.editor)
                 this.editor = element
             }}
         />

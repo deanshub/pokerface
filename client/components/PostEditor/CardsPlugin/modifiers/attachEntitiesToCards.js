@@ -16,6 +16,42 @@ const findWithRegex = (regex, contentBlock, callback) => {
   }
 }
 
+const addEntityToCards = (start, end, block, plainText, newContentState) => {
+  const existingEntityKey = block.getEntityAt(start)
+  if (existingEntityKey) {
+    // avoid manipulation in case the emoji already has an entity
+    const entity = newContentState.getEntity(existingEntityKey)
+    if (entity && entity.get('type') === 'card') {
+      return null
+    }
+  }
+
+  const blockKey = block.getKey()
+  const selection = SelectionState.createEmpty(blockKey)
+    .set('anchorOffset', start)
+    .set('focusOffset', end)
+  const cardsText = plainText.substring(start, end)
+  const contentStateWithEntity = newContentState.createEntity('card', 'SEGMENTED', { cardsText })
+  const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+
+  newContentState = Modifier.replaceText(
+    newContentState,
+    selection,
+    cardsText,
+    null,
+    entityKey,
+  )
+
+  const blockSize = block.getLength()
+  if (end === blockSize) {
+    newContentState = Modifier.insertText(
+      newContentState,
+      newContentState.getSelectionAfter(),
+      ' ',
+    )
+  }
+  return newContentState
+}
 
 export default function(editorState){
   const contentState = editorState.getCurrentContent()
@@ -25,33 +61,12 @@ export default function(editorState){
   blocks.forEach((block) => {
     const plainText = block.getText()
 
-    const addEntityToCards = (start, end) => {
-      const existingEntityKey = block.getEntityAt(start)
-      if (existingEntityKey) {
-        // avoid manipulation in case the emoji already has an entity
-        const entity = newContentState.getEntity(existingEntityKey)
-        if (entity && entity.get('type') === 'card') {
-          return
-        }
+    findWithRegex(cardsBlockRegex, block, (start,end)=>{
+      const contentStateWithEntities = addEntityToCards(start,end,block,plainText, newContentState)
+      if (contentStateWithEntities){
+        newContentState = contentStateWithEntities
       }
-
-      const selection = SelectionState.createEmpty(block.getKey())
-        .set('anchorOffset', start)
-        .set('focusOffset', end)
-      const cardsText = plainText.substring(start, end)
-      const contentStateWithEntity = newContentState.createEntity('card', 'IMMUTABLE', { cardsText })
-      const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
-
-      newContentState = Modifier.replaceText(
-        newContentState,
-        selection,
-        cardsText,
-        null,
-        entityKey,
-      )
-    }
-
-    findWithRegex(cardsBlockRegex, block, addEntityToCards)
+    })
   })
 
   if (!newContentState.equals(contentState)) {
@@ -60,7 +75,8 @@ export default function(editorState){
       newContentState,
       'convert-to-immutable-cards',
     )
-    return EditorState.moveFocusToEnd(newEditorState)
+    return newEditorState
+    // return EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter())
   }
 
   return editorState

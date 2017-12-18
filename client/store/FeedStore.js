@@ -141,7 +141,7 @@ export class FeedStore {
         photos: [],
         likes:[],
         comments:[],
-        player:user,
+        owner:user,
       })
       this.uploadImages=[]
     }
@@ -199,7 +199,7 @@ export class FeedStore {
         content: commentState,
         photos:[],
         likes:[],
-        player:{
+        owner:{
           username: this.currentUser,
           fullname: 'Dean Shub',
           avatar: '/images/dean2.jpg',
@@ -235,9 +235,9 @@ export class FeedStore {
   }
 
   @action
-  fetchEvents(username: String): void{
-    if (this.loading) return undefined
-    if (this.currentUser===username && this.noMorePosts) return undefined
+  fetchPosts(username: String): void{
+
+    if (this.currentUser===username && (this.noMorePosts || this.loading)) return undefined
 
     this.loading = true
     if (this.currentUser!==username){
@@ -342,6 +342,9 @@ export class FeedStore {
         this.standalonePost.loading = false
         throw new Error('Post doesn\'t exists anymore')
       }
+    }).catch(err=>{
+      this.standalonePost.loading = false
+      console.error(err)
     })
   }
 
@@ -389,5 +392,10 @@ export class FeedStore {
     )
 
     this.newPost.content = newEditorState
+  }
+
+  @action
+  refresh(){
+    this.fetchPosts()
   }
 }

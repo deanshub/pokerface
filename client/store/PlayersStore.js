@@ -3,7 +3,7 @@
 import { observable, action, computed, toJS } from 'mobx'
 import avatarImage from '../assets/images/avatar.png'
 import graphqlClient from './graphqlClient'
-import {playersQuery} from './queries/players'
+import {usersQuery} from './queries/users'
 
 export class PlayersStore {
   @observable currentPlayers
@@ -18,23 +18,42 @@ export class PlayersStore {
     this.searchLoading = false
   }
 
+  extendPlayer(player){
+    return Object.assign({},{
+      // buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+      // winnings: [{value: this.initialWin, key:Math.random()}],
+      guest: false,
+      cards: '',
+      showCards: false,
+      bank: 100,
+    }, player)
+  }
+
   @action
   search(phrase){
     this.searchLoading = true
     this.searchValue = phrase
-    graphqlClient.query({query: playersQuery, variables: {phrase}}).then((result)=>{
-      let playersObj = {}
-      if (result.data.players){
-        playersObj = result.data.players.reduce((res, player)=>{
-          res[player.username] = Object.assign({},player,{
-            buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-            winnings: [{value: this.initialWin, key:Math.random()}],
-          })
-          return res
-        },{})
+    graphqlClient.query({query: usersQuery, variables: {phrase}}).then((result)=>{
+      // let playersObj = {}
+      // if (result.data.players){
+      //   playersObj = result.data.players.reduce((res, player)=>{
+      //     res[player.username] = Object.assign({},player,{
+      //       buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+      //       winnings: [{value: this.initialWin, key:Math.random()}],
+      //     })
+      //     return res
+      //   },{})
+      // }
+      // this.searchPlayers.replace(Object.assign({},playersObj, toJS(this.currentPlayers)))
+
+      if (result.data.users){
+        result.data.users.forEach((user)=>{
+          if (!this.searchPlayers.has(user.username)){
+            this.searchPlayers.set(user.username, this.extendPlayer(user))
+          }
+        })
       }
 
-      this.searchPlayers.replace(Object.assign({},playersObj, toJS(this.currentPlayers)))
       this.searchLoading = false
     }).catch((err)=>{
       console.error(err)
@@ -42,48 +61,36 @@ export class PlayersStore {
   }
 
   getPlayer(username){
-    let player = this.searchPlayers.get(username)
-    if (player===undefined){
-      player = {
-        guest: true,
-        username,
-        fullname:username,
-        avatar: avatarImage,
-      }
-    }
-
-    return Object.assign({},player,{
-      buyIns: [{value: this.initialBuyIn, key:Math.random()}],
-      winnings: [{value: this.initialWin, key:Math.random()}],
-    })
+    const player = this.searchPlayers.get(username)
+    return player
   }
 
   @action
   setPlayer(users){
-    if (this.guest){
-      this.currentPlayers.set(this.guest.username, this.guest)
-      this.guest = null
-    }else{
-      const players = users.reduce((res, user)=>{
-        res[user] = this.getPlayer(user)
-        return res
-      },{})
+    const players = users.reduce((res, user)=>{
+      const player = this.getPlayer(user)
+      if (player && !this.currentPlayers.has(user)){
+        res[user] = player
+      }else if (this.currentPlayers.has(user)){
+        res[user] = this.currentPlayers.get(user)
+      }
+      return res
+    },{})
 
-      this.currentPlayers.replace(players)
-    }
+    this.currentPlayers.replace(players)
   }
 
   @action
   addGuest(name){
     const guestKey = `guest${Math.random().toString()}`
-    const guest = {
+    const guest = this.extendPlayer({
       guest: true,
       username:guestKey,
       fullname:name,
       avatar: avatarImage,
-    }
+    })
     this.searchPlayers.set(guestKey, guest)
-    this.guest = guest
+    this.currentPlayers.set(guestKey, guest)
   }
 
   @computed
@@ -113,6 +120,8 @@ export class PlayersStore {
 
   @action
   setAuthenticatedUser(user){
-    this.currentPlayers.set(user.username, user)
+    const extendedUser = this.extendPlayer(user)
+    this.searchPlayers.set(extendedUser.username, extendedUser)
+    this.currentPlayers.set(extendedUser.username, extendedUser)
   }
 }

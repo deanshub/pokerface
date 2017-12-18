@@ -1,22 +1,28 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
-import { Modal, Step, Button } from 'semantic-ui-react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
+import { Modal } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import Spot from '../Spot'
 import GeneralSettings from './GeneralSettings'
-import SpotPlayer from '../../containers/SpotPlayer'
 import ActionBar from './ActionBar'
 import MOVES from '../../containers/SpotPlayer/constants'
 import utils from '../../containers/SpotPlayer/utils'
+import classnames from 'classnames'
+import style from './style.css'
+import {getUnimportantCard} from '../../components/Deck/consts'
+const unimportantCard = getUnimportantCard()
 
 @inject('spotPlayer')
 @inject('players')
+@inject('auth')
 @observer
 export default class SpotWizard extends Component {
   componentWillMount(){
-    const {spotPlayer} = this.props
+    const {spotPlayer, players, auth} = this.props
     spotPlayer.initNewPost()
+    players.setAuthenticatedUser(auth.user)
   }
 
   cancel(){
@@ -64,28 +70,27 @@ export default class SpotWizard extends Component {
       spotPlayer.newSpot.spot.ante=spotPlayer.newSpot.generalSettings.ante||0
       // TODO:normalize spotPlayer.newSpot.generalSettings.currency
       spotPlayer.newSpot.spot.currency=MOVES.CURRENCIES.DOLLAR
-      spotPlayer.newSpot.spot.moves=[
-        {
-          player:0,
-          action:MOVES.PLAYER_META_ACTIONS.DEALER,
-        },
-        // {
-        //   player:0,
-        //   action:MOVES.PLAYER_META_ACTIONS.SHOWS,
-        // },
-        // {
-        //   player:1,
-        //   action:MOVES.PLAYER_ACTIONS.SMALLBLIND,
-        //   value: spotPlayer.newSpot.generalSettings.sb,
-        // },
-        // {
-        //   player:0,
-        //   action:MOVES.PLAYER_ACTIONS.BIGBLIND,
-        //   value: spotPlayer.newSpot.generalSettings.bb,
-        // },
-      ]
-
+      spotPlayer.newSpot.spot.moves = players.currentPlayers.values().filter(player=>player.showCards&&player.cards)
+        .map((player, playerIndex)=>{
+          return {
+            player: playerIndex,
+            action:MOVES.PLAYER_META_ACTIONS.SHOWS,
+          }
+        })
+      spotPlayer.newSpot.spot.moves.push({
+        player:spotPlayer.newSpot.generalSettings.dealer,
+        action:MOVES.PLAYER_META_ACTIONS.DEALER,
+      })
       spotPlayer.reset(spotPlayer.newSpot)
+      spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+
+      if (spotPlayer.newSpot.generalSettings.sb){
+        this.smallBlind()
+      }
+
+      if (spotPlayer.newSpot.generalSettings.bb){
+        this.bigBlind()
+      }
       spotPlayer.newSpot.step++
     }else if(spotPlayer.newSpot.step===1){
       this.save()
@@ -216,6 +221,7 @@ export default class SpotWizard extends Component {
     }
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    spotPlayer.newSpot.spotPlayerState.totalRaise = 0
   }
 
   isSmallBlindDisabled(){
@@ -242,22 +248,71 @@ export default class SpotWizard extends Component {
 
   isDealerTurn(){
     const {spotPlayer, players} = this.props
-    if (spotPlayer.newSpot.spotPlayerState){
-      return spotPlayer.newSpot.spotPlayerState.raiser===utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+    if (spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.raiser!==undefined){
+      const playersInBets = spotPlayer.newSpot.spotPlayerState.players.filter(player=>!player.folded && player.bet!==undefined)
+      // all bets are the same
+      if (playersInBets.length>1){
+        const betValue = playersInBets[0].bet
+        if (betValue){
+          const differentBetPlayers = playersInBets.filter(player=>player.bet!==betValue)
+          return differentBetPlayers.length===0
+        }else{
+          return spotPlayer.newSpot.spotPlayerState.raiser===utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+        }
+      }
     }
     return false
   }
 
   isNoRaiser(){
-    const {spotPlayer, players} = this.props
+    const {spotPlayer} = this.props
+
+    return  spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise===0
+  }
+
+  hasRaise(){
+    const {spotPlayer} = this.props
+    return spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise>0
+  }
+
+  canShowCards(){
+    const {spotPlayer} = this.props
     if (spotPlayer.newSpot.spotPlayerState){
-      return spotPlayer.newSpot.spotPlayerState.raiser===undefined
+      const playerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+      const player = spotPlayer.newSpot.spotPlayerState.players[playerIndex]
+      if (player.cards && player.cards[0].rank!==unimportantCard.rank){
+        const playersShowMoves = spotPlayer.newSpot.spot.moves.find((move)=>{
+          return move.action===MOVES.PLAYER_META_ACTIONS.SHOWS &&
+                move.player===playerIndex
+        })
+        return playersShowMoves===undefined
+      }
     }
-    return true
+    return false
+  }
+
+  getCurrentPlayerBank(){
+    const {spotPlayer} = this.props
+    if (spotPlayer.newSpot.spotPlayerState){
+      const currentPlayerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+      const player = spotPlayer.newSpot.spotPlayerState.players[currentPlayerIndex]
+      if (player){
+        return player.bank
+      }
+    }
+    return 0
+  }
+
+  getMinimumRaise(){
+    const {spotPlayer} = this.props
+    if (spotPlayer.newSpot.spotPlayerState){
+      return (spotPlayer.newSpot.spotPlayerState.totalRaise||0)+(spotPlayer.newSpot.generalSettings.bb||0)
+    }
+    return 0
   }
 
   render(){
-    const {spotPlayer, players} = this.props
+    const {spotPlayer} = this.props
     const {step} = spotPlayer.newSpot
 
     const dealerMoves = spotPlayer.newSpot.spot.moves.filter((move)=>move.player===MOVES.DEALER)
@@ -279,6 +334,10 @@ export default class SpotWizard extends Component {
     const bigBlindDisabled = this.isBigBlindDisabled()
     const dealerTurn = this.isDealerTurn()
     const noRaiser = this.isNoRaiser()
+    const hasRaise = this.hasRaise()
+    const showCardsDisabled = !this.canShowCards()
+    const currentPlayerBank = this.getCurrentPlayerBank()
+    const minimumRaise = this.getMinimumRaise()
 
     return (
       <Modal
@@ -286,7 +345,6 @@ export default class SpotWizard extends Component {
             name: 'close',
             onClick: ::this.cancel,
           }}
-          dimmer="blurring"
           open={spotPlayer.spotWizardOpen}
           size="fullscreen"
       >
@@ -294,7 +352,7 @@ export default class SpotWizard extends Component {
           Spot Wizard
         </Modal.Header>
 
-        <Modal.Content style={{height:'80vh'}}>
+        <Modal.Content className={classnames(style.spotContainer)} style={{height:'80vh'}}>
           {this.getMainContent()}
         </Modal.Content>
         <ActionBar
@@ -312,11 +370,13 @@ export default class SpotWizard extends Component {
             callClick={::this.call}
             callDisabled={dealerTurn || noRaiser}
             checkClick={::this.check}
-            checkDisabled={dealerTurn}
+            checkDisabled={dealerTurn || hasRaise}
             raiseClick={::this.raise}
             raiseDisabled={dealerTurn}
+            minimumRaise={minimumRaise}
+            maximumRaise={currentPlayerBank}
             showCardsClick={::this.showCards}
-            showCardsDisabled={false}
+            showCardsDisabled={showCardsDisabled}
             saveDisabled={this.previousStepDisabled()}
             save={::this.save}
             dealerDisabled={!dealerTurn}

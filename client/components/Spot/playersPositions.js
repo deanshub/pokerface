@@ -1,39 +1,39 @@
 const playersPositions = [
   {
-    top:'-30%',
-    right:'25%',
+    top:'-20%',
+    right:'30%',
   },
   {
-    top:'-18%',
-    right:'3%',
+    top:'-10%',
+    right:'8%',
   },
   {
-    top:'88%',
-    right:'-7%',
+    top:'80%',
+    right:'-4%',
   },
   {
-    bottom:'-32%',
-    right:'16%',
+    bottom:'-22%',
+    right:'18%',
   },
   {
-    left:'46%',
-    bottom:'-45%',
+    bottom:'-25%',
+    left:'41%',
   },
   {
-    left:'24%',
-    bottom:'-32%',
+    bottom:'-22%',
+    left:'19%',
   },
   {
-    top:'95%',
-    left:'-2%',
+    top:'80%',
+    left:'-4%',
+  },
+  {
+    top:'-15%',
+    left:'10%',
   },
   {
     top:'-20%',
-    left:'6%',
-  },
-  {
-    top:'-30%',
-    left:'32%',
+    left:'30%',
   },
 ]
 

@@ -1,6 +1,7 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Header, Image } from 'semantic-ui-react'
 
 export default class PlayerSearchResult extends Component {
@@ -15,7 +16,6 @@ export default class PlayerSearchResult extends Component {
       <Header as="h4">
         <Image
             avatar
-            shape="circular"
             src={avatar}
             style={{float:'none', width:'3em', height:'3em', borderRadius:'500rem'}}
         />

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import betStyle from './style.css'
 import Chips from '../Chips'
@@ -53,8 +54,10 @@ export default class Bet extends Component {
             style={style}
         >
           {chipsComponents}
-          <div className={classnames(betStyle.betLabel,{[betStyle.dealerBet]:dealerBet})}>
-            {dealerBet?'Pot:':''}{amount}{currency}
+          <div className={classnames(betStyle.betLabelContainer,{[betStyle.dealerBetContainer]:dealerBet})}>
+            <div className={classnames(betStyle.betLabel,{[betStyle.dealerBet]:dealerBet})}>
+              {dealerBet?'Pot:':''}{amount}{currency}
+            </div>
           </div>
         </div>
       )

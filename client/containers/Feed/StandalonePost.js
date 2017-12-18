@@ -1,11 +1,10 @@
 // @flow
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import { observer, inject } from 'mobx-react'
-import { Header, Container, Icon, Loader } from 'semantic-ui-react'
-// import classnames from 'classnames'
-// import style from './style.css'
-
+import { Header, Container, Icon, Loader, Segment } from 'semantic-ui-react'
+import Logo from '../../components/Logo'
 import Post from './Post'
 
 @inject('routing')
@@ -34,18 +33,11 @@ export default class StandalonePost extends Component {
           text
           textAlign="center"
       >
-        <div>
+        <Segment basic>
           <a href="/" onClick={::this.goHome}>
-            <Header
-                color="red"
-                size="huge"
-                style={{marginTop:20}}
-                textAlign="center"
-            >
-                <Header.Content>Pokerface.io</Header.Content>
-            </Header>
+            <Logo/>
           </a>
-        </div>
+        </Segment>
         {
           loading?
           <Loader active inline="centered">Loading</Loader>
@@ -57,9 +49,9 @@ export default class StandalonePost extends Component {
             />
             :
             <div>
-              <Header size="huge">Post have been removed or is private...</Header>
+              <Header size="huge">Post has been removed or is private...</Header>
               <Header>Login and try again</Header>
-              <a href="/login">
+              <a href="/">
                 <Icon
                     color="red"
                     link

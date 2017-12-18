@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Image, Popup } from 'semantic-ui-react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -44,10 +45,10 @@ export default class RSVPGroupBox extends Component {
                     on="hover"
                     trigger={
                       <Image
+                          circular
                           href={href}
                           inline
                           onClick={(e)=>{this.handleAvatarClick(e, href)}}
-                          shape="circular"
                           size="mini"
                           spaced
                           src={avatar}

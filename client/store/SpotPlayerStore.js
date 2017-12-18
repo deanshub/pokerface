@@ -3,6 +3,7 @@
 import { observable, action } from 'mobx'
 import utils from '../containers/SpotPlayer/utils'
 import initialSpot from '../containers/SpotPlayer/initialSpot'
+import logger from '../utils/logger'
 
 export class SpotPlayerStore{
   @observable speed
@@ -23,6 +24,7 @@ export class SpotPlayerStore{
         ante: 0,
         sb: 1,
         bb: 2,
+        dealer: 0,
       },
     })
   }
@@ -33,6 +35,7 @@ export class SpotPlayerStore{
   }
   @action
   openSpotEditing(){
+    logger.logEvent({category:'Spot',action:'Edit'})
     this.spotWizardOpen=true
     this.newSpot = this.initNewPost()
   }

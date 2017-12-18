@@ -1,6 +1,6 @@
 // @flow
 
-import { Route, Switch } from 'react-router'
+import { Route, Switch, Redirect } from 'react-router'
 import { Router } from 'react-router-dom'
 import { syncHistoryWithStore } from 'mobx-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -10,11 +10,10 @@ import {Helmet} from 'react-helmet'
 import logger from '../../utils/logger'
 
 import Login from '../Login'
+import SettingPassword from '../SettingPassword'
 import Navigation from '../Navigation'
 import PrivateRoute from './PrivateRoute'
 import StandalonePost from '../Feed/StandalonePost'
-
-
 
 const browserHistory = createBrowserHistory()
 import stores from './stores'
@@ -52,19 +51,28 @@ export default class App extends Component {
             <Router history={history}>
               <div>
                 <Route component={this.logPageView}/>
+                <Route
+                    path="/"
+                    render={({location}) => {
+                      return (location.hash==='#_=_')?<Redirect to={{...location, hash:undefined}}/>:null
+                    }}
+                />
                 <Switch>
                   <Route
                       component={Login}
                       exact
                       path="/login"
                   />
-
+                  <Route
+                      component={SettingPassword}
+                      exact
+                      path="/password/:uuid"
+                  />
                   <Route
                       component={StandalonePost}
                       exact
                       path="/post/:id"
                   />
-
                   <PrivateRoute
                       component={Navigation}
                       path="/"

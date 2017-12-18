@@ -1,10 +1,12 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 // import classnames from 'classnames'
 // import style from './style.css'
 import { Grid, Header} from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
+import OpensourceModal from '../OpensourceModal'
 
 const footerStyle = {
   position:'absolute',
@@ -38,6 +40,7 @@ export default class Footer extends Component {
             Any issues or suggestion can be sent to <a href="mailto:support@pokerface.io?subject=Pokerface I have a suggestion&body=Hi Pokerface, I enjoy you very much, ">Support@pokerface.io</a>
           </Header>
         </Grid.Column>
+        <OpensourceModal/>
       </Grid.Row>
     )
   }

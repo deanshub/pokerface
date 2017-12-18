@@ -1,6 +1,7 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Datetime from 'react-datetime'
 import 'react-datetime/css/react-datetime.css'
 
@@ -43,8 +44,9 @@ export default class AddGame extends Component {
     console.log(player);
   }
 
-  searchChange(e: Object, phrase: string){
+  searchChange(e: Object, data: string){
     const {players} = this.props
+    const phrase = data.searchQuery
     players.search(phrase)
   }
 

@@ -503,4 +503,9 @@ export class TimerStore {
       console.error('in updateRound', err)
     })
   }
+
+  @action
+  refresh(){
+    this.subscribed = false
+  }
 }

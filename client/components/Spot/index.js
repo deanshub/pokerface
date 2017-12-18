@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import PokerTable from '../PokerTable'
 import Bet from '../Bet'
@@ -6,9 +7,8 @@ import Cards from '../Deck/Cards'
 import classnames from 'classnames'
 import style from './style.css'
 
-import playersPositions from './playersPositions'
 import betPositions from './betPositions'
-
+import PlayerSpace from './PlayerSpace'
 
 
 export default class Spot extends Component {
@@ -28,15 +28,8 @@ export default class Spot extends Component {
     if (player){
       const {currency, standalone} = this.props
 
-      const position = playersPositions[index]
       const betPosition = betPositions[index]
       const bottomPlayer = index>1 && index<7
-      const bottomClass = bottomPlayer?style.bottomClass:undefined
-      const turnClass = player.myTurn?style.turnClass:undefined
-      const dealerButton = player.isDealer?(
-        <div className={classnames({[style.dealer]:true, [style.bottomDealer]:bottomPlayer})}>D</div>
-      ): null
-      const foldedClass = player.folded?style.foldedClass:undefined
       const betComponent = player.bet?(
         <Bet
             amount={player.bet}
@@ -51,47 +44,13 @@ export default class Spot extends Component {
       // click for profile (username when not guest)
 
       return [(
-        <div
-            className={classnames(style.playerSpace)}
+        <PlayerSpace
+            currency={currency}
             key={`player${index}`}
-            style={position}
-        >
-          <div className={classnames(style.playerSpaceItem, bottomClass)}>
-            <div
-                className={classnames(style.avatarOverlay, turnClass, foldedClass)}
-            >
-              <img
-                  className={classnames(style.avatarImage)}
-                  src={player.avatar}
-              />
-            </div>
-            <div
-                className={classnames(style.playerDescription)}
-            >
-              {player.fullname}
-            </div>
-            <div
-                className={classnames(style.playerDescription)}
-            >
-              {player.bank}{currency}
-            </div>
-            {dealerButton}
-          </div>
-          <div className={classnames(style.playerSpaceItem, style.playerSideSection)}>
-            <div
-                className={classnames(style.description)}
-                style={{visibility:player.description?'visible':'hidden'}}
-            >
-              {player.description}
-            </div>
-            <Cards
-                cards={player.cards}
-                covered={!player.showCards}
-                hand
-                size={standalone?3.8:3.5}
-            />
-          </div>
-        </div>
+            player={player}
+            playerIndex={index}
+            standalone={standalone}
+        />
       ), betComponent]
     }
     return []
@@ -124,9 +83,7 @@ export default class Spot extends Component {
 
   render() {
     const { players, standalone } = this.props
-    // players {username, fullname, name, bank, description ('bb'\'sb'\'ante'\...), avatar, bet, folded, myTurn, isDealer}
     const dealerComponent = this.buildDealerComponent()
-    // dealer {pot, cards, }
 
     return (
       <PokerTable standalone={standalone}>

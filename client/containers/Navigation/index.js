@@ -1,5 +1,6 @@
 // @flow
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 import DevTools from 'mobx-react-devtools'
 import { Route, Switch } from 'react-router-dom'
@@ -10,6 +11,7 @@ import Profile from '../../components/Profile'
 import Events from '../Events'
 import BlindsTimer from '../../components/BlindsTimer'
 import Learn from '../../components/Learn'
+import NoMatch from '../../components/NoMatch'
 
 import 'semantic-ui-css/semantic.min.css'
 import classnames from 'classnames'
@@ -61,6 +63,7 @@ export default class Navigation extends Component {
                   exact
                   path="/smart"
               />
+              <Route component={NoMatch}/>
             </Switch>
           </div>
         </div>

@@ -1,4 +1,5 @@
 .cardBlock{
   background-color: #FFEBEE;
   cursor: pointer;
+  font-weight: bold;
 }

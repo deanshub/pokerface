@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import style from './style.css'
 import {SUITES, normalizeSuite, normalizeRank} from './consts'
-
+import redLogo from '../../assets/pokerface_red.png'
 //TODO: take care of joker card
 //TODO: take care of clickable cards
 
@@ -18,10 +19,21 @@ export default class Card extends Component {
   }
   static defaultProps = {
     active: false,
-    covered: false,
-    coveredText: 'Pokerface.io',
+    covered: true,
+    coveredText: 'Poker face',
     noHoverEffect: false,
     size: 3.5,
+    coveredLogo: redLogo,
+  }
+
+  getBackCard(){
+    const {coveredText, coveredLogo} = this.props
+    return (
+      <div className={classnames(style.backContainer)}>
+        <div className={classnames(style.backLogo)} style={{backgroundImage:`url(${coveredLogo})`}}/>
+        <div className={classnames(style.backText)}>{coveredText}</div>
+      </div>
+    )
   }
 
   render() {
@@ -46,12 +58,12 @@ export default class Card extends Component {
           style={{
             width: `${size}vw`,
             height: `${size*1.4}vw`,
-            fontSize: `${size/(covered?4.5:1.3)}vw`,
+            fontSize: `${size/(covered?4.4:1.3)}vw`,
           }}
           {...letterAttr}
       >
           {covered?
-            coveredText
+            this.getBackCard()
             :
             SUITES[normalizedSuit]
           }

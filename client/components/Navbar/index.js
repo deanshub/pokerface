@@ -1,17 +1,22 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
-import { Menu, Button, Input, Icon, Label, Search, Image } from 'semantic-ui-react'
-import request from 'superagent'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
+import { Menu, Button, Input, Icon, Label, Search, Image, Dropdown } from 'semantic-ui-react'
+// import request from 'superagent'
 import { observer, inject } from 'mobx-react'
 import PlayerSearchResult from './PlayerSearchResult'
 import classnames from 'classnames'
 import style from './style.css'
+import SelectUser from '../../containers/SelectUser'
+//import UserSmallCard from '../UserSmallCard'
 
 @inject('globalPlayersSearch')
 @inject('routing')
 @inject('auth')
 @inject('events')
+@inject('feed')
+@inject('timer')
 @observer
 export default class Navbar extends Component {
   componentDidMount(){
@@ -24,7 +29,6 @@ export default class Navbar extends Component {
 
   handleLogout(){
     const {routing, auth} = this.props
-
     localStorage.removeItem('jwt')
     auth.logout()
     routing.replace('/login')
@@ -34,6 +38,21 @@ export default class Navbar extends Component {
     const {routing, globalPlayersSearch} = this.props
     globalPlayersSearch.searchValue = ''
     routing.push(`/profile/${selected.result.username}`)
+  }
+
+  handleUserSwitch(userId){
+    const {
+      routing,
+      auth,
+      events,
+      timer,
+    } = this.props
+
+    auth.switchToOrganization(userId).then(() => auth.refresh()).then(() => {
+      events.refresh()
+      timer.refresh()
+      routing.replace('/')
+    })
   }
 
   resultRenderer({username, fullname, avatar}){
@@ -53,7 +72,7 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {globalPlayersSearch, auth, events} = this.props
+    const {globalPlayersSearch, auth, events, routing} = this.props
 
     return (
         <Menu
@@ -77,7 +96,7 @@ export default class Navbar extends Component {
           >
             {auth.user.avatar?
               <Image
-                  shape="circular"
+                  avatar
                   size="mini"
                   src={auth.user.avatar}
                   style={{marginTop:-5,marginBottom:-10, marginRight:10, maxHeight:35}}
@@ -115,12 +134,22 @@ export default class Navbar extends Component {
             >
               <Icon name="clock"/> Blinds Timer
             </Menu.Item>
-            <Menu.Item
-                className={classnames(style.navbarMenuItemAnchor)}
-                onClick={::this.handleLogout}
+            <Dropdown
+                className="link item"
+                icon={<Icon name="user" size="large"/>}
             >
-              <Button>logout</Button>
-            </Menu.Item>
+              <Dropdown.Menu style={{minWidth:'max-content'}}>
+                {auth.user.organizations.length > 0 &&<Dropdown.Item>
+                      <SelectUser withoutCurrentUser onSelectUser={::this.handleUserSwitch}/>
+                </Dropdown.Item>}
+                <Dropdown.Item
+                    className={classnames(style.navbarMenuItemAnchor)}
+                    onClick={::this.handleLogout}
+                >
+                  logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
             <Menu.Item>
               <Search
                   as={Input}

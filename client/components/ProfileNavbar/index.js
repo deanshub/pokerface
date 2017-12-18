@@ -1,6 +1,7 @@
 // @flow
 
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { Menu, Segment, Image } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'

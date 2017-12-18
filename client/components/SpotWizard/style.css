@@ -1,3 +1,9 @@
+.spotContainer{
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
 .playerLabel>img{
   display: inline-block !important;
   margin-right: 5px;
@@ -7,22 +13,41 @@
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 2fr 2fr 1fr;
   grid-template-areas:
-    "avatar fullname"
+    "fullname fullname"
     "avatar bank"
-    "avatar cards";
-  margin-bottom: 5%;
+    "avatar cards"
+    "avatar cardsShow";
+  align-items: center;
+  margin-bottom: 2vh;
 }
 
 .avatar{
   grid-area: avatar;
-  max-height: 128px;
-  max-width: 128px;
+  text-align: center;
+  width: 100% !important;
+  height: 100% !important;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+.avatar>img{
+  width: auto !important;
+  height: auto !important;
+  max-width: 100%;
+  max-height: 100%;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
 }
 .fullname{
   grid-area: fullname;
-  margin: 0 !important;
+  margin: 0 auto !important;
 }
 .bank{
   grid-area: bank;
@@ -30,13 +55,13 @@
 .cards{
   grid-area: cards;
 }
+.cardsShow{
+  grid-area: cardsShow;
+}
 
-
-.raiseDropdown{
-  padding: 10px 30px 10px 10px !important;
-  margin: -10px 10px !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
+.raiseInput>input{
+  width: 5vw;
+  padding: 0 5px;
 }
 
 .dealerCardsInput{
@@ -49,6 +74,7 @@
 
 .formContainer{
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -60,4 +86,20 @@
 .playersRow{
   overflow-y: auto;
   flex: 1;
+}
+
+.dealerAvatar::before{
+  content: 'Dealer';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1;
+  background: rgba(255,255,255,0.7);
+  text-align: center;
+  font-size: 2em;
+  color: #5f5f5f;
+  font-weight: bold;
+  font-style: italic;
 }
