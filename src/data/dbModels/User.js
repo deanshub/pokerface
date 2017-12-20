@@ -53,7 +53,6 @@ const schema = Schema(
       required: [true, 'Email address is required'],
       validate: [validateEmail, 'Please fill a valid email address'],
       index: true,
-      // unique: true,
     },
     avatar: {
       type: String,
