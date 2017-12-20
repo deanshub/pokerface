@@ -1,5 +1,8 @@
 .rangeBlock{
-  background-color: #a5d6a7;
+  color: #41c86a;
   cursor: pointer;
   font-weight: bold;
+}
+.rangeBlock:hover{
+  color: #4ae177;
 }

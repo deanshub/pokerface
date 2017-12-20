@@ -4,6 +4,7 @@
   font-size: 1.5em;
   height: 100%;
   user-select: none;
+  align-items: center;
 }
 .inFeed.container{
   font-size: 1em;
@@ -23,26 +24,23 @@
 }
 
 .handchartContainer{
-  font-size: 4vmin;
-  flex:1;
-  display: grid;
-  grid-template: repeat(13, 1fr) / repeat(13, 1fr);
+  font-size: 2em;
+  border-collapse: collapse;
+  font-weight: bold;
 }
 .inFeed.handchartContainer{
-  font-size: 2vmin;
+  font-size: 0.8em;
 }
 .hand{
-  border:1px solid black;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
+  border:1px solid #d0d0da;
+  padding: 0.5em;
+  text-align: center;
   cursor: pointer;
 }
 .hand:hover{
   font-weight: bold;
   background-color: #f2f2f2;
-  transform: scale(1.5);
+  transform: scale(2.5);
 }
 
 .legend{

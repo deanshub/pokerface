@@ -53,13 +53,13 @@ export default class CardsTable extends Component {
     }
 
     return (
-      <div
+      <td
           className={classnames(style.hand)}
           key={rank1+rank2}
           style={setStyle}
       >
         {textValue}
-      </div>
+      </td>
     )
   }
 
@@ -117,20 +117,28 @@ export default class CardsTable extends Component {
         <div className={classnames(style.title, style.subtitle, {[style.inFeed]:inFeed})}>
           {subtitle}
         </div>
-        <div
+        <table
             className={classnames({
               [style.handchartContainer]:true,
               [style.inFeed]: inFeed,
             })}
         >
+          <tbody>
           {
-            ranks.map((rank1)=>{
-              return ranks.map((rank2)=>{
-                return this.getHandElement(rank1,rank2, normalizedSets)
-              })
+            ranks.map((rank1, index)=>{
+              return (
+                <tr key={index}>
+                  {
+                    ranks.map((rank2)=>{
+                      return this.getHandElement(rank1,rank2, normalizedSets)
+                    })
+                  }
+                </tr>
+              )
             })
           }
-        </div>
+          </tbody>
+        </table>
         {
           normalizedSets.length>1?
           <div className={classnames(style.legend)}>

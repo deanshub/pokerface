@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Popup, Grid } from 'semantic-ui-react'
+import { Popup } from 'semantic-ui-react'
 import classnames from 'classnames'
 
 import prange, {reverse} from '../../../utils/rangeParser/prange'
@@ -29,13 +29,14 @@ export default class RangeBlock extends Component {
         <Popup
             flowing
             hoverable
+            on={['hover','click','focus']}
             trigger={<span className={classnames(style.rangeBlock)}>{children}</span>}
         >
           <CardsTable
               inFeed
               sets={[{
                 cards: range,
-                color: '#a5d6a7',
+                color: '#67d388',
               }]}
               title={reverse(range)}
           />
