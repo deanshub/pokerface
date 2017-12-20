@@ -149,7 +149,7 @@ export default class StepsPlayer extends Component {
           </button>
           <div className={classnames(style.divider)}/>
           <button
-              className={classnames(style.button)}
+              className={classnames(style.button,{[style.disable]:true})}
               name="back"
               onClick={onPreviousStep}
           >
