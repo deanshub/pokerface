@@ -1,6 +1,7 @@
 import {cardRegex} from '../../components/PostEditor/CardsPlugin/cardsRegex'
 import MOVES from './constants'
 import {getUnimportantCard} from '../../components/Deck/consts'
+import { observable } from 'mobx'
 
 const utils = {
   getDealerIndex(players, moves){
@@ -114,7 +115,7 @@ const utils = {
       nextMoveIndex++
     }
 
-    return {
+    return observable({
       nextMoveIndex,
       players: playersState,
       currency,
@@ -122,7 +123,7 @@ const utils = {
         pot: 0,
         cards: [],
       },
-    }
+    })
 
     // players {username, fullname, name, bank, description ('bb'\'sb'\'ante'\...), avatar, bet, folded, myTurn, isDealer}
     // dealer {pot, cards, }

@@ -50,6 +50,7 @@ export default class PlayerSpace extends Component {
             classnames({
               [style.playerSpace]: true,
               [style.folded]: player.folded,
+              [style.myTurn]: player.myTurn
             })
           }
 

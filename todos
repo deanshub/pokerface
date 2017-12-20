@@ -13,6 +13,7 @@ use cloud front as cdn?
 upgrade node version
 -------------------------------------------------------------------------------
 
+* make the cards preview entities normalize the text (when inserting [khkd] it will become [Kh Kd])
 * FeedStore addComment function uses dean image
 * /profile should not be used, only /profile/:username
 * error on editor focus

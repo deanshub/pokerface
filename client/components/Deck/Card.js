@@ -10,10 +10,12 @@ import logo from '../../assets/logo.png'
 
 export default class Card extends PureComponent {
   static propTypes = {
+    active: PropTypes.bool,
     activeHover: PropTypes.bool,
     clickable: PropTypes.bool,
     covered: PropTypes.bool,
     coveredText: PropTypes.string,
+    inline: PropTypes.bool,
     noHoverEffect: PropTypes.bool,
     rank: PropTypes.string,
     suit: PropTypes.string,
@@ -21,6 +23,7 @@ export default class Card extends PureComponent {
   static defaultProps = {
     activeHover: false,
     clickable: false,
+    inline: false,
     covered: true,
     coveredText: 'Poker face',
     noHoverEffect: false,
@@ -71,19 +74,28 @@ export default class Card extends PureComponent {
   }
 
   render() {
-    const {rank, suit, covered, coveredText, noHoverEffect, active, style:customStyle} = this.props
+    const {rank, suit, covered, inline, noHoverEffect, active, style:customStyle} = this.props
     const {activeHover} = this.state
     const {originalHeight} = this.state
 
     const scale = 70/52
     const width = originalHeight&&(originalHeight/scale)
-    const fontSize = originalHeight&&`${scale*0.75}em`
+    const fontSize = originalHeight&&`${!inline?scale*0.75:scale*0.75*0.7}em`
 
     const normalizedRank = normalizeRank(rank)
     const normalizedSuit = normalizeSuite(suit)
-    const letterAttr = {
+    let letterAttr = {
       'data-letter': `${normalizedRank.toUpperCase()}`,
-      'data-reverse-letter': `${normalizedRank.toUpperCase()}`,
+    }
+    let inlineImgStyle ={}
+    if (!inline){
+      letterAttr['data-reverse-letter'] = `${normalizedRank.toUpperCase()}`
+    }else{
+      inlineImgStyle.position='absolute'
+      inlineImgStyle.justifyContent='flex-end'
+      inlineImgStyle.alignItems = 'flex-end'
+      inlineImgStyle.bottom = '2%'
+      inlineImgStyle.right = '10%'
     }
 
     return (
@@ -112,7 +124,7 @@ export default class Card extends PureComponent {
             :
             <img
                 src={SVG_SUITES[normalizedSuit]}
-                style={{width:'50%',height:'50%'}}
+                style={{width:'50%',height:'50%', ...inlineImgStyle}}
             />
           }
       </li>

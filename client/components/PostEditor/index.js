@@ -201,7 +201,6 @@ export default class PostEditor extends Component {
           />
           ):null
         }
-        <CardsPreview cards={cardEntities}/>
       </div>
     )
   }

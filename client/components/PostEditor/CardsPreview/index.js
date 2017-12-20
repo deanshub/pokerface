@@ -26,8 +26,9 @@ export default class CardsPreview extends Component {
       <Cards
           cards={cards}
           clickable
-          compressed
+          inline
           key={index}
+          noHoverEffect
       />
     )
   }

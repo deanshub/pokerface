@@ -207,7 +207,7 @@ export default class Post extends Component {
     const svgPostElement = postElement.querySelector('article[class]')
     let gif = new GIF({
       workers: 2,
-      quality: 17,
+      quality: 20,
       width: svgPostElement.offsetWidth,
       height: svgPostElement.offsetHeight,
       workerScript,

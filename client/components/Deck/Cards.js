@@ -7,9 +7,9 @@ import Card from './Card'
 export default class Cards extends PureComponent {
   static propTypes = {
     clickable: PropTypes.bool,
-    compressed: PropTypes.bool,
     covered: PropTypes.bool,
     dealer: PropTypes.bool,
+    inline: PropTypes.bool,
     noHoverEffect: PropTypes.bool,
     rotate: PropTypes.bool,
   }
@@ -17,20 +17,20 @@ export default class Cards extends PureComponent {
   static defaultProps = {
     clickable: false,
     dealer: false,
-    compressed: false,
+    inline: false,
     rotate: false,
     covered: false,
     noHoverEffect: false,
   }
 
   render() {
-    const {cards, compressed, rotate, covered, noHoverEffect, clickable, dealer} = this.props
+    const {cards, inline, rotate, covered, noHoverEffect, clickable, dealer} = this.props
 
     return (
       <ul
           className={classnames(
             style.deck,
-            {[style.compressed]: compressed},
+            {[style.inline]: inline},
             {[style.covered]: covered},
             {[style.rotate]: rotate},
             {[style.dealer]: dealer}
@@ -55,6 +55,7 @@ export default class Cards extends PureComponent {
             <Card
                 clickable={clickable}
                 covered={covered}
+                inline={inline}
                 key={key}
                 noHoverEffect={noHoverEffect}
                 rank={rank}

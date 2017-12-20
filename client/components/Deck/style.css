@@ -7,8 +7,15 @@
   height: 100%;
   justify-content: center;
 }
-.compressed>li{
-  margin-left: -3% !important;
+.inline>li{
+  box-shadow: none;
+  margin: 0 1px;
+}
+.inline>li.red{
+  border: 1px solid red;
+}
+.inline>li.black{
+  border: 1px solid black;
 }
 .rotate>li{
   margin: 0 -10px;
@@ -32,7 +39,7 @@
 .card {
   height: 100%;
   background-color: white;
-  border-radius: 7%;
+  border-radius: 10%;
   box-shadow: 0 0 0.3vmin 0 rgba(0,0,0,0.3);
   display: flex;
   position: relative;
@@ -59,6 +66,7 @@
 .card:before, .card:after {
   position: absolute;
   word-wrap: break-word;
+  line-height: 1;
 }
 
 .card:before {

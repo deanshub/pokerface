@@ -15,8 +15,8 @@
 }
 
 .cardsPreview{
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 10;
-  height: 8vh;
+  display: inline-block;
+  position: absolute;
+  height: 1.7em;
+  top: -0.1em;
 }
