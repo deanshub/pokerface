@@ -159,7 +159,7 @@ export default class StepsPlayer extends Component {
             />
           </button>
           <button
-              className={classnames(style.button,{[style.disable]:hasNextStep})}
+              className={classnames(style.button,{[style.disable]:!hasNextStep})}
               name="forward"
               onClick={onNextStep}
           >
