@@ -1,7 +1,7 @@
 import MOVES from './constants'
 
 const spot = {
-  currency: MOVES.CURRENCIES.EURO,
+  currency: MOVES.CURRENCIES.DOLLAR,
   players:[
   ],
   cards:{

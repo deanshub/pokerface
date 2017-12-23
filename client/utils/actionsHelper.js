@@ -1,4 +1,5 @@
 import COLORS from '../constants/styles.css'
+// TODO: use spotplayer/utilsjs for actions constants
 
 export const selectColor = (text) => {
   switch (text) {
@@ -20,6 +21,8 @@ export const selectColor = (text) => {
     return COLORS.betColor
   case 'BB': // small blind
     return COLORS.betColor
+  case 'AN': // ante
+    return COLORS.anteColor
   default:
     return '#FFFFFF'
   }
@@ -47,6 +50,8 @@ export const textToAction = (text) => {
     return 'SB' // small blind
   case 'BIG BLIND':
     return 'BB' // big blind
+  case 'ANTE':
+    return 'AN' // ante
   default:
     return upperCased
   }

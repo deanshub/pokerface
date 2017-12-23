@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { Modal } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
+import { extendObservable } from 'mobx'
 import Spot from '../Spot'
 import GeneralSettings from './GeneralSettings'
 import ActionBar from './ActionBar'
@@ -58,7 +59,7 @@ export default class SpotWizard extends Component {
   nextStep(){
     if (this.nextStepDisabled()) return undefined
     const {spotPlayer, players} = this.props
-    // console.log(players.currentPlayers, spotPlayer.newSpot.spot.players);
+
     if (spotPlayer.newSpot.step===0){
       spotPlayer.newSpot.spot.players = players.currentPlayers.values().map((player, playerIndex)=>{
         spotPlayer.newSpot.spot.cards[playerIndex] = player.cards
@@ -82,7 +83,8 @@ export default class SpotWizard extends Component {
         action:MOVES.PLAYER_META_ACTIONS.DEALER,
       })
       spotPlayer.reset(spotPlayer.newSpot)
-      spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+      const newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+      extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
 
       if (spotPlayer.newSpot.generalSettings.sb){
         this.smallBlind()
@@ -124,7 +126,8 @@ export default class SpotWizard extends Component {
       player: utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState),
       action: MOVES.PLAYER_META_ACTIONS.SHOWS,
     })
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    const newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
   }
   smallBlind(){
     const {spotPlayer} = this.props
@@ -133,8 +136,9 @@ export default class SpotWizard extends Component {
       action: MOVES.PLAYER_ACTIONS.SMALLBLIND,
       value: spotPlayer.newSpot.generalSettings.sb,
     })
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    let newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
     spotPlayer.newSpot.spotPlayerState.totalRaise = spotPlayer.newSpot.generalSettings.sb
   }
   bigBlind(){
@@ -144,8 +148,9 @@ export default class SpotWizard extends Component {
       action: MOVES.PLAYER_ACTIONS.BIGBLIND,
       value: spotPlayer.newSpot.generalSettings.bb,
     })
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    let newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
     spotPlayer.newSpot.spotPlayerState.totalRaise = spotPlayer.newSpot.generalSettings.bb
   }
   call(){
@@ -156,8 +161,9 @@ export default class SpotWizard extends Component {
       action:MOVES.PLAYER_ACTIONS.CALL,
       value: spotPlayer.newSpot.spotPlayerState.totalRaise - spotPlayer.newSpot.spotPlayerState.players[player].bet,
     })
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    let newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
   }
   fold(){
     const {spotPlayer} = this.props
@@ -167,8 +173,9 @@ export default class SpotWizard extends Component {
       action:MOVES.PLAYER_ACTIONS.FOLD,
     })
 
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    let newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
   }
   check(){
     const {spotPlayer} = this.props
@@ -177,8 +184,9 @@ export default class SpotWizard extends Component {
       player,
       action:MOVES.PLAYER_ACTIONS.CHECK,
     })
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    let newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
   }
   raise(value){
     const {spotPlayer} = this.props
@@ -188,8 +196,9 @@ export default class SpotWizard extends Component {
       action:MOVES.PLAYER_ACTIONS.RAISE,
       value: value - spotPlayer.newSpot.spotPlayerState.players[player].bet,
     })
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    let newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
     spotPlayer.newSpot.spotPlayerState.totalRaise = value
   }
   dealer(cards){
@@ -219,8 +228,9 @@ export default class SpotWizard extends Component {
     }else{
       return undefined
     }
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    spotPlayer.newSpot.spotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    let newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
+    newSpotPlayerState = utils.getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
     spotPlayer.newSpot.spotPlayerState.totalRaise = 0
   }
 

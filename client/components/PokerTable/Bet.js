@@ -5,7 +5,9 @@ import classnames from 'classnames'
 import style from './style.css'
 import Chips from './Chips'
 import {textToAction,selectColor} from '../../utils/actionsHelper'
-
+// import { observer } from 'mobx-react'
+//
+// @observer
 export default class Bet extends Component {
   static propTypes = {
     amount: PropTypes.number,
@@ -19,13 +21,16 @@ export default class Bet extends Component {
     const action = textToAction(text)
     const color = selectColor(action)
 
+    let displayedAmount = amount%1?amount.toFixed(2):amount
+    displayedAmount = parseFloat(displayedAmount).toLocaleString()
+
     return (
       <div className={classnames(style.betContainer)}>
         <div className={classnames(style.betText)} style={{background:color}}>
           {action}
         </div>
         <div className={classnames(style.betAmount)}>
-          {amount}{currency}
+          {displayedAmount}{currency}
         </div>
         {
           amount>0?(

@@ -13,6 +13,14 @@ use cloud front as cdn?
 upgrade node version
 -------------------------------------------------------------------------------
 
+boomplayer
+* ante color
+* handle show beforehand
+* after ante should create a pot
+* delete preview and continue writting
+* make X1 and X2 slower
+
+
 * make the cards preview entities normalize the text (when inserting [khkd] it will become [Kh Kd])
 * FeedStore addComment function uses dean image
 * /profile should not be used, only /profile/:username
@@ -20,22 +28,21 @@ upgrade node version
 
 editor improvements
 * log to editor to spot parser
-- cards should be like inline stickers? can also be hover cards
 * allow edit post
 
 spot wizard improvments
 * currency in spot wizard should be add-able Dropdown
 * all-in button
-* allow draging to re-order players sitting
-* handle everyone folding and only one player left
 * consider all-in both on wizard and on player
+* handle everyone folding and only one player left
 * bb and sb should have disable checkbox in general settings (0 will behave as disabled)
-* integrate lior's timeline component to go back or place an undo button
+* defaultly make the bank of players 100bb
+* change the dealer action to same logic as the boomplayer parser
 
 spot player imporvements
 * implement the back button
 * show who won at the end
-* integrate lior's timeline to move around
+* use timeline to move around
 * create constants for all logger categories and such
 * re render of cards (images requested multiple times) when exporting gif
 * better responsiveness (vertical phone)
@@ -104,3 +111,31 @@ have rich text header and selection toolbar
 
 
 https://docs.google.com/spreadsheets/d/1zuSO8fMBcju5S-ZfDh3ffajnn2U2eau40CbtBnp4ubA/pubhtml#
+https://www.youtube.com/watch?v=x1AfQkoGHUk
+
+            Hand      Stacks(effective)     Blinds       Position
+
+PreFlop
+
+
+Flop
+
+
+Turn
+
+
+River
+
+
+Notes
+
+
+
+------------------------------------------------------------------------------------------
+
+People on table
+
+position
+description
+name
+(should see it throughout the notebook)

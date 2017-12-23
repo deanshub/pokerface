@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { observer } from 'mobx-react'
 
 import PlayerSpace from './PlayerSpace'
 import classnames from 'classnames'
 import style from './style.css'
 
-
+@observer
 export default class PlayersList extends Component {
   static propTypes = {
     currency: PropTypes.string,

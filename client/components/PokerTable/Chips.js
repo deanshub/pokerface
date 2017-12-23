@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import utils from '../../containers/SpotPlayer/utils'
 import chipSizes from './chipSizes'
 import Chip from './Chip'
-const sizes = Object.keys(chipSizes).map(size=>parseInt(size)).sort((a,b)=>b-a)
+const sizes = Object.keys(chipSizes).map(size=>parseFloat(size)).sort((a,b)=>b-a)
 
 export default class Chips extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ export default class Chips extends Component {
       return res
     },{})
 
-    return Object.keys(chips).map(size=>parseInt(size)).sort().map((chip,index)=>{
+    return Object.keys(chips).map(size=>parseFloat(size)).sort().map((chip,index)=>{
       return (
         <Chip
             index={index}

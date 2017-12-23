@@ -25,11 +25,15 @@
   position: absolute;
   width: 11px;
   height: 11px;
-  transition: right 0.5s ease;
+  transition: right 0.5s ease, transform 0.2s ease-in;
   top: 10px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
   background: white;
   z-index: 1;
+  cursor: pointer;
+}
+.eventsTimelineFilled:hover {
+  transform: scale(1.5);
 }
 
 .eventsTimelineEvent {

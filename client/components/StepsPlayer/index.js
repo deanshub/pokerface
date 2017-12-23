@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { observer } from 'mobx-react'
 
 import EventsTimeline from '../EventsTimeline'
 import classnames from 'classnames'
@@ -10,6 +11,7 @@ import pauseSvg from '../../assets/spotplayer/pause.svg'
 import backSvg from '../../assets/spotplayer/back.svg'
 import forwardSvg from '../../assets/spotplayer/forward.svg'
 
+@observer
 export default class StepsPlayer extends Component {
   static propTypes = {
     currentStepIndex: PropTypes.number.isRequired,

@@ -43,6 +43,8 @@ export default class PlayerSpace extends Component {
   render(){
     const { currency, player} = this.props
     const backgroundColor = selectColor(textToAction(player.description))
+    let bank = player.bank%1?player.bank.toFixed(2):player.bank
+    bank = parseFloat(bank).toLocaleString()
 
     return (
       <div
@@ -74,10 +76,11 @@ export default class PlayerSpace extends Component {
             {player.fullname}
           </div>
           <div className={classnames(style.bank)}>
-            {player.bank}{currency}
+            {bank}{currency}
           </div>
           <div className={classnames(style.currentAction)} style={{opacity:player.description?1:undefined, backgroundColor}}>
             {player.description}
+            {/* {player.bet?} */}
           </div>
         </div>
       </div>

@@ -34,6 +34,11 @@ const chipSizes = {
     primaryColor:'#ffffff',
     seconderyColor:'#045acc',
   },
+  0.01:{
+    value:0.01,
+    primaryColor:'#ffffff',
+    seconderyColor:'#045a99',
+  },
 }
 
 export default chipSizes
