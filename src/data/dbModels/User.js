@@ -29,12 +29,6 @@ const schema = Schema(
       type: String,
       ref: 'User',
     },
-    organizations: [{
-      type: String, //Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-      default: [],
-    }],
     firstname: {
       type: String,
       required: [true, 'Firstname is required'],

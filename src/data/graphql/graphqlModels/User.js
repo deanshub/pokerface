@@ -46,7 +46,6 @@ export const schema =  [`
     firstname: String
     lastname: String
     guest: Boolean
-    organizations: [Organization]
   }
 
   type Query {
@@ -54,6 +53,8 @@ export const schema =  [`
       phrase: String,
       username: String
     ): [User]
+    optionalUsersSwitch: [Organization]
+    optionalUsersLogin: [User]
   }
 
   type Mutation{
@@ -95,9 +96,14 @@ const getCoverImage = (user)=>{
   return user.coverImage
 }
 
-const getPosts = (user) => DB.models.Post.find({user: user._id})
+const getPosts = (user) => DB.models.Post.find({user: user.id})
 
-const getComments = (user) => DB.models.Comment.find({user: user._id})
+const getComments = (user) => DB.models.Comment.find({user: user.id})
+
+// Only those which can be logged in
+const getOrganizations = (user) => DB.models.User.find({players:user.id}).then((organizations) => {
+  return organizations || []
+})
 
 export const resolvers = {
   User:{
@@ -110,7 +116,6 @@ export const resolvers = {
     },
   },
   Player:{
-    organizations: (player) => player.organizations,
     firstname: (user)=>user.firstname,
     lastname: (user)=>user.lastname,
     guest: (user)=>!!user.guest,
@@ -132,7 +137,7 @@ export const resolvers = {
   Query: {
     users: (_, {phrase, username})=>{
       if (username){
-        return DB.models.User.find({_id:username}).populate('organizations')
+        return DB.models.User.find({_id:username})
       }else if (phrase){
         return DB.models.User.find()
           .or([{
@@ -144,6 +149,15 @@ export const resolvers = {
           }])
           .limit(6)
       }
+    },
+    optionalUsersSwitch: (_, args, context) => {
+      return getOrganizations(context.user)
+    },
+    optionalUsersLogin: (_, args, context) => {
+      const {user} = context
+      return getOrganizations(user).then((organizations) => {
+        return [user, ...organizations]
+      })
     },
   },
   Mutation: {

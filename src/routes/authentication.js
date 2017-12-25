@@ -7,7 +7,12 @@ import {Strategy as FacebookStrategy} from 'passport-facebook'
 import {Strategy as GoogleStrategy} from 'passport-google-oauth20'
 import { download } from '../utils/diskWriting'
 import uuidv1 from 'uuid/v1'
-import {createUser, findPopulatedUser, findPopulatedUserById} from '../data/helping/user'
+import {
+  createUser,
+  findPlayerWithOrganizations,
+  findPlayerWithOrganizationsById ,
+} from '../data/helping/User'
+
 
 // TODO merge with mailer.sj
 const hostLocation = (config.NODE_ENV==='development')?
@@ -46,7 +51,7 @@ const initialize = () => {
     },
       function ({username, password}, done){
 
-        findPopulatedUserById(username).then((user)=>{
+        DB.models.User.findById(username).then((user)=>{
           if (!user || user.password !== password){
             return done(null, false, {message: 'Wrong token was received'})
           }
@@ -85,7 +90,7 @@ const initialize = () => {
         cover,
       } = profile._json
 
-      findPopulatedUser({email}).then((existedUser) => {
+      DB.models.User.findOne({email, organization:{$ne:true}}).then((existedUser) => {
 
         if (existedUser){
           return existedUser
@@ -131,9 +136,16 @@ const initialize = () => {
             console.error(err)
           })
         }
-        const token = signTokenToUser(user)
 
-        return cb(null, {token, user:{...user.toJSON()}})
+        // Add the related organizations
+        const player = user.toJSON()
+        return DB.models.User.count({players:player.id}).then((count) =>{
+          player.organizations = count
+          return player
+        })
+      }).then((user) => {
+        const token = signTokenToUser(user)
+        return cb(null, {token, user})
       }).catch(e=>{
         console.error(e)
         return cb(null, {user:{}})
@@ -158,7 +170,7 @@ const initialize = () => {
 
       const email = emails[0].value
 
-      findPopulatedUser({email}).then((existedUser) => {
+      DB.models.User.findOne({email, organization:{$ne:true}}).then((existedUser) => {
 
         if (existedUser){
           return existedUser
@@ -179,25 +191,6 @@ const initialize = () => {
 
         const pictureUuid = uuidv1()
 
-        // TODO try to check anonimic picture
-        // if (!user.avatar){
-        //   // replace size parameter, search 'sz' after ?
-        //   const avatarUrl = avatar.url.replace(/(sz=\d+$)(?=\\?)/g, `sz=${AVATAR_SIZE}`)
-        //
-        //   const avatarFilename = `avater${pictureUuid}.jpg`
-        //   download(
-        //     avatarUrl,
-        //     '../client/static/images',
-        //     avatarFilename,
-        //   ).then(() => {
-        //     user.avatar = avatarFilename
-        //     user.updated = Date.now()
-        //     user.save()
-        //   }).catch((err) => {
-        //     console.error(err)
-        //   })
-        // }
-
         if (!user.coverImage && cover){
 
           const coverFileName = `cover${pictureUuid}.jpg`
@@ -214,9 +207,15 @@ const initialize = () => {
           })
         }
 
+        // Add the related organizations
+        const player = user.toJSON()
+        return DB.models.User.count({players:player.id}).then((count) =>{
+          player.organizations = count
+          return player
+        })
+      }).then((user) => {
         const token = signTokenToUser(user)
-
-        return cb(null, {token, user:{...user.toJSON()}})
+        return cb(null, {token, user})
       }).catch(e=>{
         console.error(e)
         return cb(null, {user:{}})
@@ -224,13 +223,13 @@ const initialize = () => {
     }))
 
   passport.serializeUser((payload, done) => {
-    done(null, payload.user._id)
+    done(null, payload.user.id)
   })
 
   passport.deserializeUser((userId, done) => {
-    findPopulatedUserById(userId).then((user)=>{
+    findPlayerWithOrganizationsById(userId).then((user)=>{
       const token = signTokenToUser(user)
-      return done(null, {token, user:{...user.toJSON()}})
+      return done(null, {token, user})
     }).catch(e=>{
       console.error(e)
       return done(null, false, {message: 'Email or password are Incorrect .'})
@@ -240,16 +239,17 @@ const initialize = () => {
   return initialize
 }
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const {email, password} = req.body
 
-  // TODO may we need to populate organization ehere too
-  DB.models.User.findOne({email,password,active:true}).then((user)=>{
+  findPlayerWithOrganizations({email,password,active:true}).then((user)=>{
     if (!user){
       res.status(401).json({error: 'Email or password are Incorrect .'})
     } else{
       const token = signTokenToUser(user)
-      res.json({user, token})
+      req.loginUser = {user, token}
+
+      return next()
     }
   }).catch(e=>{
     console.error(e)
@@ -257,16 +257,26 @@ const login = (req, res) => {
   })
 }
 
-const switchToOrganization = (req, res) => {
+const switchToUser = (req, res) => {
   const {user:currentUser} = req
-  const {organizationId} = req.body
-  if (!currentUser || !currentUser.organizations || currentUser.organizations.includes(organizationId)){
-    res.status(401).json({error: 'Oragnization is not allowed to player'})
-  }else{
-    // Organization don't have passowrd so we need only the id (unsername) for signing
-    const token = signTokenToUser({username:organizationId})
-    res.json({token})
+  const {userId} = req.body
+
+  if (currentUser.id === userId){
+    const token = signTokenToUser(currentUser)
+    return res.json({token})
   }
+
+  DB.models.User.findById(userId).then((organization) => {
+    if (!organization || !organization.players.includes(currentUser.id)){
+      res.status(401).json({error: 'Organization is not allowed to player'})
+    }else{
+      // Organization don't have passowrd so we need only the id (unsername) for signing
+      const token = signTokenToUser(organization.toJSON())
+      res.json({token})
+    }
+  }).catch((err) => {
+    res.status(500).json({error:err})
+  })
 }
 
 const addUserToRequest = (req, res, next) => {
@@ -297,5 +307,5 @@ export default {
   addUserToRequest,
   googleLogin,
   authenticateWithGoogle,
-  switchToOrganization,
+  switchToUser,
 }

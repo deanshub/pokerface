@@ -23,14 +23,42 @@ export const createUser = (user) => {
 
 export const findPopulatedUser = (where) => {
   return DB.models.User.findOne(where).populate([
-    {path:'organizations'},
-    {path:'players'},
+    {path:'players', select:'username fullanme email avatar'},
   ])
 }
 
 export const findPopulatedUserById = (id) => {
   return DB.models.User.findById(id).populate([
-    {path:'organizations', select:'firstname avatar'},
-    {path:'players'},
+    {path:'players', select:'username fullanme email avatar'},
   ])
+}
+
+// return find player with organizations count
+export const findPlayerWithOrganizations = (where) => {
+  return DB.models.User.findOne(where).then((user) => {
+    if (!user){
+      return false
+    }else{
+      const player = user.toJSON()
+      return DB.models.User.count({players:player.id}).then((count) =>{
+        player.organizations = count
+        return player
+      })
+    }
+  })
+}
+
+// return find player with organizations count
+export const findPlayerWithOrganizationsById = (id) => {
+  return DB.models.User.findById(id).then((user) => {
+    if (!user){
+      return false
+    }else{
+      const player = user.toJSON()
+      return DB.models.User.count({players:player.id}).then((count) =>{
+        player.organizations = count
+        return player
+      })
+    }
+  })
 }

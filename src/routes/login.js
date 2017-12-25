@@ -1,5 +1,6 @@
 import express from 'express'
 import authentication from './authentication'
+import DB from '../data/db'
 
 const TOKEN_EXPIRATION_DURATION = 1000*600
 
@@ -27,18 +28,35 @@ const prepareCoverImage = (coverImage, username) => {
   return coverImage
 }
 
+const prepareUserToClient = (user) => {
+
+  const {username, email, fullname, firstname, lastname, organizations} = user
+
+  let avatar = prepareAvatar(user.avatar, username)
+
+  let coverImage = prepareCoverImage(user.coverImage, username)
+  const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage, organizations}
+
+  return  userToClient
+}
+
 const redirectExternalLogin = ((req, res) => {
   const {user, token} = req.user
   res.cookie('jwt', token, {maxAge:TOKEN_EXPIRATION_DURATION})
 
-  const url = (user.organizations.length === 0)?'/':'/login?selectuser=true'
+  const url = (user.organizations > 0)?'/login?selectuser=true':'/'
 
   res.redirect(url)
 })
 
 const router = express.Router()
 
-router.post('/local', authentication.login)
+router.post('/local', authentication.login, (req, res) => {
+
+  const {user, token} = req.loginUser
+  const userToClient= prepareUserToClient(user)
+  res.json({user:userToClient, token})
+})
 router.get('/facebook', authentication.facebookLogin)
 router.get('/googleplus', authentication.googleLogin)
 
@@ -51,25 +69,11 @@ router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
   if (!req.user) {
     res.json({user:{}})
   }else{
-    const {username, organizations} = req.user
-
-    let avatar = prepareAvatar(req.user.avatar, username)
-
-    let coverImage = prepareCoverImage(req.user.coverImage, username)
-
-    if (organizations){
-      organizations.forEach(org => {
-        org.avatar = prepareAvatar(org.avatar, org.username)
-      })
-    }
-
-    const {email, fullname, firstname, lastname} = req.user
-    const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage, organizations}
-
+    const userToClient= prepareUserToClient(req.user)
     res.json({user:userToClient})
   }
 })
 
-router.post('/switchToOrganization', authentication.addUserToRequest, authentication.switchToOrganization)
+router.post('/switchToUser', authentication.addUserToRequest, authentication.switchToUser)
 
 export default router
