@@ -11,7 +11,7 @@ import request from 'superagent'
 import {viewParam} from '../../utils/generalUtils'
 import classnames from 'classnames'
 import style from './style.css'
-import SelectUserModal from './SelectUserModal'
+import SelectUserModal from '../SelectUserModal'
 
 @inject('routing')
 @inject('auth')
@@ -52,14 +52,15 @@ export default class LoginForm extends Component {
         // this.props.auth.user = user
         // logger.setField({user:user.username, email:user.email})
         localStorage.setItem('jwt',token )
-
-        if (user.organizations.length === 0){
-          routing.replace(query.url || '/')
-        }else{
+        if (user.organizations > 0){
           this.setState({
             loggingInPorgress: false,
             selectUserModalOpen: true,
           })
+        }else{
+          // const {avatar, fullname, username, organizations} = user
+          // const users = [{avatar, fullname, username}, ...organizations]
+          routing.replace(query.url || '/')
         }
 
       }).catch((err)=>{
@@ -80,6 +81,11 @@ export default class LoginForm extends Component {
     this.setState({
       [name]: value,
     })
+  }
+
+  onCloseSelectUserModal(){
+    this.setState({selectUserModalOpen:false})
+    this.props.auth.logout()
   }
 
   render() {
@@ -147,7 +153,9 @@ export default class LoginForm extends Component {
         {
           selectUserModalOpen &&
           <SelectUserModal
-              onClose={() => this.setState({selectUserModalOpen:false})}
+              login
+              onClose={::this.onCloseSelectUserModal}
+              open={selectUserModalOpen}
               redirectUrl={redirectUrl}
           />
         }

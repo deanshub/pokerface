@@ -2,14 +2,12 @@
 
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Menu, Button, Input, Icon, Label, Search, Image, Dropdown } from 'semantic-ui-react'
-// import request from 'superagent'
+import { Menu, Input, Icon, Label, Search, Image, Dropdown } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PlayerSearchResult from './PlayerSearchResult'
 import classnames from 'classnames'
 import style from './style.css'
-import SelectUser from '../../containers/SelectUser'
-//import UserSmallCard from '../UserSmallCard'
+import SelectUserModal from '../../containers/SelectUserModal'
 
 @inject('globalPlayersSearch')
 @inject('routing')
@@ -19,6 +17,15 @@ import SelectUser from '../../containers/SelectUser'
 @inject('timer')
 @observer
 export default class Navbar extends Component {
+  constructor(props){
+    super(props)
+    this.state = {selectUserModalOpen: false}
+  }
+
+  componentWillMount(){
+    this.props.auth.fetchOptionalUsersSwitch()
+  }
+
   componentDidMount(){
     this.props.events.fetchMyGames()
   }
@@ -40,21 +47,6 @@ export default class Navbar extends Component {
     routing.push(`/profile/${selected.result.username}`)
   }
 
-  handleUserSwitch(userId){
-    const {
-      routing,
-      auth,
-      events,
-      timer,
-    } = this.props
-
-    auth.switchToOrganization(userId).then(() => auth.refresh()).then(() => {
-      events.refresh()
-      timer.refresh()
-      routing.replace('/')
-    })
-  }
-
   resultRenderer({username, fullname, avatar}){
     return (
       <PlayerSearchResult
@@ -73,6 +65,8 @@ export default class Navbar extends Component {
 
   render() {
     const {globalPlayersSearch, auth, events, routing} = this.props
+    const {selectUserModalOpen} = this.state
+    const showSwitchUser = auth.optionalUsers.length > 0
 
     return (
         <Menu
@@ -139,9 +133,12 @@ export default class Navbar extends Component {
                 icon={<Icon name="user" size="large"/>}
             >
               <Dropdown.Menu style={{minWidth:'max-content'}}>
-                {auth.user.organizations.length > 0 &&<Dropdown.Item>
-                      <SelectUser withoutCurrentUser onSelectUser={::this.handleUserSwitch}/>
-                </Dropdown.Item>}
+                {
+                  showSwitchUser &&
+                  <Dropdown.Item onClick={() => this.setState({selectUserModalOpen:true})}>
+                      switch user
+                  </Dropdown.Item>
+                }
                 <Dropdown.Item
                     className={classnames(style.navbarMenuItemAnchor)}
                     onClick={::this.handleLogout}
@@ -167,6 +164,14 @@ export default class Navbar extends Component {
               />
             </Menu.Item>
           </Menu.Menu>
+          {
+            selectUserModalOpen &&
+            <SelectUserModal
+                onClose={() => this.setState({selectUserModalOpen:false})}
+                open={selectUserModalOpen}
+                redirectUrl="/"
+            />
+          }
         </Menu>
     )
   }
