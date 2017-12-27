@@ -11,7 +11,6 @@ import BlindTimerResetModal from './BlindTimerResetModal'
 import logo from '../../assets/blue logo.png'
 
 @inject('timer')
-@inject('auth')
 @observer
 export default class BlindsTimer extends Component {
   static propTypes = {
@@ -86,7 +85,7 @@ export default class BlindsTimer extends Component {
   }
 
   render() {
-    const {timer, title, image, auth} = this.props
+    const {timer, title, image} = this.props
     const inverted = timer.inverted
 
     const anteSection =
