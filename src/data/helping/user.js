@@ -1,4 +1,5 @@
 import DB from '../db'
+import {LOGIN} from '../../utils/permissions'
 
 export const createUser = (user) => {
   const {
@@ -40,7 +41,7 @@ export const findPlayerWithOrganizations = (where) => {
       return false
     }else{
       const player = user.toJSON()
-      return DB.models.User.count({players:player.id}).then((count) =>{
+      return loginPermissionFilter(DB.models.User.find({players:player.id})).count().then((count) =>{
         player.organizations = count
         return player
       })
@@ -55,10 +56,15 @@ export const findPlayerWithOrganizationsById = (id) => {
       return false
     }else{
       const player = user.toJSON()
-      return DB.models.User.count({players:player.id}).then((count) =>{
+      return loginPermissionFilter(DB.models.User.find({players:player.id})).count().then((count) =>{
         player.organizations = count
         return player
       })
     }
   })
+}
+
+// Organization
+export const loginPermissionFilter = (query) => {
+  return query.where({permissions:LOGIN})
 }

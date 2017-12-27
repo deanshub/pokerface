@@ -1,6 +1,6 @@
 import express from 'express'
 import authentication from './authentication'
-import DB from '../data/db'
+import {REBRANDING} from '../utils/permissions'
 
 const TOKEN_EXPIRATION_DURATION = 1000*600
 
@@ -30,12 +30,21 @@ const prepareCoverImage = (coverImage, username) => {
 
 const prepareUserToClient = (user) => {
 
-  const {username, email, fullname, firstname, lastname, organizations} = user
+  const {
+    username,
+    email,
+    fullname,
+    firstname,
+    lastname,
+    organizations,
+    permissions,
+  } = user
 
   let avatar = prepareAvatar(user.avatar, username)
 
   let coverImage = prepareCoverImage(user.coverImage, username)
-  const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage, organizations}
+  const rebranding = permissions.includes(REBRANDING)
+  const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage, organizations, rebranding}
 
   return  userToClient
 }

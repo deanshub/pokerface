@@ -21,10 +21,14 @@ const schema = Schema(
     organization: {
       type: Boolean,
     },
-    players: [{
-      type: String,
-      ref: 'User',
-    }],
+    players: {
+      type:[{
+        type: String,
+        ref: 'User',
+
+      }],
+      default: undefined,
+    },
     owner:{
       type: String,
       ref: 'User',
@@ -63,9 +67,14 @@ const schema = Schema(
     phonenumber:{
       type: String,
     },
-    permissions:[{
-      type: String,
-    }],
+    permissions:{
+      type:[{
+        type: String,
+        ref: 'User',
+
+      }],
+      default: undefined,
+    },
     rebrandingDetails:{
       primaryColor: {
         type: String,

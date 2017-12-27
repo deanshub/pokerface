@@ -11,6 +11,7 @@ import {
   createUser,
   findPlayerWithOrganizations,
   findPlayerWithOrganizationsById ,
+  loginPermissionFilter,
 } from '../data/helping/User'
 
 
@@ -51,8 +52,8 @@ const initialize = () => {
     },
       function ({username, password}, done){
 
-        DB.models.User.findById(username).then((user)=>{
-          if (!user || user.password !== password){
+        DB.models.User.findOne({_id:username,password}).then((user)=>{
+          if (!user){
             return done(null, false, {message: 'Wrong token was received'})
           }
 
@@ -139,7 +140,7 @@ const initialize = () => {
 
         // Add the related organizations
         const player = user.toJSON()
-        return DB.models.User.count({players:player.id}).then((count) =>{
+        return loginPermissionFilter(DB.models.User.find({players:player.id})).count().then((count) =>{
           player.organizations = count
           return player
         })
@@ -209,7 +210,7 @@ const initialize = () => {
 
         // Add the related organizations
         const player = user.toJSON()
-        return DB.models.User.count({players:player.id}).then((count) =>{
+        return loginPermissionFilter(DB.models.User.find({players:player.id})).count().then((count) =>{
           player.organizations = count
           return player
         })
@@ -266,8 +267,8 @@ const switchToUser = (req, res) => {
     return res.json({token})
   }
 
-  DB.models.User.findById(userId).then((organization) => {
-    if (!organization || !organization.players.includes(currentUser.id)){
+  loginPermissionFilter(DB.models.User.findById(userId).where({players:currentUser.id})).then((organization) => {
+    if (!organization){
       res.status(401).json({error: 'Organization is not allowed to player'})
     }else{
       // Organization don't have passowrd so we need only the id (unsername) for signing
