@@ -235,9 +235,9 @@ export class FeedStore {
   }
 
   @action
-  fetchEvents(username: String): void{
-    if (this.loading) return undefined
-    if (this.currentUser===username && this.noMorePosts) return undefined
+  fetchPosts(username: String): void{
+
+    if (this.currentUser===username && (this.noMorePosts || this.loading)) return undefined
 
     this.loading = true
     if (this.currentUser!==username){
@@ -306,7 +306,8 @@ export class FeedStore {
     logger.logEvent({category:'Comment',action:'Like',value:like?1:0})
     graphqlClient.mutate({mutation: setCommentLike, variables: {comment:commentId, like}})
     .then(result=>{
-      this.posts.set(result.data.setCommentLike.post.id, result.data.setCommentLike.post)
+      const newPost = this.parsePost(result.data.setCommentLike.post)
+      this.posts.set(result.data.setCommentLike.post.id, newPost)
     })
     .catch(err=>{
       console.error(err);
@@ -392,5 +393,10 @@ export class FeedStore {
     )
 
     this.newPost.content = newEditorState
+  }
+
+  @action
+  refresh(){
+    this.fetchPosts()
   }
 }

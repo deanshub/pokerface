@@ -2,19 +2,30 @@
 
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Menu, Button, Input, Icon, Label, Search, Image } from 'semantic-ui-react'
-// import request from 'superagent'
+import { Menu, Input, Icon, Label, Search, Image, Dropdown } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PlayerSearchResult from './PlayerSearchResult'
 import classnames from 'classnames'
 import style from './style.css'
+import SelectUserModal from '../../containers/SelectUserModal'
 
 @inject('globalPlayersSearch')
 @inject('routing')
 @inject('auth')
 @inject('events')
+@inject('feed')
+@inject('timer')
 @observer
 export default class Navbar extends Component {
+  constructor(props){
+    super(props)
+    this.state = {selectUserModalOpen: false}
+  }
+
+  componentWillMount(){
+    this.props.auth.fetchOptionalUsersSwitch()
+  }
+
   componentDidMount(){
     this.props.events.fetchMyGames()
   }
@@ -25,7 +36,6 @@ export default class Navbar extends Component {
 
   handleLogout(){
     const {routing, auth} = this.props
-
     localStorage.removeItem('jwt')
     auth.logout()
     routing.replace('/login')
@@ -54,7 +64,9 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {globalPlayersSearch, auth, events} = this.props
+    const {globalPlayersSearch, auth, events, routing} = this.props
+    const {selectUserModalOpen} = this.state
+    const showSwitchUser = auth.optionalUsers.length > 0
 
     return (
         <Menu
@@ -116,12 +128,25 @@ export default class Navbar extends Component {
             >
               <Icon name="clock"/> Blinds Timer
             </Menu.Item>
-            <Menu.Item
-                className={classnames(style.navbarMenuItemAnchor)}
-                onClick={::this.handleLogout}
+            <Dropdown
+                className="link item"
+                icon={<Icon name="user" size="large"/>}
             >
-              <Button>logout</Button>
-            </Menu.Item>
+              <Dropdown.Menu style={{minWidth:'max-content'}}>
+                {
+                  showSwitchUser &&
+                  <Dropdown.Item onClick={() => this.setState({selectUserModalOpen:true})}>
+                      switch user
+                  </Dropdown.Item>
+                }
+                <Dropdown.Item
+                    className={classnames(style.navbarMenuItemAnchor)}
+                    onClick={::this.handleLogout}
+                >
+                  logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
             <Menu.Item>
               <Search
                   as={Input}
@@ -139,6 +164,14 @@ export default class Navbar extends Component {
               />
             </Menu.Item>
           </Menu.Menu>
+          {
+            selectUserModalOpen &&
+            <SelectUserModal
+                onClose={() => this.setState({selectUserModalOpen:false})}
+                open={selectUserModalOpen}
+                redirectUrl="/"
+            />
+          }
         </Menu>
     )
   }
