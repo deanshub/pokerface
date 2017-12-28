@@ -1,11 +1,12 @@
 import mongoose from 'mongoose'
+const Schema = mongoose.Schema
 
 const validateEmail = (email)=> {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return re.test(email)
 }
 
-const schema = mongoose.Schema(
+const schema = Schema(
   {
     _id: {
       alias: 'username',
@@ -16,6 +17,20 @@ const schema = mongoose.Schema(
       required: [true, 'Username is required'],
       // validate: [validateUsername, 'This username already exists, username must be unique'],
       trim: true,
+    },
+    organization: {
+      type: Boolean,
+    },
+    players: {
+      type:[{
+        type: String,
+        ref: 'User',
+      }],
+      default: undefined,
+    },
+    owner:{
+      type: String,
+      ref: 'User',
     },
     firstname: {
       type: String,
@@ -35,7 +50,6 @@ const schema = mongoose.Schema(
       required: [true, 'Email address is required'],
       validate: [validateEmail, 'Please fill a valid email address'],
       index: true,
-      unique: true,
     },
     avatar: {
       type: String,
@@ -49,17 +63,40 @@ const schema = mongoose.Schema(
     coverImage: {
       type: String,
     },
+    phonenumber:{
+      type: String,
+    },
+    permissions:{
+      type:[{
+        type: String,
+        ref: 'User',
+      }],
+    },
+    rebrandingDetails:{
+      primaryColor: {
+        type: String,
+      },
+      secondaryColor: {
+        type: String,
+      },
+    },
+    gender:{
+      type:String,
+    },
+    lastPulseCheck:{
+      type:Date,
+    },
     tempuuid: {
       type: String,
     },
     tempuuiddate:{
       type: Date,
     },
-    gender:{
-      type:String,
+    unsbscribe: {
+      type: Boolean,
     },
-    birthday:{
-      type: Date,
+    unsbscribeuuid: {
+      type: String,
     },
     facebookId: {
       type: String,

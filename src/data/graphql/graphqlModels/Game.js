@@ -12,10 +12,10 @@ export const schema =  [`
     location: String
     from: String
     to: String
-    invited: [User]
-    accepted: [User]
-    declined: [User]
-    unresponsive: [User]
+    invited: [Player]
+    accepted: [Player]
+    declined: [Player]
+    unresponsive: [Player]
     updatedAt: String
     createdAt: String
     creator: User

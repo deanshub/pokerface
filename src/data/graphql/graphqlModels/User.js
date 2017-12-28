@@ -4,19 +4,49 @@ import DB from '../../db'
 // import {schema as Comment} from './Comment'
 import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
+import {prepareAvatar, prepareCoverImage, loginPermissionFilter} from '../../helping/user'
 
 export const schema =  [`
-  type User {
+  type RebrandingDetails {
+    primarycolor: String!
+    secondarycolor: String!
+  }
+
+  interface User {
     username: String
-    guest: Boolean
-    firstname: String
-    lastname: String
     fullname: String
     email: String
     avatar: String
     coverImage: String
     posts: [Post]
     comments: [Comment]
+    rebrandingdetails: RebrandingDetails
+  }
+
+  type Organization implements User {
+    username: String
+    fullname: String
+    email: String
+    avatar: String
+    coverImage: String
+    posts: [Post]
+    comments: [Comment]
+    rebrandingdetails: RebrandingDetails
+    players: [Player]
+  }
+
+  type Player implements User {
+    username: String
+    fullname: String
+    email: String
+    avatar: String
+    coverImage: String
+    posts: [Post]
+    comments: [Comment]
+    rebrandingdetails: RebrandingDetails
+    firstname: String
+    lastname: String
+    guest: Boolean
   }
 
   type Query {
@@ -24,6 +54,8 @@ export const schema =  [`
       phrase: String,
       username: String
     ): [User]
+    optionalUsersSwitch: [Organization]
+    optionalUsersLogin: [User]
   }
 
   type Mutation{
@@ -42,36 +74,47 @@ export const schema =  [`
   }
 `, Upload]
 
+
+const getPosts = (user) => DB.models.Post.find({user: user.id})
+
+const getComments = (user) => DB.models.Comment.find({user: user.id})
+
+// Only those which can be logged in
+const getOrganizations = (user) => {
+  return loginPermissionFilter(DB.models.User.find({players:user.id})).then((organizations) => {
+    return organizations || []
+  })
+}
+
+
 export const resolvers = {
   User:{
-    username: (user)=>user.username,
-    guest: (user)=>!!user.guest,
+    __resolveType(user){
+      if(user.organization){
+        return 'Organization'
+      }
+
+      return 'Player'
+    },
+  },
+  Player:{
     firstname: (user)=>user.firstname,
     lastname: (user)=>user.lastname,
+    guest: (user)=>!!user.guest,
+    username: (user)=>user.username,
     fullname: (user)=>user.fullname,
     email: (user)=> user.email,
-    avatar: (user)=>{
-      if (!user.avatar && !user.username){
-        return '/images/avatar.png'
-      }else if (!user.avatar){
-        return `/api/avatarGenerator?username=${user.username}`
-      }else if (user.avatar.startsWith('http')) {
-        return user.avatar
-      }
-      return `/images/${user.avatar}`
-    },
-    coverImage: (user)=>{
-      if (!user.coverImage && !user.username){
-        return '/images/cover.jpg'
-      }else if (!user.coverImage){
-        return `/api/avatarGenerator?username=${user.username}`
-      }else if (!user.coverImage.includes('http')) {
-        return `/images/${user.coverImage}`
-      }
-      return user.coverImage
-    },
-    posts: (user)=> DB.models.Post.find({user: user._id}),
-    comments: (user)=> DB.models.Comment.find({user: user._id}),
+    avatar: prepareAvatar,
+    coverImage: prepareCoverImage,
+    posts: getPosts,
+    comments: getComments,
+  },
+  Organization:{
+    players: (organization) => organization.players,
+    avatar: prepareAvatar,
+    coverImage: prepareCoverImage,
+    posts: getPosts,
+    comments: getComments,
   },
   Query: {
     users: (_, {phrase, username})=>{
@@ -88,6 +131,15 @@ export const resolvers = {
           }])
           .limit(6)
       }
+    },
+    optionalUsersSwitch: (_, args, context) => {
+      return getOrganizations(context.user)
+    },
+    optionalUsersLogin: (_, args, context) => {
+      const {user} = context
+      return getOrganizations(user).then((organizations) => {
+        return [user, ...organizations]
+      })
     },
   },
   Mutation: {

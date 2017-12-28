@@ -7,7 +7,13 @@ import {Strategy as FacebookStrategy} from 'passport-facebook'
 import {Strategy as GoogleStrategy} from 'passport-google-oauth20'
 import { download } from '../utils/diskWriting'
 import uuidv1 from 'uuid/v1'
-import {createUser} from '../data/helping/user'
+import {
+  createUser,
+  findPlayerWithOrganizations,
+  findPlayerWithOrganizationsById ,
+  loginPermissionFilter,
+} from '../data/helping/User'
+
 
 // TODO merge with mailer.sj
 const hostLocation = (config.NODE_ENV==='development')?
@@ -45,8 +51,9 @@ const initialize = () => {
       secretOrKey: config.JWT_SECRET_KEY,
     },
       function ({username, password}, done){
-        DB.models.User.findById(username).then((user)=>{
-          if (!user || user.password !== password){
+
+        DB.models.User.findOne({_id:username,password}).then((user)=>{
+          if (!user){
             return done(null, false, {message: 'Wrong token was received'})
           }
 
@@ -84,7 +91,7 @@ const initialize = () => {
         cover,
       } = profile._json
 
-      DB.models.User.findOne({email}).then((existedUser) => {
+      DB.models.User.findOne({email, organization:{$ne:true}}).then((existedUser) => {
 
         if (existedUser){
           return existedUser
@@ -130,9 +137,16 @@ const initialize = () => {
             console.error(err)
           })
         }
-        const token = signTokenToUser(user)
 
-        return cb(null, {token, user:{...user.toJSON()}})
+        // Add the related organizations
+        const player = user.toJSON()
+        return loginPermissionFilter(DB.models.User.find({players:player.id})).count().then((count) =>{
+          player.organizations = count
+          return player
+        })
+      }).then((user) => {
+        const token = signTokenToUser(user)
+        return cb(null, {token, user})
       }).catch(e=>{
         console.error(e)
         return cb(null, {user:{}})
@@ -142,7 +156,7 @@ const initialize = () => {
   passport.use(new GoogleStrategy({
     clientID: config.GOOGLE_APP_ID,
     clientSecret: config.GOOGLE_SECRET_ID,
-    callbackURL: `http://${hostLocation}/login/googlepluse/callback`,
+    callbackURL: `http://${hostLocation}/login/googleplus/callback`,
   },
     function(accessToken, refreshToken, profile, cb) {
 
@@ -157,7 +171,7 @@ const initialize = () => {
 
       const email = emails[0].value
 
-      DB.models.User.findOne({email}).then((existedUser) => {
+      DB.models.User.findOne({email, organization:{$ne:true}}).then((existedUser) => {
 
         if (existedUser){
           return existedUser
@@ -178,25 +192,6 @@ const initialize = () => {
 
         const pictureUuid = uuidv1()
 
-        // TODO try to check anonimic picture
-        // if (!user.avatar){
-        //   // replace size parameter, search 'sz' after ?
-        //   const avatarUrl = avatar.url.replace(/(sz=\d+$)(?=\\?)/g, `sz=${AVATAR_SIZE}`)
-        //
-        //   const avatarFilename = `avater${pictureUuid}.jpg`
-        //   download(
-        //     avatarUrl,
-        //     '../client/static/images',
-        //     avatarFilename,
-        //   ).then(() => {
-        //     user.avatar = avatarFilename
-        //     user.updated = Date.now()
-        //     user.save()
-        //   }).catch((err) => {
-        //     console.error(err)
-        //   })
-        // }
-
         if (!user.coverImage && cover){
 
           const coverFileName = `cover${pictureUuid}.jpg`
@@ -213,23 +208,29 @@ const initialize = () => {
           })
         }
 
+        // Add the related organizations
+        const player = user.toJSON()
+        return loginPermissionFilter(DB.models.User.find({players:player.id})).count().then((count) =>{
+          player.organizations = count
+          return player
+        })
+      }).then((user) => {
         const token = signTokenToUser(user)
-
-        return cb(null, {token, user:{...user.toJSON()}})
+        return cb(null, {token, user})
       }).catch(e=>{
         console.error(e)
         return cb(null, {user:{}})
       })
     }))
 
-  passport.serializeUser((user, done) => {
-    done(null, user.user._id)
+  passport.serializeUser((payload, done) => {
+    done(null, payload.user.id)
   })
 
-  passport.deserializeUser((user, done) => {
-    DB.models.User.findById(user).then((user)=>{
+  passport.deserializeUser((userId, done) => {
+    findPlayerWithOrganizationsById(userId).then((user)=>{
       const token = signTokenToUser(user)
-      return done(null, {token, user:{...user.toJSON()}})
+      return done(null, {token, user})
     }).catch(e=>{
       console.error(e)
       return done(null, false, {message: 'Email or password are Incorrect .'})
@@ -239,19 +240,43 @@ const initialize = () => {
   return initialize
 }
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const {email, password} = req.body
 
-  DB.models.User.findOne({email,password,active:true}).then((user)=>{
+  findPlayerWithOrganizations({email,password,active:true}).then((user)=>{
     if (!user){
       res.status(401).json({error: 'Email or password are Incorrect .'})
     } else{
       const token = signTokenToUser(user)
-      res.json({token})
+      req.loginUser = {user, token}
+
+      return next()
     }
   }).catch(e=>{
     console.error(e)
     res.json(e)
+  })
+}
+
+const switchToUser = (req, res) => {
+  const {user:currentUser} = req
+  const {userId} = req.body
+
+  if (currentUser.id === userId){
+    const token = signTokenToUser(currentUser)
+    return res.json({token})
+  }
+
+  loginPermissionFilter(DB.models.User.findById(userId).where({players:currentUser.id})).then((organization) => {
+    if (!organization){
+      res.status(401).json({error: 'Organization is not allowed to player'})
+    }else{
+      // Organization don't have passowrd so we need only the id (unsername) for signing
+      const token = signTokenToUser(organization.toJSON())
+      res.json({token})
+    }
+  }).catch((err) => {
+    res.status(500).json({error:err})
   })
 }
 
@@ -283,4 +308,5 @@ export default {
   addUserToRequest,
   googleLogin,
   authenticateWithGoogle,
+  switchToUser,
 }
