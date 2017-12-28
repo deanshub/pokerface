@@ -60,7 +60,7 @@ router.post('/forgotPassword', (req, res) => {
   const uuid =  uuidv1()
 
   // TODO Didn't select the password?
-  DB.models.User.findOne({email, active:true}).then((user) => {
+  DB.models.User.findOne({email, active:true, organization:{$ne:true}}).then((user) => {
     if (!user) {
       // If user not exists send OK but don't do any thing
       throw new KnownError(20, {success:true})

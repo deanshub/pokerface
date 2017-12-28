@@ -4,7 +4,7 @@ import DB from '../../db'
 // import {schema as Comment} from './Comment'
 import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
-import {prepareAvatar, prepareCoverImage} from '../../helping/user'
+import {prepareAvatar, prepareCoverImage, loginPermissionFilter} from '../../helping/user'
 
 export const schema =  [`
   type RebrandingDetails {
@@ -80,9 +80,12 @@ const getPosts = (user) => DB.models.Post.find({user: user.id})
 const getComments = (user) => DB.models.Comment.find({user: user.id})
 
 // Only those which can be logged in
-const getOrganizations = (user) => DB.models.User.find({players:user.id}).then((organizations) => {
-  return organizations || []
-})
+const getOrganizations = (user) => {
+  return loginPermissionFilter(DB.models.User.find({players:user.id})).then((organizations) => {
+    return organizations || []
+  })
+}
+
 
 export const resolvers = {
   User:{
