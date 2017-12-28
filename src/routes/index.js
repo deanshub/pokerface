@@ -6,6 +6,9 @@ const routesConfig = [{
 },{
   name:'avatarGenerator',
   // disabled: true,
+},{
+  name:'boomTranslator',
+  // disabled: true,
 }]
 
 const enableModules = routesConfig
