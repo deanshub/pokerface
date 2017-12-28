@@ -1,6 +1,6 @@
 // @flow
 
-import { observable, computed, action, toJS } from 'mobx'
+import { observable, computed, action, toJS, extendObservable } from 'mobx'
 // import { fromResource } from 'mobx-utils'
 import { EditorState, convertToRaw, Modifier, convertFromRaw } from 'draft-js'
 import graphqlClient from './graphqlClient'
@@ -10,6 +10,9 @@ import {commentCreate, setCommentLike, commentDelete} from './mutations/comments
 import utils from '../containers/SpotPlayer/utils'
 import logger from '../utils/logger'
 import moment from 'moment'
+import request from 'superagent'
+
+const boomPlayerRegex = /www\.boomplayer\.com\/([^\s]+)/gi
 
 // const queryToObservable = (q, callbacks = {}) => {
 //   let subscription
@@ -70,6 +73,7 @@ export class FeedStore {
     const spotPlayerState = utils.generateInitialState(content.spot)
 
     let parsedPost = Object.assign({}, post, {content: newContent, replying: false, deletePopupOpen: false, spot:content.spot, spotPlayerState})
+
     parsedPost.comments = parsedPost.comments.map((comment)=>{
       let originalContent = JSON.parse(comment.content)
       if (!originalContent.entityMap){
@@ -209,7 +213,7 @@ export class FeedStore {
   }
 
   @action
-  updatePost(post, changes){
+  updatePost(post, changes, spotPlayer){
     Object.keys(changes).forEach(key=>{
       // if(key==='content'){
       //   post[key]=EditorState.forceSelection(changes[key], changes[key].getSelection())
@@ -217,6 +221,23 @@ export class FeedStore {
       post[key]=changes[key]
       // }
     })
+
+    if (this.newPost===post && spotPlayer.newSpot.spot.moves.length===0){
+      const results = boomPlayerRegex.exec(post.content.getCurrentContent().getPlainText())
+      if (results){
+        request.get('/api/boomTranslator').query({id:results[1]}).then((res)=>{
+          // post.loadingPost
+          if (spotPlayer.newSpot.spot.moves.length===0){
+            // console.log(res.body);
+            const spot = res.body
+            extendObservable(spotPlayer.newSpot, {spotPlayerState:utils.generateInitialState(spot)})
+            spotPlayer.newSpot.spot = spot
+          }
+        }).catch(err=>{
+          console.error(err)
+        })
+      }
+    }
   }
 
   @action

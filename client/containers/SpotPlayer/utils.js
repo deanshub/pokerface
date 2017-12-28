@@ -1,6 +1,7 @@
 import {cardRegex} from '../../components/PostEditor/CardsPlugin/cardsRegex'
 import MOVES from './constants'
 import {getUnimportantCard} from '../../components/Deck/consts'
+import { observable, extendObservable } from 'mobx'
 
 const utils = {
   getDealerIndex(players, moves){
@@ -10,7 +11,7 @@ const utils = {
 
   getDescription(ante){
     if (ante){
-      return 'Ante'
+      return 'ANTE'
     }
   },
 
@@ -105,7 +106,8 @@ const utils = {
         bank,
         showCards: !!playersShowingCards[index],
         cards: playerCards,
-        description: utils.getDescription(ante),
+        // description: utils.getDescription(ante),
+        lastAction: utils.getDescription(ante),
       }
     })
 
@@ -199,11 +201,11 @@ const utils = {
   getNextStep(spot, currentSpotPlayerState, ereaseDescription=true){
     const move = spot.moves[currentSpotPlayerState.nextMoveIndex]
     const nextPlayer = utils.getNextPlayer(spot.moves, currentSpotPlayerState)
-    let newSpotPlayerState = Object.assign({}, currentSpotPlayerState)
+    let newSpotPlayerState = observable(Object.assign({}, currentSpotPlayerState))
     let newPlayersState = currentSpotPlayerState.players.map((player, playerIndex)=>{
       player.myTurn=nextPlayer===playerIndex
       if (ereaseDescription){
-        player.description=undefined
+        extendObservable(player,{description:null})
       }
       return player
     })
@@ -216,12 +218,14 @@ const utils = {
     case MOVES.PLAYER_ACTIONS.FOLD:{
       newPlayersState[move.player].folded=true
       newPlayersState[move.player].description = 'Fold'
+      newPlayersState[move.player].lastAction = 'Fold'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.CHECK:{
       newPlayersState[move.player].description = 'Check'
+      newPlayersState[move.player].lastAction = 'Check'
       if (newSpotPlayerState.raiser===undefined){
         newSpotPlayerState.raiser = move.player
       }
@@ -229,40 +233,97 @@ const utils = {
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.CALL:{
-      newPlayersState[move.player].bet+=move.value
-      newPlayersState[move.player].bank-=move.value
-      newPlayersState[move.player].description = 'Call'
+      if (newPlayersState[move.player].bank<=move.value){
+        newPlayersState[move.player].bet += newPlayersState[move.player].bank
+        newPlayersState[move.player].bank = 0
+        newPlayersState[move.player].description = 'All-in'
+        newPlayersState[move.player].lastAction = 'All-in'
+      }else{
+        newPlayersState[move.player].bet+=move.value
+        newPlayersState[move.player].bank-=move.value
+        newPlayersState[move.player].description = 'Call'
+        newPlayersState[move.player].lastAction = 'Call'
+      }
+
+      newSpotPlayerState.players = newPlayersState
+      newSpotPlayerState.nextMoveIndex++
+      return newSpotPlayerState
+    }
+    case MOVES.PLAYER_ACTIONS.BET:{
+      if (newPlayersState[move.player].bank<=move.value){
+        newPlayersState[move.player].bet += newPlayersState[move.player].bank
+        newPlayersState[move.player].bank = 0
+        newPlayersState[move.player].description = 'All-in'
+        newPlayersState[move.player].lastAction = 'All-in'
+      }else{
+        newPlayersState[move.player].bet+=move.value
+        newPlayersState[move.player].bank-=move.value
+        newPlayersState[move.player].description = 'Bet'
+        newPlayersState[move.player].lastAction = 'Bet'
+      }
+      newSpotPlayerState.raiser = move.player
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.RAISE:{
-      newPlayersState[move.player].bet+=move.value
-      newPlayersState[move.player].bank-=move.value
+      if (newPlayersState[move.player].bank<=move.value){
+        newPlayersState[move.player].bet += newPlayersState[move.player].bank
+        newPlayersState[move.player].bank = 0
+        newPlayersState[move.player].description = 'All-in'
+        newPlayersState[move.player].lastAction = 'All-in'
+      }else{
+        newPlayersState[move.player].bet+=move.value
+        newPlayersState[move.player].bank-=move.value
+        newPlayersState[move.player].description = 'Raise'
+        newPlayersState[move.player].lastAction = 'Raise'
+      }
       newSpotPlayerState.raiser = move.player
-      newPlayersState[move.player].description = 'Raise'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.ANTE:{
+      if (newPlayersState[move.player].bank==0){
+        // newPlayersState[move.player].description = 'All-in'
+        newPlayersState[move.player].lastAction = 'All-in'
+      }else{
+        // newPlayersState[move.player].description = 'Ante'
+        newPlayersState[move.player].lastAction = 'Ante'
+      }
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.SMALLBLIND:{
-      newPlayersState[move.player].bet+=move.value
-      newPlayersState[move.player].bank-=move.value
+      if (newPlayersState[move.player].bank<=move.value){
+        newPlayersState[move.player].bet += newPlayersState[move.player].bank
+        newPlayersState[move.player].bank = 0
+        newPlayersState[move.player].description = 'All-in'
+        newPlayersState[move.player].lastAction = 'All-in'
+      }else{
+        newPlayersState[move.player].bet+=move.value
+        newPlayersState[move.player].bank-=move.value
+        newPlayersState[move.player].description = 'Small Blind'
+        newPlayersState[move.player].lastAction = 'Small Blind'
+      }
       newSpotPlayerState.raiser = move.player
-      newPlayersState[move.player].description = 'Small Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
     }
     case MOVES.PLAYER_ACTIONS.BIGBLIND:{
-      newPlayersState[move.player].bet+=move.value
-      newPlayersState[move.player].bank-=move.value
+      if (newPlayersState[move.player].bank<=move.value){
+        newPlayersState[move.player].bet += newPlayersState[move.player].bank
+        newPlayersState[move.player].bank = 0
+        newPlayersState[move.player].description = 'All-in'
+        newPlayersState[move.player].lastAction = 'All-in'
+      }else{
+        newPlayersState[move.player].bet+=move.value
+        newPlayersState[move.player].bank-=move.value
+        newPlayersState[move.player].description = 'Big Blind'
+        newPlayersState[move.player].lastAction = 'Big Blind'
+      }
       newSpotPlayerState.raiser = move.player
-      newPlayersState[move.player].description = 'Big Blind'
       newSpotPlayerState.players = newPlayersState
       newSpotPlayerState.nextMoveIndex++
       return newSpotPlayerState
@@ -285,6 +346,8 @@ const utils = {
       newSpotPlayerState.dealer.cards=utils.stringToCards(move.value)
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
+        player.lastAction=null
+        extendObservable(player,{description:null})
         totalPot += player.bet
         player.bet = 0
       })
@@ -298,6 +361,8 @@ const utils = {
       newSpotPlayerState.dealer.cards=[...newSpotPlayerState.dealer.cards,...utils.stringToCards(move.value)]
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
+        player.lastAction=null
+        extendObservable(player,{description:null})
         totalPot += player.bet
         player.bet = 0
       })
@@ -311,6 +376,8 @@ const utils = {
       newSpotPlayerState.dealer.cards=[...newSpotPlayerState.dealer.cards,...utils.stringToCards(move.value)]
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
+        player.lastAction=null
+        extendObservable(player,{description:null})
         totalPot += player.bet
         player.bet = 0
       })
@@ -323,6 +390,8 @@ const utils = {
     case MOVES.DEALER_META_ACTIONS.END:{
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
+        player.lastAction=null
+        extendObservable(player,{description:null})
         totalPot += player.bet
         player.bet = 0
       })
@@ -349,7 +418,7 @@ const utils = {
     if (amount === 0) {
       return []
     }else if (coins.length===0) {
-      return null
+      return []
     }else {
       const currentCoin = coins[0]
       if (amount >= currentCoin) {

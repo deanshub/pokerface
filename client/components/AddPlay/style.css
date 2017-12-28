@@ -1,29 +1,53 @@
-@import "../../constants/styles";
+@import '../../constants/styles';
 
 .cardSelectionContainer{
-  display: grid;
-  margin: 0 10px;
-  grid-template-columns: repeat(3, 16.66%) 1px repeat(2, 25%);
-  grid-template-rows: repeat(5, 1fr);
-  align-items: stretch;
-  justify-items: stretch;
-  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px 10px 15px;
 }
 
-.item{
-  text-align: center;
-  line-height: 200%;
-  border: 1px solid #2f2f2f;
+.divider{
+  border-top: 1px solid #f0f0f0;
+  margin: 8px 0;
+}
+.signLine{
+  display: flex;
+  justify-content: space-between;
+}
+.rankLine{
+  display: flex;
+  justify-content: space-between;
+}
+
+.card{
+  border-radius: 5px;
+  padding: 2px 1px;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  font-weight: bold;
+  color: #24222e;
+  font-size: 1.1em;
 }
-.item:hover{
-  background-color: #f2f2f2;
+.rankCard{
+  width: 1.6vw;
+  height: 1.9vw;
 }
+.signCard{
+  width: 2vw;
+  height: 2vw;
+}
+
+.rankCard:hover{
+  color: checkColor;
+}
+.signCard:hover{
+  color: checkColor;
+}
+
 .selected{
-  background-color: #c2c2c2;
+  background-color: checkColor;
 }
 
 .removeSpot{

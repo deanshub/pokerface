@@ -5,10 +5,8 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { observer, inject } from 'mobx-react'
 
-import { EditorState, convertToRaw } from 'draft-js'
+import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
-
-import CardsPreview from './CardsPreview'
 
 import createFocusPlugin from 'draft-js-focus-plugin'
 import createInlineToolbarPlugin, {Separator}  from 'draft-js-inline-toolbar-plugin'
@@ -48,6 +46,7 @@ import 'draft-js-video-plugin/lib/plugin.css'
 
 import SpotPlayer from '../../containers/SpotPlayer'
 
+@inject('spotPlayer')
 @inject('feed')
 @inject('globalPlayersSearch')
 @observer
@@ -142,15 +141,9 @@ export default class PostEditor extends Component {
     // get the mention object selected
   }
 
-  getCardEntities(content){
-    return Object.keys(content.entityMap)
-      .filter((entityKey)=>content.entityMap[entityKey].type==='card')
-      .map(entityKey=>content.entityMap[entityKey].data.cardsText)
-  }
-
   postContentChange(editorState){
-    const {feed, post} = this.props
-    feed.updatePost(post ,{content: editorState})
+    const {feed, post, spotPlayer} = this.props
+    feed.updatePost(post ,{content: editorState}, spotPlayer)
   }
 
   render(){
@@ -163,7 +156,6 @@ export default class PostEditor extends Component {
       standalone,
     } = this.props
     const { InlineToolbar, EmojiSuggestions, MentionSuggestions} = this
-    const cardEntities = this.getCardEntities(convertToRaw(post.content.getCurrentContent()))
 
     return (
       <div
@@ -197,11 +189,10 @@ export default class PostEditor extends Component {
           <SpotPlayer
               post={post}
               standalone={standalone}
-              style={{height:'70vh'}}
+              style={{height:'40vw'}}
           />
           ):null
         }
-        <CardsPreview cards={cardEntities}/>
       </div>
     )
   }

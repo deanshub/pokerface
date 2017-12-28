@@ -1,17 +1,25 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Menu, Icon } from 'semantic-ui-react'
+import { observer } from 'mobx-react'
 
+import EventsTimeline from '../EventsTimeline'
 import classnames from 'classnames'
 import style from './style.css'
+import resetSvg from '../../assets/spotplayer/reset.svg'
+import playSvg from '../../assets/spotplayer/play.svg'
+import pauseSvg from '../../assets/spotplayer/pause.svg'
+import backSvg from '../../assets/spotplayer/back.svg'
+import forwardSvg from '../../assets/spotplayer/forward.svg'
 
-
+@observer
 export default class StepsPlayer extends Component {
   static propTypes = {
+    currentStepIndex: PropTypes.number.isRequired,
     hasNextStep: PropTypes.bool,
     onNextStep: PropTypes.func.isRequired,
     onPreviousStep: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
+    steps: PropTypes.array,
   }
 
   constructor(props){
@@ -59,6 +67,15 @@ export default class StepsPlayer extends Component {
     })
   }
 
+  x1(){
+    this.speedChange(null,{value:1})
+    this.autoPlay()
+  }
+  x2(){
+    this.speedChange(null,{value:2})
+    this.autoPlay()
+  }
+
   reset(){
     const {onReset} = this.props
     this.pauseAutoPlay()
@@ -70,71 +87,98 @@ export default class StepsPlayer extends Component {
       onNextStep,
       onPreviousStep,
       hasNextStep,
+      steps,
+      currentStepIndex,
     } = this.props
     const {speed, auto} = this.state
 
     return (
-      <Menu>
-        <Menu.Item>
-          <Form.Field className={classnames(style.stepsSpeed)} inline>
-            <label>Speed:</label>
-            <Input
-                max={2}
-                min={0.25}
-                name="speed"
-                onChange={::this.speedChange}
-                step={0.25}
-                type="range"
-                value={speed}
+      <div className={classnames(style.stepsPlayerContainer)}>
+        <div className={classnames(style.actions)}>
+          <button
+              className={classnames(style.button)}
+              name="reset"
+              onClick={::this.reset}
+          >
+            <img
+                aria-hidden
+                src={resetSvg}
             />
-            <label style={{width:'3vw'}}>{`X${speed}`}</label>
-          </Form.Field>
-        </Menu.Item>
-
-        <Menu.Item
-            disabled
-            name="back"
-            onClick={onPreviousStep}
-        >
-          <Icon name="left chevron" />Back
-        </Menu.Item>
-        <Menu.Item
-            name="reset"
-            onClick={::this.reset}
-        >
-          <Icon
-              flipped="horizontally"
-              name="repeat"
-          />
-          Reset
-        </Menu.Item>
-        {
-          auto?
-          <Menu.Item
-              name="pause"
-              onClick={::this.pauseAutoPlay}
-          >
-            <Icon name="pause" />
-            Pause
-          </Menu.Item>
-          :
-          <Menu.Item
+          </button>
+          <div className={classnames(style.divider)}/>
+          {
+            auto?
+            <button
+                className={classnames(style.button)}
+                name="pause"
+                onClick={::this.pauseAutoPlay}
+            >
+              <img
+                  aria-hidden
+                  src={pauseSvg}
+              />
+            </button>
+            :
+            <button
+                className={classnames(style.button)}
+                name="play"
+                onClick={::this.autoPlay}
+            >
+              <img
+                  aria-hidden
+                  src={playSvg}
+              />
+            </button>
+          }
+          <div className={classnames(style.divider)}/>
+          <button
+              className={classnames(style.button,{[style.active]:auto&&speed===1})}
               name="play"
-              onClick={::this.autoPlay}
+              onClick={::this.x1}
           >
-            <Icon name="play" />
-            Play
-          </Menu.Item>
-        }
-        <Menu.Item
-            disabled={!hasNextStep}
-            name="forward"
-            onClick={onNextStep}
-        >
-          Forward
-          <Icon name="right chevron" />
-        </Menu.Item>
-      </Menu>
+            <div className={classnames(style.buttonText)}>
+              x1
+            </div>
+          </button>
+          <button
+              className={classnames(style.button,{[style.active]:auto&&speed===2})}
+              name="play"
+              onClick={::this.x2}
+          >
+            <div className={classnames(style.buttonText)}>
+              x2
+            </div>
+          </button>
+          <div className={classnames(style.divider)}/>
+          <button
+              className={classnames(style.button,{[style.disable]:true})}
+              name="back"
+              onClick={onPreviousStep}
+          >
+            <img
+                aria-hidden
+                src={backSvg}
+            />
+          </button>
+          <button
+              className={classnames(style.button,{[style.disable]:!hasNextStep})}
+              name="forward"
+              onClick={onNextStep}
+          >
+            <img
+                aria-hidden
+                src={forwardSvg}
+            />
+          </button>
+        </div>
+        <div className={classnames(style.timeline)}>
+          <EventsTimeline
+              currentIndex={currentStepIndex}
+              events={steps}
+              onClick={val => console.log(val)}
+          />
+        </div>
+      </div>
     )
   }
 }

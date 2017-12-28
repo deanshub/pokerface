@@ -1,48 +1,79 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+
 import classnames from 'classnames'
 import style from './style.css'
 import pokerfaceLogo from '../../assets/logo.png'
+import BetList from './BetList'
+import DealerSpace from './DealerSpace'
 
 export default class PokerTable extends Component {
   static propTypes = {
-    edgeColor: PropTypes.string,
+    currency: PropTypes.string,
     fabricColor: PropTypes.string,
     logo: PropTypes.string,
     standalone: PropTypes.bool,
     title: PropTypes.string,
+    lowerPlayers: PropTypes.array,
+    upperPlayers: PropTypes.array,
   }
+
   static defaultProps = {
-    fabricColor: '#388E3C',
-    edgeColor: '#353535',
+    fabricColor: '#41c86a',
     title: 'Pokerface.io',
     standalone: false,
     logo: pokerfaceLogo,
   }
 
   render() {
-    const {children, title, standalone, fabricColor, edgeColor, logo} = this.props
+    const {
+      title,
+      standalone,
+      fabricColor,
+      logo,
+      dealer,
+      currency,
+      lowerPlayers,
+      upperPlayers
+    } = this.props
+
     return (
       <div
           className={classnames(
             style.table,
             {[style.standalone]:standalone}
           )}
-          style={{backgroundColor: edgeColor}}
+          style={{backgroundColor: fabricColor}}
       >
-        <div className={classnames(style.edge)} style={{backgroundColor: fabricColor}}>
-          <div className={classnames(style.fabric)} style={{backgroundColor: fabricColor}}>
-            <div className={classnames(style.text)}>
-              {title}
-            </div>
-            {
-              logo ?
-              <div className={style.logo} style={{backgroundImage:`url('${logo}')`}}/>
-              : null
-            }
-          </div>
+        <div className={classnames(style.backgroundContainer)}>
+          {
+            title?(
+              <div className={classnames(style.text)}>
+                {title}
+              </div>
+            ):null
+          }
+          {
+            logo ?
+            <div className={style.logo} style={{backgroundImage:`url('${logo}')`}}/>
+            : null
+          }
         </div>
-        {children}
+        <div className={classnames(style.forgroundContainer)}>
+          <BetList
+              currency={currency}
+              players={upperPlayers}
+          />
+          <DealerSpace
+              currency={currency}
+              dealer={dealer}
+          />
+          <BetList
+              currency={currency}
+              players={lowerPlayers}
+              reversed
+          />
+        </div>
       </div>
     )
   }

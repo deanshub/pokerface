@@ -10,6 +10,7 @@ const MOVES={
     CHECK: 'CHECK',
     CALL: 'CALL',
     RAISE: 'RAISE',
+    BET: 'BET',
     ANTE: 'ANTE',
     SMALLBLIND: 'SMALLBLIND',
     BIGBLIND: 'BIGBLIND',

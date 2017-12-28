@@ -1,0 +1,73 @@
+.eventsTimelineComponent {
+  position: relative;
+  width: 40%;
+}
+
+.eventsTimelineContainer {
+  width: 100%;
+  padding: 5px 0px;
+  display: flex;
+  list-style: none;
+  margin: 0;
+}
+
+.eventsTimelineLine {
+  background-color: #535168;
+  width: 100%;
+  display: block;
+  height: 1px;
+  position: absolute;
+  border-radius: 10px;
+  top: 15px;
+}
+
+.eventsTimelineFilled {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  transition: right 0.5s ease, transform 0.2s ease-in;
+  top: 10px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
+  background: white;
+  z-index: 1;
+  cursor: pointer;
+}
+.eventsTimelineFilled:hover {
+  transform: scale(1.5);
+}
+
+.eventsTimelineEvent {
+  margin: auto;
+  text-align: center;
+  vertical-align: bottom;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.eventsTimelineEvent>button {
+  background-color: #535168;
+  width: 1px;
+  height: 5px;
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  outline: none;
+}
+
+.untitledEvent {
+  transition: all 1s ease;
+  visibility: hidden;
+}
+
+button.rangeBorder {
+  visibility: visible;
+  height: 10px;
+}
+
+.eventTitle {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  text-align: center;
+}

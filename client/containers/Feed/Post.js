@@ -7,6 +7,7 @@ import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import ReactDOM from 'react-dom'
 import domtoimage from 'dom-to-image'
+// import imageUtils from './imageUtils'
 import GIF from 'gif.js.optimized'
 import workerScript from 'file-loader!gif.js.optimized/dist/gif.worker'
 
@@ -179,8 +180,20 @@ export default class Post extends Component {
           img.src = dataUrl
           return resolve(img)
         })
-        .catch(reject)
-      },100)
+        .catch(err=>{
+          console.error(err)
+          reject(err)
+        })
+        // const canvas = imageUtils.newCanvas(postElement)
+        // return imageUtils.toImage(postElement, canvas).then((dataUrl)=>{
+        //   const img = new Image()
+        //   img.onload = ()=>{
+        //     resolve(img)
+        //   }
+        //   img.onerror = reject
+        //   img.src = dataUrl
+        // }).catch(reject)
+      },300)
     })
   }
 
@@ -191,11 +204,12 @@ export default class Post extends Component {
       busy: true,
     })
     const postElement = ReactDOM.findDOMNode(this.postEditorElement)
+    const svgPostElement = postElement.querySelector('article[class]')
     let gif = new GIF({
       workers: 2,
-      quality: 17,
-      width: postElement.offsetWidth,
-      height: postElement.offsetHeight,
+      quality: 20,
+      width: svgPostElement.offsetWidth,
+      height: svgPostElement.offsetHeight,
       workerScript,
     })
     gif.on('finished', (blob)=> {
@@ -213,17 +227,22 @@ export default class Post extends Component {
 
     spotPlayer.reset(post)
     const takeImage = ()=>setTimeout(()=>{
-      this.generateImage(postElement).then(img=>{
+      return this.generateImage(svgPostElement).then(img=>{
         gif.addFrame(img, {delay:1000})
         if (spotPlayer.nextStep(post)){
-          takeImage()
+          return takeImage()
         //done
         }else{
-          this.generateImage(postElement).then(img=>{
+          return this.generateImage(svgPostElement).then(img=>{
             gif.addFrame(img, {delay:2500})
             gif.render()
           })
         }
+      }).catch(err=>{
+        console.error(err)
+        this.setState({
+          busy: false,
+        })
       })
     })
     takeImage()
@@ -271,9 +290,9 @@ export default class Post extends Component {
               text
           >
             <PostEditor
-                ref={(el)=>this.postEditorElement = el}
                 post={post}
                 readOnly
+                ref={(el)=>this.postEditorElement = el}
                 standalone={standalone}
             />
           </Feed.Extra>

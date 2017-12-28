@@ -74,6 +74,7 @@
     "mobx-react-router": "^4.0.1",
     "mobx-utils": "^3.2.2",
     "moment": "^2.19.3",
+    "postcss-icss-values": "^2.0.1",
     "qs": "^6.5.0",
     "ramda": "^0.23.0",
     "react-addons-shallow-compare": "^15.6.2",
@@ -88,6 +89,7 @@
     "semantic-ui-react": "^0.77.0",
     "subscriptions-transport-ws": "^0.8.2",
     "superagent": "^3.4.1",
+    "svg-url-loader": "^2.3.0",
     "uuid": "^3.1.0"
   }
 }
