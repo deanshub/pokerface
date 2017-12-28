@@ -1,19 +1,26 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import { Grid, Button, Header, Progress, Icon, Checkbox, Dimmer, Loader } from 'semantic-ui-react'
+import { Grid, Button, Header, Progress, Icon, Checkbox, Dimmer, Loader, Image } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
 import './fullscreen-api-polyfill.min'
 import BlindsTimerSettingsModal from './BlindsTimerSettingsModal'
 import BlindTimerResetModal from './BlindTimerResetModal'
+import logo from '../../assets/blue logo.png'
 
 @inject('timer')
 @observer
 export default class BlindsTimer extends Component {
-  static propTypes ={
+  static propTypes = {
+    image: PropTypes.string,
     timer: PropTypes.shape(),
+    title: PropTypes.string,
+  }
+  static defaultProps = {
+    title: 'Pokerface.io',
+    image: logo,
   }
 
   componentDidMount(){
@@ -78,7 +85,7 @@ export default class BlindsTimer extends Component {
   }
 
   render() {
-    const {timer} = this.props
+    const {timer, title, image} = this.props
     const inverted = timer.inverted
 
     const anteSection =
@@ -127,10 +134,15 @@ export default class BlindsTimer extends Component {
             style={{backgroundColor:!inverted?'white':undefined, paddingTop:25}}
         >
           <Grid.Column width={5}>
-            <Header inverted={inverted} style={{textDecoration: 'underline'}}>Pokerface.io</Header>
+            <Header color="grey" inverted={inverted}>Round {timer.round}</Header>
           </Grid.Column>
           <Grid.Column textAlign="center" width={6}>
-            <Header color="grey" inverted={inverted}>Round {timer.round}</Header>
+            <Image
+                centered
+                size="mini"
+                src={image}
+            />
+            <Header inverted={inverted} style={{textDecoration: 'underline'}}>{title}</Header>
           </Grid.Column>
           <Grid.Column
               style={{ paddingRight:20 }}

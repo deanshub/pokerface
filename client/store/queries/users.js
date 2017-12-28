@@ -10,3 +10,24 @@ export const usersQuery = gql`
     }
   }
 `
+export const optionalUsersSwitchQuery = gql`
+  query {
+    optionalUsersSwitch {
+      username
+      fullname
+      avatar
+      coverImage
+    }
+  }
+`
+
+export const optionalUsersLoginQuery = gql`
+  query {
+    optionalUsersLogin {
+      username
+      fullname
+      avatar
+      coverImage
+    }
+  }
+`

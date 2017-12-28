@@ -121,4 +121,20 @@ export class EventStore {
       return {err}
     })
   }
+
+  @action.bound
+  refresh(){
+    this.games.clear()
+    this.loading = true
+    graphqlClient.query({
+      fetchPolicy:'network-only',
+      query: eventsQuery,
+    }).then((result)=>{
+      result.data.games.forEach(::this.setGame)
+      this.loading = false
+    }).catch(err=>{
+      this.loading = false
+      console.error(err)
+    })
+  }
 }

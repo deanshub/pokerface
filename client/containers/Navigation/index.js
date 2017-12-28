@@ -9,7 +9,7 @@ import Navbar from '../../components/Navbar'
 import Feed from '../Feed'
 import Profile from '../../components/Profile'
 import Events from '../Events'
-import BlindsTimer from '../../components/BlindsTimer'
+import RebrandedBlindsTimer from '../RebrandedBlindsTimer'
 import Learn from '../../components/Learn'
 import NoMatch from '../../components/NoMatch'
 
@@ -54,7 +54,7 @@ export default class Navigation extends Component {
                   path="/events"
               />
               <Route
-                  component={BlindsTimer}
+                  component={RebrandedBlindsTimer}
                   exact
                   path="/timer"
               />
