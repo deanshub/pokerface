@@ -12,7 +12,7 @@ import {
   findPlayerWithOrganizations,
   findPlayerWithOrganizationsById ,
   loginPermissionFilter,
-} from '../data/helping/User'
+} from '../data/helping/user'
 
 
 // TODO merge with mailer.sj
