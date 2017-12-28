@@ -62,3 +62,31 @@ export const findPlayerWithOrganizationsById = (id) => {
     }
   })
 }
+
+export const prepareAvatar = (user) => {
+  const {avatar, username} = user
+
+  if (!avatar){
+    return '/images/avatar.png'
+  }else if (!avatar){
+    return `/api/avatarGenerator?username=${username}`
+  }else if (!avatar.includes('http')) {
+    return `/images/${avatar}`
+  }
+
+  return avatar
+}
+
+export const prepareCoverImage = (user) => {
+  const {coverImage, username} = user
+
+  if (!coverImage){
+    return '/images/cover.jpg'
+  }else if (!coverImage){
+    return `/api/avatarGenerator?username=${username}`
+  }else if (!coverImage.includes('http')) {
+    return `/images/${coverImage}`
+  }
+
+  return coverImage
+}
