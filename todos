@@ -10,8 +10,15 @@ allow unsubscribe email for players (not including signup)
 error message (store), an error occurred please refresh or try again later
 change the script name to include hash (so when a new version comes it won't be cached)
 use cloud front as cdn?
-upgrade node version
+upgrade node version on server and on dev
+
 -------------------------------------------------------------------------------
+
+paid = private?
+public events
+can invite org in event
+tag organization
+private forum
 
 boomplayer
 * ante color
@@ -38,6 +45,11 @@ spot wizard improvments
 * bb and sb should have disable checkbox in general settings (0 will behave as disabled)
 * defaultly make the bank of players 100bb
 * change the dealer action to same logic as the boomplayer parser
+* cards chooser on general settings should be closed once the user chooses cards
+* search player should work on general settings
+* onClose of modal should be implemented (when clicking out of the window)
+* allow modal window to not be closed on click outside
+
 
 spot player imporvements
 * implement the back button

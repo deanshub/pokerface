@@ -2,9 +2,10 @@
 
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Modal } from 'semantic-ui-react'
+import Modal, {ModalHeader,ModalContent,ModalFooter} from '../basic/Modal'
 import { observer, inject } from 'mobx-react'
 import { extendObservable } from 'mobx'
+import Button, {ButtonGroup} from '../basic/Button'
 import Spot from '../Spot'
 import GeneralSettings from './GeneralSettings'
 import ActionBar from './ActionBar'
@@ -61,7 +62,7 @@ export default class SpotWizard extends Component {
     const {spotPlayer, players} = this.props
 
     if (spotPlayer.newSpot.step===0){
-      spotPlayer.newSpot.spot.players = players.currentPlayers.values().map((player, playerIndex)=>{
+      spotPlayer.newSpot.spot.players = players.currentPlayers.map((player, playerIndex)=>{
         spotPlayer.newSpot.spot.cards[playerIndex] = player.cards
         return {
           bank: 100,
@@ -71,7 +72,7 @@ export default class SpotWizard extends Component {
       spotPlayer.newSpot.spot.ante=spotPlayer.newSpot.generalSettings.ante||0
       // TODO:normalize spotPlayer.newSpot.generalSettings.currency
       spotPlayer.newSpot.spot.currency=MOVES.CURRENCIES.DOLLAR
-      spotPlayer.newSpot.spot.moves = players.currentPlayers.values().filter(player=>player.showCards&&player.cards)
+      spotPlayer.newSpot.spot.moves = players.currentPlayers.filter(player=>player.showCards&&player.cards)
         .map((player, playerIndex)=>{
           return {
             player: playerIndex,
@@ -110,7 +111,7 @@ export default class SpotWizard extends Component {
     const {spotPlayer, players} = this.props
     if (spotPlayer.newSpot.step>1){
       return true
-    }else if (spotPlayer.newSpot.step===0 && players.currentPlayersArray.length<2){
+    }else if (spotPlayer.newSpot.step===0 && players.currentPlayers.length<2){
       return true
     }
     return false
@@ -350,22 +351,41 @@ export default class SpotWizard extends Component {
     const minimumRaise = this.getMinimumRaise()
 
     return (
-      <Modal
-          closeIcon={{
-            name: 'close',
-            onClick: ::this.cancel,
-          }}
-          open={spotPlayer.spotWizardOpen}
-          size="fullscreen"
-      >
-        <Modal.Header>
+      <Modal open={spotPlayer.spotWizardOpen}>
+        <ModalHeader>
           Spot Wizard
-        </Modal.Header>
+        </ModalHeader>
 
-        <Modal.Content className={classnames(style.spotContainer)} style={{height:'80vh'}}>
+        <ModalContent className={classnames(style.spotContainer)} style={{height:'80vh'}}>
           {this.getMainContent()}
-        </Modal.Content>
-        <ActionBar
+        </ModalContent>
+        <ModalFooter>
+          <ButtonGroup horizontal>
+            <ButtonGroup horizontal noEqual>
+              {step>=1&&
+                <Button
+                    leftIcon="back"
+                    onClick={::this.previousStep}
+                    text="Back"
+                />
+              }
+            </ButtonGroup>
+            <ButtonGroup
+                horizontal
+                noEqual
+                style={{justifyContent:'flex-end'}}
+            >
+              <Button onClick={::this.cancel} text="Cancel"/>
+              <Button
+                  disable={this.nextStepDisabled()}
+                  onClick={::this.nextStep}
+                  primary
+                  text="Next"
+              />
+            </ButtonGroup>
+          </ButtonGroup>
+        </ModalFooter>
+        {/* <ActionBar
             step={spotPlayer.newSpot.step}
             previousClick={::this.previousStep}
             previousDisabled={step<1}
@@ -392,7 +412,7 @@ export default class SpotWizard extends Component {
             dealerDisabled={!dealerTurn}
             dealerClick={::this.dealer}
             dealerNextState={dealerNextState}
-        />
+        /> */}
       </Modal>
     )
   }

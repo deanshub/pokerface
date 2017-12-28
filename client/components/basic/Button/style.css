@@ -1,0 +1,93 @@
+@import '../../../constants/styles.css';
+
+.button{
+  outline: none;
+  border: none;
+  background: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  height: 4em;
+  min-width: 4em;
+  color: placeholderColor;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.primary{
+  color: $white;
+  background: linear-gradient(111deg, #68cc90, #3ebd64);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  width: 8em;
+  margin-left: 25px;
+  height: 3em;
+  margin-top: 0.5em;
+}
+
+.disable{
+  opacity: 0.3;
+  cursor: auto;
+}
+
+.leftIcon{
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 2em;
+  width: 2em;
+}
+.back{
+  background-image: url('../../../assets/spotPlayer/back-bottom.png');
+}
+
+.button.dealer{
+  background-image: url('../../../assets/spotPlayer/dealer.png');
+}
+.button.dealer:hover{
+  background-image: url('../../../assets/spotPlayer/dealer-hover.png');
+}
+.button.dealer.active{
+  background-image: url('../../../assets/spotPlayer/dealer-selected.png');
+}
+
+.button.remove{
+  background-image: url('../../../assets/spotPlayer/delete.png');
+}
+.button.remove:hover{
+  background-image: url('../../../assets/spotPlayer/delete-hover.png');
+}
+.button.remove.active{
+  background-image: url('../../../assets/spotPlayer/delete-hover.png');
+}
+
+.button.up{
+  background-image: url('../../../assets/spotPlayer/up.png');
+}
+.button.up:hover{
+  background-image: url('../../../assets/spotPlayer/up-hover.png');
+}
+
+.button.down{
+  background-image: url('../../../assets/spotPlayer/down.png');
+}
+.button.down:hover{
+  background-image: url('../../../assets/spotPlayer/down-hover.png');
+}
+
+.buttonGroup{
+  display: flex;
+  flex-direction: column;
+  height: 4em;
+}
+.horizontal{
+  flex-direction: row;
+}
+.buttonGroup>*{
+  flex: 1;
+}
+.buttonGroup.noEqual>*{
+  flex: none;
+}

@@ -1,65 +1,131 @@
 import React, { Component } from 'react'
+import Button, {ButtonGroup} from '../basic/Button'
+import Autosuggest from 'react-autosuggest'
 // import PropTypes from 'prop-types'
-import { Form, Input, Grid, Header, Image, Checkbox } from 'semantic-ui-react'
-import { observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
+import Image from '../basic/Image'
+import Input from '../basic/Input'
 import classnames from 'classnames'
 import style from './style.css'
 
+@inject('players')
 @observer
 export default class PlayerField extends Component {
+  searchChange({value}){
+    const {players} = this.props
+    players.search(value)
+  }
+
+  renderSuggestion(player,{query}){
+    if (!player.guest){
+      return(
+        <div className={classnames(style.suggestionItem)}>
+          <Image
+              avatar
+              centered
+              small
+              src={player.avatar}
+              target="_blank"
+          />
+          {player.fullname}
+        </div>
+      )
+    }else{
+      return (
+        <div className={classnames(style.suggestionItem)}>
+          Add &nbsp;<strong>{query}</strong>
+        </div>
+      )
+    }
+  }
+
+  onSuggestionSelected(e, {suggestion}){
+    const {players, user, playerIndex} = this.props
+    players.setPlayer(playerIndex, {...suggestion, cards: user.cards})
+  }
+  searchInputChange(e,{newValue}){
+    const {user} = this.props
+    if (!user.guest){
+      this.onSuggestionSelected(e, {suggestion:{...user, guest:true, fullname:newValue, username:`guest-${Math.random().toString()}`}})
+    }else{
+      user.fullname = newValue
+    }
+  }
+
   render(){
-    const {playerIndex, isDealer, user, handleAvatarClick} = this.props
+    const {players, playerIndex, isDealer, user, handleAvatarClick} = this.props
     const href=`/profile/${user.username}`
 
     return (
-        <Grid.Column width={5}>
-          <div
-              className={style.playerRow}
-          >
-            <Image
-                avatar
-                centered
-                className={classnames(style.avatar,{[style.dealerAvatar]:isDealer})}
-                href={href}
-                onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
-                src={user.avatar}
-                target="_blank"
-            />
-            <Header
-                className={style.fullname}
-                size="large"
-            >
-              {user.fullname}
-            </Header>
-            <Form.Field
-                className={style.bank}
-                control={Input}
-                inline
-                label="Bank"
-                onChange={(e,{value})=>user.bank=parseInt(value)}
-                placeholder="100"
-                type="number"
-                value={user.bank}
-            />
-            <Form.Field
-                className={style.cards}
-                control={Input}
-                inline
-                label="Cards"
-                onChange={(e,{value})=>user.cards=value}
-                placeholder="Ac Ah"
-                value={user.cards}
-            />
-            <Form.Field
-                checked={user.showCards}
-                className={style.cardsShow}
-                control={Checkbox}
-                inline
-                label="Show cards upfront"
-                onChange={(e,{checked})=>user.showCards=checked}
-            />
-          </div>
-        </Grid.Column>
+      <div className={classnames(style.playerRow)}>
+        <Image
+            avatar
+            centered
+            href={href}
+            onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
+            src={user.avatar}
+            target="_blank"
+        />
+        <Autosuggest
+            getSuggestionValue={player=>player.fullname}
+            highlightFirstSuggestion
+            id={`${playerIndex}`}
+            inputProps={{
+              placeholder: 'Player',
+              value:user.fullname,
+              onChange: ::this.searchInputChange,
+            }}
+            onSuggestionSelected={::this.onSuggestionSelected}
+            onSuggestionsClearRequested={()=>players.searchPlayers.clear()}
+            onSuggestionsFetchRequested={::this.searchChange}
+            renderInputComponent={(props)=>(
+              <Input {...props}/>
+            )}
+            renderSuggestion={this.renderSuggestion}
+            suggestions={players.immutableAvailablePlayers.concat([{guest:true, fullname:user.fullname, username:`guest-${Math.random().toString()}`}])}
+            theme={{
+              container: classnames(style.autosuggest),
+              suggestionsList: classnames(style.suggestionsList),
+              suggestion: classnames(style.suggestion),
+              suggestionHighlighted: classnames(style.suggestionHighlighted),
+              suggestionsContainer: classnames(style.suggestionsContainer),
+              suggestionsContainerOpen: classnames(style.suggestionsContainerOpen),
+            }}
+        />
+        <Input
+            label="Bank"
+            onChange={(e,{value})=>user.bank=parseInt(value)}
+            placeholder="100"
+            type="number"
+            value={user.bank}
+        />
+        <Input
+            cardSelection
+            label="Cards"
+            onChange={(e,{value})=>user.cards=value}
+            rightButton={{name:'showUpfrontButton',onClick:()=>user.showCards=!user.showCards, active:user.showCards}}
+            value={user.cards}
+        />
+        <Button
+            active={isDealer}
+            name="dealer"
+            onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
+        />
+        <Button
+            name="remove"
+            onClick={()=>{players.currentPlayers.splice(playerIndex,1)}}
+        />
+        <ButtonGroup>
+          <Button
+              name="up"
+              onClick={()=>{}}
+          />
+          <Button
+              name="down"
+              onClick={()=>{}}
+          />
+        </ButtonGroup>
+      </div>
     )
   }
 }

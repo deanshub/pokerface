@@ -79,7 +79,7 @@ export default class AddPlay extends Component {
     const hasText = feed.newPost.content.getCurrentContent().hasText()
 
     return (
-      <Form>
+      <div>
         <Grid container>
           {
             hasSpot?(
@@ -204,7 +204,7 @@ export default class AddPlay extends Component {
           </Grid.Row>
         </Grid>
         <SpotWizard/>
-      </Form>
+      </div>
     )
   }
 }

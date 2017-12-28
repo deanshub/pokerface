@@ -1,9 +1,19 @@
 @import '../../constants/styles';
 
+.multiCardsContainer{
+  display: flex;
+}
+
 .cardSelectionContainer{
   display: flex;
   flex-direction: column;
-  padding: 0 15px 10px 15px;
+  padding: 10px 15px 10px 15px;
+}
+
+.sideDivider{
+  width: 1px;
+  background: #f0f0f0;
+  margin: 8px 0;
 }
 
 .divider{
