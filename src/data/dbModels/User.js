@@ -25,7 +25,6 @@ const schema = Schema(
       type:[{
         type: String,
         ref: 'User',
-
       }],
       default: undefined,
     },
@@ -71,9 +70,7 @@ const schema = Schema(
       type:[{
         type: String,
         ref: 'User',
-
       }],
-      default: undefined,
     },
     rebrandingDetails:{
       primaryColor: {

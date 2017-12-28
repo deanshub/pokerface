@@ -1,32 +1,9 @@
 import express from 'express'
 import authentication from './authentication'
+import {prepareAvatar, prepareCoverImage} from '../data/helping/user'
 import {REBRANDING} from '../utils/permissions'
 
 const TOKEN_EXPIRATION_DURATION = 1000*600
-
-const prepareAvatar = (avatar, username) => {
-  if (!avatar){
-    return '/images/avatar.png'
-  }else if (!avatar){
-    return `/api/avatarGenerator?username=${username}`
-  }else if (!avatar.includes('http')) {
-    return `/images/${avatar}`
-  }
-
-  return avatar
-}
-
-const prepareCoverImage = (coverImage, username) => {
-  if (!coverImage){
-    return '/images/cover.jpg'
-  }else if (!coverImage){
-    return `/api/avatarGenerator?username=${username}`
-  }else if (!coverImage.includes('http')) {
-    return `/images/${coverImage}`
-  }
-
-  return coverImage
-}
 
 const prepareUserToClient = (user) => {
 
@@ -40,9 +17,9 @@ const prepareUserToClient = (user) => {
     permissions,
   } = user
 
-  let avatar = prepareAvatar(user.avatar, username)
+  let avatar = prepareAvatar(user)
 
-  let coverImage = prepareCoverImage(user.coverImage, username)
+  let coverImage = prepareCoverImage(user)
   const rebranding = permissions.includes(REBRANDING)
   const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage, organizations, rebranding}
 

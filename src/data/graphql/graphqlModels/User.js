@@ -4,7 +4,7 @@ import DB from '../../db'
 // import {schema as Comment} from './Comment'
 import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
-import {loginPermissionFilter} from '../../helping/user'
+import {prepareAvatar, prepareCoverImage, loginPermissionFilter} from '../../helping/user'
 
 export const schema =  [`
   type RebrandingDetails {
@@ -75,28 +75,6 @@ export const schema =  [`
 `, Upload]
 
 
-const getAvatar = (user) => {
-  if (!user.avatar && !user.username){
-    return '/images/avatar.png'
-  }else if (!user.avatar){
-    return `/api/avatarGenerator?username=${user.username}`
-  }else if (user.avatar.startsWith('http')) {
-    return user.avatar
-  }
-  return `/images/${user.avatar}`
-}
-
-const getCoverImage = (user)=>{
-  if (!user.coverImage && !user.username){
-    return '/images/cover.jpg'
-  }else if (!user.coverImage){
-    return `/api/avatarGenerator?username=${user.username}`
-  }else if (!user.coverImage.includes('http')) {
-    return `/images/${user.coverImage}`
-  }
-  return user.coverImage
-}
-
 const getPosts = (user) => DB.models.Post.find({user: user.id})
 
 const getComments = (user) => DB.models.Comment.find({user: user.id})
@@ -126,15 +104,15 @@ export const resolvers = {
     username: (user)=>user.username,
     fullname: (user)=>user.fullname,
     email: (user)=> user.email,
-    avatar: getAvatar,
-    coverImage: getCoverImage,
+    avatar: prepareAvatar,
+    coverImage: prepareCoverImage,
     posts: getPosts,
     comments: getComments,
   },
   Organization:{
     players: (organization) => organization.players,
-    avatar: getAvatar,
-    coverImage: getCoverImage,
+    avatar: prepareAvatar,
+    coverImage: prepareCoverImage,
     posts: getPosts,
     comments: getComments,
   },
