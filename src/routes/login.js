@@ -1,56 +1,55 @@
 import express from 'express'
 import authentication from './authentication'
+import {prepareAvatar, prepareCoverImage} from '../data/helping/user'
 
 const TOKEN_EXPIRATION_DURATION = 1000*600
 
+const prepareUserToClient = (user) => {
+
+  const {username, email, fullname, firstname, lastname, organizations} = user
+
+  let avatar = prepareAvatar(user)
+
+  let coverImage = prepareCoverImage(user)
+  const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage, organizations}
+
+  return  userToClient
+}
+
+const redirectExternalLogin = ((req, res) => {
+  const {user, token} = req.user
+  res.cookie('jwt', token, {maxAge:TOKEN_EXPIRATION_DURATION})
+
+  const url = (user.organizations > 0)?'/login?selectuser=true':'/'
+
+  res.redirect(url)
+})
+
 const router = express.Router()
 
-router.post('/local', authentication.login)
+router.post('/local', authentication.login, (req, res) => {
+
+  const {user, token} = req.loginUser
+  const userToClient= prepareUserToClient(user)
+  res.json({user:userToClient, token})
+})
 router.get('/facebook', authentication.facebookLogin)
-router.get('/googlepluse', authentication.googleLogin)
+router.get('/googleplus', authentication.googleLogin)
 
 // authenticate with facebook to get the token
-router.get('/facebook/callback', authentication.authenticateWithFacebook, (req, res) => {
-  res.cookie('jwt', req.user.token, {maxAge:TOKEN_EXPIRATION_DURATION})
-  res.redirect('/')
-})
+router.get('/facebook/callback', authentication.authenticateWithFacebook, redirectExternalLogin)
 
-router.get('/googlepluse/callback', authentication.authenticateWithGoogle, (req, res) => {
-  res.cookie('jwt', req.user.token, {maxAge:TOKEN_EXPIRATION_DURATION})
-  res.redirect('/')
-})
-
-
+router.get('/googleplus/callback', authentication.authenticateWithGoogle, redirectExternalLogin)
 
 router.post('/isAuthenticated', authentication.addUserToRequest, (req, res)=>{
   if (!req.user) {
     res.json({user:{}})
   }else{
-    const username = req.user._id
-
-    let avatar = req.user.avatar
-    if (!avatar && !username){
-      return '/images/avatar.png'
-    }else if (!avatar){
-      avatar = `/api/avatarGenerator?username=${username}`
-    }else if (!avatar.includes('http')) {
-      avatar = `/images/${avatar}`
-    }
-
-    let coverImage = req.user.coverImage
-    if (!coverImage && !username){
-      return '/images/cover.jpg'
-    }else if (!coverImage){
-      coverImage = `/api/avatarGenerator?username=${username}`
-    }else if (!coverImage.includes('http')) {
-      coverImage = `/images/${coverImage}`
-    }
-
-    const {email, fullname, firstname, lastname} = req.user
-    const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage}
-
+    const userToClient= prepareUserToClient(req.user)
     res.json({user:userToClient})
   }
 })
+
+router.post('/switchToUser', authentication.addUserToRequest, authentication.switchToUser)
 
 export default router

@@ -4,7 +4,7 @@ import DB from '../data/db'
 import uuidv1 from 'uuid/v1'
 import moment from 'moment'
 import {signTokenToUser} from '../utils/authUtils'
-import {createUser} from '../data/helping/user'
+import {createUser} from '../data/helping/User'
 
 const MINUTES_UUID_EXPIRATION = 15
 
@@ -19,7 +19,7 @@ router.post('/signup', (req, res)=>{
   const {firstName, lastName, email} = req.body
   const uuid =  uuidv1()
 
-  DB.models.User.findOne({email}).select('active').then((user) => {
+  DB.models.User.findOne({email, organization:{$ne:true}}).select('active').then((user) => {
     if (user && user.active) {
       throw new KnownError(403, {error:'Current email already existes.'})
     }else if (user){
