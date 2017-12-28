@@ -4,7 +4,7 @@ import DB from '../data/db'
 import uuidv1 from 'uuid/v1'
 import moment from 'moment'
 import {signTokenToUser} from '../utils/authUtils'
-import {createUser} from '../data/helping/User'
+import {createUser} from '../data/helping/user'
 
 const MINUTES_UUID_EXPIRATION = 15
 
