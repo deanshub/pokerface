@@ -8,6 +8,7 @@
   "author": "Dean Shub (dean@shubapp.com)",
   "scripts": {
     "test": "jest",
+    "create-migrate": "mm create",
     "migrate": "mm migrate",
     "start": "nodemon src/index.js",
     "debug": "nodemon --inspect --debug-brk src/index.js",
