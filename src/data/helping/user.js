@@ -7,11 +7,18 @@ export const createUser = (user) => {
     lastname,
   } = user
 
-  return DB.models.User.find({
-    firstname: {$regex: firstname, $options: 'i'},
-    lastname:{$regex: lastname, $options: 'i'},
-  }).count().then((count) => {
-    const username = `${firstname}.${lastname}.${count+1}`.toLowerCase().replace(/ /g,'.')
+  const where = {firstname: {$regex: firstname, $options: 'i'}}
+  let fullname
+
+  if (!lastname){
+    fullname = firstname
+  }else{
+    where.lastname = {$regex: lastname, $options: 'i'}
+    fullname = `${firstname}.${lastname}`
+  }
+
+  return DB.models.User.find(where).count().then((count) => {
+    const username = `${fullname}.${count+1}`.toLowerCase().replace(/ /g,'.')
 
     const newUser = {
       _id: username,
