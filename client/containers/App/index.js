@@ -53,7 +53,9 @@ export default class App extends Component {
                 <Route component={this.logPageView}/>
                 <Route
                     path="/"
-                    render={({location}) => {return (location.hash==='#_=_')?<Redirect to="/"/>:null}}
+                    render={({location}) => {
+                      return (location.hash==='#_=_')?<Redirect to={{...location, hash:undefined}}/>:null
+                    }}
                 />
                 <Switch>
                   <Route

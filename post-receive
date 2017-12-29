@@ -1,8 +1,8 @@
 #!/bin/bash
 source ~/.bashrc
-PATH=$PATH:~/.nvm/versions/node/v7.5.0/bin:~/.nvm/
+PATH=$PATH:~/.nvm/versions/node/v9.3.0/bin:~/.nvm/
 ~/.nvm/nvm.sh
-nvm use 7.5.0
+nvm use 9.3.0
 GIT_WORK_TREE=~/Desktop/apps/pokerface/client git checkout -f
 pushd ~/Desktop/apps/pokerface/client
 yarn

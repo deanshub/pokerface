@@ -17,13 +17,13 @@ export default class FeedContainer extends Component {
 
   componentDidMount(){
     const { feed, username } = this.props
-    feed.fetchEvents(username)
+    feed.fetchPosts(username)
     window.addEventListener('scroll', this.loadOnScroll)
   }
 
   componentWillReceiveProps(props){
     const { feed, username } = props
-    feed.fetchEvents(username)
+    feed.fetchPosts(username)
   }
 
   componentWillUnmount(){
@@ -33,7 +33,7 @@ export default class FeedContainer extends Component {
   loadOnScroll(){
     if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 600){
       const { feed, username } = this.props
-      feed.fetchEvents(username)
+      feed.fetchPosts(username)
     }
   }
 
