@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "create-migrate": "mm create",
-    "migrate": "mm migrate",
+    "migrate": "babel-node node_modules/mongodb-migrations/bin/mm migrate",
     "start": "nodemon src/index.js",
     "debug": "nodemon --inspect --debug-brk src/index.js",
     "build": "cross-env NODE_ENV=production babel src -d dist",
