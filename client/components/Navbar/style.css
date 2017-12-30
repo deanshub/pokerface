@@ -1,3 +1,36 @@
-.navbarMenuItemAnchor {
-  height: 50px;
+@import "../../constants/styles";
+
+.navbar {
+  padding: 1.6em;
+}
+
+.navbarItem {
+  display: block;
+  font-weight: 900
+}
+
+.navbar :first-child {
+  margin-top: 0;
+}
+
+.navbarRouteItem {
+  @extend .navbarItem;
+
+  color: #f0f0f0;
+  margin-top: 1.1em;
+}
+
+.navbarRouteItem:hover{
+  color:$activeButton;
+}
+
+.navbarRouteItemActive {
+  color:$activeButton;
+}
+
+.navbarSection {
+  @extend .navbarItem;
+
+  color: #a0a0b5;
+  margin-top: 2em;
 }

@@ -1,7 +1,93 @@
 @import "../../constants/styles";
-.container{
+/* .container{
   background-color: #f2f2f2;
+} */
+/* body{
+  background-color: #f2f2f2;
+} */
+
+.header {
+  width: 100%;
+  display: flex;
+  background-color: $heaerBackgroundColor;
+  box-shadow: 0 0 10px 0 #000000;
+  position: fixed;
+  z-index: 1;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1.2em;
+  padding-right: 1.2em;
 }
-body{
-  background-color: #f2f2f2;
+
+.title {
+  color: $heaerColor;
+  font-size: 1.3em;
+  padding: 0.7em;
+  font-weight: bold;
+}
+
+.config {
+  background-image:url('../../assets/cog.png');
+  background-color: $heaerBackgroundColor;
+  width: 34px;
+  height: 34px;
+}
+
+.config:hover {
+  background-image:url('../../assets/cog-hover.png');
+}
+
+.container {
+  display: flex;
+  padding-top: 3.22em;
+}
+
+.topMenu {
+  background-color: white;
+  border-radius: 0.4em;
+  position: absolute;
+  top: 100%;
+  right: 0.3em;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  padding-right: 0.8em;
+  padding-left: 0.8em;
+  padding-bottom: 0.8em;
+}
+
+.topMenu::before {
+  position: absolute;
+  content: '';
+  background-color: inherit;
+  transform: translateX(-50%) translateY(-50%) rotate(45deg);
+  width: .6666em;
+  height: .6666em;
+  top: 0;
+  left: 79%;
+}
+
+.topMenu > * {
+  padding-top: 0.7em;
+}
+
+.topMenuItem:hover{
+  color: #3cb861;
+}
+
+.signedInAsCard {
+  display: flex;
+  align-items: center;
+  border-bottom: solid #e4e4e4 1px;
+  padding-bottom: 0.7em;
+  padding-top: 0.7em;
+
+  img {
+    border-radius: 50%;
+    width: 2.7em;
+    height: 2.7em;
+    margin-right: 0.65em;
+  }
+}
+
+.signedInAs {
+  color: #a2a2a2;
 }
