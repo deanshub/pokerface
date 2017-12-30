@@ -1,33 +1,32 @@
 import faker from 'faker'
-import mongoose from 'mongoose'
 import {createUser} from '../helping/user'
 
 faker.seed(123)
 
-function generateRandomArray(num){
-  return Array.from(Array(Math.floor(Math.random()*num)))
-}
+// function generateRandomArray(num){
+//   return Array.from(Array(Math.floor(Math.random()*num)))
+// }
 
 function generateArray(num){
   return Array.from(Array(num))
 }
 
-function shuffle(arr) {
-  let a = [...arr]
-  for (let i = a.length; i; i--) {
-    let j = Math.floor(Math.random() * i);
-    [a[i - 1], a[j]] = [a[j], a[i - 1]]
-  }
-  return a
-}
+// function shuffle(arr) {
+//   let a = [...arr]
+//   for (let i = a.length; i; i--) {
+//     let j = Math.floor(Math.random() * i);
+//     [a[i - 1], a[j]] = [a[j], a[i - 1]]
+//   }
+//   return a
+// }
 
-function getRandomItems(arr, num=1){
-  return shuffle(arr).slice(-num)
-}
+// function getRandomItems(arr, num=1){
+//   return shuffle(arr).slice(-num)
+// }
 
-function dropCollection(model){
-  return model.remove()
-}
+// function dropCollection(model){
+//   return model.remove()
+// }
 
 
 const generateFakeData = (DB) => {
@@ -48,18 +47,16 @@ const generateFakeData = (DB) => {
     return [
       createUser({
         firstname: 'Demo',
-        lastname: 'Shub',
         email: 'demo@pokerface.io',
-        avatar: 'dean2.jpg',
+        avatar: 'logo.jpg',
         coverImage: 'poker-1999643.jpg',
         password:'demo',
         active: true,
       }),
       createUser({
         firstname: 'Demo1',
-        lastname: 'Shub',
         email: 'demo1@pokerface.io',
-        avatar: 'dean2.jpg',
+        avatar: 'logo.jpg',
         coverImage: 'poker-1999643.jpg',
         password:'demo1',
         active: true,
@@ -70,7 +67,7 @@ const generateFakeData = (DB) => {
         email: 'deanshub@gmail.com',
         avatar: 'dean2.jpg',
         coverImage: 'poker-1999643.jpg',
-        password:'dean',
+        password:'0536226350',
         active: true,
       }),
       createUser({
@@ -92,7 +89,7 @@ const generateFakeData = (DB) => {
           'dean.shub.1',
           'demo.shub.1',
         ],
-        permissions:['login', 'rebranding']
+        permissions:['login', 'rebranding'],
       }),
     ]
   }
@@ -131,7 +128,8 @@ const generateFakeData = (DB) => {
   // }
 
   return Promise.all(Object.keys(DB.models).map(modelName=>{
-    return dropCollection(DB.models[modelName])
+    // return dropCollection(DB.models[modelName])
+    return modelName
   }))
   .then(()=>{
     let usersCreatetion = generateArray(5).map(generateUser)
