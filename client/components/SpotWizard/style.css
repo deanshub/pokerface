@@ -1,62 +1,59 @@
+@import '../../constants/styles.css';
+
 .spotContainer{
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
 }
 
-.playerLabel>img{
-  display: inline-block !important;
-  margin-right: 5px;
+.players{
+  overflow-y: auto;
+  flex: 1;
 }
 
 .playerRow{
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr 2fr 2fr 1fr;
-  grid-template-areas:
-    "fullname fullname"
-    "avatar bank"
-    "avatar cards"
-    "avatar cardsShow";
-  align-items: center;
-  margin-bottom: 2vh;
+  display: flex;
+  margin-top: 7px;
+  padding-bottom: 25px;
+  align-items: flex-end;
+  border-bottom: 1px solid $divider;
 }
 
-.avatar{
-  grid-area: avatar;
-  text-align: center;
-  width: 100% !important;
-  height: 100% !important;
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
+.autosuggest{
+  position: relative;
 }
-.avatar>img{
-  width: auto !important;
-  height: auto !important;
-  max-width: 100%;
-  max-height: 100%;
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
+
+.suggestionsContainer{
+  position: absolute;
+  display: none;
+  width: 100%;
+  background-color: $white;
+  max-height: 14.4em;
+  overflow-y:auto;
+  border-radius: 8px;
+  margin-top: -10px;
+  z-index: 1;
 }
-.fullname{
-  grid-area: fullname;
-  margin: 0 auto !important;
+.suggestionsContainerOpen{
+  display: block;
 }
-.bank{
-  grid-area: bank;
+
+.suggestionsList{
+  border: 1px solid $divider;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
-.cards{
-  grid-area: cards;
+
+.suggestion{
+  cursor: pointer;
+  padding: 10px 15px;
+  border-bottom: 1px solid $divider;
 }
-.cardsShow{
-  grid-area: cardsShow;
+.suggestionHighlighted{
+  background-color: hoverSelectItemColor;
+}
+
+.suggestionItem{
+  display: flex;
+  align-items: center;
 }
 
 .raiseInput>input{
@@ -71,35 +68,13 @@
   width: 50px;
 }
 
-
-.formContainer{
-  height: 100%;
-  width: 100%;
+.generalSettingsContainer{
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
-.gridCointainer{
+.blinds{
   display: flex;
-  flex-direction: column !important;
-  flex: 1;
-}
-.playersRow{
-  overflow-y: auto;
-  flex: 1;
-}
-
-.dealerAvatar::before{
-  content: 'Dealer';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1;
-  background: rgba(255,255,255,0.7);
-  text-align: center;
-  font-size: 2em;
-  color: #5f5f5f;
-  font-weight: bold;
-  font-style: italic;
+  border-bottom: 1px solid $divider;
+  padding-bottom: 30px;
 }

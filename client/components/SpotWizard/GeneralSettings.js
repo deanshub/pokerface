@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Form, Input, Grid, Dropdown, Header, Image, Checkbox } from 'semantic-ui-react'
+import Input from '../basic/Input'
 import { observer, inject } from 'mobx-react'
 import PlayerField from './PlayerField'
 import classnames from 'classnames'
@@ -18,16 +18,6 @@ export default class GeneralSettings extends Component {
     }
   }
 
-  searchChange(e: Object, data: string){
-    const {players} = this.props
-    const phrase = data.searchQuery
-    players.search(phrase)
-  }
-
-  selectPlayer(e: Object, player: Object){
-    console.log(player);
-  }
-
   handleAvatarClick(e, href, playerIndex){
     const {settings} = this.props
     e.preventDefault()
@@ -38,10 +28,10 @@ export default class GeneralSettings extends Component {
   playersAmountChange(e, {value}){
     const {players} = this.props
     const newAmount = parseInt(value)
-    if (players.currentPlayersArray.length<newAmount){
+    if (players.currentPlayers.length<newAmount){
 
-      const amountOfPlayerToAdd = newAmount - players.currentPlayersArray.length
-      const anonymosPlayers = players.currentPlayers.values().filter((player)=>/^Player (\d)+$/.test(player.fullname))
+      const amountOfPlayerToAdd = newAmount - players.currentPlayers.length
+      const anonymosPlayers = players.currentPlayers.filter((player)=>/^Player (\d)+$/.test(player.fullname))
       const lastIndex = anonymosPlayers.reduce((res,player)=>{
         const curNumber = parseInt(player.fullname.substring('Player '.length))
         if (res>curNumber){
@@ -53,12 +43,11 @@ export default class GeneralSettings extends Component {
       for (let index = 0; index<amountOfPlayerToAdd; index++) {
         players.addGuest(`Player ${lastIndex + index+1}`)
       }
-    }else if(players.currentPlayersArray.length>newAmount && newAmount>0){
-      const amountOfPlayerToDelete = players.currentPlayersArray.length-newAmount
+    }else if(players.currentPlayers.length>newAmount && newAmount>0){
+      const amountOfPlayerToDelete = players.currentPlayers.length-newAmount
 
       for (let index = 0; index<amountOfPlayerToDelete; index++) {
-        const key = players.currentPlayersArray[players.currentPlayersArray.length-1]
-        players.currentPlayers.delete(key)
+        players.currentPlayers.splice(players.currentPlayers.length-1,1)
       }
     }
   }
@@ -80,122 +69,71 @@ export default class GeneralSettings extends Component {
 
   render(){
     const {players, settings} = this.props
-    const searchPlayerOptions = players.searchPlayers.keys().map(username=>{
-      const player = players.searchPlayers.get(username)
-      return {
-        text: player.fullname,
-        value: username,
-        image: player.avatar,
-        disabled: players.currentPlayers.has(username),
-      }
-    })
-    // currency (Dropdown)
-    // players [username\guest name, bank, cards]
-    // bb, sb
-    // dealer
 
     return (
-      <Form className={classnames(style.formContainer)}>
-        <Form.Group widths="equal">
-          <Form.Field
-              control={Input}
-              id="form-input-control-first-name"
+      <div className={classnames(style.generalSettingsContainer)}>
+        <div className={classnames(style.blinds)}>
+          <Input
+              error={players.currentPlayers.length>10||players.currentPlayers.length<2}
+              id="form-input-control-number-players"
+              label="Players"
+              onChange={::this.playersAmountChange}
+              onClick={(e)=>e.target.select()}
+              type="number"
+              value={players.currentPlayers.length}
+              warning={players.currentPlayers.length===10}
+          />
+          <Input
+              id="form-input-control-currency"
               label="Currency"
               onChange={(e,{value})=>settings.currency=value}
               placeholder="$"
               value={settings.currency}
           />
-          <Form.Field
-              control={Input}
-              id="form-input-control-last-name"
+          <Input
+              id="form-input-control-ante"
               label="Ante"
               onChange={::this.anteChange}
               placeholder="0"
               type="number"
               value={settings.ante}
           />
-          <Form.Field
-              control={Input}
-              id="form-input-control-last-name"
+          <Input
+              id="form-input-control-small-blind"
               label="Small Blind"
               onChange={::this.smallBlindChange}
               placeholder="1"
               type="number"
               value={settings.sb}
           />
-          <Form.Field
-              control={Input}
-              id="form-input-control-last-name"
+          <Input
+              id="form-input-control-big-blind"
               label="Big Blind"
               onChange={(e,{value})=>settings.bb=parseInt(value)||0}
               placeholder="2"
               type="number"
               value={settings.bb}
           />
-        </Form.Group>
-        <Grid className={classnames(style.gridCointainer)}>
-          <Grid.Row stretched>
-            <Grid.Column width={1}>
-              <Input
-                  error={players.currentPlayersArray.length>9}
-                  fluid
-                  onChange={::this.playersAmountChange}
-                  onClick={(e)=>e.target.select()}
-                  type="number"
-                  value={players.currentPlayersArray.length}
-              />
-            </Grid.Column>
-            <Grid.Column
-                textAlign="center"
-                verticalAlign="middle"
-                width={1}
-            >
-              <Header>Players</Header>
-            </Grid.Column>
-            <Grid.Column width={14}>
-              <Dropdown
-                  additionPosition="bottom"
-                  allowAdditions
-                  error={players.currentPlayersArray.length>9}
-                  fluid
-                  multiple
-                  noResultsMessage="No players found"
-                  onAddItem={(ev,data)=>{players.addGuest(data.value)}}
-                  onChange={(ev, data)=>{players.setPlayer(data.value)}}
-                  onLabelClick={this.selectPlayer}
-                  onSearchChange={::this.searchChange}
-                  options={searchPlayerOptions}
-                  placeholder="Add Player..."
-                  renderLabel={this.renderLabel}
-                  search
-                  selectOnBlur={false}
-                  selection
-                  style={{marginBottom:2}}
-                  value={players.currentPlayersArray}
-              />
-            </Grid.Column>
-          </Grid.Row>
+        </div>
 
-          <Grid.Row className={classnames(style.playersRow)} stretched>
-            {
-              // [username\guest name, bank, cards]
-              players.currentPlayers.keys().map((username, playerIndex)=>{
-                const user=players.currentPlayers.get(username)
-                const dealerIndex = settings.dealer||0
-                return (
-                  <PlayerField
-                      handleAvatarClick={::this.handleAvatarClick}
-                      isDealer={dealerIndex===playerIndex}
-                      key={username}
-                      playerIndex={playerIndex}
-                      user={user}
-                  />
-                )
-              })
-            }
-          </Grid.Row>
-        </Grid>
-      </Form>
+        <div className={classnames(style.players)}>
+          {
+            players.currentPlayers.map((user, playerIndex)=>{
+              const dealerIndex = settings.dealer||0
+              return (
+                <PlayerField
+                    changePlayer={player=>players.setPlayer(playerIndex, player)}
+                    handleAvatarClick={::this.handleAvatarClick}
+                    isDealer={dealerIndex===playerIndex}
+                    key={playerIndex}
+                    playerIndex={playerIndex}
+                    user={user}
+                />
+              )
+            })
+          }
+        </div>
+      </div>
     )
   }
 }

@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Button, Modal, Menu, Icon, Input, Dropdown, Popup } from 'semantic-ui-react'
+import { Button, Menu, Icon, Input, Dropdown, Popup } from 'semantic-ui-react'
+import {ModalFooter} from '../basic/Modal'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -83,7 +84,7 @@ export default class SpotWizard extends Component {
     const dealerCardPositions = dealerNextState==='Flop'?[undefined,undefined,undefined]:[undefined]
 
     return (
-      <Modal.Actions>
+      <ModalFooter>
         <Menu>
           {step!==0?(
             <Menu.Menu>
@@ -252,7 +253,7 @@ export default class SpotWizard extends Component {
             </Menu.Item>
           </Menu.Menu>
         </Menu>
-      </Modal.Actions>
+      </ModalFooter>
     )
   }
 }

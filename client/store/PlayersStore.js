@@ -13,7 +13,7 @@ export class PlayersStore {
   initialWin=0
 
   constructor(){
-    this.currentPlayers = observable.map({})
+    this.currentPlayers = observable([])
     this.searchPlayers = observable.map({})
     this.searchLoading = false
   }
@@ -47,10 +47,9 @@ export class PlayersStore {
       // this.searchPlayers.replace(Object.assign({},playersObj, toJS(this.currentPlayers)))
 
       if (result.data.users){
+        this.searchPlayers.clear()
         result.data.users.forEach((user)=>{
-          if (!this.searchPlayers.has(user.username)){
-            this.searchPlayers.set(user.username, this.extendPlayer(user))
-          }
+          this.searchPlayers.set(user.username, this.extendPlayer(user))
         })
       }
 
@@ -60,24 +59,36 @@ export class PlayersStore {
     })
   }
 
+  @computed
+  get immutableAvailablePlayers(){
+    // name, link, avatar
+    const suggestedPlayersObj = this.searchPlayers.toJS()
+    const suggestedPlayers = Object.keys(suggestedPlayersObj).map(playerKey=>{
+      const player = suggestedPlayersObj[playerKey]
+      // TODO: remove name
+      return {
+        name: player.fullname,
+        fullname: player.fullname,
+        avatar: player.avatar,
+        username: player.username,
+        link: `/profile/${player.username}`,
+      }
+    })
+    return suggestedPlayers
+  }
+
   getPlayer(username){
     const player = this.searchPlayers.get(username)
     return player
   }
 
   @action
-  setPlayer(users){
-    const players = users.reduce((res, user)=>{
-      const player = this.getPlayer(user)
-      if (player && !this.currentPlayers.has(user)){
-        res[user] = player
-      }else if (this.currentPlayers.has(user)){
-        res[user] = this.currentPlayers.get(user)
-      }
-      return res
-    },{})
-
-    this.currentPlayers.replace(players)
+  setPlayer(playerIndex, newUser){
+    if (newUser.guest){
+      newUser.username = `guest-${Math.random().toString()}`
+      newUser.avatar = 'images/avatar.png'
+    }
+    this.currentPlayers[playerIndex] = newUser
   }
 
   @action
@@ -89,39 +100,34 @@ export class PlayersStore {
       fullname:name,
       avatar: avatarImage,
     })
-    this.searchPlayers.set(guestKey, guest)
-    this.currentPlayers.set(guestKey, guest)
+
+    this.currentPlayers.push(guest)
   }
 
-  @computed
-  get currentPlayersArray(){
-    return this.currentPlayers.keys()
-  }
-
-  @action
-  addBuyIn(user){
-    this.currentPlayers.get(user).buyIns.push({value: this.initialBuyIn, key:Math.random()})
-  }
-  @action
-  removeBuyIn(user, index){
-    const {buyIns} = this.currentPlayers.get(user)
-    buyIns.splice(index, 1)
-  }
-
-  @action
-  addWin(user){
-    this.currentPlayers.get(user).winnings.push({value: this.initialWin, key:Math.random()})
-  }
-  @action
-  removeWin(user, index){
-    const {winnings} = this.currentPlayers.get(user)
-    winnings.splice(index, 1)
-  }
+  // @action
+  // addBuyIn(user){
+  //   this.currentPlayers.get(user).buyIns.push({value: this.initialBuyIn, key:Math.random()})
+  // }
+  // @action
+  // removeBuyIn(user, index){
+  //   const {buyIns} = this.currentPlayers.get(user)
+  //   buyIns.splice(index, 1)
+  // }
+  //
+  // @action
+  // addWin(user){
+  //   this.currentPlayers.get(user).winnings.push({value: this.initialWin, key:Math.random()})
+  // }
+  // @action
+  // removeWin(user, index){
+  //   const {winnings} = this.currentPlayers.get(user)
+  //   winnings.splice(index, 1)
+  // }
 
   @action
   setAuthenticatedUser(user){
     const extendedUser = this.extendPlayer(user)
     this.searchPlayers.set(extendedUser.username, extendedUser)
-    this.currentPlayers.set(extendedUser.username, extendedUser)
+    this.currentPlayers.push(extendedUser)
   }
 }

@@ -1,0 +1,43 @@
+@import '../../../constants/styles.css';
+
+.overlay{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  padding: 4%;
+  background-color: rgba(255,255,255,0.7);
+}
+.modalContainer{
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 #000000;
+  margin: 0 auto;
+  width: 50%;
+  height: 100%;
+  min-height: 0;
+}
+
+.modalHeader{
+  border-bottom: 1px solid $divider;
+  font-weight: bold;
+  font-size: 2em;
+  padding-bottom: 15px;
+}
+
+.modalContent{
+  flex: 1;
+  margin: 24px 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.modalFooter{
+  padding-top: 15px;
+  border-top: 1px solid $divider;
+}

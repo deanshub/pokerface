@@ -1,0 +1,86 @@
+@import '../../../constants/styles.css';
+
+.field{
+  flex: 1;
+  margin: 0 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.label{
+  color: labelColor;
+  margin-left: 8px;
+}
+
+.inputContainer{
+  margin: 10px 0;
+  display: flex;
+  border: 1px solid borderColor;
+  border-radius: 8px;
+}
+.input.error{
+  border: 1px solid errorColor;
+  background: errorColorOpacitated;
+}
+.input.warning{
+  border: 1px solid warningColor;
+  background: warningColorOpacitated;
+}
+.input:focus{
+  border-color: focusColor;
+}
+.input::placeholder{
+  color: placeholderColor;
+}
+.input{
+  outline: none;
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  padding: 0.5em 0 0.5em 1em;
+}
+
+.input.noRightBorder{
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+}
+
+.button{
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 4em;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.rightBorder{
+  border-radius: 0 8px 8px 0;
+}
+
+.divider{
+  width: 1px;
+  background: linear-gradient(transparent 10%,$divider ,$divider, transparent 90%);
+  margin: 1px;
+}
+
+.cardSelectionButton{
+  background-image: url('../../../assets/spotPlayer/card-small-frame.png');
+}
+.cardSelectionButton.active{
+  background-image: url('../../../assets/spotPlayer/card-small-frame-hover-open.png');
+}
+.cardSelectionButton:hover{
+  background-image: url('../../../assets/spotPlayer/card-small-frame-hover-open.png');
+}
+
+.showUpfrontButton{
+  background-image: url('../../../assets/spotPlayer/show.png');
+}
+.showUpfrontButton.active{
+  background-image: url('../../../assets/spotPlayer/show-hover-selected.png');
+}
+.showUpfrontButton:hover{
+  background-image: url('../../../assets/spotPlayer/show-hover-selected.png');
+}

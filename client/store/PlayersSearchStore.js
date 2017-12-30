@@ -45,8 +45,10 @@ export class PlayersSearchStore {
   get immutableAvailablePlayers(){
     // name, link, avatar
     const suggestedPlayers = toJS(this.availablePlayers).map(player=>{
+      // TODO: remove name
       return {
         name: player.fullname,
+        fullname: player.fullname,
         avatar: player.avatar,
         username: player.username,
         link: `/profile/${player.username}`,
