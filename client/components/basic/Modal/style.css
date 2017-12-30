@@ -32,7 +32,6 @@
 
 .modalContent{
   flex: 1;
-  margin: 24px 0;
   min-height: 0;
   height: 100%;
 }

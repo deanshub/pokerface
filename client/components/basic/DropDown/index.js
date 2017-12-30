@@ -13,7 +13,7 @@ export default class DropDown extends Component {
   }
 
   componentWillReceiveProps(props){
-    if (props.open!=this.state.open){
+    if (props.open!==undefined && props.open!=this.state.open){
       this.setState({
         open: props.open,
       })
@@ -32,10 +32,26 @@ export default class DropDown extends Component {
     const {children, trigger} = this.props
     const {open} = this.state
 
-    return React.cloneElement(trigger, {
-      onClick: ::this.toggle,
-      style: {position:'relative'},
-    }, (
+    const allChildren = trigger.props.children?[
+      trigger.props.children,
+      <OnBlur key="blur" open={open}>
+        {
+          (openByBlur)=>{
+            return (
+              <div
+                  className={classnames(
+                    style.dropDown,
+                    {[style.dropDownOpen]: openByBlur},
+                  )}
+                  onClick={e=>e.stopPropagation()}
+              >
+                {children}
+              </div>
+            )
+          }
+        }
+      </OnBlur>,
+    ]:(
       <OnBlur open={open}>
         {
           (openByBlur)=>{
@@ -53,6 +69,14 @@ export default class DropDown extends Component {
           }
         }
       </OnBlur>
+    )
+
+
+    return React.cloneElement(trigger, {
+      onClick: ::this.toggle,
+      style: {...trigger.props.style, position:'relative'},
+    }, (
+      allChildren
     ))
   }
 }

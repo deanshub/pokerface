@@ -6,6 +6,9 @@ import classnames from 'classnames'
 import style from './style.css'
 
 export default class Input extends Component {
+  static defaultProps = {
+    amount: 1,
+  }
   focus(){
     if (this.input){
       this.input.focus()
@@ -24,14 +27,15 @@ export default class Input extends Component {
       error,
       warning,
       cardSelection,
-      rightButton,// rightButton={name,onClick,active}
+      rightButton,
+      amount,
       ...otherProps
     } = this.props
 
     return(
       <div className={classnames(style.field)} onClick={onClick||::this.focus}>
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
-        <div className={classnames(style.inputContainer)}>
+        <div className={classnames(style.inputContainer, {[style.range]:type==='range'})}>
           <input
               className={classnames(
                 style.input,
@@ -62,7 +66,7 @@ export default class Input extends Component {
                 }
             >
               <CardSelection
-                  amount={2}
+                  amount={amount}
                   onCardSelected={(cards)=>onChange(null,{value: cards})}
               />
             </DropDown>
@@ -71,18 +75,7 @@ export default class Input extends Component {
             rightButton&&
             <div className={classnames(style.divider)}/>
           }
-          {
-            rightButton&&
-            <button
-                className={classnames(
-                  style.button,
-                  style[rightButton.name],
-                  style.rightBorder,
-                  {[style.active]: rightButton.active},
-                )}
-                onClick={(e)=>rightButton.onClick(e, e.target)}
-            />
-          }
+          {rightButton}
         </div>
       </div>
     )

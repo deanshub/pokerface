@@ -104,6 +104,21 @@ export class PlayersStore {
     this.currentPlayers.push(guest)
   }
 
+  @action
+  movePlyaerUp(playerIndex){
+    if (playerIndex>0){
+      const [item] = this.currentPlayers.splice(playerIndex, 1)
+      this.currentPlayers.splice(playerIndex-1, 0, item)
+    }
+  }
+  @action
+  movePlyaerDown(playerIndex){
+    if (playerIndex<this.currentPlayers.length-1){
+      const [item] = this.currentPlayers.splice(playerIndex, 1)
+      this.currentPlayers.splice(playerIndex+1, 0, item)
+    }
+  }
+
   // @action
   // addBuyIn(user){
   //   this.currentPlayers.get(user).buyIns.push({value: this.initialBuyIn, key:Math.random()})
