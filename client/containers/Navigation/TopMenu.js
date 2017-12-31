@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import DropDown from '../../components/basic/DropDown'
+import SelectUserModal from '../SelectUserModal'
 
 import classnames from 'classnames'
 import style from './style.css'

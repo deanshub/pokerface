@@ -8,7 +8,7 @@ export default ({users, onSelectUser}) =>{
       {users.map((user) => (
         <List.Item key={user.username} onClick={() => onSelectUser(user.username)}>
           <List.Content>
-            <UserSmallCard user={user}/>
+            <UserSmallCard image={user.avatar} header={user.fullname}/>
           </List.Content>
         </List.Item>
       ))}
