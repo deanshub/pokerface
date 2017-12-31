@@ -9,10 +9,26 @@ export default class Input extends Component {
   static defaultProps = {
     amount: 1,
   }
+
+  constructor(props){
+    super(props)
+    this.state = {
+      open: false,
+    }
+  }
+
   focus(){
     if (this.input){
       this.input.focus()
     }
+  }
+
+  cardSelectChange(cards){
+    const {onChange} = this.props
+    onChange(null,{value: cards})
+    this.setState({
+      open: false,
+    })
   }
 
   render(){
@@ -31,6 +47,8 @@ export default class Input extends Component {
       amount,
       ...otherProps
     } = this.props
+
+    const {open} = this.state
 
     return(
       <div className={classnames(style.field)} onClick={onClick||::this.focus}>
@@ -55,6 +73,7 @@ export default class Input extends Component {
           {
             cardSelection&&
             <DropDown
+                open={open}
                 trigger={
                   <button
                       className={classnames(
@@ -67,7 +86,7 @@ export default class Input extends Component {
             >
               <CardSelection
                   amount={amount}
-                  onCardSelected={(cards)=>onChange(null,{value: cards})}
+                  onCardSelected={::this.cardSelectChange}
               />
             </DropDown>
           }
