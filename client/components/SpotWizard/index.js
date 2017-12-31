@@ -62,9 +62,12 @@ export default class SpotWizard extends Component {
         dealerNextState='none'
       }
 
+      const nextPlayerIndex = utils.getNextPlayer(spotPlayer.newSpot.spot.moves, spotPlayer.newSpot.spotPlayerState)
+
       const smallBlindDisabled = this.isSmallBlindDisabled()
       const bigBlindDisabled = this.isBigBlindDisabled()
-      const dealerTurn = this.isDealerTurn()
+      const gameEnded = nextPlayerIndex===null
+      const dealerTurn = nextPlayerIndex===MOVES.DEALER
       const noRaiser = this.isNoRaiser()
       const hasRaise = this.hasRaise()
       const showCardsDisabled = !this.canShowCards()
@@ -100,6 +103,7 @@ export default class SpotWizard extends Component {
               dealerDisabled={!dealerTurn}
               dealerClick={::this.dealer}
               dealerNextState={dealerNextState}
+              gameEnded={gameEnded}
           />
           <Spot
               currency={spotPlayer.newSpot.spotPlayerState.currency}
@@ -312,24 +316,6 @@ export default class SpotWizard extends Component {
     return playersMoves.length>0
   }
 
-  isDealerTurn(){
-    const {spotPlayer, players} = this.props
-    if (spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.raiser!==undefined){
-      const playersInBets = spotPlayer.newSpot.spotPlayerState.players.filter(player=>!player.folded && player.bet!==undefined)
-      // all bets are the same
-      if (playersInBets.length>1){
-        const betValue = playersInBets[0].bet
-        if (betValue){
-          const differentBetPlayers = playersInBets.filter(player=>player.bet!==betValue)
-          return differentBetPlayers.length===0
-        }else{
-          return spotPlayer.newSpot.spotPlayerState.raiser===utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
-        }
-      }
-    }
-    return false
-  }
-
   isNoRaiser(){
     const {spotPlayer} = this.props
 
@@ -338,7 +324,22 @@ export default class SpotWizard extends Component {
 
   hasRaise(){
     const {spotPlayer} = this.props
-    return spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise>0
+
+    if (spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise>0){
+      const playerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+      const player = spotPlayer.newSpot.spotPlayerState.players[playerIndex]
+      if (!player){
+        return false
+      }
+
+      if (player.bet === spotPlayer.newSpot.generalSettings.bb&&
+          spotPlayer.newSpot.spotPlayerState.totalRaise===spotPlayer.newSpot.generalSettings.bb){
+        return false
+      }
+      return true
+    }
+
+    return false
   }
 
   canShowCards(){
@@ -346,7 +347,7 @@ export default class SpotWizard extends Component {
     if (spotPlayer.newSpot.spotPlayerState){
       const playerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
       const player = spotPlayer.newSpot.spotPlayerState.players[playerIndex]
-      if (player.cards && player.cards[0].rank!==unimportantCard.rank){
+      if (player && player.cards && player.cards[0].rank!==unimportantCard.rank){
         const playersShowMoves = spotPlayer.newSpot.spot.moves.find((move)=>{
           return move.action===MOVES.PLAYER_META_ACTIONS.SHOWS &&
                 move.player===playerIndex

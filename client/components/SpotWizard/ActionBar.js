@@ -54,12 +54,12 @@ export default class SpotWizard extends Component {
     const {
       dealerDisabled, raiseClick, checkDisabled, callClick,
       checkClick, foldClick, dealerNextState,
-      minimumRaise, maximumRaise,
+      minimumRaise, maximumRaise, gameEnded,
     } = this.props
     const {dealerCards, raiseValue} = this.state
     const actions = []
 
-    if(dealerDisabled){
+    if(!gameEnded && dealerDisabled){
       actions.push(
         <Button
             key="fold"
@@ -136,7 +136,7 @@ export default class SpotWizard extends Component {
           </div>
         </DropDown>
       )
-    }else{
+    }else if(!gameEnded){
       actions.push(
         <Input
             amount={dealerNextState==='Flop'?3:1}
