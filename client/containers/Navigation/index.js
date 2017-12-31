@@ -13,7 +13,7 @@ import Events from '../Events'
 import RebrandedBlindsTimer from '../RebrandedBlindsTimer'
 import Learn from '../../components/Learn'
 import NoMatch from '../../components/NoMatch'
-import SelectUserModal from '../../containers/SelectUserModal'
+import TopMenu from './TopMenu'
 
 import 'semantic-ui-css/semantic.min.css'
 import classnames from 'classnames'
@@ -27,37 +27,7 @@ export default class Navigation extends Component {
     children: PropTypes.element,
   }
 
-  state = {showTopMenu:false, selectUserModalOpen:false}
-
-  handleLogout(){
-    const {routing, auth} = this.props
-    localStorage.removeItem('jwt')
-    auth.logout()
-    routing.replace('/login')
-  }
-
   render() {
-
-    const {user} = this.props.auth
-    const {showTopMenu, selectUserModalOpen} = this.state
-
-    const topMenu = <div className={classnames(style.topMenu)}>
-      <div className={classnames(style.signedInAsCard)}>
-        <img src={user.avatar}/>
-        <div>
-          <div className={classnames(style.signedInAs)}>Signed is as</div>
-          <div>{user.fullname}</div>
-        </div>
-      </div>
-      <div
-          className={classnames(style.topMenuItem)}
-          onClick={() => this.setState({selectUserModalOpen:true})}
-      >
-        Switch user
-      </div>
-      <div className={classnames(style.topMenuItem)} onClick={::this.handleLogout}>Logout</div>
-    </div>
-
     return (
       <DocumentTitle title="Pokerface.io">
         <div>
@@ -68,17 +38,11 @@ export default class Navigation extends Component {
             <div className={classnames(style.title)}>
               POKERFACE
             </div>
-            <div
-                className={classnames(style.config)}
-                onBlur={() => {this.setState({showTopMenu:false})}}
-                onClick={() => {this.setState({showTopMenu:true})}}
-            >
-              {showTopMenu && topMenu}
-            </div>
+            <TopMenu/>
           </div>
           <div className={classnames(style.container)}>
             <Navbar />
-            <div>
+            <div className={classnames(style.content)}>
               <Switch>
                 <Route
                     component={Feed}
@@ -114,14 +78,6 @@ export default class Navigation extends Component {
               <Route component={NoMatch}/>
             </Switch>
           </div>
-          {
-            selectUserModalOpen &&
-            <SelectUserModal
-                onClose={() => this.setState({selectUserModalOpen:false})}
-                open={selectUserModalOpen}
-                redirectUrl="/"
-            />
-          }
           </div>
         </div>
       </DocumentTitle>

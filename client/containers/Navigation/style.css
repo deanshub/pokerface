@@ -1,10 +1,4 @@
 @import "../../constants/styles";
-/* .container{
-  background-color: #f2f2f2;
-} */
-/* body{
-  background-color: #f2f2f2;
-} */
 
 .header {
   width: 100%;
@@ -40,29 +34,15 @@
 .container {
   display: flex;
   padding-top: 3.22em;
+  flex: $containerFlex;
 }
 
 .topMenu {
   background-color: white;
   border-radius: 0.4em;
-  position: absolute;
-  top: 100%;
-  right: 0.3em;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
   padding-right: 0.8em;
   padding-left: 0.8em;
   padding-bottom: 0.8em;
-}
-
-.topMenu::before {
-  position: absolute;
-  content: '';
-  background-color: inherit;
-  transform: translateX(-50%) translateY(-50%) rotate(45deg);
-  width: .6666em;
-  height: .6666em;
-  top: 0;
-  left: 79%;
 }
 
 .topMenu > * {
@@ -88,6 +68,15 @@
   }
 }
 
-.signedInAs {
+.email {
   color: #a2a2a2;
+  font-size: 0.85em;
+}
+
+.name {
+  font-size: 0.85em;
+}
+
+.content {
+  flex: $contentFlex;
 }

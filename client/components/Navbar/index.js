@@ -2,12 +2,14 @@
 
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Menu, Input, Icon, Label, Search, Image, Dropdown } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PlayerSearchResult from './PlayerSearchResult'
+import Autosuggest from 'react-autosuggest'
 import classnames from 'classnames'
 import style from './style.css'
 import { NavLink } from 'react-router-dom'
+import Image from '../basic/Image'
+import Input from '../basic/Input'
 
 @inject('globalPlayersSearch')
 @inject('routing')
@@ -17,10 +19,6 @@ import { NavLink } from 'react-router-dom'
 @inject('timer')
 @observer
 export default class Navbar extends Component {
-  constructor(props){
-    super(props)
-    this.state = {selectUserModalOpen: false}
-  }
 
   componentWillMount(){
     this.props.auth.fetchOptionalUsersSwitch()
@@ -28,17 +26,6 @@ export default class Navbar extends Component {
 
   componentDidMount(){
     this.props.events.fetchMyGames()
-  }
-
-  handleMenuItemClick(location){
-    this.props.routing.replace(location)
-  }
-
-  handleLogout(){
-    const {routing, auth} = this.props
-    localStorage.removeItem('jwt')
-    auth.logout()
-    routing.replace('/login')
   }
 
   handleResultSelect(e, selected){
@@ -58,15 +45,13 @@ export default class Navbar extends Component {
     )
   }
 
-  isActive(path){
-    const {routing} = this.props
-    return routing.location.pathname===path
+  // TODO: Consult with Dean
+  shouldComponentUpdate(){
+    return true
   }
 
   render() {
     const {globalPlayersSearch, auth, events, routing} = this.props
-    const {selectUserModalOpen} = this.state
-    const showSwitchUser = auth.optionalUsers.length > 0
 
     return (
       <div className={classnames(style.navbar)}>
@@ -81,7 +66,6 @@ export default class Navbar extends Component {
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
-              exact
               to="/profile"
           >
             PROFILE
@@ -89,13 +73,12 @@ export default class Navbar extends Component {
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
-              exact
               to="/events"
           >
             EVENTS
             {
               events.games.size>0?
-              <Label circular size="mini">{events.games.size}</Label>:
+              events.games.size:
               undefined
             }
           </NavLink>
@@ -105,7 +88,6 @@ export default class Navbar extends Component {
             <NavLink
                 activeClassName={classnames(style.navbarRouteItemActive)}
                 className={classnames(style.navbarRouteItem)}
-                exact
                 to="/smart"
             >
               PER-FLOP CHART
@@ -113,13 +95,14 @@ export default class Navbar extends Component {
             <NavLink
                 activeClassName={classnames(style.navbarRouteItemActive)}
                 className={classnames(style.navbarRouteItem)}
-                exact
                 to="/timer"
             >
               BLINDS TIMER
             </NavLink>
-            <div>
-              <Search
+            <div className={classnames(style.navbarSection)}>
+              SEARCH
+            </div>
+              {/* <Search
                   as={Input}
                   icon={{ name: 'search', link: true }}
                   loading={globalPlayersSearch.loading}
@@ -132,9 +115,80 @@ export default class Navbar extends Component {
                   style={{marginBottom:2}}
                   transparent
                   value={globalPlayersSearch.searchValue}
+              /> */null}
+
+              <Autosuggest
+                  getSuggestionValue={player=>player.fullname}
+                  highlightFirstSuggestion
+                  id="1"
+                  inputProps={{
+                    placeholder: 'Player',
+                    value:globalPlayersSearch.searchValue,
+                    onChange: ::this.searchInputChange,
+                  }}
+                  onSuggestionsClearRequested={()=>globalPlayersSearch.availablePlayers.clear()}
+                  onSuggestionsFetchRequested={::this.searchChange}
+                  renderInputComponent={(props)=>(
+                    <input className={classnames(style.autosuggestInput)} {...props}/>
+                  )}
+                  renderSuggestion={this.renderSuggestion}
+                  suggestions={globalPlayersSearch.immutableAvailablePlayers}
+                  theme={{
+                    container: classnames(style.autosuggest),
+                    suggestionsList: classnames(style.suggestionsList),
+                    suggestion: classnames(style.suggestion),
+                    suggestionHighlighted: classnames(style.suggestionHighlighted),
+                    suggestionsContainer: classnames(style.suggestionsContainer),
+                    suggestionsContainerOpen: classnames(style.suggestionsContainerOpen),
+                  }}
               />
-            </div>
           </div>
     )
+  }
+
+  // onSuggestionSelected={::this.onSuggestionSelected}
+
+
+
+
+  searchChange({value}){
+    const {globalPlayersSearch} = this.props
+    globalPlayersSearch.search(value)
+  }
+
+  renderSuggestion(player,{query}){
+    if (!player.guest){
+      return(
+        <div className={classnames(style.suggestionItem)}>
+          <Image
+              avatar
+              centered
+              small
+              src={player.avatar}
+              target="_blank"
+          />
+          {player.fullname}
+        </div>
+      )
+    }else{
+      return (
+        <div className={classnames(style.suggestionItem)}>
+          Add &nbsp;<strong>{query}</strong>
+        </div>
+      )
+    }
+  }
+
+  onSuggestionSelected(e, {suggestion}){
+    const {players, user, playerIndex} = this.props
+    players.setPlayer(playerIndex, {...suggestion, cards: user.cards})
+  }
+  searchInputChange(e,{newValue}){
+    const {user} = this.props
+    if (!user.guest){
+      this.onSuggestionSelected(e, {suggestion:{...user, guest:true, fullname:newValue, username:`guest-${Math.random().toString()}`}})
+    }else{
+      user.fullname = newValue
+    }
   }
 }

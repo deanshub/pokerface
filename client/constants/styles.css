@@ -9,6 +9,8 @@ $appBackgroundColor: #24222e;
 /* Nevegation */
 $heaerBackgroundColor: #535168;
 $heaerColor: #b4b4cc;
+$contentFlex: 20;
+$navbarFlex: 1;
 
 /* spot player */
 $activeButton: #41c86a;
