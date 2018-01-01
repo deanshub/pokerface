@@ -18,6 +18,10 @@ import Notification from './Notification'
 @inject('timer')
 @observer
 export default class Navbar extends Component {
+  constructor(props: Object){
+    super(props)
+    this.state = {searchValue:''}
+  }
 
   componentWillMount(){
     this.props.auth.fetchOptionalUsersSwitch()
@@ -54,14 +58,19 @@ export default class Navbar extends Component {
     routing.push(`/profile/${suggestion.username}`)
   }
 
-  searchInputChange(e,{newValue}){
+  searchInputChange(e,{newValue, method}){
     const {globalPlayersSearch} = this.props
 
-    globalPlayersSearch.search(newValue)
+    if (method==="type"){
+      globalPlayersSearch.search(newValue)
+    }
+
+    this.setState({searchValue:newValue})
   }
 
   render() {
     const {globalPlayersSearch, auth, events, routing} = this.props
+    const {searchValue} = this.state
     const {username} = auth.user
 
     return (
@@ -114,7 +123,7 @@ export default class Navbar extends Component {
                 highlightFirstSuggestion
                 inputProps={{
                   placeholder: 'Player',
-                  value:globalPlayersSearch.searchValue,
+                  value:searchValue,
                   onChange: ::this.searchInputChange,
                 }}
                 onSuggestionSelected={::this.onSuggestionSelected}
