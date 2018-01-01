@@ -46,18 +46,20 @@ export default class PokerTable extends Component {
           style={{backgroundColor: fabricColor}}
       >
         <div className={classnames(style.backgroundContainer)}>
-          {
-            title?(
-              <div className={classnames(style.text)}>
-                {title}
-              </div>
-            ):null
-          }
-          {
-            logo ?
-            <div className={style.logo} style={{backgroundImage:`url('${logo}')`}}/>
-            : null
-          }
+          <div className={classnames(style.line)}>
+            {
+              title?(
+                <div className={classnames(style.text)}>
+                  {title}
+                </div>
+              ):null
+            }
+            {
+              logo ?
+              <div className={style.logo} style={{backgroundImage:`url('${logo}')`}}/>
+              : null
+            }
+          </div>
         </div>
         <div className={classnames(style.forgroundContainer)}>
           <BetList

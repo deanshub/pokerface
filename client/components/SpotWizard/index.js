@@ -2,9 +2,10 @@
 
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Modal } from 'semantic-ui-react'
+import Modal, {ModalHeader,ModalContent,ModalFooter} from '../basic/Modal'
 import { observer, inject } from 'mobx-react'
 import { extendObservable } from 'mobx'
+import Button, {ButtonGroup} from '../basic/Button'
 import Spot from '../Spot'
 import GeneralSettings from './GeneralSettings'
 import ActionBar from './ActionBar'
@@ -37,21 +38,80 @@ export default class SpotWizard extends Component {
 
   getMainContent(){
     const {spotPlayer} = this.props
+    const {step} = spotPlayer.newSpot
 
-    if (spotPlayer.newSpot.step===0){
+    if (step===0){
       return (
         <GeneralSettings
             settings={spotPlayer.newSpot.generalSettings}
         />
       )
-    }else if (spotPlayer.newSpot.step===1) {
+    }else if (step===1) {
+      const dealerMoves = spotPlayer.newSpot.spot.moves.filter((move)=>move.player===MOVES.DEALER)
+      const flop = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.FLOP)!==undefined
+      const turn = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.TURN)!==undefined
+      const river = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.RIVER)!==undefined
+      let dealerNextState
+      if (!flop){
+        dealerNextState='Flop'
+      }else if(!turn){
+        dealerNextState='Turn'
+      }else if(!river){
+        dealerNextState='River'
+      }else{
+        dealerNextState='none'
+      }
+
+      const nextPlayerIndex = utils.getNextPlayer(spotPlayer.newSpot.spot.moves, spotPlayer.newSpot.spotPlayerState)
+
+      const smallBlindDisabled = this.isSmallBlindDisabled()
+      const bigBlindDisabled = this.isBigBlindDisabled()
+      const gameEnded = nextPlayerIndex===null
+      const dealerTurn = nextPlayerIndex===MOVES.DEALER
+      const noRaiser = this.isNoRaiser()
+      const hasRaise = this.hasRaise()
+      const showCardsDisabled = !this.canShowCards()
+      const currentPlayerBank = this.getCurrentPlayerBank()
+      const minimumRaise = this.getMinimumRaise()
+
       return(
-        <Spot
-            currency={spotPlayer.newSpot.spotPlayerState.currency}
-            dealer={spotPlayer.newSpot.spotPlayerState.dealer}
-            movesTotal={spotPlayer.newSpot.spot.moves.length}
-            players={spotPlayer.newSpot.spotPlayerState.players}
-        />
+        <div className={classnames(style.stepTwoContainer)}>
+          <ActionBar
+              step={step}
+              previousClick={::this.previousStep}
+              previousDisabled={step<1}
+              nextClick={::this.nextStep}
+              nextDisabled={this.nextStepDisabled()}
+              smallBlindClick={::this.smallBlind}
+              smallBlindDisabled={smallBlindDisabled}
+              bigBlindClick={::this.bigBlind}
+              bigBlindDisabled={bigBlindDisabled}
+              foldClick={::this.fold}
+              foldDisabled={dealerTurn}
+              callClick={::this.call}
+              callDisabled={dealerTurn || noRaiser}
+              checkClick={::this.check}
+              checkDisabled={dealerTurn || hasRaise}
+              raiseClick={::this.raise}
+              raiseDisabled={dealerTurn}
+              minimumRaise={minimumRaise}
+              maximumRaise={currentPlayerBank}
+              showCardsClick={::this.showCards}
+              showCardsDisabled={showCardsDisabled}
+              saveDisabled={this.previousStepDisabled()}
+              save={::this.save}
+              dealerDisabled={!dealerTurn}
+              dealerClick={::this.dealer}
+              dealerNextState={dealerNextState}
+              gameEnded={gameEnded}
+          />
+          <Spot
+              currency={spotPlayer.newSpot.spotPlayerState.currency}
+              dealer={spotPlayer.newSpot.spotPlayerState.dealer}
+              movesTotal={spotPlayer.newSpot.spot.moves.length}
+              players={spotPlayer.newSpot.spotPlayerState.players}
+          />
+        </div>
       )
     }
   }
@@ -61,7 +121,7 @@ export default class SpotWizard extends Component {
     const {spotPlayer, players} = this.props
 
     if (spotPlayer.newSpot.step===0){
-      spotPlayer.newSpot.spot.players = players.currentPlayers.values().map((player, playerIndex)=>{
+      spotPlayer.newSpot.spot.players = players.currentPlayers.map((player, playerIndex)=>{
         spotPlayer.newSpot.spot.cards[playerIndex] = player.cards
         return {
           bank: 100,
@@ -71,7 +131,7 @@ export default class SpotWizard extends Component {
       spotPlayer.newSpot.spot.ante=spotPlayer.newSpot.generalSettings.ante||0
       // TODO:normalize spotPlayer.newSpot.generalSettings.currency
       spotPlayer.newSpot.spot.currency=MOVES.CURRENCIES.DOLLAR
-      spotPlayer.newSpot.spot.moves = players.currentPlayers.values().filter(player=>player.showCards&&player.cards)
+      spotPlayer.newSpot.spot.moves = players.currentPlayers.filter(player=>player.showCards&&player.cards)
         .map((player, playerIndex)=>{
           return {
             player: playerIndex,
@@ -110,7 +170,7 @@ export default class SpotWizard extends Component {
     const {spotPlayer, players} = this.props
     if (spotPlayer.newSpot.step>1){
       return true
-    }else if (spotPlayer.newSpot.step===0 && players.currentPlayersArray.length<2){
+    }else if (spotPlayer.newSpot.step===0 && players.currentPlayers.length<2){
       return true
     }
     return false
@@ -256,24 +316,6 @@ export default class SpotWizard extends Component {
     return playersMoves.length>0
   }
 
-  isDealerTurn(){
-    const {spotPlayer, players} = this.props
-    if (spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.raiser!==undefined){
-      const playersInBets = spotPlayer.newSpot.spotPlayerState.players.filter(player=>!player.folded && player.bet!==undefined)
-      // all bets are the same
-      if (playersInBets.length>1){
-        const betValue = playersInBets[0].bet
-        if (betValue){
-          const differentBetPlayers = playersInBets.filter(player=>player.bet!==betValue)
-          return differentBetPlayers.length===0
-        }else{
-          return spotPlayer.newSpot.spotPlayerState.raiser===utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
-        }
-      }
-    }
-    return false
-  }
-
   isNoRaiser(){
     const {spotPlayer} = this.props
 
@@ -282,7 +324,22 @@ export default class SpotWizard extends Component {
 
   hasRaise(){
     const {spotPlayer} = this.props
-    return spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise>0
+
+    if (spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise>0){
+      const playerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+      const player = spotPlayer.newSpot.spotPlayerState.players[playerIndex]
+      if (!player){
+        return false
+      }
+
+      if (player.bet === spotPlayer.newSpot.generalSettings.bb&&
+          spotPlayer.newSpot.spotPlayerState.totalRaise===spotPlayer.newSpot.generalSettings.bb){
+        return false
+      }
+      return true
+    }
+
+    return false
   }
 
   canShowCards(){
@@ -290,7 +347,7 @@ export default class SpotWizard extends Component {
     if (spotPlayer.newSpot.spotPlayerState){
       const playerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
       const player = spotPlayer.newSpot.spotPlayerState.players[playerIndex]
-      if (player.cards && player.cards[0].rank!==unimportantCard.rank){
+      if (player && player.cards && player.cards[0].rank!==unimportantCard.rank){
         const playersShowMoves = spotPlayer.newSpot.spot.moves.find((move)=>{
           return move.action===MOVES.PLAYER_META_ACTIONS.SHOWS &&
                 move.player===playerIndex
@@ -325,74 +382,45 @@ export default class SpotWizard extends Component {
     const {spotPlayer} = this.props
     const {step} = spotPlayer.newSpot
 
-    const dealerMoves = spotPlayer.newSpot.spot.moves.filter((move)=>move.player===MOVES.DEALER)
-    const flop = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.FLOP)!==undefined
-    const turn = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.TURN)!==undefined
-    const river = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.RIVER)!==undefined
-    let dealerNextState
-    if (!flop){
-      dealerNextState='Flop'
-    }else if(!turn){
-      dealerNextState='Turn'
-    }else if(!river){
-      dealerNextState='River'
-    }else{
-      dealerNextState='none'
-    }
-
-    const smallBlindDisabled = this.isSmallBlindDisabled()
-    const bigBlindDisabled = this.isBigBlindDisabled()
-    const dealerTurn = this.isDealerTurn()
-    const noRaiser = this.isNoRaiser()
-    const hasRaise = this.hasRaise()
-    const showCardsDisabled = !this.canShowCards()
-    const currentPlayerBank = this.getCurrentPlayerBank()
-    const minimumRaise = this.getMinimumRaise()
-
     return (
-      <Modal
-          closeIcon={{
-            name: 'close',
-            onClick: ::this.cancel,
-          }}
-          open={spotPlayer.spotWizardOpen}
-          size="fullscreen"
-      >
-        <Modal.Header>
+      <Modal open={spotPlayer.spotWizardOpen}>
+        <ModalHeader>
           Spot Wizard
-        </Modal.Header>
+        </ModalHeader>
 
-        <Modal.Content className={classnames(style.spotContainer)} style={{height:'80vh'}}>
+        <ModalContent className={classnames(style.spotContainer)} style={{height:'80vh'}}>
           {this.getMainContent()}
-        </Modal.Content>
-        <ActionBar
-            step={spotPlayer.newSpot.step}
-            previousClick={::this.previousStep}
-            previousDisabled={step<1}
-            nextClick={::this.nextStep}
-            nextDisabled={this.nextStepDisabled()}
-            smallBlindClick={::this.smallBlind}
-            smallBlindDisabled={smallBlindDisabled}
-            bigBlindClick={::this.bigBlind}
-            bigBlindDisabled={bigBlindDisabled}
-            foldClick={::this.fold}
-            foldDisabled={dealerTurn}
-            callClick={::this.call}
-            callDisabled={dealerTurn || noRaiser}
-            checkClick={::this.check}
-            checkDisabled={dealerTurn || hasRaise}
-            raiseClick={::this.raise}
-            raiseDisabled={dealerTurn}
-            minimumRaise={minimumRaise}
-            maximumRaise={currentPlayerBank}
-            showCardsClick={::this.showCards}
-            showCardsDisabled={showCardsDisabled}
-            saveDisabled={this.previousStepDisabled()}
-            save={::this.save}
-            dealerDisabled={!dealerTurn}
-            dealerClick={::this.dealer}
-            dealerNextState={dealerNextState}
-        />
+        </ModalContent>
+        <ModalFooter>
+          <ButtonGroup horizontal>
+            <ButtonGroup horizontal noEqual>
+              {step>=1&&
+                <Button
+                    leftIcon="back"
+                    onClick={::this.previousStep}
+                >
+                  Back
+                </Button>
+              }
+            </ButtonGroup>
+            <ButtonGroup
+                horizontal
+                noEqual
+                style={{justifyContent:'flex-end'}}
+            >
+              <Button onClick={::this.cancel}>
+                Cancel
+              </Button>
+              <Button
+                  disable={this.nextStepDisabled()}
+                  onClick={::this.nextStep}
+                  primary
+              >
+                {step===1?'Create':'Next'}
+              </Button>
+            </ButtonGroup>
+          </ButtonGroup>
+        </ModalFooter>
       </Modal>
     )
   }

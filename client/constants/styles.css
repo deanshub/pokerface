@@ -17,3 +17,14 @@ $disabled: #24222e;
 @value raiseColor: #ae73e6;
 @value betColor: #e3d357;
 @value anteColor: #74728c;
+
+/* input */
+@value borderColor: #d8d8d8;
+@value errorColor: rgb(255, 90, 90);
+@value errorColorOpacitated: rgba(255, 90, 90, 0.1);
+@value warningColor: rgb(240, 158, 95);
+@value warningColorOpacitated: rgba(240, 158, 95, 0.1);
+@value focusColor: #a0a0b5;
+@value labelColor: #8c8aa1;
+@value placeholderColor: #a0a0b5;
+@value hoverSelectItemColor: rgba(65, 200, 106,0.5);

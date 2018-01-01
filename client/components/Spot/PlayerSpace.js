@@ -35,9 +35,10 @@ export default class PlayerSpace extends Component {
 
   avatarClicked(){
     const { player, routing } = this.props
-    if (!player.guest){
-      routing.push(`/profile/${player.username}`)
-    }
+    console.log(`/profile/${player.username}`);
+    // if (!player.guest){
+    //   routing.push(`/profile/${player.username}`)
+    // }
   }
 
   render(){
