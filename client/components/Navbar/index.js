@@ -8,6 +8,7 @@ import classnames from 'classnames'
 import style from './style.css'
 import { NavLink } from 'react-router-dom'
 import UserSmallCard from '../UserSmallCard'
+import Notification from './Notification'
 
 @inject('globalPlayersSearch')
 @inject('routing')
@@ -85,12 +86,7 @@ export default class Navbar extends Component {
               className={classnames(style.navbarRouteItem)}
               to="/events"
           >
-            EVENTS
-            {
-              events.games.size>0?
-              events.games.size:
-              undefined
-            }
+            EVENTS <Notification number={events.games.size}/>
           </NavLink>
           <div className={classnames(style.navbarSection)}>
             TOOLS
@@ -116,7 +112,6 @@ export default class Navbar extends Component {
             <Autosuggest
                 getSuggestionValue={player=>player.fullname}
                 highlightFirstSuggestion
-                id="1"
                 inputProps={{
                   placeholder: 'Player',
                   value:globalPlayersSearch.searchValue,
