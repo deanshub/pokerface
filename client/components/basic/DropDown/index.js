@@ -29,8 +29,12 @@ export default class DropDown extends Component {
   }
 
   render(){
-    const {children, trigger} = this.props
+    const {children, trigger, onOpen} = this.props
     const {open} = this.state
+
+    if(open && onOpen){
+      setTimeout(onOpen)
+    }
 
     const allChildren = trigger.props.children?[
       trigger.props.children,

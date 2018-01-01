@@ -36,10 +36,12 @@ export default class Card extends PureComponent {
       originalHeight: null,
       activeHover: false,
     }
+    this.bindedResetHight = this.resetHight.bind(this)
   }
 
   componentDidMount(){
     this.resetHight()
+    window.addEventListener('resize', this.bindedResetHight)
   }
 
   componentDidUpdate(prevProps){
@@ -47,6 +49,10 @@ export default class Card extends PureComponent {
     if (covered!==prevProps.covered){
       this.resetHight()
     }
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener('resize', this.bindedResetHight)
   }
 
   resetHight(){

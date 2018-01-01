@@ -124,6 +124,7 @@ export default class PlayerField extends Component {
             rightButton={
               <Button
                   active={user.showCards}
+                  disable={user.cards===''||!user.cards}
                   leftIcon="show"
                   onClick={()=>user.showCards = !user.showCards}
                   small

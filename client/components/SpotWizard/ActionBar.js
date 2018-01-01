@@ -16,6 +16,7 @@ export default class SpotWizard extends Component {
     this.state = {
       dealerCards: '',
       raiseValue: props.minimumRaise||0,
+      raiseOpen: false,
     }
   }
 
@@ -50,13 +51,22 @@ export default class SpotWizard extends Component {
     })
   }
 
+  localRaise(){
+    const {raiseClick} = this.props
+    const {raiseValue} = this.state
+    raiseClick(raiseValue)
+    this.setState({
+      raiseOpen: false,
+    })
+  }
+
   getMiddleActions(){
     const {
       dealerDisabled, raiseClick, checkDisabled, callClick,
       checkClick, foldClick, dealerNextState,
       minimumRaise, maximumRaise, gameEnded,
     } = this.props
-    const {dealerCards, raiseValue} = this.state
+    const {dealerCards, raiseValue, raiseOpen} = this.state
     const actions = []
 
     if(!gameEnded && dealerDisabled){
@@ -101,6 +111,8 @@ export default class SpotWizard extends Component {
       actions.push(
         <DropDown
             key="raise"
+            onOpen={()=>this.raiseInput&&this.raiseInput.focus()}
+            open={raiseOpen}
             trigger={
               <Button
                   key="raise"
@@ -122,6 +134,7 @@ export default class SpotWizard extends Component {
             />
             <Input
                 onChange={::this.changeRaise}
+                ref={(el)=>this.raiseInput = el}
                 rightButton={
                   <Button
                       onClick={()=>raiseClick(raiseValue)}
