@@ -208,7 +208,7 @@ const utils = {
 
 
     const riverShowed = moves.find(move=>move.action===MOVES.DEALER_ACTIONS.RIVER)
-    if(allPlayed && riverShowed){
+    if((allPlayed && riverShowed) || playersKeys.length<=1){
       return null
     }else if(allPlayed){
       return MOVES.DEALER
