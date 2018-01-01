@@ -3,6 +3,12 @@
 .spotContainer{
 }
 
+.stepTwoContainer{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .players{
   overflow-y: auto;
   flex: 1;
@@ -56,25 +62,48 @@
   align-items: center;
 }
 
-.raiseInput>input{
-  width: 5vw;
-  padding: 0 5px;
-}
-
-.dealerCardsInput{
-  margin:0 5px !important;
-}
-.dealerCardsInput>input{
-  width: 50px;
-}
-
 .generalSettingsContainer{
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 .blinds{
+  padding-top: 20px;
   display: flex;
   border-bottom: 1px solid $divider;
   padding-bottom: 30px;
+}
+
+/* action bar */
+.actionBar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid $divider;
+}
+
+.actionBarLeftPane{
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+.actionBarMiddlePane{
+  flex: 2;
+  display: flex;
+  justify-content: center;
+}
+.actionBarRightPane{
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.divider{
+  width: 1px;
+  background-color: $divider;
+  margin: 20px 0;
+}
+
+.raiseBox{
+
 }

@@ -8,7 +8,9 @@ export default class Modal extends Component {
     if (open){
       let overlayProps = {}
       let containerProps = {
-        onWheel: (e)=>e.preventDefault()
+        onWheel: (e)=>{
+          e.stopPropagation()
+        },
       }
       if (closeOnBlur){
         overlayProps.onClick=onClose

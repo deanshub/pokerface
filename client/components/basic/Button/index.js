@@ -3,23 +3,35 @@ import classnames from 'classnames'
 import style from './style.css'
 
 export default class Button extends Component {
+  static defaultProps = {
+    onClick:()=>{},
+  }
+
   render(){
-    const { text, active, onClick, name, primary, leftIcon, disable } = this.props
+    const { children, simple, active, onClick, hidden, primary, leftIcon, disable, small, ...restProps } = this.props
     return(
       <button
           className={classnames(
             style.button,
-            style[name],
             {[style.active]: active},
             {[style.primary]: primary},
             {[style.disable]: disable},
+            {[style.simple]: simple},
+            {[style.hidden]: hidden},
+            {[style.small]: small},
           )}
           onClick={(e)=>onClick(e, e.target)}
+          {...restProps}
       >
         {leftIcon&&
-          <div className={classnames(style.leftIcon,style[leftIcon])} />
+          <div
+              className={classnames(
+                style.leftIcon,
+                style[leftIcon],
+              )}
+          />
         }
-        {text}
+        {children}
       </button>
     )
   }

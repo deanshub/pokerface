@@ -8,6 +8,7 @@ import classnames from 'classnames'
 import style from './style.css'
 import { NavLink } from 'react-router-dom'
 import UserSmallCard from '../UserSmallCard'
+import Notification from './Notification'
 
 @inject('globalPlayersSearch')
 @inject('routing')
@@ -17,6 +18,10 @@ import UserSmallCard from '../UserSmallCard'
 @inject('timer')
 @observer
 export default class Navbar extends Component {
+  constructor(props: Object){
+    super(props)
+    this.state = {searchValue:''}
+  }
 
   componentWillMount(){
     this.props.auth.fetchOptionalUsersSwitch()
@@ -38,12 +43,12 @@ export default class Navbar extends Component {
 
   renderSuggestion(player){
     return (
-        <UserSmallCard
-            className={style.suggestionItem}
-            header={player.fullname}
-            image={player.avatar}
-            subheader="2 mutuals friends"
-        />
+      <UserSmallCard
+          className={style.suggestionItem}
+          header={player.fullname}
+          image={player.avatar}
+          subheader="2 mutuals friends"
+      />
     )
   }
 
@@ -53,14 +58,19 @@ export default class Navbar extends Component {
     routing.push(`/profile/${suggestion.username}`)
   }
 
-  searchInputChange(e,{newValue}){
+  searchInputChange(e,{newValue, method}){
     const {globalPlayersSearch} = this.props
 
-    globalPlayersSearch.search(newValue)
+    if (method==="type"){
+      globalPlayersSearch.search(newValue)
+    }
+
+    this.setState({searchValue:newValue})
   }
 
   render() {
-    const {globalPlayersSearch, auth, events, routing} = this.props
+    const {globalPlayersSearch, auth, events} = this.props
+    const {searchValue} = this.state
     const {username} = auth.user
 
     return (
@@ -85,12 +95,7 @@ export default class Navbar extends Component {
               className={classnames(style.navbarRouteItem)}
               to="/events"
           >
-            EVENTS
-            {
-              events.games.size>0?
-              events.games.size:
-              undefined
-            }
+            EVENTS <Notification number={events.games.size}/>
           </NavLink>
           <div className={classnames(style.navbarSection)}>
             TOOLS
@@ -116,10 +121,9 @@ export default class Navbar extends Component {
             <Autosuggest
                 getSuggestionValue={player=>player.fullname}
                 highlightFirstSuggestion
-                id="1"
                 inputProps={{
                   placeholder: 'Player',
-                  value:globalPlayersSearch.searchValue,
+                  value:searchValue,
                   onChange: ::this.searchInputChange,
                 }}
                 onSuggestionSelected={::this.onSuggestionSelected}

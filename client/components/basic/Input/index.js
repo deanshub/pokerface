@@ -6,10 +6,29 @@ import classnames from 'classnames'
 import style from './style.css'
 
 export default class Input extends Component {
+  static defaultProps = {
+    amount: 1,
+  }
+
+  constructor(props){
+    super(props)
+    this.state = {
+      open: false,
+    }
+  }
+
   focus(){
     if (this.input){
       this.input.focus()
     }
+  }
+
+  cardSelectChange(cards){
+    const {onChange} = this.props
+    onChange(null,{value: cards})
+    this.setState({
+      open: false,
+    })
   }
 
   render(){
@@ -24,14 +43,17 @@ export default class Input extends Component {
       error,
       warning,
       cardSelection,
-      rightButton,// rightButton={name,onClick,active}
+      rightButton,
+      amount,
       ...otherProps
     } = this.props
+
+    const {open} = this.state
 
     return(
       <div className={classnames(style.field)} onClick={onClick||::this.focus}>
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
-        <div className={classnames(style.inputContainer)}>
+        <div className={classnames(style.inputContainer, {[style.range]:type==='range'})}>
           <input
               className={classnames(
                 style.input,
@@ -51,6 +73,7 @@ export default class Input extends Component {
           {
             cardSelection&&
             <DropDown
+                open={open}
                 trigger={
                   <button
                       className={classnames(
@@ -62,8 +85,8 @@ export default class Input extends Component {
                 }
             >
               <CardSelection
-                  amount={2}
-                  onCardSelected={(cards)=>onChange(null,{value: cards})}
+                  amount={amount}
+                  onCardSelected={::this.cardSelectChange}
               />
             </DropDown>
           }
@@ -71,18 +94,7 @@ export default class Input extends Component {
             rightButton&&
             <div className={classnames(style.divider)}/>
           }
-          {
-            rightButton&&
-            <button
-                className={classnames(
-                  style.button,
-                  style[rightButton.name],
-                  style.rightBorder,
-                  {[style.active]: rightButton.active},
-                )}
-                onClick={(e)=>rightButton.onClick(e, e.target)}
-            />
-          }
+          {rightButton}
         </div>
       </div>
     )
