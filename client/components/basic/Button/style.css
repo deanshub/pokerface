@@ -60,101 +60,101 @@
   width: 2em;
 }
 .leftIcon.back{
-  background-image: url('../../../assets/spotPlayer/back-bottom.png');
+  background-image: url('../../../assets/spotplayer/back-bottom.png');
 }
 
 .leftIcon.menu{
-  background-image: url('../../../assets/spotPlayer/play-menu.png');
+  background-image: url('../../../assets/spotplayer/play-menu.png');
 }
 .button:not(.disable):hover>.leftIcon.menu{
-  background-image: url('../../../assets/spotPlayer/play-menu-hover-open.png');
+  background-image: url('../../../assets/spotplayer/play-menu-hover-open.png');
 }
 .active>.leftIcon.menu{
-  background-image: url('../../../assets/spotPlayer/play-menu-hover-open.png');
+  background-image: url('../../../assets/spotplayer/play-menu-hover-open.png');
 }
 
 .leftIcon.fold{
-  background-image: url('../../../assets/spotPlayer/fold.png');
+  background-image: url('../../../assets/spotplayer/fold.png');
 }
 .button:not(.disable):hover>.leftIcon.fold{
-  background-image: url('../../../assets/spotPlayer/fold-hover.png');
+  background-image: url('../../../assets/spotplayer/fold-hover.png');
 }
 .active>.leftIcon.fold{
-  background-image: url('../../../assets/spotPlayer/fold-hover.png');
+  background-image: url('../../../assets/spotplayer/fold-hover.png');
 }
 
 .leftIcon.check{
-  background-image: url('../../../assets/spotPlayer/check.png');
+  background-image: url('../../../assets/spotplayer/check.png');
 }
 .button:not(.disable):hover>.leftIcon.check{
-  background-image: url('../../../assets/spotPlayer/check-hover.png');
+  background-image: url('../../../assets/spotplayer/check-hover.png');
 }
 .active>.leftIcon.check{
-  background-image: url('../../../assets/spotPlayer/check-hover.png');
+  background-image: url('../../../assets/spotplayer/check-hover.png');
 }
 
 .leftIcon.call{
-  background-image: url('../../../assets/spotPlayer/call.png');
+  background-image: url('../../../assets/spotplayer/call.png');
 }
 .button:not(.disable):hover>.leftIcon.call{
-  background-image: url('../../../assets/spotPlayer/call-hover.png');
+  background-image: url('../../../assets/spotplayer/call-hover.png');
 }
 .active>.leftIcon.call{
-  background-image: url('../../../assets/spotPlayer/call-hover.png');
+  background-image: url('../../../assets/spotplayer/call-hover.png');
 }
 
 .leftIcon.show{
-  background-image: url('../../../assets/spotPlayer/show.png');
+  background-image: url('../../../assets/spotplayer/show.png');
 }
 .button:not(.disable):hover>.leftIcon.show{
-  background-image: url('../../../assets/spotPlayer/show-hover-selected.png');
+  background-image: url('../../../assets/spotplayer/show-hover-selected.png');
 }
 .active>.leftIcon.show{
-  background-image: url('../../../assets/spotPlayer/show-hover-selected.png');
+  background-image: url('../../../assets/spotplayer/show-hover-selected.png');
 }
 
 .leftIcon.raise{
-  background-image: url('../../../assets/spotPlayer/raise.png');
+  background-image: url('../../../assets/spotplayer/raise.png');
 }
 .button:not(.disable):hover>.leftIcon.raise{
-  background-image: url('../../../assets/spotPlayer/raise-hover.png');
+  background-image: url('../../../assets/spotplayer/raise-hover.png');
 }
 .active>.leftIcon.raise{
-  background-image: url('../../../assets/spotPlayer/raise-hover.png');
+  background-image: url('../../../assets/spotplayer/raise-hover.png');
 }
 
 .leftIcon.dealer{
-  background-image: url('../../../assets/spotPlayer/dealer.png');
+  background-image: url('../../../assets/spotplayer/dealer.png');
 }
 .button:not(.disable):hover>.leftIcon.dealer{
-  background-image: url('../../../assets/spotPlayer/dealer-hover.png');
+  background-image: url('../../../assets/spotplayer/dealer-hover.png');
 }
 .active>.leftIcon.dealer{
-  background-image: url('../../../assets/spotPlayer/dealer-selected.png');
+  background-image: url('../../../assets/spotplayer/dealer-selected.png');
 }
 
 .leftIcon.remove{
-  background-image: url('../../../assets/spotPlayer/delete.png');
+  background-image: url('../../../assets/spotplayer/delete.png');
 }
 .button:not(.disable):hover>.leftIcon.remove{
-  background-image: url('../../../assets/spotPlayer/delete-hover.png');
+  background-image: url('../../../assets/spotplayer/delete-hover.png');
 }
 .active>.leftIcon.remove{
-  background-image: url('../../../assets/spotPlayer/delete-hover.png');
+  background-image: url('../../../assets/spotplayer/delete-hover.png');
 }
 
 .leftIcon.up{
-  background-image: url('../../../assets/spotPlayer/up.png');
+  background-image: url('../../../assets/spotplayer/up.png');
 }
 .button:not(.disable):hover>.leftIcon.up{
-  background-image: url('../../../assets/spotPlayer/up-hover.png');
+  background-image: url('../../../assets/spotplayer/up-hover.png');
 }
 
 .leftIcon.down{
-  background-image: url('../../../assets/spotPlayer/down.png');
+  background-image: url('../../../assets/spotplayer/down.png');
 }
 .button:not(.disable):hover>.leftIcon.down{
-  background-image: url('../../../assets/spotPlayer/down-hover.png');
+  background-image: url('../../../assets/spotplayer/down-hover.png');
 }
 
 .buttonGroup{
