@@ -1,3 +1,48 @@
+@import "../../constants/styles.css";
+
+.landing{
+  color: landingTextColor;
+  display: flex;
+  flex-direction: column;
+}
+.sectionOne{
+  width: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header{
+  width: 100%;
+  display: flex;
+}
+
+.title{
+  flex: 1;
+  font-size: 2em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.login{
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mainContent{
+  width: 100%;
+  display: flex;
+}
+.leftMain{
+  flex: 3;
+}
+.rightMain{
+  flex: 2;
+}
+
+
+
 .forgotPassord {
   margin-left: 1em;
   cursor: pointer;
