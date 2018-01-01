@@ -69,13 +69,13 @@
 }
 
 .cardSelectionButton{
-  background-image: url('../../../assets/spotPlayer/card-small-frame.png');
+  background-image: url('../../../assets/spotplayer/card-small-frame.png');
 }
 .cardSelectionButton.active{
-  background-image: url('../../../assets/spotPlayer/card-small-frame-hover-open.png');
+  background-image: url('../../../assets/spotplayer/card-small-frame-hover-open.png');
 }
 .cardSelectionButton:hover{
-  background-image: url('../../../assets/spotPlayer/card-small-frame-hover-open.png');
+  background-image: url('../../../assets/spotplayer/card-small-frame-hover-open.png');
 }
 
 /* range input */
