@@ -43,12 +43,12 @@ export default class Navbar extends Component {
 
   renderSuggestion(player){
     return (
-        <UserSmallCard
-            className={style.suggestionItem}
-            header={player.fullname}
-            image={player.avatar}
-            subheader="2 mutuals friends"
-        />
+      <UserSmallCard
+          className={style.suggestionItem}
+          header={player.fullname}
+          image={player.avatar}
+          subheader="2 mutuals friends"
+      />
     )
   }
 
@@ -69,7 +69,7 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {globalPlayersSearch, auth, events, routing} = this.props
+    const {globalPlayersSearch, auth, events} = this.props
     const {searchValue} = this.state
     const {username} = auth.user
 
