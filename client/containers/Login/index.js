@@ -24,8 +24,20 @@ export default class Login extends Component {
 
           <div className={classnames(style.mainContent)}>
             <div className={classnames(style.leftMain)}>
-              pokerface
+              {/* <img */}
+              <div className={classnames(style.line)}/>
+              <div className={classnames(style.smallHeader)}>
+                pokerface.io
+              </div>
+              <div className={classnames(style.sectionHeader)}>
+                The Poker Community
+              </div>
+              <div className={classnames(style.sectionDescription)}>
+                Share Learn Win
+                Sign Up For Free
+              </div>
             </div>
+
             <div className={classnames(style.rightMain)}>
               login
             </div>

@@ -4,6 +4,7 @@
   color: landingTextColor;
   display: flex;
   flex-direction: column;
+  line-height: normal;
 }
 .sectionOne{
   width: 100%;
@@ -33,6 +34,9 @@
 .mainContent{
   width: 100%;
   display: flex;
+  margin-top: 8em;
+  margin-bottom: 15em;
+  padding: 0 18em;
 }
 .leftMain{
   flex: 3;
@@ -41,6 +45,32 @@
   flex: 2;
 }
 
+.line{
+  background-color: landingLineColor;
+  width: 10em;
+  height: 1em;
+  margin: 2em 0;
+}
+
+.smallHeader{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 2.5em;
+  color: checkColor;
+}
+.sectionHeader{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 6em;
+  margin: 0.2em 0;
+  color: white;
+}
+.sectionDescription{
+  text-transform: uppercase;
+  font-size: 1.5em;
+  color: landingLineColor;
+  margin: 2em 0;
+}
 
 
 .forgotPassord {
