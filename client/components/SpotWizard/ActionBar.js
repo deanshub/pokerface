@@ -1,12 +1,12 @@
 // @flow
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Button, Menu, Icon, Input, Dropdown, Popup } from 'semantic-ui-react'
-import {ModalFooter} from '../basic/Modal'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
-import CardSelection from '../AddPlay/CardSelection'
+import Button from '../basic/Button'
+import Input from '../basic/Input'
+import DropDown from '../basic/DropDown'
 
 @inject('spotPlayer')
 @observer
@@ -14,8 +14,9 @@ export default class SpotWizard extends Component {
   constructor(props){
     super(props)
     this.state = {
-      dealerCards: [],
+      dealerCards: '',
       raiseValue: props.minimumRaise||0,
+      raiseOpen: false,
     }
   }
 
@@ -26,234 +27,180 @@ export default class SpotWizard extends Component {
   }
 
   changeRaise(e, {value}){
-    const raiseValue = parseInt(value)
+    e.stopPropagation()
+    const raiseValue = parseFloat(value)
     if (raiseValue){
       this.setState({
         raiseValue,
+        raiseOpen: true,
       })
     }
   }
 
-  dealerCardsChange(index, value){
-    let newDealerCards = [...this.state.dealerCards]
-    newDealerCards[index] = value
+  dealerCardsChange(e, {value}){
     this.setState({
-      dealerCards: newDealerCards,
+      dealerCards: value,
     })
   }
 
   publishDealerCards(){
     const {dealerClick} = this.props
     const {dealerCards} = this.state
-    dealerClick(dealerCards.join(''))
+    dealerClick(dealerCards)
     this.setState({
-      dealerCards:[],
+      dealerCards:'',
     })
+  }
+
+  localRaise(){
+    const {raiseClick} = this.props
+    const {raiseValue} = this.state
+    raiseClick(raiseValue)
+    this.setState({
+      raiseOpen: false,
+    })
+  }
+
+  getMiddleActions(){
+    const {
+      dealerDisabled, raiseClick, checkDisabled, callClick,
+      checkClick, foldClick, dealerNextState,
+      minimumRaise, maximumRaise, gameEnded,
+    } = this.props
+    const {dealerCards, raiseValue, raiseOpen} = this.state
+    const actions = []
+
+    if(!gameEnded && dealerDisabled){
+      actions.push(
+        <Button
+            key="fold"
+            leftIcon="fold"
+            onClick={foldClick}
+            simple
+            style={{flex:1}}
+        >
+          Fold
+        </Button>
+      )
+      actions.push(<div className={classnames(style.divider)} key="d1"/>)
+      if (checkDisabled){
+        actions.push(
+          <Button
+              key="call"
+              leftIcon="call"
+              onClick={callClick}
+              simple
+              style={{flex:1}}
+          >
+            Call
+          </Button>
+        )
+      }else{
+        actions.push(
+          <Button
+              key="check"
+              leftIcon="check"
+              onClick={checkClick}
+              simple
+              style={{flex:1}}
+          >
+            Check
+          </Button>
+        )
+      }
+      actions.push(<div className={classnames(style.divider)} key="d2"/>)
+      actions.push(
+        <DropDown
+            key="raise"
+            onOpen={()=>this.raiseInput&&this.raiseInput.focus()}
+            open={raiseOpen}
+            trigger={
+              <Button
+                  key="raise"
+                  leftIcon="raise"
+                  simple
+                  style={{flex:1}}
+              >
+                <span>Raise</span>
+              </Button>
+            }
+        >
+          <div className={classnames(style.raiseBox)}>
+            <Input
+                max={maximumRaise}
+                min={minimumRaise}
+                onChange={::this.changeRaise}
+                type="range"
+                value={raiseValue}
+            />
+            <Input
+                onChange={::this.changeRaise}
+                ref={(el)=>this.raiseInput = el}
+                rightButton={
+                  <Button
+                      onClick={()=>this.localRaise(raiseValue)}
+                      simple
+                      small
+                  >
+                    Raise
+                  </Button>
+                }
+                value={raiseValue}
+            />
+          </div>
+        </DropDown>
+      )
+    }else if(!gameEnded){
+      actions.push(
+        <Input
+            amount={dealerNextState==='Flop'?3:1}
+            cardSelection
+            key="dealerCards"
+            onChange={::this.dealerCardsChange}
+            value={dealerCards}
+        />
+      )
+      actions.push(
+        <Button
+            key="dealerButton"
+            onClick={::this.publishDealerCards}
+            simple
+        >
+          {dealerNextState}
+        </Button>
+      )
+    }
+    return actions
   }
 
   render(){
     const {
-      step,
-      previousClick,
-      previousDisabled,
-      nextClick,
-      nextDisabled,
-      smallBlindClick,
-      smallBlindDisabled,
-      bigBlindClick,
-      bigBlindDisabled,
-      foldClick,
-      foldDisabled,
-      callClick,
-      callDisabled,
-      checkClick,
-      checkDisabled,
-      raiseClick,
-      raiseDisabled,
-      minimumRaise,
-      maximumRaise,
       showCardsClick,
       showCardsDisabled,
-      cancel,
-      saveDisabled,
-      save,
-      dealerDisabled,
-      dealerNextState,
     } = this.props
-    const {raiseOptions, raiseValue, dealerCards} = this.state
-    const dealerCardPositions = dealerNextState==='Flop'?[undefined,undefined,undefined]:[undefined]
 
     return (
-      <ModalFooter>
-        <Menu>
-          {step!==0?(
-            <Menu.Menu>
-              <Menu.Item
-                  disabled={showCardsDisabled}
-                  name="showcards"
-                  onClick={showCardsClick}
-              >
-                <Icon name="eye" />
-                Show Cards
-              </Menu.Item>
-              <Menu.Item
-                  disabled={smallBlindDisabled}
-                  name="smallblind"
-                  onClick={smallBlindClick}
-              >
-                <Icon.Group>
-                  <Icon name="money" />
-                  <Icon corner name="minus" />
-                </Icon.Group>
-                Small Blind
-              </Menu.Item>
-              <Menu.Item
-                  disabled={bigBlindDisabled}
-                  name="bigblind"
-                  onClick={bigBlindClick}
-              >
-                <Icon.Group>
-                  <Icon name="money" />
-                  <Icon corner name="plus" />
-                </Icon.Group>
-                Big Blind
-              </Menu.Item>
-            </Menu.Menu>
-          ):null}
-
-          {step!==0?(
-            <Menu.Menu position="right" style={{borderRight:'1px solid rgba(34,36,38,.1)'}}>
-              <Menu.Item
-                  disabled={foldDisabled}
-                  name="fold"
-                  onClick={foldClick}
-              >
-                <Icon.Group>
-                  <Icon name="hand paper" />
-                  <Icon corner name="dollar" />
-                </Icon.Group>
-                Fold
-              </Menu.Item>
-              <Menu.Item
-                  disabled={callDisabled}
-                  name="call"
-                  onClick={callClick}
-              >
-                <Icon.Group>
-                  <Icon name="hand rock" />
-                  <Icon corner name="dollar" />
-                </Icon.Group>
-                Call
-              </Menu.Item>
-              <Menu.Item
-                  disabled={checkDisabled}
-                  name="check"
-                  onClick={checkClick}
-              >
-                <Icon.Group>
-                  <Icon name="hand rock" />
-                  <Icon corner name="dollar" />
-                </Icon.Group>
-                Check
-              </Menu.Item>
-              <Menu.Item
-                  disabled={raiseDisabled}
-                  name="raise"
-                  onClick={()=>raiseClick(raiseValue)}
-              >
-                <Icon.Group>
-                  <Icon name="hand lizard" />
-                  <Icon corner name="dollar" />
-                </Icon.Group>
-                Raise
-                <Popup
-                    flowing
-                    hoverable
-                    on={['hover', 'focus', 'click']}
-                    position="top center"
-                    trigger={(
-                      <Input
-                          className={classnames(style.raiseInput)}
-                          onChange={::this.changeRaise}
-                          onClick={(e)=>e.stopPropagation()}
-                          type="number"
-                          value={raiseValue}
-                      />
-                    )}
-                >
-                  <Input
-                      className={classnames(style.raiseRange)}
-                      max={maximumRaise}
-                      min={minimumRaise}
-                      onChange={::this.changeRaise}
-                      type="range"
-                      value={raiseValue}
-                  />
-                </Popup>
-              </Menu.Item>
-            </Menu.Menu>
-          ):null}
-
-          {step!==0?(
-            <Menu.Menu position="right">
-              {dealerNextState!=='none'?(
-                <Menu.Item style={{paddingTop:0,paddingBottom:0}}>
-                  {dealerNextState}:
-                  {dealerCardPositions.map((_,index)=>(
-                    <Input
-                        className={classnames(style.dealerCardsInput)}
-                        key={index}
-                        label={
-                          <Dropdown defaultValue="..." upward>
-                            <Dropdown.Menu>
-                              <Dropdown.Header content="Select a card" icon="tags" />
-                              <Dropdown.Divider />
-                              <CardSelection
-                                  onCardSelected={(card)=>this.dealerCardsChange(index,card)}
-                              />
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        }
-                        labelPosition="right"
-                        onChange={(e, {value})=>this.dealerCardsChange(index,value)}
-                        onClick={(e)=>e.stopPropagation()}
-                        size="mini"
-                        value={dealerCards[index]}
-                    />
-                  ))}
-                  <Button
-                      color="green"
-                      disabled={dealerDisabled}
-                      icon="announcement"
-                      onClick={::this.publishDealerCards}
-                      size="mini"
-                      style={{marginLeft:10}}
-                  />
-                </Menu.Item>
-              ):null}
-            </Menu.Menu>
-          ):null}
-
-          <Menu.Menu position="right">
-            <Menu.Item
-                disabled={previousDisabled}
-                name="prev"
-                onClick={previousClick}
-            >
-              <Icon name="arrow left" />
-              Previous Step
-            </Menu.Item>
-            <Menu.Item
-                disabled={nextDisabled}
-                name="next"
-                onClick={nextClick}
-            >
-              <Icon name="arrow right" />
-              {step===1?'Save':'Next Step'}
-            </Menu.Item>
-          </Menu.Menu>
-        </Menu>
-      </ModalFooter>
+      <div className={classnames(style.actionBar)}>
+        <div className={classnames(style.actionBarLeftPane)}>
+          <Button
+              disabled={showCardsDisabled}
+              leftIcon="menu"
+              onClick={showCardsClick}
+          />
+        </div>
+        <div className={classnames(style.actionBarMiddlePane)}>
+          {
+            this.getMiddleActions()
+          }
+        </div>
+        <div className={classnames(style.actionBarRightPane)}>
+          <Button
+              hidden={showCardsDisabled}
+              leftIcon="show"
+              onClick={showCardsClick}
+          />
+        </div>
+      </div>
     )
   }
 }

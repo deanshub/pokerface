@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import Input from '../basic/Input'
+import Button from '../basic/Button'
 import { observer, inject } from 'mobx-react'
 import PlayerField from './PlayerField'
 import classnames from 'classnames'
@@ -20,8 +21,8 @@ export default class GeneralSettings extends Component {
 
   handleAvatarClick(e, href, playerIndex){
     const {settings} = this.props
-    e.preventDefault()
-    console.log(href);
+    // e.preventDefault()
+    // console.log(href);
     settings.dealer = playerIndex
   }
 
@@ -131,6 +132,13 @@ export default class GeneralSettings extends Component {
                 />
               )
             })
+          }
+          {players.currentPlayers.length<10&&
+            <div>
+              <Button onClick={(e)=>this.playersAmountChange(e,{value:players.currentPlayers.length+1})}>
+                Add a player
+              </Button>
+            </div>
           }
         </div>
       </div>

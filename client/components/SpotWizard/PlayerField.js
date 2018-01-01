@@ -52,6 +52,23 @@ export default class PlayerField extends Component {
     }
   }
 
+  removePlayer(){
+    const {players, playerIndex, isDealer} = this.props
+    // if (isDealer && players.currentPlayers[0]){
+    //   settings.dealer = 0
+    // }
+    players.currentPlayers.splice(playerIndex,1)
+  }
+
+  movePlyaerUp(){
+    const {players, playerIndex} = this.props
+    players.movePlyaerUp(playerIndex)
+  }
+  movePlyaerDown(){
+    const {players, playerIndex} = this.props
+    players.movePlyaerDown(playerIndex)
+  }
+
   render(){
     const {players, playerIndex, isDealer, user, handleAvatarClick} = this.props
     const href=`/profile/${user.username}`
@@ -100,29 +117,41 @@ export default class PlayerField extends Component {
             value={user.bank}
         />
         <Input
+            amount={2}
             cardSelection
             label="Cards"
             onChange={(e,{value})=>user.cards=value}
-            rightButton={{name:'showUpfrontButton',onClick:()=>user.showCards=!user.showCards, active:user.showCards}}
+            rightButton={
+              <Button
+                  active={user.showCards}
+                  disable={user.cards===''||!user.cards}
+                  leftIcon="show"
+                  onClick={()=>user.showCards = !user.showCards}
+                  small
+                  style={{width: '4.5em', minWidth: 'auto'}}
+              />
+            }
             value={user.cards}
         />
         <Button
             active={isDealer}
-            name="dealer"
+            leftIcon="dealer"
             onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
         />
         <Button
-            name="remove"
-            onClick={()=>{players.currentPlayers.splice(playerIndex,1)}}
+            leftIcon="remove"
+            onClick={::this.removePlayer}
         />
         <ButtonGroup>
           <Button
-              name="up"
-              onClick={()=>{}}
+              hidden={playerIndex===0}
+              leftIcon="up"
+              onClick={::this.movePlyaerUp}
           />
           <Button
-              name="down"
-              onClick={()=>{}}
+              hidden={playerIndex===players.currentPlayers.length-1}
+              leftIcon="down"
+              onClick={::this.movePlyaerDown}
           />
         </ButtonGroup>
       </div>
