@@ -32,6 +32,7 @@ export default class SpotWizard extends Component {
     if (raiseValue){
       this.setState({
         raiseValue,
+        raiseOpen: true,
       })
     }
   }
@@ -137,7 +138,7 @@ export default class SpotWizard extends Component {
                 ref={(el)=>this.raiseInput = el}
                 rightButton={
                   <Button
-                      onClick={()=>raiseClick(raiseValue)}
+                      onClick={()=>this.localRaise(raiseValue)}
                       simple
                       small
                   >
