@@ -41,7 +41,10 @@ export default class Cover extends Component {
       <div className={classnames({[style.container]: true})} style={coverDivStyle}>
         <div className={classnames(style.name,{[style.coverImageNotExist]: user.coverImage===undefined})}>{user.fullname}</div>
         <OnlyLoggedinUser>
-          <Button className={classnames(style.edit)}>
+          <Button
+              className={classnames(style.edit)}
+              onClick={::this.toggleEditPersonalInfo}
+          >
             Edit
           </Button>
         </OnlyLoggedinUser>

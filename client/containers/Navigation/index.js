@@ -32,14 +32,14 @@ export default class Navigation extends Component {
     return (
       <DocumentTitle title="Pokerface.io">
         <div>
-          {/* {
+          {
             process.env.NODE_ENV==='development'?<DevTools/>:null
-          } */}
+          }
           <div className={classnames(style.header)}>
             <div className={classnames(style.title)}>
-              <img src={image}/>
+              <img className={classnames(style.titleImg)} src={image}/>
               <div>
-                POKERFACE
+                Pokerface.io
               </div>
             </div>
             <TopMenu/>
