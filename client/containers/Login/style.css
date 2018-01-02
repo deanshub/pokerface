@@ -29,6 +29,15 @@
   flex: 1;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+}
+.login>button{
+  border: 1px solid landingLineColor;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+.login>button:hover{
+  border-color: checkColor;
 }
 
 .mainContent{
@@ -49,7 +58,7 @@
   background-color: landingLineColor;
   width: 10em;
   height: 1em;
-  margin: 2em 0;
+  margin: 1em 0;
 }
 
 .smallHeader{
@@ -69,9 +78,44 @@
   text-transform: uppercase;
   font-size: 1.5em;
   color: landingLineColor;
-  margin: 2em 0;
+  margin-top: 1.1em;
+  margin-right: 12em;
+  display: flex;
+  justify-content: space-around;
 }
 
+.link{
+  color: white;
+  text-transform: uppercase;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  font-weight: bold;
+  margin: 0.5em;
+}
+.link:hover{
+  color: white;
+}
+
+.loginDropdown{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 15em;
+}
+
+.divider{
+  width: 1px;
+  background-color: landingLineColor;
+}
+
+.uppercase{
+  text-transform: uppercase;
+}
 
 .forgotPassord {
   margin-left: 1em;
