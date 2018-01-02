@@ -14,6 +14,7 @@ import landingLogo from '../../assets/landing logo.png'
 import classnames from 'classnames'
 import style from './style.css'
 import SelectUserModal from '../SelectUserModal'
+import ForgotPasswordModal from './ForgotPasswordModal'
 
 // TODO: remove loginForm and signUpForm components when done
 @inject('routing')
@@ -33,6 +34,10 @@ export default class Login extends Component {
       forgotPasswordModalOpen: false,
       selectUserModalOpen: query.selectuser,
       redirectUrl: query.url || '/',
+      signingupInPorgress: false,
+      signingupSuccess: false,
+      signingupInFail: false,
+      signingupFailMessage: null,
     }
   }
 
@@ -132,6 +137,9 @@ export default class Login extends Component {
       selectUserModalOpen,
       redirectUrl,
       email,
+      signingupSuccess,
+      signingupInFail,
+      signingupFailMessage,
     } = this.state
 
     return(
@@ -161,12 +169,24 @@ export default class Login extends Component {
                       placeholder="Password"
                       type="password"
                   />
+                  <a
+                      onClick={() => this.setState({forgotPasswordModalOpen:true})}
+                      style={{color:'#25aae1', textTransform:'none'}}
+                  >
+                    Forgot password?
+                  </a>
                   <Button
                       primary
                       type="submit"
                   >
                     Login
                   </Button>
+                  {
+                    loggingInFail&&
+                    <div className={classnames(style.label,style.error)} style={{marginTop:'2em'}}>
+                      {loginFailMessage}
+                    </div>
+                  }
                 </form>
               </DropDown>
             </div>
@@ -196,25 +216,28 @@ export default class Login extends Component {
                 onSubmit={::this.handleSignup}
                 style={{marginTop:70}}
             >
-              <div className={classnames(style.uppercase)}style={{marginLeft:'2em', marginBottom:'1em'}}>
+              <div className={classnames(style.uppercase)} style={{marginLeft:'2em', marginBottom:'1em'}}>
                 Enter Your Name and Email
               </div>
               <ButtonGroup horizontal>
                 <Input
                     name="firstName"
                     onChange={::this.handleInputChange}
-                    placeholder="First Name" style={{padding:'1.1em'}}
+                    placeholder="First Name"
+                    style={{padding:'1.1em'}}
                 />
                 <Input
                     name="lastName"
                     onChange={::this.handleInputChange}
-                    placeholder="Last Name" style={{padding:'1.1em'}}
+                    placeholder="Last Name"
+                    style={{padding:'1.1em'}}
                 />
               </ButtonGroup>
               <Input
                   name="email"
                   onChange={::this.handleInputChange}
-                  placeholder="Email" style={{padding:'0.7em'}}
+                  placeholder="Email"
+                  style={{padding:'0.7em'}}
               />
               <Button
                   primary
@@ -223,6 +246,19 @@ export default class Login extends Component {
               >
                 Create Account
               </Button>
+              {
+                signingupSuccess&&
+                <div className={classnames(style.label,style.success)}>
+                  <div>Account created successfully.</div>
+                  <div>Check your email.</div>
+                </div>
+              }
+              {
+                signingupInFail&&
+                <div className={classnames(style.label,style.error)}>
+                  {signingupFailMessage}
+                </div>
+              }
 
               <div className={classnames(style.uppercase)} style={{marginLeft:'2em', marginTop:'4em', marginBottom:'1em'}}>
                 Or Sign Up Using
@@ -258,6 +294,10 @@ export default class Login extends Component {
               redirectUrl={redirectUrl}
           />
         }
+        <ForgotPasswordModal
+            onClose={() => this.setState({forgotPasswordModalOpen:false})}
+            open={forgotPasswordModalOpen}
+        />
       </div>
     )
   }

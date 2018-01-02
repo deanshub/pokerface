@@ -35,3 +35,5 @@ $disabled: #24222e;
 /* login */
 @value landingTextColor: #bdbdce;
 @value landingLineColor: #bcbccb;
+@value successColor: #41c86a;
+@value errorColor: #ff5a5a;
