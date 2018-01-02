@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Grid, Form, Button, Dropdown, Icon } from 'semantic-ui-react'
+import { Grid, Form, Dropdown, Icon } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
 import CardSelection from './CardSelection'
 import SpotWizard from '../SpotWizard'
 import SpotPlayer from '../../containers/SpotPlayer'
+import Button from '../basic/Button'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -36,6 +37,12 @@ import style from './style.css'
 @inject('auth')
 @observer
 export default class AddPlay extends Component {
+  constructor(props){
+    super(props)
+
+    this.state = {buttonsPanelEnabled:false}
+  }
+
   addPhoto(event){
     event.preventDefault()
     this.photosElm.click()
@@ -75,136 +82,158 @@ export default class AddPlay extends Component {
 
   render() {
     const {feed, spotPlayer} = this.props
+    const {buttonsPanelEnabled} = this.state
+
     const hasSpot = spotPlayer.newSpot.spot.moves.length>0
     const hasText = feed.newPost.content.getCurrentContent().hasText()
 
     return (
       <div>
-        <Grid container>
-          {
-            hasSpot?(
-              <Grid.Row stretched style={{padding:0, marginBottom:-15}}>
-                <Grid.Column width={16}>
-                  <Icon
-                      bordered
-                      className={classnames(style.removeSpot)}
-                      link
-                      name="close"
-                      onClick={()=>spotPlayer.newSpot = spotPlayer.initNewPost()}
-                  />
-                  <SpotPlayer post={spotPlayer.newSpot} style={{height:'40vw', backgroundColor:'white'}}/>
-                </Grid.Column>
-              </Grid.Row>
-            ):null
-          }
-          <Grid.Row stretched>
-            <Grid.Column width={16}>
-              <PostEditor
-                  placeholder="Share a post"
-                  post={feed.newPost}
-                  postEditor
-              />
-            </Grid.Column>
-            {
-              feed.uploadImages.length>0
-              ?
-              <Grid.Column style={{marginTop:-27, marginBottom:27, display:'flex !important', flexDirection:'row', flexFlow:'row wrap'}} width={16}>
-                {
-                  feed.uploadImages.map(src=>(
-                    <img
-                        key={Math.random()}
-                        src={src}
-                        style={{width:'6em', height:'3em', flexGrow:0}}
-                    />
-                  ))
-                }
-              </Grid.Column>
-              :
-              null
-            }
-
-            <Grid.Column width={3}>
-              <input
-                  multiple
-                  onChange={::this.photosChanged}
-                  ref={(photosElm)=>this.photosElm=photosElm}
-                  style={{display:'none'}}
-                  type="file"
-              />
-              <Button
-                  content="Add Photos"
-                  icon="add"
-                  labelPosition="left"
-                  onClick={::this.addPhoto}
-              />
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <Button
-                  content="Tag friends"
-                  icon="users"
-                  labelPosition="left"
-                  onClick={::this.tagFriends}
-              />
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <Dropdown
-                  button
-                  className="icon"
-                  floating
-                  icon="dropdown"
-                  labeled
-                  onClick={()=>{feed.openCardSelection=!feed.openCardSelection}}
-                  open={feed.openCardSelection}
-                  text="Insert Card"
-              >
-                <Dropdown.Menu>
-                  <Dropdown.Header content="Select a card" icon="tags" />
-                  <Dropdown.Divider />
-                  <CardSelection
-                      onCardSelected={::this.insertCard}
-                  />
-                </Dropdown.Menu>
-              </Dropdown>
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <Button
-                  content="Spot Wizard"
-                  icon="wizard"
-                  labelPosition="left"
-                  onClick={::this.addSpot}
-              />
-            </Grid.Column>
-            <Grid.Column width={1}>
-              {/* <Header size="small" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
-                <Icon name="world" />
-                <Header.Content>
-                  <Dropdown
-                      defaultValue={shareWithOptions[0].value}
-                      header="Share with:"
-                      inline
-                      options={shareWithOptions}
-                  />
-                </Header.Content>
-              </Header> */}
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <Button
-                  disabled={!hasText}
-                  icon
-                  labelPosition="left"
-                  onClick={::this.addPost}
-                  primary
-              >
-                <Icon
-                    name="share alternate"
-                />
-                Post
-              </Button>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <SpotWizard/>
+        <div className={classnames(style.info)}>
+          @ - tag friends  [] - insert cards  : - insert emoji
+        </div>
+        <div>
+          <PostEditor
+              placeholder="Share something"
+              post={feed.newPost}
+              postEditor
+          />
+          <div className={classnames(style.buttonsPanel)}>
+            <Button disable={!buttonsPanelEnabled} leftIcon="spot">Spot Player</Button>
+            <Button disable={!buttonsPanelEnabled} leftIcon="card">Card</Button>
+            <Button disable={!buttonsPanelEnabled} leftIcon="photo">Photo</Button>
+            <Button disable={!buttonsPanelEnabled} leftIcon="emoji">Emoji</Button>
+          </div>
+        </div>
       </div>
     )
+    // return (
+    //   <div>
+    //     <Grid container>
+    //       {
+    //         hasSpot?(
+    //           <Grid.Row stretched style={{padding:0, marginBottom:-15}}>
+    //             <Grid.Column width={16}>
+    //               <Icon
+    //                   bordered
+    //                   className={classnames(style.removeSpot)}
+    //                   link
+    //                   name="close"
+    //                   onClick={()=>spotPlayer.newSpot = spotPlayer.initNewPost()}
+    //               />
+    //               <SpotPlayer post={spotPlayer.newSpot} style={{height:'40vw', backgroundColor:'white'}}/>
+    //             </Grid.Column>
+    //           </Grid.Row>
+    //         ):null
+    //       }
+    //       <Grid.Row stretched>
+    //         <Grid.Column width={16}>
+    //           <PostEditor
+    //               placeholder="Share a post"
+    //               post={feed.newPost}
+    //               postEditor
+    //           />
+    //         </Grid.Column>
+    //         {
+    //           feed.uploadImages.length>0
+    //           ?
+    //           <Grid.Column style={{marginTop:-27, marginBottom:27, display:'flex !important', flexDirection:'row', flexFlow:'row wrap'}} width={16}>
+    //             {
+    //               feed.uploadImages.map(src=>(
+    //                 <img
+    //                     key={Math.random()}
+    //                     src={src}
+    //                     style={{width:'6em', height:'3em', flexGrow:0}}
+    //                 />
+    //               ))
+    //             }
+    //           </Grid.Column>
+    //           :
+    //           null
+    //         }
+    //
+    //         <Grid.Column width={3}>
+    //           <input
+    //               multiple
+    //               onChange={::this.photosChanged}
+    //               ref={(photosElm)=>this.photosElm=photosElm}
+    //               style={{display:'none'}}
+    //               type="file"
+    //           />
+    //           <Button
+    //               content="Add Photos"
+    //               icon="add"
+    //               labelPosition="left"
+    //               onClick={::this.addPhoto}
+    //           />
+    //         </Grid.Column>
+    //         <Grid.Column width={3}>
+    //           <Button
+    //               content="Tag friends"
+    //               icon="users"
+    //               labelPosition="left"
+    //               onClick={::this.tagFriends}
+    //           />
+    //         </Grid.Column>
+    //         <Grid.Column width={3}>
+    //           <Dropdown
+    //               button
+    //               className="icon"
+    //               floating
+    //               icon="dropdown"
+    //               labeled
+    //               onClick={()=>{feed.openCardSelection=!feed.openCardSelection}}
+    //               open={feed.openCardSelection}
+    //               text="Insert Card"
+    //           >
+    //             <Dropdown.Menu>
+    //               <Dropdown.Header content="Select a card" icon="tags" />
+    //               <Dropdown.Divider />
+    //               <CardSelection
+    //                   onCardSelected={::this.insertCard}
+    //               />
+    //             </Dropdown.Menu>
+    //           </Dropdown>
+    //         </Grid.Column>
+    //         <Grid.Column width={3}>
+    //           <Button
+    //               content="Spot Wizard"
+    //               icon="wizard"
+    //               labelPosition="left"
+    //               onClick={::this.addSpot}
+    //           />
+    //         </Grid.Column>
+    //         <Grid.Column width={1}>
+    //           {/* <Header size="small" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+    //             <Icon name="world" />
+    //             <Header.Content>
+    //               <Dropdown
+    //                   defaultValue={shareWithOptions[0].value}
+    //                   header="Share with:"
+    //                   inline
+    //                   options={shareWithOptions}
+    //               />
+    //             </Header.Content>
+    //           </Header> */}
+    //         </Grid.Column>
+    //         <Grid.Column width={3}>
+    //           <Button
+    //               disabled={!hasText}
+    //               icon
+    //               labelPosition="left"
+    //               onClick={::this.addPost}
+    //               primary
+    //           >
+    //             <Icon
+    //                 name="share alternate"
+    //             />
+    //             Post
+    //           </Button>
+    //         </Grid.Column>
+    //       </Grid.Row>
+    //     </Grid>
+    //     <SpotWizard/>
+    //   </div>
+    // )
   }
 }

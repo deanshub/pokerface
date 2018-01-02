@@ -1,5 +1,19 @@
 @import '../../constants/styles';
 
+.info {
+  color: #a2a2a2;
+  opacity: 0.3;
+  text-align: right;
+}
+
+.buttonsPanel {
+  background-color: white;
+  display: flex;
+  direction: row;
+  color: #24222e;
+}
+
+
 .multiCardsContainer{
   display: flex;
 }
