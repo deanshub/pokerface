@@ -39,7 +39,7 @@ export default class Cover extends Component {
 
     return (
       <div className={classnames({[style.container]: true})} style={coverDivStyle}>
-        <div className={classnames(style.name,{[style.coverImageNotExist]: user.coverImage===undefined})}>{user.fullname}</div>
+        <div className={classnames(style.name,{[style.coverImageNotExist]: user.coverImage})}>{user.fullname}</div>
         <OnlyLoggedinUser>
           <Button
               className={classnames(style.edit)}
