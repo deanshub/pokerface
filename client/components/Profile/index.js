@@ -6,7 +6,6 @@ import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
 import Cover from '../Cover'
-import ProfileNavbar from '../ProfileNavbar'
 import Feed from '../../containers/Feed'
 
 @inject('auth')
@@ -41,14 +40,8 @@ export default class Profile extends Component {
 
     return (
       <div className={classnames(style.container)}>
-        <Cover
-            imageFile={user.get('imageFile')}
-            title={user.get('fullname')}
-        />
-        <ProfileNavbar
-            avatarImage={user.get('avatarImage')}
-        />
-        <Feed username={user.get('username')}/>
+        <Cover user={user}/>
+        <Feed username={user.username}/>
       </div>
     )
   }

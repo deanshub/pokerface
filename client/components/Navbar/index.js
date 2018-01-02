@@ -2,12 +2,13 @@
 
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Menu, Input, Icon, Label, Search, Image, Dropdown } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
-import PlayerSearchResult from './PlayerSearchResult'
+import Autosuggest from 'react-autosuggest'
 import classnames from 'classnames'
 import style from './style.css'
-import SelectUserModal from '../../containers/SelectUserModal'
+import { NavLink } from 'react-router-dom'
+import UserSmallCard from '../UserSmallCard'
+import Notification from './Notification'
 
 @inject('globalPlayersSearch')
 @inject('routing')
@@ -17,9 +18,9 @@ import SelectUserModal from '../../containers/SelectUserModal'
 @inject('timer')
 @observer
 export default class Navbar extends Component {
-  constructor(props){
+  constructor(props: Object){
     super(props)
-    this.state = {selectUserModalOpen: false}
+    this.state = {searchValue:''}
   }
 
   componentWillMount(){
@@ -30,149 +31,118 @@ export default class Navbar extends Component {
     this.props.events.fetchMyGames()
   }
 
-  handleMenuItemClick(location){
-    this.props.routing.replace(location)
+  // TODO: Consult with Dean
+  shouldComponentUpdate(){
+    return true
   }
 
-  handleLogout(){
-    const {routing, auth} = this.props
-    localStorage.removeItem('jwt')
-    auth.logout()
-    routing.replace('/login')
+  searchChange({value}){
+    const {globalPlayersSearch} = this.props
+    globalPlayersSearch.search(value)
   }
 
-  handleResultSelect(e, selected){
-    const {routing, globalPlayersSearch} = this.props
-    globalPlayersSearch.searchValue = ''
-    routing.push(`/profile/${selected.result.username}`)
-  }
-
-  resultRenderer({username, fullname, avatar}){
+  renderSuggestion(player){
     return (
-      <PlayerSearchResult
-          avatar={avatar}
-          childKey={username}
-          name={fullname}
-          username={username}
+      <UserSmallCard
+          className={style.suggestionItem}
+          header={player.fullname}
+          image={player.avatar}
+          subheader="2 mutuals friends"
       />
     )
   }
 
-  isActive(path){
-    const {routing} = this.props
-    return routing.location.pathname===path
+  onSuggestionSelected(e, {suggestion}){
+    const {routing, globalPlayersSearch} = this.props
+    globalPlayersSearch.searchValue = ''
+    routing.push(`/profile/${suggestion.username}`)
+  }
+
+  searchInputChange(e,{newValue, method}){
+    const {globalPlayersSearch} = this.props
+
+    if (method==='type'){
+      globalPlayersSearch.search(newValue)
+    }
+
+    this.setState({searchValue:newValue})
   }
 
   render() {
-    const {globalPlayersSearch, auth, events, routing} = this.props
-    const {selectUserModalOpen} = this.state
-    const showSwitchUser = auth.optionalUsers.length > 0
+    const {globalPlayersSearch, auth, events} = this.props
+    const {searchValue} = this.state
+    const {username} = auth.user
 
     return (
-        <Menu
-            fixed="top"
-            pointing
-            secondary
-            size="large"
-            style={{marginBottom:0, backgroundColor:'white'}}
-        >
-          <Menu.Item
-              className={classnames(style.navbarMenuItemAnchor)}
-              active={this.isActive('/', true)}
-              onClick={()=>this.handleMenuItemClick('/')}
+      <div className={classnames(style.container)}>
+          <NavLink
+              activeClassName={classnames(style.navbarRouteItemActive)}
+              className={classnames(style.navbarRouteItem)}
+              exact
+              to="/"
           >
-            <Icon name="home"/> Home
-          </Menu.Item>
-          <Menu.Item
-              className={classnames(style.navbarMenuItemAnchor)}
-              active={this.isActive('/profile', true)}
-              onClick={()=>this.handleMenuItemClick('/profile')}
+            HOME
+          </NavLink>
+          <NavLink
+              activeClassName={classnames(style.navbarRouteItemActive)}
+              className={classnames(style.navbarRouteItem)}
+              to={`/profile/${username}`}
           >
-            {auth.user.avatar?
-              <Image
-                  avatar
-                  size="mini"
-                  src={auth.user.avatar}
-                  style={{marginTop:-5,marginBottom:-10, marginRight:10, maxHeight:35}}
-              />
-              :
-              <Icon name="user"/>
-            } Profile
-          </Menu.Item>
-          <Menu.Item
-              active={this.isActive('/events', true)}
-              className={classnames(style.navbarMenuItemAnchor)}
-              onClick={()=>this.handleMenuItemClick('/events')}
+            PROFILE
+          </NavLink>
+          <NavLink
+              activeClassName={classnames(style.navbarRouteItemActive)}
+              className={classnames(style.navbarRouteItem)}
+              to="/events"
           >
-            <Icon name="calendar"/> Events
-            {
-              events.games.size>0?
-              <Label circular size="mini">{events.games.size}</Label>:
-              undefined
-            }
-          </Menu.Item>
+            EVENTS <Notification number={events.games.size}/>
+          </NavLink>
+          <div className={classnames(style.navbarSection)}>
+            TOOLS
+          </div>
+            <NavLink
+                activeClassName={classnames(style.navbarRouteItemActive)}
+                className={classnames(style.navbarRouteItem)}
+                to="/smart"
+            >
+              PER-FLOP CHART
+            </NavLink>
+            <NavLink
+                activeClassName={classnames(style.navbarRouteItemActive)}
+                className={classnames(style.navbarRouteItem)}
+                to="/timer"
+            >
+              BLINDS TIMER
+            </NavLink>
+            <div className={classnames(style.navbarSection)}>
+              SEARCH
+            </div>
 
+            <Autosuggest
+                getSuggestionValue={player=>player.fullname}
+                highlightFirstSuggestion
+                inputProps={{
+                  placeholder: 'Player',
+                  value:searchValue,
+                  onChange: ::this.searchInputChange,
+                }}
+                onSuggestionSelected={::this.onSuggestionSelected}
+                onSuggestionsClearRequested={()=>globalPlayersSearch.availablePlayers.clear()}
+                onSuggestionsFetchRequested={::this.searchChange}
 
-          <Menu.Menu position="right">
-            <Menu.Item
-                active={this.isActive('/smart', true)}
-                className={classnames(style.navbarMenuItemAnchor)}
-                onClick={()=>this.handleMenuItemClick('/smart')}
-            >
-              <Icon name="student"/> Get Smarter
-            </Menu.Item>
-            <Menu.Item
-                active={this.isActive('/timer', true)}
-                className={classnames(style.navbarMenuItemAnchor)}
-                onClick={()=>this.handleMenuItemClick('/timer')}
-            >
-              <Icon name="clock"/> Blinds Timer
-            </Menu.Item>
-            <Dropdown
-                className="link item"
-                icon={<Icon name="user" size="large"/>}
-            >
-              <Dropdown.Menu style={{minWidth:'max-content'}}>
-                {
-                  showSwitchUser &&
-                  <Dropdown.Item onClick={() => this.setState({selectUserModalOpen:true})}>
-                      switch user
-                  </Dropdown.Item>
-                }
-                <Dropdown.Item
-                    className={classnames(style.navbarMenuItemAnchor)}
-                    onClick={::this.handleLogout}
-                >
-                  logout
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-            <Menu.Item>
-              <Search
-                  as={Input}
-                  icon={{ name: 'search', link: true }}
-                  loading={globalPlayersSearch.loading}
-                  noResultsMessage="No players found"
-                  onResultSelect={::this.handleResultSelect}
-                  onSearchChange={(e, {value})=>globalPlayersSearch.search(value)}
-                  placeholder="Search Users..."
-                  resultRenderer={::this.resultRenderer}
-                  results={globalPlayersSearch.availablePlayers}
-                  style={{marginBottom:2}}
-                  transparent
-                  value={globalPlayersSearch.searchValue}
-              />
-            </Menu.Item>
-          </Menu.Menu>
-          {
-            selectUserModalOpen &&
-            <SelectUserModal
-                onClose={() => this.setState({selectUserModalOpen:false})}
-                open={selectUserModalOpen}
-                redirectUrl="/"
+                renderSuggestion={this.renderSuggestion}
+                suggestions={globalPlayersSearch.immutableAvailablePlayers}
+                theme={{
+                  input: classnames(style.autosuggestInput),
+                  container: classnames(style.autosuggest),
+                  suggestionsList: classnames(style.suggestionsList),
+                  suggestion: classnames(style.suggestion),
+                  suggestionHighlighted: classnames(style.suggestionHighlighted),
+                  suggestionsContainer: classnames(style.suggestionsContainer),
+                  suggestionsContainerOpen: classnames(style.suggestionsContainerOpen),
+                }}
             />
-          }
-        </Menu>
+          </div>
     )
   }
 }

@@ -4,6 +4,7 @@ import { observable, action, computed, toJS } from 'mobx'
 import graphqlClient from './graphqlClient'
 import {usersQuery} from './queries/users'
 import logger from '../utils/logger'
+import debounce from '../utils/debounce'
 
 const searchTimeoutTime = 200
 
@@ -16,28 +17,36 @@ export class PlayersSearchStore {
     this.availablePlayers = []
     this.loading = false
     this.searchValue = ''
+    this.debouncedFetchUsers = debounce(this.fetchUsers, searchTimeoutTime)
   }
 
   @action
   search(phrase): void{
     this.searchValue = phrase
+
+    if (phrase.length>0){
+      this.debouncedFetchUsers()
+    }
+  }
+
+  @action
+  fetchUsers(){
     this.loading = true
-    clearTimeout(this.timeout)
-    if (phrase.length<1) {
-      this.loading = false
+    const phrase = this.searchValue
+
+    if (phrase.length === 0){
+      this.availablePlayers = []
     }else{
-      this.timeout = setTimeout(()=>{
-        logger.logEvent({category:'Players search',action:'search'})
-        graphqlClient.query({query: usersQuery, variables: {phrase}}).then((result)=>{
-          this.availablePlayers.replace(result.data.users.map(player=>{
-            return {...player, childKey:player.username}
-          }))
-          this.loading = false
-        }).catch(e=>{
-          console.error(e)
-          this.loading = false
-        })
-      }, searchTimeoutTime)
+      logger.logEvent({category:'Players search',action:'search'})
+      graphqlClient.query({query: usersQuery, variables: {phrase}}).then((result)=>{
+        this.availablePlayers.replace(result.data.users.map(player=>{
+          return {...player, childKey:player.username}
+        }))
+        this.loading = false
+      }).catch(e=>{
+        console.error(e)
+        this.loading = false
+      })
     }
   }
 

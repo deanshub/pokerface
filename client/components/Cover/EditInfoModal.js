@@ -29,6 +29,7 @@ export default class Navbar extends Component {
     }
     profile.updatePersonalInfo(personalInfo).then((updatedUser)=>{
       auth.updateUserInfo(updatedUser)
+      profile.setCurrentUser(updatedUser)
       toggle()
     }).catch((err)=>{
       console.error(err);

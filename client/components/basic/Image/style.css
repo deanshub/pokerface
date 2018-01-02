@@ -3,10 +3,17 @@
   width: 4em;
   margin-right: 12px;
 }
+
 .small{
   height: 2em;
   width: 2em;
 }
+
+.big{
+  height: 8em;
+  width: 8em;
+}
+
 .avatar{
   border-radius: 50%;
 }

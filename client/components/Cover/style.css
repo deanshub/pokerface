@@ -1,7 +1,7 @@
 @import "../../constants/styles.css";
 
 .container{
-  height: 20vh;
+  height: 45vh;
   background-size: cover;
   background-position: 50%;
   display: flex;
@@ -9,31 +9,45 @@
   align-items: center;
   background-color: $gray;
   position: relative;
+  box-shadow: 0 0 10px 0 #000000;
+  background-color: rgba(31,29,40,0.5);
 }
 
-.loading::before{
-  display: block;
-  position: absolute;
-  content: "";
-  width: 30vw;
-  height: 100%;
-  background: linear-gradient(to right, #dfdfdf, white, #dfdfdf);
-  animation: loading 2s linear infinite;
-  z-index: 1;
-}
-
-@keyframes loading {
-  from {left: -30vw;}
-  70% { left: 50%;}
-  to {left: 120%;}
-}
-
-.edit{
+.edit {
   position: absolute;
   bottom: 0;
   right: 0;
   cursor: pointer;
   color: white;
-  margin: 20px !important;
+  margin: 20px;
   z-index: 1;
+  background-color: #17161d;
+  border: 0;
+  padding: 0.5em;
+  border-radius: 0.5em;
+}
+
+.edit:hover {
+  color: $activeButton;
+}
+
+.name {
+  border-radius: 10px;
+  background-color: rgba(31,29,40,0.5);
+  box-shadow: 0 0 20px 0 #000000;
+  color: white;
+  font-size: 4.75em;
+  height: 1.3em;
+  padding: 0.5em;
+  font-weight: bolder;
+}
+
+.coverImageNotExist {
+  background-color: none;
+  box-shadow: none;
+}
+
+.avatar{
+  position: absolute;
+  bottom: -4em;
 }

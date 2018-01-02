@@ -1,7 +1,97 @@
 @import "../../constants/styles";
-.container{
-  background-color: #f2f2f2;
+
+.header {
+  width: 100%;
+  display: flex;
+  background-color: #535168;
+  box-shadow: 0 0 10px 0 #000000;
+  position: fixed;
+  z-index: 100;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1.2em;
+  padding-right: 1.2em;
 }
-body{
-  background-color: #f2f2f2;
+
+.title {
+  color: #b4b4cc;
+  font-size: 2em;
+  padding: 0.5em;
+  font-weight: bold;
+  display: flex;
+  line-height: 1.1em;
+  cursor:default;
+  text-transform: uppercase;
+
+  .titleImg {
+    height: 1em;
+    padding-right: 0.2em;
+  }
+}
+
+.config {
+  background-image:url('../../assets/cog.png');
+  width: 34px;
+  height: 34px;
+  cursor:pointer;
+}
+
+.config:hover {
+  background-image:url('../../assets/cog-hover.png');
+}
+
+.container {
+  display: flex;
+  padding: 1.43em;
+  padding-top: 5.34em;
+}
+
+.navbar {
+  position: relative;
+  flex: 1;
+}
+
+.topMenu {
+  background-color: white;
+  border-radius: 0.4em;
+  padding-right: 0.8em;
+  padding-left: 0.8em;
+  padding-bottom: 0.8em;
+}
+
+.topMenu > * {
+  padding-top: 0.7em;
+}
+
+.topMenuItem:hover{
+  color: #3cb861;
+}
+
+.signedInAsCard {
+  display: flex;
+  align-items: center;
+  border-bottom: solid #e4e4e4 1px;
+  padding-bottom: 0.7em;
+  padding-top: 0.7em;
+
+  img {
+    border-radius: 50%;
+    width: 2.7em;
+    height: 2.7em;
+    margin-right: 0.65em;
+  }
+}
+
+.email {
+  color: #a2a2a2;
+  font-size: 0.85em;
+}
+
+.name {
+  font-size: 0.85em;
+}
+
+.content {
+  flex: 4.5;
+  padding-left: 1.43em;
 }

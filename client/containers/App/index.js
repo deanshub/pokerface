@@ -15,6 +15,9 @@ import Navigation from '../Navigation'
 import PrivateRoute from './PrivateRoute'
 import StandalonePost from '../Feed/StandalonePost'
 
+import classnames from 'classnames'
+import style from './style.css'
+
 const browserHistory = createBrowserHistory()
 import stores from './stores'
 const history = syncHistoryWithStore(browserHistory, stores.routing)
@@ -47,9 +50,8 @@ export default class App extends Component {
                   type="image/png"
               />
             </Helmet>
-
             <Router history={history}>
-              <div>
+              <div className={classnames(style.app)}>
                 <Route component={this.logPageView}/>
                 <Route
                     path="/"
