@@ -12,7 +12,7 @@ export class ProfileStore {
 
   constructor(){
     this.currentTab = ProfileConsts.STATISTICS_TAB
-    this.currentUser = observable.map({})
+    this.currentUser = observable({})
   }
 
   @action
@@ -25,11 +25,11 @@ export class ProfileStore {
     if (typeof user === 'string'){
       graphqlClient.query({query: usersQuery, variables: {username:user}}).then((result)=>{
         const user = result.data.users[0]
-        this.currentUser = observable.map(user)
+        this.currentUser = observable(user)
         this.setImageFiles()
       })
     }else{
-      this.currentUser = observable.map(user)
+      this.currentUser = observable(user)
       this.setImageFiles()
     }
   }

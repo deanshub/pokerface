@@ -8,13 +8,21 @@ export default class Image extends Component {
   }
 
   render(){
-    const {avatar, src, small} = this.props
+    const {
+      avatar,
+      src,
+      small,
+      big,
+      className
+    } = this.props
     return(
       <img
           className={classnames(
             style.image,
             {[style.avatar]:avatar},
             {[style.small]:small},
+            {[style.big]:big},
+            className,
           )}
           src={src}
       />

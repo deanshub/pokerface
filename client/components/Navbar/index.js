@@ -61,7 +61,7 @@ export default class Navbar extends Component {
   searchInputChange(e,{newValue, method}){
     const {globalPlayersSearch} = this.props
 
-    if (method==="type"){
+    if (method==='type'){
       globalPlayersSearch.search(newValue)
     }
 
@@ -74,7 +74,7 @@ export default class Navbar extends Component {
     const {username} = auth.user
 
     return (
-      <div className={classnames(style.navbar)}>
+      <div className={classnames(style.container)}>
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}

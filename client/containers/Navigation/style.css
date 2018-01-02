@@ -3,10 +3,10 @@
 .header {
   width: 100%;
   display: flex;
-  background-color: $heaerBackgroundColor;
+  background-color: #535168;
   box-shadow: 0 0 10px 0 #000000;
   position: fixed;
-  z-index: 1;
+  z-index: 100;
   justify-content: space-between;
   align-items: center;
   padding-left: 1.2em;
@@ -14,17 +14,25 @@
 }
 
 .title {
-  color: $heaerColor;
-  font-size: 1.3em;
-  padding: 0.7em;
+  color: #b4b4cc;
+  font-size: 2em;
+  padding: 0.5em;
   font-weight: bold;
+  display: flex;
+  line-height: 1.1em;
+  cursor:default;
+
+  img {
+    height: 1em;
+    padding-right: 0.2em;
+  }
 }
 
 .config {
   background-image:url('../../assets/cog.png');
-  background-color: $heaerBackgroundColor;
   width: 34px;
   height: 34px;
+  cursor:pointer;
 }
 
 .config:hover {
@@ -34,8 +42,12 @@
 .container {
   display: flex;
   padding: 1.43em;
-  padding-top: 4.64em;
-  flex: $containerFlex;
+  padding-top: 5.34em;
+}
+
+.navbar {
+  position: relative;
+  flex: 1;
 }
 
 .topMenu {
@@ -79,5 +91,6 @@
 }
 
 .content {
-  flex: $contentFlex;
+  flex: 7;
+  padding-left: 1.43em;
 }

@@ -1,17 +1,12 @@
 @import "../../constants/styles";
 
-.navbar {
-  padding: 1.6em;
-  flex: $navbarFlex;
+.container {
+  position: fixed;
 }
 
 .navbarItem {
   display: block;
   font-weight: 900
-}
-
-.navbar :first-child {
-  margin-top: 0;
 }
 
 .navbarRouteItem {
@@ -70,6 +65,8 @@
   background-repeat: no-repeat;
   padding-left: 3em;
   background-position: 0.3em;
+  min-width: 10em;
+  width: 100%;
 }
 
 .autosuggestInput:focus{

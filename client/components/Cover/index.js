@@ -5,10 +5,11 @@ import PropTypes from 'prop-types'
 import OnlyLoggedinUser from '../OnlyLoggedinUser'
 import classnames from 'classnames'
 import style from './style.css'
-import { Header, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import EditInfoModal from './EditInfoModal'
+import Image from '../basic/Image'
 
-export default class Navbar extends Component {
+export default class Cover extends Component {
   static propTypes = {
     imageFile: PropTypes.string,
     title: PropTypes.string,
@@ -28,17 +29,17 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const {title, imageFile} = this.props
+    const {user} = this.props
     const {editingPersonalInfo} = this.state
 
     let coverDivStyle = {}
-    if (imageFile){
-      coverDivStyle.backgroundImage=`url(${imageFile})`
+    if (user.coverImage){
+      coverDivStyle.backgroundImage=`url(${user.coverImage})`
     }
 
     return (
-      <div className={classnames({[style.container]: true, [style.loading]: imageFile===undefined})} style={coverDivStyle}>
-        <Header size="huge" style={{color:'white',zIndex:2, textShadow:'1px 1px #525252'}}>{title}</Header>
+      <div className={classnames({[style.container]: true})} style={coverDivStyle}>
+        <div className={classnames(style.name,{[style.coverImageNotExist]: user.coverImage===undefined})}>{user.fullname}</div>
         <OnlyLoggedinUser>
           <Icon
               circular
@@ -50,6 +51,13 @@ export default class Navbar extends Component {
               size="large"
           />
         </OnlyLoggedinUser>
+
+        <Image
+            avatar
+            big
+            className={classnames(style.avatar)}
+            src={user.avatar}
+        />
         <EditInfoModal
             open={editingPersonalInfo}
             toggle={::this.toggleEditPersonalInfo}

@@ -1,7 +1,7 @@
 @import "../../constants/styles.css";
 
 .container{
-  height: 20vh;
+  height: 45vh;
   background-size: cover;
   background-position: 50%;
   display: flex;
@@ -9,23 +9,8 @@
   align-items: center;
   background-color: $gray;
   position: relative;
-}
-
-.loading::before{
-  display: block;
-  position: absolute;
-  content: "";
-  width: 30vw;
-  height: 100%;
-  background: linear-gradient(to right, #dfdfdf, white, #dfdfdf);
-  animation: loading 2s linear infinite;
-  z-index: 1;
-}
-
-@keyframes loading {
-  from {left: -30vw;}
-  70% { left: 50%;}
-  to {left: 120%;}
+  box-shadow: 0 0 10px 0 #000000;
+  background-color: rgba(31,29,40,0.5);
 }
 
 .edit{
@@ -36,4 +21,25 @@
   color: white;
   margin: 20px !important;
   z-index: 1;
+}
+
+.name {
+  border-radius: 10px;
+  background-color: rgba(31,29,40,0.5);
+  box-shadow: 0 0 20px 0 #000000;
+  color: white;
+  font-size: 4.75em;
+  height: 1.3em;
+  padding: 0.5em;
+  font-weight: bolder;
+}
+
+.coverImageNotExist {
+  background-color: none;
+  box-shadow: none;
+}
+
+.avatar{
+  position: absolute;
+  bottom: -4em;
 }
