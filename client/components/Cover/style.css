@@ -13,14 +13,22 @@
   background-color: rgba(31,29,40,0.5);
 }
 
-.edit{
+.edit {
   position: absolute;
   bottom: 0;
   right: 0;
   cursor: pointer;
   color: white;
-  margin: 20px !important;
+  margin: 20px;
   z-index: 1;
+  background-color: #17161d;
+  border: 0;
+  padding: 0.5em;
+  border-radius: 0.5em;
+}
+
+.edit:hover {
+  color: $activeButton;
 }
 
 .name {

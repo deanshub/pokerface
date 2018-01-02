@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import OnlyLoggedinUser from '../OnlyLoggedinUser'
 import classnames from 'classnames'
 import style from './style.css'
-import { Icon } from 'semantic-ui-react'
+import Button from '../basic/Button'
 import EditInfoModal from './EditInfoModal'
 import Image from '../basic/Image'
 
@@ -41,15 +41,9 @@ export default class Cover extends Component {
       <div className={classnames({[style.container]: true})} style={coverDivStyle}>
         <div className={classnames(style.name,{[style.coverImageNotExist]: user.coverImage===undefined})}>{user.fullname}</div>
         <OnlyLoggedinUser>
-          <Icon
-              circular
-              className={classnames(style.edit)}
-              color="black"
-              inverted
-              name="edit"
-              onClick={::this.toggleEditPersonalInfo}
-              size="large"
-          />
+          <Button className={classnames(style.edit)}>
+            Edit
+          </Button>
         </OnlyLoggedinUser>
 
         <Image

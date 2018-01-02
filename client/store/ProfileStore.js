@@ -26,23 +26,9 @@ export class ProfileStore {
       graphqlClient.query({query: usersQuery, variables: {username:user}}).then((result)=>{
         const user = result.data.users[0]
         this.currentUser = observable(user)
-        this.setImageFiles()
       })
     }else{
       this.currentUser = observable(user)
-      this.setImageFiles()
-    }
-  }
-
-  setImageFiles(): void{
-    const coverImage = this.currentUser.get('coverImage')
-    if(coverImage){
-      this.currentUser.set('imageFile', coverImage)
-    }
-
-    const avatarUrl = this.currentUser.get('avatar')
-    if(avatarUrl){
-      this.currentUser.set('avatarImage', avatarUrl)
     }
   }
 
