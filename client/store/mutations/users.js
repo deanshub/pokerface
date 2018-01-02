@@ -4,8 +4,6 @@ export const updatePersonalInfoMutation = gql`mutation updatePersonalInfo($first
   updatePersonalInfo(firstname: $firstname, lastname: $lastname, cover: $cover, avatar: $avatar){
     username
     fullname
-    firstname
-    lastname
     avatar
     coverImage
   }

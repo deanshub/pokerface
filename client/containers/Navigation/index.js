@@ -18,6 +18,7 @@ import TopMenu from './TopMenu'
 import 'semantic-ui-css/semantic.min.css'
 import classnames from 'classnames'
 import style from './style.css'
+import image from '../../assets/favicon-32x32.png'
 
 @inject('auth')
 @inject('routing')
@@ -31,17 +32,22 @@ export default class Navigation extends Component {
     return (
       <DocumentTitle title="Pokerface.io">
         <div>
-          {/* {
+          {
             process.env.NODE_ENV==='development'?<DevTools/>:null
-          } */}
+          }
           <div className={classnames(style.header)}>
             <div className={classnames(style.title)}>
-              POKERFACE
+              <img className={classnames(style.titleImg)} src={image}/>
+              <div>
+                Pokerface.io
+              </div>
             </div>
             <TopMenu/>
           </div>
           <div className={classnames(style.container)}>
-            <Navbar />
+            <div className={classnames(style.navbar)}>
+              <Navbar />
+            </div>
             <div className={classnames(style.content)}>
               <Switch>
                 <Route

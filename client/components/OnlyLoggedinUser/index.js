@@ -22,7 +22,7 @@ export default class OnlyLoggedinUser extends Component {
     const { profile, auth, children, opposite } = this.props
     const user = profile.currentUser
 
-    const isLoggedinUser = user.get('username')===auth.user.username
+    const isLoggedinUser = user.username===auth.user.username
     const withOpposite = isLoggedinUser&&!opposite
     return withOpposite?React.Children.only(children):null
   }

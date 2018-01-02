@@ -12,7 +12,7 @@ export class ProfileStore {
 
   constructor(){
     this.currentTab = ProfileConsts.STATISTICS_TAB
-    this.currentUser = observable.map({})
+    this.currentUser = observable({})
   }
 
   @action
@@ -25,24 +25,10 @@ export class ProfileStore {
     if (typeof user === 'string'){
       graphqlClient.query({query: usersQuery, variables: {username:user}}).then((result)=>{
         const user = result.data.users[0]
-        this.currentUser = observable.map(user)
-        this.setImageFiles()
+        this.currentUser = observable(user)
       })
     }else{
-      this.currentUser = observable.map(user)
-      this.setImageFiles()
-    }
-  }
-
-  setImageFiles(): void{
-    const coverImage = this.currentUser.get('coverImage')
-    if(coverImage){
-      this.currentUser.set('imageFile', coverImage)
-    }
-
-    const avatarUrl = this.currentUser.get('avatar')
-    if(avatarUrl){
-      this.currentUser.set('avatarImage', avatarUrl)
+      this.currentUser = observable(user)
     }
   }
 
