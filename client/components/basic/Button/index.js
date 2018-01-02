@@ -8,7 +8,18 @@ export default class Button extends Component {
   }
 
   render(){
-    const { children, simple, active, onClick, hidden, primary, leftIcon, disable, small, ...restProps } = this.props
+    const {
+      children,
+      simple,
+      active,
+      onClick,
+      hidden,
+      primary,
+      leftIcon,
+      disable,
+      small,
+      ...restProps
+    } = this.props
     return(
       <button
           className={classnames(
