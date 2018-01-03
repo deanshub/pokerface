@@ -99,10 +99,45 @@ export default class AddPlay extends Component {
               postEditor
           />
           <div className={classnames(style.buttonsPanel)}>
-            <Button disable={!buttonsPanelEnabled} leftIcon="spot">Spot Player</Button>
-            <Button disable={!buttonsPanelEnabled} leftIcon="card">Card</Button>
-            <Button disable={!buttonsPanelEnabled} leftIcon="photo">Photo</Button>
-            <Button disable={!buttonsPanelEnabled} leftIcon="emoji">Emoji</Button>
+            <div className={classnames(style.editPostButtons)}>
+              <div className={classnames(style.insert)}>
+                insert
+              </div>
+              <Button
+                  disable={!buttonsPanelEnabled}
+                  leftIcon="spot"
+                  small
+              >
+                Spot Player
+              </Button>
+              <Button
+                  disable={!buttonsPanelEnabled}
+                  leftIcon="card"
+                  small
+              >
+                Card
+              </Button>
+              <Button
+                  disable={!buttonsPanelEnabled}
+                  leftIcon="photo"
+                  small
+              >
+                Photo
+              </Button>
+              <Button
+                  disable={!buttonsPanelEnabled}
+                  leftIcon="emoji"
+                  small
+              >
+                Emoji
+              </Button>
+            </div>
+            <Button
+                disable={!buttonsPanelEnabled}
+                primary
+            >
+              Post
+            </Button>
           </div>
         </div>
       </div>
