@@ -129,6 +129,7 @@ export default class BlindsTimer extends Component {
         <BlindsTimerSettingsModal/>
 
         <Grid.Row
+            className={classnames(style.redesign)}
             color={inverted?'black':undefined}
             stretched
             style={{backgroundColor:!inverted?'white':undefined, paddingTop:25}}

@@ -100,8 +100,7 @@ export class EventStore {
   }
 
   @action createGame(players, game){
-    const normalizedPlayers = players.keys().map(key=>{
-      const player = players.get(key)
+    const normalizedPlayers = players.map(player=>{
       return {
         username: player.guest?undefined:player.username,
         fullname: player.guest?player.fullname:undefined,

@@ -59,9 +59,9 @@ export default class Events extends Component {
       <div>
 
         { !events.loading && <div className={classnames(style.containerHeader)}>
-          <span className={classnames(style.containerHeaderText)}>
+          <div className={classnames(style.containerHeaderText)}>
               {title}
-          </span>
+          </div>
           <AddGameModal buttonClassName={classnames(style.containerHeaderButton)} />
         </div> }
         { hasEvents && <div className={classnames(style.container)}>{eventRows}</div> }
