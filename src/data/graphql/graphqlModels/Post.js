@@ -1,7 +1,5 @@
 import path from 'path'
 import DB from '../../db'
-// import {schema as User} from './User'
-// import {schema as Comment} from './Comment'
 
 export const schema =  [`
   type Post {

@@ -1,6 +1,8 @@
 import DB from '../../db'
 import mailer from '../../../utils/mailer'
+import {PUBLIC} from '../../../utils/permissions'
 import {schema as User} from './User'
+import {schema as Post} from './Post'
 
 export const schema =  [`
   type Game {
@@ -19,9 +21,13 @@ export const schema =  [`
     updatedAt: String
     createdAt: String
     creator: User
+    posts: [Post]
   }
 
   type Query {
+    game(
+      gameId: String!
+    ): Game,
     games: [Game]
   }
 
@@ -44,7 +50,7 @@ export const schema =  [`
       gameId: String!
     ): Game
   }
-`, ...User]
+`, ...User, ...Post]
 
 export const resolvers = {
   Game:{
@@ -92,16 +98,37 @@ export const resolvers = {
     updatedAt: (game)=>game.updated,
     createdAt: (game)=>game.created,
     creator: (game)=>DB.models.User.findById(game.owner),
+    posts: (game)=> DB.models.Post.find({game: game.id}),
   },
 
   Query: {
-    games: (_, args, context)=>{
-      return DB.models.Game.find({
-        startDate: {
-          $gt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-        },
+    game: (_, {gameId}, context)=>{
+      return DB.models.Game.findOne({
+        _id:gameId,
+        $or: [{
+          permissions: PUBLIC,
+        },{
+          invited: context.user._id,
+        },{
+          owner: context.user._id,
+        }],
       })
-      .or([{
+    },
+    games: (_, args, context)=>{
+      const STARTS_IN_X_DAYS = 7
+      const ENDS_UP_X_DAYS = 2
+      const dayInterval = 24 * 60 * 60 * 1000
+      const now = Date.now()
+
+      return DB.models.Game.find({
+        $or: [{
+          startDate:{$gt: new Date(now - STARTS_IN_X_DAYS*dayInterval)},
+        },{
+          endDate:{$gt: new Date(now + ENDS_UP_X_DAYS*dayInterval)},
+        }],
+      }).or([{
+        permissions: PUBLIC,
+      },{
         invited: context.user._id,
       },{
         owner: context.user._id,

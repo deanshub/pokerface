@@ -51,6 +51,11 @@ const schema = mongoose.Schema({
     required: true,
     default: [],
   }],
+  permissions:{
+    type:[{
+      type: String,
+    }],
+  },
   updated: { type: Date, default: Date.now },
   created: { type: Date, default: Date.now },
 })

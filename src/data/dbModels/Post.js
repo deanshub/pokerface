@@ -21,6 +21,10 @@ const schema = mongoose.Schema({
     required: true,
     default: [],
   }],
+  game: {
+    type: String,
+    ref: 'Game',
+  },
   updated: { type: Date, default: Date.now },
   created: { type: Date, default: Date.now },
 })
