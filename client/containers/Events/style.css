@@ -8,14 +8,15 @@
 }
 
 .containerHeader {
-  margin: 20px;
-  padding: 10px;
-  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .containerHeaderText {
   font-size: 1.2rem;
   font-weight: bold;
+  color: white;
 }
 
 .containerHeaderButton {

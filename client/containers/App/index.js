@@ -75,6 +75,11 @@ export default class App extends Component {
                       exact
                       path="/post/:id"
                   />
+                  {/* <Route
+                      component={StandaloneEvent}
+                      exact
+                      path="/event/:id"
+                  /> */}
                   <PrivateRoute
                       component={Navigation}
                       path="/"

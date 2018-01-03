@@ -38,6 +38,7 @@ export default class RangeBlock extends Component {
                 cards: range,
                 color: '#67d388',
               }]}
+              textColor="black"
               title={reverse(range)}
           />
         </Popup>

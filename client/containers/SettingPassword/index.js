@@ -9,6 +9,8 @@ import request from 'superagent'
 import logger from '../../utils/logger'
 import PublicPageTemplate from '../../components/PublicPageTemplate'
 import {viewParam} from '../../utils/generalUtils'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('routing')
 @inject('auth')
@@ -102,7 +104,7 @@ export default class SettingPassword extends Component {
             <Grid.Column width={4}>
               {
                 settingFailed?
-                  <Container>
+                  <Container >
                     <Header size="large">
                       The setting password failed.
                     </Header>
@@ -118,8 +120,9 @@ export default class SettingPassword extends Component {
                       loading={settingChecking}
                       onSubmit={::this.handleSettingPassowrd}
                   >
-                    <Header size="medium">Setting Password</Header>
+                    <Header className={classnames(style.white)} size="medium">Setting Password</Header>
                     <Form.Input
+                        className={classnames(style.white)}
                         focus
                         label="Password"
                         name="password"
@@ -129,6 +132,7 @@ export default class SettingPassword extends Component {
                         type="password"
                     />
                     <Form.Input
+                        className={classnames(style.white)}
                         label="Confirm Password"
                         name="confirmPassword"
                         onChange={::this.handleInputChange}
