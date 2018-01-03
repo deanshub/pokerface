@@ -80,7 +80,7 @@ export default class AddGame extends Component {
         text: player.fullname,
         value: username,
         image: player.avatar,
-        disabled: players.currentPlayers.has(username),
+        disabled: players.currentPlayers.includes(username),
       }
     })
 
