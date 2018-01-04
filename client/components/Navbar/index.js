@@ -81,41 +81,41 @@ export default class Navbar extends Component {
               exact
               to="/"
           >
-            HOME
+            Home
           </NavLink>
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               to={`/profile/${username}`}
           >
-            PROFILE
+            Profile
           </NavLink>
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               to="/events"
           >
-            EVENTS <Notification number={events.games.size}/>
+            Events <Notification number={events.games.size}/>
           </NavLink>
           <div className={classnames(style.navbarSection)}>
-            TOOLS
+            Tools
           </div>
             <NavLink
                 activeClassName={classnames(style.navbarRouteItemActive)}
                 className={classnames(style.navbarRouteItem)}
                 to="/smart"
             >
-              PER-FLOP CHART
+              Pre-Flop Chart
             </NavLink>
             <NavLink
                 activeClassName={classnames(style.navbarRouteItemActive)}
                 className={classnames(style.navbarRouteItem)}
                 to="/timer"
             >
-              BLINDS TIMER
+              Blind Timer
             </NavLink>
             <div className={classnames(style.navbarSection)}>
-              SEARCH
+              Search
             </div>
 
             <Autosuggest

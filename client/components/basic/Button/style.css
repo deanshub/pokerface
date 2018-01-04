@@ -134,13 +134,13 @@
 }
 
 .leftIcon.remove{
-  background-image: url('../../../assets/spotplayer/delete.png');
+  background-image: url('../../../assets/actions/delete.png');
 }
 .button:not(.disable):hover>.leftIcon.remove{
-  background-image: url('../../../assets/spotplayer/delete-hover.png');
+  background-image: url('../../../assets/actions/delete-hover.png');
 }
 .active>.leftIcon.remove{
-  background-image: url('../../../assets/spotplayer/delete-hover.png');
+  background-image: url('../../../assets/actions/delete-hover.png');
 }
 
 .leftIcon.up{

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Feed, Container, Loader } from 'semantic-ui-react'
+import { Feed, Loader } from 'semantic-ui-react'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import AddPlay from '../../components/AddPlay'
-// import classnames from 'classnames'
-// import style from './style.css'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('feed')
 @observer
@@ -41,14 +41,9 @@ export default class FeedContainer extends Component {
     const { feed } = this.props
 
     return (
-      <Container
-          fluid
-          style={{marginTop:30}}
-      >
+      <div className={classnames(style.container)}>
         <AddPlay />
-        <Container
-            style={{marginTop:60}}
-        >
+        <div>
           <Feed>
             {feed.parsedPosts.map(post=><Post key={post.id} post={post}/>)}
             {feed.loading?
@@ -60,8 +55,8 @@ export default class FeedContainer extends Component {
             }
           </Feed>
           <PhotoGallery/>
-        </Container>
-    </Container>
+        </div>
+    </div>
     )
   }
 }

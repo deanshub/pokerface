@@ -121,7 +121,7 @@ export default class PostEditor extends Component {
   }
 
   focus() {
-    const { readOnly } = this.props
+    const { onFocus, readOnly } = this.props
     if (this.editor && !readOnly){
       this.editor.focus()
     }
@@ -159,7 +159,7 @@ export default class PostEditor extends Component {
 
     return (
       <div
-          className={classnames({
+          className={classnames(style.container,{
             [style.editor]: !readOnly,
             [style.post]: postEditor,
           })}

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Grid, Form, Dropdown, Icon } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
 import CardSelection from './CardSelection'
 import SpotWizard from '../SpotWizard'
 import SpotPlayer from '../../containers/SpotPlayer'
 import Button from '../basic/Button'
+import DropDown from '../basic/DropDown'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -40,7 +40,8 @@ export default class AddPlay extends Component {
   constructor(props){
     super(props)
 
-    this.state = {buttonsPanelEnabled:false}
+    this.state = {cardSelectionOpen:false}
+    this.postFiles = []
   }
 
   addPhoto(event){
@@ -55,13 +56,18 @@ export default class AddPlay extends Component {
     if(spotPlayer.newSpot.spot.moves.length>0){
       newSpot=spotPlayer.newSpot.spot
     }
-    feed.addPost(auth.user, this.photosElm.files, newSpot)
+    feed.addPost(auth.user, newSpot)
     spotPlayer.newSpot = spotPlayer.initNewPost()
   }
 
   photosChanged(){
     const {feed} = this.props
-    feed.previewUploadImages(this.photosElm.files)
+    feed.addPreviewUploadMedia(this.photosElm.files)
+  }
+
+  deletePhoto(name){
+    const {feed} = this.props
+    feed.deletePreviewUploadMedia(name)
   }
 
   tagFriends(event){
@@ -82,8 +88,7 @@ export default class AddPlay extends Component {
 
   render() {
     const {feed, spotPlayer} = this.props
-    const {buttonsPanelEnabled} = this.state
-
+    const {cardSelectionOpen} = this.state
     const hasSpot = spotPlayer.newSpot.spot.moves.length>0
     const hasText = feed.newPost.content.getCurrentContent().hasText()
 
@@ -92,183 +97,105 @@ export default class AddPlay extends Component {
         <div className={classnames(style.info)}>
           @ - tag friends  [] - insert cards  : - insert emoji
         </div>
-        <div>
+        <div className={classnames(style.addPostContent)}>
+          {
+            hasSpot?(
+              <SpotPlayer post={spotPlayer.newSpot} style={{height:'40vw', backgroundColor:'white'}}/>
+            ):null
+          }
           <PostEditor
               placeholder="Share something"
               post={feed.newPost}
               postEditor
           />
+           {
+             feed.previewUploadedMedia.length>0
+             ?
+             <div className={classnames(style.imagesContainer)}>
+               {
+                 feed.previewUploadedMedia.map(({name, type, src})=>{
+
+                   let filePreview
+                   if (type.startsWith('video')){
+                     filePreview = <video className={classnames(style.image)}>
+                       <source src={src} type={type}/>
+                    </video>
+
+                   // then image
+                   }else{
+                     filePreview = <img className={classnames(style.image)} src={src}/>
+                   }
+
+                   return <div className={classnames(style.imagePreview)} key={name}>
+                     {filePreview}
+                     <div className={classnames(style.imagePreviewOverlay)}>
+                       <div
+                         className={classnames(style.deleteImage)}
+                         onClick={() => {this.deletePhoto(name)}}
+                       />
+                     </div>
+                  </div>
+                 })
+               }
+             </div>
+             :
+             null
+           }
           <div className={classnames(style.buttonsPanel)}>
             <div className={classnames(style.editPostButtons)}>
               <div className={classnames(style.insert)}>
                 insert
               </div>
               <Button
-                  disable={!buttonsPanelEnabled}
                   leftIcon="spot"
+                  onClick={::this.addSpot}
                   small
               >
                 Spot Player
               </Button>
-              <Button
-                  disable={!buttonsPanelEnabled}
-                  leftIcon="card"
-                  small
+              <DropDown
+                  open={cardSelectionOpen}
+                  trigger={
+                    <Button leftIcon="card" onClick={() => this.setSelect({cardSelectionOpen:true})} small>
+                      Card
+                    </Button>
+                  }
               >
-                Card
-              </Button>
+                <CardSelection
+                    amount={1}
+                    onCardSelected={::this.insertCard}
+                />
+              </DropDown>
+
+              <input
+                  multiple
+                  onChange={::this.photosChanged}
+                  ref={(photosElm)=>this.photosElm=photosElm}
+                  style={{display:'none'}}
+                  type="file"
+              />
               <Button
-                  disable={!buttonsPanelEnabled}
                   leftIcon="photo"
+                  onClick={::this.addPhoto}
                   small
               >
-                Photo
+                Photo/Video
               </Button>
-              <Button
-                  disable={!buttonsPanelEnabled}
-                  leftIcon="emoji"
-                  small
-              >
+              <Button leftIcon="emoji" small>
                 Emoji
               </Button>
             </div>
             <Button
-                disable={!buttonsPanelEnabled}
+                disable={!hasText}
+                onClick={::this.addPost}
                 primary
             >
               Post
             </Button>
           </div>
+          <SpotWizard/>
         </div>
       </div>
     )
-    // return (
-    //   <div>
-    //     <Grid container>
-    //       {
-    //         hasSpot?(
-    //           <Grid.Row stretched style={{padding:0, marginBottom:-15}}>
-    //             <Grid.Column width={16}>
-    //               <Icon
-    //                   bordered
-    //                   className={classnames(style.removeSpot)}
-    //                   link
-    //                   name="close"
-    //                   onClick={()=>spotPlayer.newSpot = spotPlayer.initNewPost()}
-    //               />
-    //               <SpotPlayer post={spotPlayer.newSpot} style={{height:'40vw', backgroundColor:'white'}}/>
-    //             </Grid.Column>
-    //           </Grid.Row>
-    //         ):null
-    //       }
-    //       <Grid.Row stretched>
-    //         <Grid.Column width={16}>
-    //           <PostEditor
-    //               placeholder="Share a post"
-    //               post={feed.newPost}
-    //               postEditor
-    //           />
-    //         </Grid.Column>
-    //         {
-    //           feed.uploadImages.length>0
-    //           ?
-    //           <Grid.Column style={{marginTop:-27, marginBottom:27, display:'flex !important', flexDirection:'row', flexFlow:'row wrap'}} width={16}>
-    //             {
-    //               feed.uploadImages.map(src=>(
-    //                 <img
-    //                     key={Math.random()}
-    //                     src={src}
-    //                     style={{width:'6em', height:'3em', flexGrow:0}}
-    //                 />
-    //               ))
-    //             }
-    //           </Grid.Column>
-    //           :
-    //           null
-    //         }
-    //
-    //         <Grid.Column width={3}>
-    //           <input
-    //               multiple
-    //               onChange={::this.photosChanged}
-    //               ref={(photosElm)=>this.photosElm=photosElm}
-    //               style={{display:'none'}}
-    //               type="file"
-    //           />
-    //           <Button
-    //               content="Add Photos"
-    //               icon="add"
-    //               labelPosition="left"
-    //               onClick={::this.addPhoto}
-    //           />
-    //         </Grid.Column>
-    //         <Grid.Column width={3}>
-    //           <Button
-    //               content="Tag friends"
-    //               icon="users"
-    //               labelPosition="left"
-    //               onClick={::this.tagFriends}
-    //           />
-    //         </Grid.Column>
-    //         <Grid.Column width={3}>
-    //           <Dropdown
-    //               button
-    //               className="icon"
-    //               floating
-    //               icon="dropdown"
-    //               labeled
-    //               onClick={()=>{feed.openCardSelection=!feed.openCardSelection}}
-    //               open={feed.openCardSelection}
-    //               text="Insert Card"
-    //           >
-    //             <Dropdown.Menu>
-    //               <Dropdown.Header content="Select a card" icon="tags" />
-    //               <Dropdown.Divider />
-    //               <CardSelection
-    //                   onCardSelected={::this.insertCard}
-    //               />
-    //             </Dropdown.Menu>
-    //           </Dropdown>
-    //         </Grid.Column>
-    //         <Grid.Column width={3}>
-    //           <Button
-    //               content="Spot Wizard"
-    //               icon="wizard"
-    //               labelPosition="left"
-    //               onClick={::this.addSpot}
-    //           />
-    //         </Grid.Column>
-    //         <Grid.Column width={1}>
-    //           {/* <Header size="small" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
-    //             <Icon name="world" />
-    //             <Header.Content>
-    //               <Dropdown
-    //                   defaultValue={shareWithOptions[0].value}
-    //                   header="Share with:"
-    //                   inline
-    //                   options={shareWithOptions}
-    //               />
-    //             </Header.Content>
-    //           </Header> */}
-    //         </Grid.Column>
-    //         <Grid.Column width={3}>
-    //           <Button
-    //               disabled={!hasText}
-    //               icon
-    //               labelPosition="left"
-    //               onClick={::this.addPost}
-    //               primary
-    //           >
-    //             <Icon
-    //                 name="share alternate"
-    //             />
-    //             Post
-    //           </Button>
-    //         </Grid.Column>
-    //       </Grid.Row>
-    //     </Grid>
-    //     <SpotWizard/>
-    //   </div>
-    // )
   }
 }
