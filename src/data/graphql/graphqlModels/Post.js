@@ -10,11 +10,13 @@ export const schema =  [`
     likes: [User]
     owner: User
     comments: [Comment]
+    event: Game
   }
 
   type Query {
     posts(
       id: String,
+      eventId: String,
       username: String,
       offset: Int
     ): [Post]
@@ -22,6 +24,7 @@ export const schema =  [`
 
   type Mutation{
     createPost(
+      eventId: String,
       content: String!,
       photos: [Upload]
     ): Post
@@ -52,7 +55,7 @@ export const resolvers = {
   },
 
   Query: {
-    posts: (_, {id, username, offset})=>{
+    posts: (_, {id, username, eventId, offset})=>{
       let query
       if (id!==undefined){
         query = DB.models.Post.find({_id: id})
@@ -69,6 +72,11 @@ export const resolvers = {
           .skip(offset||0)
           .sort('-created')
         })
+      }else if(eventId!==undefined){
+        return DB.models.Post.find({ game: eventId })
+        .limit(20)
+        .skip(offset||0)
+        .sort('-created')
       }else{
         // TODO: limit the number of posts
         query = DB.models.Post.find()
@@ -82,7 +90,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    createPost: (_, {content, photos}, context)=>{
+    createPost: (_, {content, photos, eventId}, context)=>{
       const photosUrl = (photos||[]).map(photo=>{
         const filename = path.parse(photo.path).base
         return filename
@@ -91,6 +99,7 @@ export const resolvers = {
         content: JSON.parse(content),
         owner: context.user._id,
         photos: photosUrl,
+        game: eventId,
       }).save()
     },
     deletePost:(_, {postId}, context)=>{

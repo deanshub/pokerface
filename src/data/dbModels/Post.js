@@ -22,7 +22,7 @@ const schema = mongoose.Schema({
     default: [],
   }],
   game: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Game',
   },
   updated: { type: Date, default: Date.now },

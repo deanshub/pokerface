@@ -56,6 +56,9 @@ const schema = mongoose.Schema({
       type: String,
     }],
   },
+  image: {
+    type: String,
+  },
   updated: { type: Date, default: Date.now },
   created: { type: Date, default: Date.now },
 })

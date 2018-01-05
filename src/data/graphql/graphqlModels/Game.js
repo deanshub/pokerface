@@ -3,6 +3,7 @@ import mailer from '../../../utils/mailer'
 import {PUBLIC} from '../../../utils/permissions'
 import {schema as User} from './User'
 import {schema as Post} from './Post'
+import { prepareEventCoverImage } from '../../helping/user'
 
 export const schema =  [`
   type Game {
@@ -21,6 +22,7 @@ export const schema =  [`
     updatedAt: String
     createdAt: String
     creator: User
+    image: String
     posts: [Post]
   }
 
@@ -98,6 +100,7 @@ export const resolvers = {
     updatedAt: (game)=>game.updated,
     createdAt: (game)=>game.created,
     creator: (game)=>DB.models.User.findById(game.owner),
+    image: prepareEventCoverImage,
     posts: (game)=> DB.models.Post.find({game: game.id}),
   },
 
