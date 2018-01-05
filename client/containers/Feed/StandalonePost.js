@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import { observer, inject } from 'mobx-react'
-import { Header, Container, Icon, Loader, Segment } from 'semantic-ui-react'
+import { Container, Loader, Segment } from 'semantic-ui-react'
+import NoMatch from '../../components/NoMatch'
 import Logo from '../../components/Logo'
 import Post from './Post'
 
@@ -48,18 +49,7 @@ export default class StandalonePost extends Component {
                 standalone
             />
             :
-            <div>
-              <Header size="huge">Post has been removed or is private...</Header>
-              <Header>Login and try again</Header>
-              <a href="/">
-                <Icon
-                    color="red"
-                    link
-                    name="home"
-                    size="massive"
-                />
-              </a>
-            </div>
+            <NoMatch/>
         }
       </Container>
     )

@@ -62,11 +62,6 @@ export default class Navigation extends Component {
                   path="/profile/:username"
               />
               <Route
-                  component={Profile}
-                  exact
-                  path="/profile"
-              />
-              <Route
                   component={Events}
                   exact
                   path="/events"
