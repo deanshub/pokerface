@@ -18,7 +18,7 @@ import TopMenu from './TopMenu'
 import 'semantic-ui-css/semantic.min.css'
 import classnames from 'classnames'
 import style from './style.css'
-import image from '../../assets/favicon-32x32.png'
+import image from '../../assets/landing logo.png'
 
 @inject('auth')
 @inject('routing')

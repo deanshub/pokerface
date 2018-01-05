@@ -134,13 +134,13 @@
 }
 
 .leftIcon.remove{
-  background-image: url('../../../assets/spotplayer/delete.png');
+  background-image: url('../../../assets/actions/delete.png');
 }
 .button:not(.disable):hover>.leftIcon.remove{
-  background-image: url('../../../assets/spotplayer/delete-hover.png');
+  background-image: url('../../../assets/actions/delete-hover.png');
 }
 .active>.leftIcon.remove{
-  background-image: url('../../../assets/spotplayer/delete-hover.png');
+  background-image: url('../../../assets/actions/delete-hover.png');
 }
 
 .leftIcon.up{
@@ -155,6 +155,46 @@
 }
 .button:not(.disable):hover>.leftIcon.down{
   background-image: url('../../../assets/spotplayer/down-hover.png');
+}
+
+.leftIcon.spot{
+  background-image: url('../../../assets/addpost/spot.png');
+}
+.button:not(.disable):hover>.leftIcon.spot{
+  background-image: url('../../../assets/addpost/spot-hover.png');
+}
+.active>.leftIcon.spot{
+  background-image: url('../../../assets/addpost/spot-hover.png');
+}
+
+.leftIcon.photo{
+  background-image: url('../../../assets/addpost/photo.png');
+}
+.button:not(.disable):hover>.leftIcon.photo{
+  background-image: url('../../../assets/addpost/photo-hover.png');
+}
+.active>.leftIcon.photo{
+  background-image: url('../../../assets/addpost/photo-hover.png');
+}
+
+.leftIcon.emoji{
+  background-image: url('../../../assets/addpost/emoji.png');
+}
+.button:not(.disable):hover>.leftIcon.emoji{
+  background-image: url('../../../assets/addpost/emoji-hover.png');
+}
+.active>.leftIcon.emoji{
+  background-image: url('../../../assets/addpost/emoji-hover.png');
+}
+
+.leftIcon.card{
+  background-image: url('../../../assets/addpost/card.png');
+}
+.button:not(.disable):hover>.leftIcon.card{
+  background-image: url('../../../assets/addpost/card-hover.png');
+}
+.active>.leftIcon.card{
+  background-image: url('../../../assets/addpost/card-hover.png');
 }
 
 .buttonGroup{
