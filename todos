@@ -15,11 +15,20 @@ upgrade node version on server and on dev
 -------------------------------------------------------------------------------
 
 
-poker table should be bigger
-event posts
-event page (url)
-QR for links
-how to guide for thruseday
+
+events
+  posts within feed by design                           - amit
+  posts within event page (should no have the header)   - amit
+  standalone event page (how to get to it)              - dean
+  events page (QR)                                      - dean
+
+poker table                                             - dean
+video within gallery (amit)                             - amit
+responsiveness                                          - dean
+search for events                                       - amit
+
+
+how to guide for sunday
 uri.elberg@powerpoker.co.il
 
 paid = private?
@@ -29,17 +38,12 @@ tag organization
 private forum
 
 boomplayer
-* ante color
-* handle show beforehand
 * after ante should create a pot
 * delete preview and continue writting
-* make X1 and X2 slower
-
 
 * make the cards preview entities normalize the text (when inserting [khkd] it will become [Kh Kd])
 * FeedStore addComment function uses dean image
 * /profile should not be used, only /profile/:username
-* error on editor focus
 
 editor improvements
 * log to editor to spot parser
@@ -49,15 +53,8 @@ spot wizard improvments
 * currency in spot wizard should be add-able Dropdown
 * all-in button
 * consider all-in both on wizard and on player
-* handle everyone folding and only one player left
-* bb and sb should have disable checkbox in general settings (0 will behave as disabled)
 * defaultly make the bank of players 100bb
-* change the dealer action to same logic as the boomplayer parser
-* cards chooser on general settings should be closed once the user chooses cards
-* search player should work on general settings
 * onClose of modal should be implemented (when clicking out of the window)
-* allow modal window to not be closed on click outside
-
 
 spot player imporvements
 * implement the back button
@@ -66,9 +63,6 @@ spot player imporvements
 * create constants for all logger categories and such
 * re render of cards (images requested multiple times) when exporting gif
 * better responsiveness (vertical phone)
-
-events
-* event should not have an end time on creation
 
 
 

@@ -162,6 +162,7 @@ export default class SpotWizard extends Component {
       )
       actions.push(
         <Button
+            disable={!dealerCards||dealerCards===''}
             key="dealerButton"
             onClick={::this.publishDealerCards}
             simple
@@ -183,9 +184,8 @@ export default class SpotWizard extends Component {
       <div className={classnames(style.actionBar)}>
         <div className={classnames(style.actionBarLeftPane)}>
           <Button
-              disabled={showCardsDisabled}
+              disable
               leftIcon="menu"
-              onClick={showCardsClick}
           />
         </div>
         <div className={classnames(style.actionBarMiddlePane)}>

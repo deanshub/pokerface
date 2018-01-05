@@ -63,7 +63,7 @@ export default class StepsPlayer extends Component {
         }else{
           this.pauseAutoPlay()
         }
-      },1000*1/speed),
+      },1500*1/speed),
     })
   }
 
