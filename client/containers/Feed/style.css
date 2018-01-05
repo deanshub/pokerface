@@ -95,5 +95,31 @@
 }
 
 .standaloneImage{
-  width: 100%;
+  max-width: 80vw;
+  max-height: 80vh;
+}
+
+.standalonePhotoContainer{
+  height: auto !important;
+}
+
+.photosContainer{
+  position: relative;
+  height: 7em;
+}
+
+.postVideo {
+  height: 100%;
+}
+
+.galleryContainer{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  .galleryImage{
+    height: 100%;
+    text-align: center;
+  }
 }

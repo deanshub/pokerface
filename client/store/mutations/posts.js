@@ -5,7 +5,10 @@ export const postCreate = gql`mutation createPost($post: String!, $photos: [Uplo
     id
     createdAt
     content
-    photos
+    photos{
+      path
+      type
+    }
     likes{
       username
       fullname
@@ -50,7 +53,10 @@ export const setPostLike = gql`mutation setPostLike($post: String!, $like: Boole
     id
     createdAt
     content
-    photos
+    photos{
+      path
+      type
+    }
     likes{
       username
       fullname

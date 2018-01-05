@@ -4,7 +4,7 @@ import { observable, action } from 'mobx'
 import logger from '../utils/logger'
 
 export class PhotoGalleryStore {
-  @observable photos: string[]
+  @observable photos
   @observable open: boolean
   @observable photoIndex
 
@@ -27,6 +27,14 @@ export class PhotoGalleryStore {
     this.photoIndex++
     if (this.photoIndex>=this.photos.length){
       this.photoIndex=0
+    }
+  }
+
+  @action
+  previousPhoto(){
+    this.photoIndex--
+    if (this.photoIndex<0){
+      this.photoIndex=this.photos.length-1
     }
   }
 }

@@ -2,15 +2,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import shallowCompare from 'react-addons-shallow-compare'
+import Video from '../../components/basic/Video'
+import classnames from 'classnames'
+import style from './style.css'
+
 
 export default class PostImage extends Component {
-  state: {
-    imageFile: ?String
-  }
 
   static propTypes = {
     onClick: PropTypes.func,
-    photo: PropTypes.string,
+    // photo: PropTypes.string,
   }
 
   constructor(props: Object){
@@ -34,16 +35,25 @@ export default class PostImage extends Component {
   }
 
   render() {
-    const {onClick, className} = this.props
+    const {className, onClick} = this.props
     const {imageFile} = this.state
+
+    if (!imageFile){
+      return null
+    }
+
+    const {path:src, type} = imageFile
 
     return (
       <a onClick={onClick}>
-        <img
-            className={className}
-            draggable={false}
-            src={imageFile}
-        />
+        {type.startsWith('video')?
+          <Video
+              className={classnames(style.postVideo, className)}
+              src={src}
+              type={type}
+          />
+        :
+          <img className={classnames(className)} draggable={false} src={src}/>}
       </a>
     )
   }

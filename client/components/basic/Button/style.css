@@ -197,6 +197,26 @@
   background-image: url('../../../assets/addpost/card-hover.png');
 }
 
+.leftIcon.next{
+  background-image: url('../../../assets/actions/next.png');
+}
+.button:not(.disable):hover>.leftIcon.next{
+  background-image: url('../../../assets/actions/next-hover.png');
+}
+.active>.leftIcon.next{
+  background-image: url('../../../assets/actions/next-hover.png');
+}
+
+.leftIcon.previous{
+  background-image: url('../../../assets/actions/previous.png');
+}
+.button:not(.disable):hover>.leftIcon.previous{
+  background-image: url('../../../assets/actions/previous-hover.png');
+}
+.active>.leftIcon.previous{
+  background-image: url('../../../assets/actions/previous-hover.png');
+}
+
 .buttonGroup{
   display: flex;
   flex-direction: column;

@@ -43,12 +43,14 @@
 
 .imagePreview{
   position: relative;
-  height: 5em;
+  height: 7em;
   margin: 0.3em;
 }
 
 .image {
-  height: inherit;
+  position: relative;
+  width: inherit;
+  height: 100%;
 }
 
 .imagePreviewOverlay {

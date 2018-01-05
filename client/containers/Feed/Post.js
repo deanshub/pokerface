@@ -296,7 +296,7 @@ export default class Post extends Component {
                 standalone={standalone}
             />
           </Feed.Extra>
-          <Feed.Extra className={classnames(style.unselectable)} images>
+          <Feed.Extra className={classnames(style.unselectable, style.photosContainer, {[style.standalonePhotoContainer]: standalone})} images>
             {post.photos.map((photo, index)=>
               <PostImage
                   className={classnames({[style.standaloneImage]: standalone})}
