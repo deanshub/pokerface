@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
+import { NavLink } from 'react-router-dom'
 
 import EventHeader from './EventHeader'
 import MapImage from './MapImage'
@@ -26,7 +27,12 @@ export default class EventRow extends Component {
           <div className={classnames(style.eventDetails)}>
             <div className={classnames(style.eventDetailsLeft)}>
               <div className={classnames(style.eventDescription)}>
-                { game.description }
+                <NavLink
+                    exact
+                    to={`/events/${game.id}`}
+                >
+                  { game.description }
+                </NavLink>
               </div>
               <RSVPStatics game={game} />
             </div>

@@ -10,6 +10,7 @@ import Navbar from '../../components/Navbar'
 import Feed from '../Feed'
 import Profile from '../../components/Profile'
 import Events from '../Events'
+import Event from '../Event'
 import RebrandedBlindsTimer from '../RebrandedBlindsTimer'
 import Learn from '../../components/Learn'
 import NoMatch from '../../components/NoMatch'
@@ -60,6 +61,11 @@ export default class Navigation extends Component {
                   component={Profile}
                   exact
                   path="/profile/:username"
+              />
+              <Route
+                  component={Event}
+                  exact
+                  path="/events/:eventId"
               />
               <Route
                   component={Events}

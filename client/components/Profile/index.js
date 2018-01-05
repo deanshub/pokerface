@@ -40,8 +40,8 @@ export default class Profile extends Component {
 
     return (
       <div className={classnames(style.container)}>
-        <Cover user={user}/>
-        <Feed username={user.username}/>
+        <Cover details={user}/>
+        <Feed by={{username:user.username}}/>
       </div>
     )
   }

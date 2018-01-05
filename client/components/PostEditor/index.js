@@ -123,7 +123,11 @@ export default class PostEditor extends Component {
   focus() {
     const { onFocus, readOnly } = this.props
     if (this.editor && !readOnly){
-      this.editor.focus()
+      try{
+        this.editor.focus()
+      }catch(e){
+        console.log('can\'t focus')
+      }
     }
   }
 
