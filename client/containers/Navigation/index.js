@@ -9,6 +9,7 @@ import { observer, inject } from 'mobx-react'
 import Navbar from '../../components/Navbar'
 import Feed from '../Feed'
 import Profile from '../../components/Profile'
+import SpotNote from '../../components/SpotNote'
 import Events from '../Events'
 import Event from '../Event'
 import RebrandedBlindsTimer from '../RebrandedBlindsTimer'
@@ -81,6 +82,11 @@ export default class Navigation extends Component {
                   component={Learn}
                   exact
                   path="/smart"
+              />
+              <Route
+                  component={SpotNote}
+                  exact
+                  path="/spotnote"
               />
               <Route component={NoMatch}/>
             </Switch>

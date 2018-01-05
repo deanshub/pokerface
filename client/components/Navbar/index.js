@@ -114,6 +114,13 @@ export default class Navbar extends Component {
             >
               Blind Timer
             </NavLink>
+            <NavLink
+                activeClassName={classnames(style.navbarRouteItemActive)}
+                className={classnames(style.navbarRouteItem)}
+                to="/spotnote"
+            >
+              Spot Note
+            </NavLink>
             <div className={classnames(style.navbarSection)}>
               Search
             </div>
