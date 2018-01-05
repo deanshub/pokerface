@@ -42,7 +42,7 @@ export class FeedStore {
   noMorePosts: boolean
   @observable uploadedMedia: Object
   @observable openCardSelection: boolean
-
+  @observable currentUploadedFiles: Number
 
   constructor(){
     this.posts = observable.map({})
@@ -60,6 +60,7 @@ export class FeedStore {
       post: undefined,
     })
     this.uploadedMedia=observable.map({})
+    this.currentUploadedFiles=0
   }
 
   parsePost(post){
@@ -372,12 +373,15 @@ export class FeedStore {
 
   @action
   addPreviewUploadMedia(files){
+    this.currentUploadedFiles += files.length
+
     for (let imageIndex = 0; imageIndex < files.length; imageIndex++) {
       const file = files[imageIndex]
       const {name:fileName} = file
       //this.uploadedMedia.set(fileName, {file})
       let reader = new FileReader()
       reader.onload = (e)=>{
+        this.currentUploadedFiles--
         this.uploadedMedia.set(fileName, {file, src:e.target.result})
       }
       reader.readAsDataURL(file)
@@ -433,5 +437,10 @@ export class FeedStore {
       const {name, type} = file
       return {name, type, src}
     })
+  }
+
+  @computed
+  get uploadingMedia(){
+    return (this.currentUploadedFiles > 0)
   }
 }

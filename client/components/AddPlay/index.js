@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
 import CardSelection from './CardSelection'
+import MediaPreview from './MediaPreview'
 import SpotWizard from '../SpotWizard'
 import SpotPlayer from '../../containers/SpotPlayer'
 import Button from '../basic/Button'
@@ -65,9 +66,9 @@ export default class AddPlay extends Component {
     feed.addPreviewUploadMedia(this.photosElm.files)
   }
 
-  deletePhoto(name){
-    const {feed} = this.props
-    feed.deletePreviewUploadMedia(name)
+  deleteSoptPlayer(){
+    const {spotPlayer} = this.props
+    spotPlayer.newSpot = spotPlayer.initNewPost()
   }
 
   tagFriends(event){
@@ -100,7 +101,15 @@ export default class AddPlay extends Component {
         <div className={classnames(style.addPostContent)}>
           {
             hasSpot?(
-              <SpotPlayer post={spotPlayer.newSpot} style={{height:'40vw', backgroundColor:'white'}}/>
+              <div className={classnames(style.spotWPreview)}>
+                <SpotPlayer post={spotPlayer.newSpot} style={{height:'40vw', backgroundColor:'white'}}/>
+                <div className={classnames(style.spotPreviewOverlay)}>
+                  <div
+                    className={classnames(style.deleteImage)}
+                    onClick={::this.deleteSoptPlayer}
+                  />
+                </div>
+              </div>
             ):null
           }
           <PostEditor
@@ -108,39 +117,7 @@ export default class AddPlay extends Component {
               post={feed.newPost}
               postEditor
           />
-           {
-             feed.previewUploadedMedia.length>0
-             ?
-             <div className={classnames(style.imagesContainer)}>
-               {
-                 feed.previewUploadedMedia.map(({name, type, src})=>{
-
-                   let filePreview
-                   if (type.startsWith('video')){
-                     filePreview = <video className={classnames(style.image)}>
-                       <source src={src} type={type}/>
-                    </video>
-
-                   // then image
-                   }else{
-                     filePreview = <img className={classnames(style.image)} src={src}/>
-                   }
-
-                   return <div className={classnames(style.imagePreview)} key={name}>
-                     {filePreview}
-                     <div className={classnames(style.imagePreviewOverlay)}>
-                       <div
-                         className={classnames(style.deleteImage)}
-                         onClick={() => {this.deletePhoto(name)}}
-                       />
-                     </div>
-                  </div>
-                 })
-               }
-             </div>
-             :
-             null
-           }
+          <MediaPreview/>
           <div className={classnames(style.buttonsPanel)}>
             <div className={classnames(style.editPostButtons)}>
               <div className={classnames(style.insert)}>
