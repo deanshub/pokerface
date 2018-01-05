@@ -40,9 +40,9 @@ export class FeedStore {
   @observable commentDrafts: Object
   currentUser: Object
   noMorePosts: boolean
-  @observable uploadImages
+  @observable uploadedMedia: Object
   @observable openCardSelection: boolean
-
+  @observable currentUploadedFiles: Number
 
   constructor(){
     this.posts = observable.map({})
@@ -54,12 +54,13 @@ export class FeedStore {
       spot: undefined,
       deletePopupOpen: false,
     })
-    this.uploadImages = []
     this.openCardSelection = false
     this.standalonePost = observable({
       loading: true,
       post: undefined,
     })
+    this.uploadedMedia=observable.map({})
+    this.currentUploadedFiles=0
   }
 
   parsePost(post){
@@ -111,7 +112,7 @@ export class FeedStore {
   }
 
   @action
-  addPost(user, photos, spot){
+  addPost(user, spot){
     const editorState = this.newPost.content
     const content = editorState.getCurrentContent()
     if (content.hasText()){
@@ -122,7 +123,7 @@ export class FeedStore {
       if(spot){
         rawPostContent = {...rawPostContent,spot}
       }
-
+      const photos = this.uploadedMedia.values().map(element => element.file)
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
       graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(rawPostContent), photos}})
       // if post mutation succeded add id
@@ -147,7 +148,7 @@ export class FeedStore {
         comments:[],
         owner:user,
       })
-      this.uploadImages=[]
+      this.uploadedMedia=observable.map({})
     }
   }
 
@@ -371,16 +372,25 @@ export class FeedStore {
   }
 
   @action
-  previewUploadImages(images){
-    this.uploadImages=[]
-    for (let imageIndex = 0; imageIndex < images.length; imageIndex++) {
-      const image = images[imageIndex]
+  addPreviewUploadMedia(files){
+    this.currentUploadedFiles += files.length
+
+    for (let imageIndex = 0; imageIndex < files.length; imageIndex++) {
+      const file = files[imageIndex]
+      const {name:fileName} = file
+      //this.uploadedMedia.set(fileName, {file})
       let reader = new FileReader()
       reader.onload = (e)=>{
-        this.uploadImages.push(e.target.result)
+        this.currentUploadedFiles--
+        this.uploadedMedia.set(fileName, {file, src:e.target.result})
       }
-      reader.readAsDataURL(image)
+      reader.readAsDataURL(file)
     }
+  }
+
+  @action
+  deletePreviewUploadMedia(imageName){
+    this.uploadedMedia.delete(imageName)
   }
 
   @action
@@ -419,5 +429,18 @@ export class FeedStore {
   @action
   refresh(){
     this.fetchPosts()
+  }
+
+  @computed
+  get previewUploadedMedia(){
+    return this.uploadedMedia.values().map(({file, src}) => {
+      const {name, type} = file
+      return {name, type, src}
+    })
+  }
+
+  @computed
+  get uploadingMedia(){
+    return (this.currentUploadedFiles > 0)
   }
 }

@@ -1,7 +1,4 @@
 @import "../../constants/styles";
 
 .app {
-  background-image:url('../../assets/pattern-black.png');
-  background-color: $appBackgroundColor;
-  min-height: 100vh;
 }

@@ -50,6 +50,7 @@ export default class CardsTable extends Component {
     let setStyle = {}
     if (relevantSet&&!relevantSet.disabled){
       setStyle.backgroundColor = relevantSet.color
+      setStyle.color = 'black'
     }
 
     return (
@@ -98,7 +99,7 @@ export default class CardsTable extends Component {
   }
 
   render() {
-    const {title, subtitle, inFeed} = this.props
+    const {title, subtitle, inFeed, textColor} = this.props
     const {sets} = this.state
     const normalizedSets = sets.map(set=>{
       if (!Array.isArray(set.cards)){
@@ -110,7 +111,7 @@ export default class CardsTable extends Component {
       return set
     })
     return (
-      <div className={classnames(style.container)}>
+      <div className={classnames(style.container)} style={{color:textColor}}>
         <div className={classnames(style.title, style.maintitle, {[style.inFeed]:inFeed})}>
           {title}
         </div>

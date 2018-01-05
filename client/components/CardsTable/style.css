@@ -1,4 +1,7 @@
+@import '../../constants/styles.css';
+
 .container{
+  color: white;
   display: flex;
   flex-direction: column;
   font-size: 1.5em;
@@ -27,6 +30,7 @@
   font-size: 2em;
   border-collapse: collapse;
   font-weight: bold;
+  color: subtitleColor;
 }
 .inFeed.handchartContainer{
   font-size: 0.8em;
@@ -36,6 +40,7 @@
   padding: 0.5em;
   text-align: center;
   cursor: pointer;
+  background-color: #f2f2f2;
 }
 .hand:hover{
   font-weight: bold;
@@ -48,7 +53,7 @@
   width: 100%;
   display: flex;
   justify-content: space-around;
-  margin-top:10px;
+  padding:2em 0;
 }
 .label{
   display: flex;
@@ -56,7 +61,7 @@
   cursor: pointer;
 }
 .label.disabled{
-  color: #ffffff;
+  color: subtitleColor;
 }
 .labelColor{
   height:15px;

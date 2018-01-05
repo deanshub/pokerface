@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal } from 'semantic-ui-react'
+import { Modal } from 'semantic-ui-react'
+import Button from '../basic/Button'
 import { observer, inject } from 'mobx-react'
 import AddGame from './index'
 
@@ -21,10 +22,9 @@ export default class AddGameModal extends Component {
             open={game.addGameModalOpen}
             trigger={
                 <Button
-                    className={this.props.buttonClassName}
                     onClick={() => game.openAddGameModal()}
                     primary
-                    size="small"
+                    style={{marginRight:'4em'}}
                 >
                   Add Event
                 </Button>}

@@ -36,3 +36,6 @@ $disabled: #24222e;
 @value landingTextColor: #bdbdce;
 @value landingLineColor: #bcbccb;
 @value successColor: #41c86a;
+
+/* standalone */
+@value subtitleColor: #88869f;

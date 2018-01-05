@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
 import CardsTable from '../CardsTable'
 import {openRaiseSets} from './openRaiseSets'
-// import UnavailableSection from '../UnavailableSection'
 
 export default class Lern extends Component {
   render() {
@@ -14,7 +13,6 @@ export default class Lern extends Component {
             subtitle="Opening bet pre-flop by position"
             title="Open-Raise by position"
         />
-        {/* <UnavailableSection/> */}
       </Container>
     )
   }

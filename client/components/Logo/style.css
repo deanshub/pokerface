@@ -1,0 +1,29 @@
+@import '../../constants/styles.css';
+
+.header{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-transform: uppercase;
+  margin: 3em 0;
+  color: white;
+  align-items: center;
+  line-height: 4em;
+}
+
+.firstRow{
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-weight: bold;
+  font-size: 3.3em;
+}
+.title{
+  margin-left: 0.5em;
+}
+
+.secondRow{
+  font-size: 2.5em;
+  color: subtitleColor;
+  margin-top: -0.5em;
+}
