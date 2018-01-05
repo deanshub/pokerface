@@ -72,6 +72,7 @@
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
+  cursor: pointer;
 }
 
 .deleteImage:hover{

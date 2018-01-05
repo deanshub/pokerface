@@ -128,7 +128,7 @@ export default class AddPlay extends Component {
                   onClick={::this.addSpot}
                   small
               >
-                Spot Player
+                Spot Wizard
               </Button>
               <DropDown
                   open={cardSelectionOpen}
@@ -158,9 +158,9 @@ export default class AddPlay extends Component {
               >
                 Photo/Video
               </Button>
-              <Button leftIcon="emoji" small>
+              {/* {<Button leftIcon="emoji" small>
                 Emoji
-              </Button>
+              </Button>} */}
             </div>
             <Button
                 disable={!hasText}
