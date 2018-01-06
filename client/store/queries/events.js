@@ -43,3 +43,48 @@ export const eventsQuery = gql`
       }
     }
 `
+
+export const eventQuery = gql`
+  query _($eventId: String!) {
+    game(gameId: $eventId) {
+      id
+      creator{
+        username
+        fullname
+        avatar
+      }
+      title
+      description
+      type
+      subtype
+      location
+      from
+      to
+      invited{
+        username
+        fullname
+        avatar
+        guest
+      }
+      accepted{
+        username
+        fullname
+        avatar
+      }
+      declined{
+        username
+        fullname
+        avatar
+      }
+      unresponsive{
+        username
+        fullname
+        avatar
+        guest
+      }
+      updatedAt
+      createdAt
+      image
+    }
+  }
+`

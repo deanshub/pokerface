@@ -1,6 +1,11 @@
 @import "../../constants/styles.css";
+.coverContainer{
+  margin-bottom: 5vh;
+  box-shadow: 0 0 10px 0 #000000;
+  border-radius: 10px;
+}
 
-.container{
+.imageContainer{
   height: 45vh;
   background-size: cover;
   background-position: 50%;
@@ -9,9 +14,8 @@
   align-items: center;
   background-color: $gray;
   position: relative;
-  box-shadow: 0 0 10px 0 #000000;
   background-color: rgba(31,29,40,0.5);
-  margin-bottom: 15vh;
+  border-radius: 10px 10px 0 0;
 }
 
 .edit {
@@ -51,4 +55,31 @@
 .avatar{
   position: absolute;
   bottom: -4em;
+}
+
+.detailsContainer{
+  padding: 2em 3em;
+  color: textColor;
+  background-color: backColor;
+  border-radius: 0 0 10px 10px;
+}
+
+.detailsText{
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+}
+.noTopMargin{
+  margin-top: 0;
+}
+
+.divider{
+  margin-top: 1.5em;
+  width: 6em;
+  height: 0.5em;
+  background-color: eventDividerColor;
+}
+
+.icon{
+  margin-right: 1em;
 }

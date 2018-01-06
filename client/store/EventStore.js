@@ -1,8 +1,8 @@
 // @flow
 
-import { observable, action, toJS } from 'mobx'
+import { observable, computed, action, toJS } from 'mobx'
 import graphqlClient from './graphqlClient'
-import {eventsQuery} from './queries/events'
+import {eventsQuery, eventQuery} from './queries/events'
 import {gameAttendanceUpdate, addGame, deleteGame} from './mutations/games'
 import logger from '../utils/logger'
 import moment from 'moment'
@@ -11,11 +11,13 @@ export class EventStore {
   @observable games
   @observable loading: boolean
   @observable expendedGameId
-
+  @observable currentEvent
+  @observable loadingCurrentEvent: boolean
 
   constructor(){
     this.games = observable.map({})
     this.loading = false
+    this.loadingCurrentEvent = false
   }
 
   setGame(game){
@@ -135,5 +137,52 @@ export class EventStore {
       this.loading = false
       console.error(err)
     })
+  }
+
+
+  @action
+  setCurrentEvent(eventId){
+    this.loadingCurrentEvent = true
+    graphqlClient.query({
+      // fetchPolicy:'network-only',
+      query: eventQuery,
+      variables: {eventId},
+    }).then((result)=>{
+      this.currentEvent = result.data.game
+      this.loadingCurrentEvent = false
+    }).catch(err=>{
+      this.loadingCurrentEvent = false
+      console.error(err)
+    })
+  }
+
+  @computed
+  get currentEventDetails(){
+    if (!this.currentEvent){
+      return null
+    }
+    const {
+      id,
+      type,
+      subtype,
+      description,
+      location,
+      from,
+      accepted,
+      image: coverImage,
+      title: fullname,
+    } = this.currentEvent
+
+    return {
+      id,
+      type,
+      subtype,
+      description,
+      location,
+      startDate: moment(from),
+      going: accepted.length,
+      coverImage,
+      fullname,
+    }
   }
 }
