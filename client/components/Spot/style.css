@@ -7,13 +7,16 @@
 }
 
 .playersList{
-  padding: 10px 0;
-  flex: 1;
+  flex: 9;
   display: flex;
   justify-content: center;
+  margin-bottom: -25px;
+  z-index: 1;
 }
 .reversed{
   flex-direction: row-reverse;
+  margin-top: -25px;
+  margin-bottom: 0px;
 }
 
 .playerSpace{
@@ -29,6 +32,7 @@
 }
 
 .avatar{
+  background-color: rgba(255,255,255,0.95);
   cursor: pointer;
   flex: 39;
   background-size: cover;

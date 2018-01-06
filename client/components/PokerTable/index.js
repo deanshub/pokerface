@@ -10,6 +10,7 @@ import DealerSpace from './DealerSpace'
 export default class PokerTable extends Component {
   static propTypes = {
     currency: PropTypes.string,
+    edgeColor: PropTypes.string,
     fabricColor: PropTypes.string,
     logo: PropTypes.string,
     standalone: PropTypes.bool,
@@ -20,6 +21,7 @@ export default class PokerTable extends Component {
 
   static defaultProps = {
     fabricColor: '#41c86a',
+    edgeColor: '#2b3f31',
     title: 'Pokerface.io',
     standalone: false,
     logo: pokerfaceLogo,
@@ -30,6 +32,7 @@ export default class PokerTable extends Component {
       title,
       standalone,
       fabricColor,
+      edgeColor,
       logo,
       dealer,
       currency,
@@ -43,7 +46,7 @@ export default class PokerTable extends Component {
             style.table,
             {[style.standalone]:standalone}
           )}
-          style={{backgroundColor: fabricColor}}
+          style={{backgroundColor: fabricColor, borderColor: edgeColor}}
       >
         <div className={classnames(style.backgroundContainer)}>
           <div className={classnames(style.line)}>

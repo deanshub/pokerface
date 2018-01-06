@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const postsQuery = gql`
-  query _($username: String, $offset: Int, $id: String) {
-    posts(username: $username, offset: $offset, id: $id) {
+  query _($username: String, $eventId: String, $offset: Int, $id: String) {
+    posts(username: $username, eventId: $eventId, offset: $offset, id: $id) {
       id
       createdAt
       content

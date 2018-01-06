@@ -2,4 +2,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  line-height: normal;
+}
+
+.white{
+  color:white;
+}
+
+.h1{
+  font-size: 4em;
+}
+.h2{
+  font-size: 2em;
 }

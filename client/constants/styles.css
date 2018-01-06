@@ -39,3 +39,8 @@ $disabled: #24222e;
 
 /* standalone */
 @value subtitleColor: #88869f;
+
+/* profile and event */
+@value textColor: #a0a0b5;
+@value backColor: #2c2938;
+@value eventDividerColor: #74728c;
