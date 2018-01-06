@@ -13,28 +13,139 @@
   background-color: white;
 }
 
-.buttonsPanel {
+.panelInEditPost{
   display: flex;
   align-items: center;
-  color: #24222e;
-  font-size: 0.875em;
-  justify-content: space-between;
-  padding: 0.375em;
   border-top: 1px solid #e4e4e4;
-}
+  font-size: 0.875em;
+  padding: 0 0.375em;
 
-.editPostButtons{
-  display: flex;
-  align-items: center;
-  padding: 0.7em 1em;
-  width: 60%;
-  justify-content: space-between;
-
-  .insert {
+  .label {
     color: #a0a0b5;
+    padding-left: 1em;
   }
 }
 
+/* action buttons */
+
+.buttonsPanel {
+  @extend .panelInEditPost;
+  color: #24222e;
+}
+
+.editPostButtons{
+  flex: 1;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+
+  .actionButtons {
+    display: flex;
+    align-items: center;
+
+    justify-content: space-around;
+    width: 50%;
+  }
+}
+
+/* event */
+.eventPanel {
+  @extend .panelInEditPost;
+}
+
+.removeEvent {
+  color: #41c86a;
+  cursor: pointer;
+}
+
+/* search event */
+.autosuggest {
+  position: relative;
+  margin-right: 1em;
+  margin-left: 2em;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+.autosuggestInput{
+  opacity: 0.6;
+  border-width: 0;
+  border-radius: 0.6em;
+  height: 2.3em;
+  width: 10em;
+  color: #535168;
+}
+
+.autosuggestInput:focus{
+  outline: 0;
+}
+
+.autosuggestInputActive{
+  background-color: #535168;
+}
+
+.suggestion{
+  cursor: pointer;
+  border-bottom: 1px solid $divider;
+  border-radius: 0.45em;
+}
+
+.suggestionsContainer{
+  position: absolute;
+  display: none;
+  width: 130%;
+  background-color: $white;
+  max-height: 14.4em;
+  overflow-y:auto;
+  border-radius: 0.45em;
+  margin-top: 1px;
+  z-index: 1;
+}
+.suggestionsContainerOpen{
+  display: block;
+}
+
+.suggestionsList{
+  border: 1px solid $divider;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.suggestionsList:last-child{
+  border-bottom: 0;
+}
+
+.suggestionItem {
+  border: white solid .1em;
+  border-radius: 0.45em;
+  padding: 0.3em 0.7em;
+
+  .subheader{
+    color: #a0a0b5;
+  }
+
+  .subheader:hover{
+    color: white;
+  }
+}
+
+.suggestionHighlighted{
+  background-color: #41c86a;
+  color: white;
+
+  .suggestionItem{
+    border: white solid .1em;
+
+    .subheader{
+      color: white;
+    }
+  }
+}
+
+
+
+/* media preview*/
 .imagesContainer {
   display: flex;
   align-items: center;
@@ -86,6 +197,7 @@
   opacity: 1;
 }
 
+/* spot */
 .spotWPreview{
   position: relative;
 }
@@ -107,6 +219,8 @@
   opacity: 1;
 }
 
+
+/* card selection */
 .multiCardsContainer{
   display: flex;
 }

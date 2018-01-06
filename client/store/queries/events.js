@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const eventsQuery = gql`
-    query{
+    query _{
       games{
           id
           creator{
@@ -87,4 +87,15 @@ export const eventQuery = gql`
       image
     }
   }
+`
+
+export const searchEventsQuery = gql`
+  query _($title: String!){
+    search(title: $title){
+      id
+      title
+      location
+    }
+  }
+
 `

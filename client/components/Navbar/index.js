@@ -47,7 +47,6 @@ export default class Navbar extends Component {
           className={style.suggestionItem}
           header={player.fullname}
           image={player.avatar}
-          subheader="2 mutuals friends"
       />
     )
   }

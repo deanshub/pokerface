@@ -54,6 +54,7 @@ export class FeedStore {
       content: EditorState.createEmpty(),
       spot: undefined,
       deletePopupOpen: false,
+      eventId: undefined,
     })
     this.openCardSelection = false
     this.standalonePost = observable({
@@ -125,8 +126,10 @@ export class FeedStore {
         rawPostContent = {...rawPostContent,spot}
       }
       const photos = this.uploadedMedia.values().map(element => element.file)
+      const {event} = this.newPost
+      const eventId = event?event.id:null
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
-      graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(rawPostContent), photos}})
+      graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(rawPostContent), photos , eventId}})
       // if post mutation succeded add id
       .then(result=>{
         this.posts.delete(newPostTempId)
@@ -262,6 +265,7 @@ export class FeedStore {
     const username = by&&by.username
     const eventId = by&&by.eventId
 
+    // TODO it is not equal to the expression: if (username)
     if (username|| (!eventId&& !username)){
       if (this.currentUser===username && (this.noMorePosts || this.loading)) return undefined
 

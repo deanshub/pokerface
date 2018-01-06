@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-export const postCreate = gql`mutation createPost($post: String!, $photos: [Upload]){
-  createPost(content:$post, photos:$photos){
+export const postCreate = gql`mutation createPost($eventId: String, $post: String!, $photos: [Upload]){
+  createPost(eventId:$eventId, content:$post, photos:$photos){
     id
     createdAt
     content
@@ -35,6 +35,11 @@ export const postCreate = gql`mutation createPost($post: String!, $photos: [Uplo
       username
       fullname
       avatar
+    }
+    event{
+      id
+      title
+      location
     }
   }
 }
