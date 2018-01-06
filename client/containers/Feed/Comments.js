@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
-import { Comment } from 'semantic-ui-react'
 import PostComment from './PostComment'
 
 @observer
@@ -10,7 +9,7 @@ export default class Comments extends Component {
   render() {
     const { comments, standalone } = this.props
     return (
-      <Comment.Group style={{maxWidth:'98%'}}>
+      <div>
         {comments.map(comment=>(
           <PostComment
               comment={comment}
@@ -18,7 +17,7 @@ export default class Comments extends Component {
               standalone={standalone}
           />))
         }
-      </Comment.Group>
+      </div>
     )
   }
 }

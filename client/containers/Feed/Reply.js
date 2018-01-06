@@ -2,7 +2,8 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import { Form, Button, Image, Divider } from 'semantic-ui-react'
+import Image from '../../components/basic/Image'
+import Button from '../../components/basic/Button'
 import PostEditor from '../../components/PostEditor'
 import classnames from 'classnames'
 import style from './style.css'
@@ -14,72 +15,70 @@ export default class Comments extends Component {
   constructor(props: Object){
     super(props)
     this.state = {
-      avatarImage: undefined,
+      avatarImage: props.auth.user.avatar,
     }
   }
 
-  componentDidMount(){
-    const { auth } = this.props
-    if (auth.user.avatar){
-      this.setState({
-        avatarImage:auth.user.avatar,
-      })
-    }
-  }
-
-  addComment(){
+  addComment(e){
     const { post, feed } = this.props
+    e.preventDefault()
     feed.addComment(post.id)
   }
-  removeReply(){
+  // removeReply(){
+  //   const { feed, post } = this.props
+  //   feed.removeDraft(post)
+  // }
+
+  createDraft(){
     const { feed, post } = this.props
-    feed.removeDraft(post)
+    if (!feed.commentDrafts.get(post.id)){
+      feed.createDraft(post)
+    }
   }
 
   render() {
     const { feed, post, standalone } = this.props
     const {avatarImage} = this.state
 
+    if(!post){
+      return null
+    }
+
     return (
-      <Form
-          onSubmit={(e)=>{e.preventDefault()}}
-          reply
+      <form
+          className={classnames(style.replyContainer)}
+          onClick={::this.createDraft}
+          onSubmit={::this.addComment}
       >
-        <Divider />
-        <Form.Group inline>
-          <Form.Field width={1}>
             {
               avatarImage&&
               <Image
+                  avatar
                   src={avatarImage}
               />
             }
-          </Form.Field>
-          <Form.Field width={15}>
-            <PostEditor
-                placeholder="Add comment"
-                post={feed.commentDrafts.get(post.id)}
-            />
-          </Form.Field>
-        </Form.Group>
-        <Button
-            className={classnames({[style.standaloneReply]: standalone})}
-            content="Add Reply"
-            icon="edit"
-            labelPosition="left"
-            onClick={::this.addComment}
-            primary
-            size="tiny"
-        />
-        <Button
-            className={classnames({[style.standaloneReply]: standalone})}
-            content="Cancel"
-            icon="remove"
-            labelPosition="left"
-            onClick={::this.removeReply}
-            size="tiny"
-        />
-      </Form>
+            <div className={classnames(style.commentTextBox)}>
+              {
+                feed.commentDrafts.get(post.id)?
+                <PostEditor
+                    placeholder="Write a comment..."
+                    post={feed.commentDrafts.get(post.id)}
+                />
+                :
+                <div className={classnames(style.commentPlaceholder)}>
+                  Write a comment...
+                </div>
+              }
+              <Button
+                  active
+                  onClick={::this.addComment}
+                  simple
+                  style={{ alignSelf: 'flex-end'}}
+              >
+                Post
+              </Button>
+            </div>
+      </form>
     )
   }
 }

@@ -12,6 +12,7 @@ export default class PrivateRoute extends Component {
       this.forceUpdate()
     })
   }
+
   render(){
     const {component: Component, auth, routing, ...rest} = this.props
     return (
