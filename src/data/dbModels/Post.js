@@ -11,7 +11,7 @@ const schema = mongoose.Schema({
     required: true,
   },
   photos: [{
-    type: String,
+    type: mongoose.Schema.Types.Mixed,
     required: true,
     default: [],
   }],
