@@ -69,7 +69,6 @@ const schema = Schema(
     permissions:{
       type:[{
         type: String,
-        ref: 'User',
       }],
     },
     rebrandingDetails:{
