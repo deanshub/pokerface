@@ -296,16 +296,19 @@ export default class Post extends Component {
                 standalone={standalone}
             />
           </Feed.Extra>
-          <Feed.Extra className={classnames(style.unselectable, style.photosContainer, {[style.standalonePhotoContainer]: standalone})} images>
-            {post.photos.map((photo, index)=>
-              <PostImage
-                  className={classnames({[style.standaloneImage]: standalone})}
-                  key={index}
-                  onClick={()=>this.openModal(index)}
-                  photo={photo}
-              />
-            )}
-          </Feed.Extra>
+          {
+            post.photos.length>0&&
+            <Feed.Extra className={classnames(style.unselectable, style.photosContainer, {[style.standalonePhotoContainer]: standalone})} images>
+              {post.photos.map((photo, index)=>
+                <PostImage
+                    className={classnames({[style.standaloneImage]: standalone})}
+                    key={index}
+                    onClick={()=>this.openModal(index)}
+                    photo={photo}
+                />
+              )}
+            </Feed.Extra>
+          }
           <Feed.Meta className={classnames({[style.standaloneContentMeta]: standalone })}>
             <Feed.Like
                 className={classnames(style.unselectable, style.blackIcons, {
