@@ -2,9 +2,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import { Feed, Icon, Popup, Dropdown, Dimmer, Loader } from 'semantic-ui-react'
+import { Feed, Dimmer, Loader } from 'semantic-ui-react'
 import Button from '../../components/basic/Button'
-import Image from '../../components/basic/Image'
+import BasicImage from '../../components/basic/Image'
 import IsUserLoggedIn from '../../components/IsUserLoggedIn'
 import DropDown from '../../components/basic/DropDown'
 import TimeAgo from 'javascript-time-ago'
@@ -97,8 +97,11 @@ export default class Post extends Component {
         return domtoimage.toPng(postElement)
         .then((dataUrl)=>{
           const img = new Image()
+          img.onload=()=>{
+            resolve(img)
+          }
+          img.onerror=reject
           img.src = dataUrl
-          return resolve(img)
         })
         .catch(err=>{
           console.error(err)
@@ -148,7 +151,7 @@ export default class Post extends Component {
     spotPlayer.reset(post)
     const takeImage = ()=>setTimeout(()=>{
       return this.generateImage(svgPostElement).then(img=>{
-        gif.addFrame(img, {delay:1000})
+        gif.addFrame(img, {delay:1500})
         if (spotPlayer.nextStep(post)){
           return takeImage()
         //done
@@ -198,7 +201,7 @@ export default class Post extends Component {
         </Dimmer>
         <div className={classnames(style.postHeader)}>
           <div className={classnames(style.leftPane)}>
-            <Image
+            <BasicImage
                 avatar
                 href={`/profile/${post.owner.username}`}
                 src={this.getUserImageUrl()}
