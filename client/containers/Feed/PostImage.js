@@ -45,15 +45,21 @@ export default class PostImage extends Component {
     const {path:src, type} = imageFile
 
     return (
-      <a onClick={onClick}>
-        {type.startsWith('video')?
+      <a className={classnames(style.mediaContainer)} onClick={onClick}>
+        {
+          type.startsWith('video')?
           <Video
-              className={classnames(style.postVideo, className)}
+              className={classnames(style.mediaItem, className)}
               src={src}
               type={type}
           />
-        :
-          <img className={classnames(className)} draggable={false} src={src}/>}
+          :
+          <img
+              className={classnames(style.mediaItem, className)}
+              draggable={false}
+              src={src}
+          />
+        }
       </a>
     )
   }

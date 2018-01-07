@@ -2,7 +2,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import { Feed, Icon, Button, Popup, Dropdown, Dimmer, Loader } from 'semantic-ui-react'
+import { Feed, Icon, Popup, Dropdown, Dimmer, Loader } from 'semantic-ui-react'
+import Button from '../../components/basic/Button'
+import Image from '../../components/basic/Image'
+import IsUserLoggedIn from '../../components/IsUserLoggedIn'
+import DropDown from '../../components/basic/DropDown'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import ReactDOM from 'react-dom'
@@ -42,16 +46,6 @@ export default class Post extends Component {
     }
   }
 
-  goto(event){
-    const {post, routing, auth} = this.props
-    event.preventDefault()
-    if (post.owner.username===auth.user.username){
-      routing.push('/profile')
-    }else{
-      routing.push(`/profile/${post.owner.username}`)
-    }
-  }
-
   getUserFullName(){
     const { post, auth } = this.props
     return post.owner.username===auth.user.username?'You':post.owner.fullname
@@ -74,80 +68,6 @@ export default class Post extends Component {
     const { post, feed }= this.props
     feed.deletePost(post.id)
     this.closeDeletePopup()
-  }
-
-  getFeedSummary(){
-    const { post, auth, standalone } = this.props
-    const deleteButton = (
-      <Popup
-          content={
-            <div>
-              Are you sure?
-              <Button.Group compact style={{marginLeft:10}}>
-                <Button
-                    basic
-                    color="green"
-                    onClick={::this.deletePost}
-                >
-                  Yes
-                </Button>
-                <Button
-                    basic
-                    color="red"
-                    onClick={::this.closeDeletePopup}
-                >
-                  No
-                </Button>
-              </Button.Group>
-            </div>
-          }
-          on="click"
-          onClose={::this.closeDeletePopup}
-          onOpen={::this.openDeletePopup}
-          open={post.deletePopupOpen}
-          trigger={
-            <Button
-                basic
-                compact
-                floated="right"
-                icon="delete"
-                size="small"
-            />
-          }
-      />
-    )
-
-
-    let titleComponents = [(
-      <Feed.User
-          href={`/profile/${post.owner.username}`}
-          key="1"
-          onClick={::this.goto}
-      >
-        {this.getUserFullName()}
-      </Feed.User>
-    )]
-    if (post.spot!==undefined) {
-      titleComponents.push(' shared a game spot')
-    }else if (post.photos.length>0) {
-      titleComponents.push(' added ')
-      titleComponents.push(<a key="2" onClick={()=>this.openModal()}>{post.photos.length} new photos</a>)
-    }else{
-      titleComponents.push(' shared a post')
-    }
-
-    return (
-      <Feed.Summary className={classnames({[style.standaloneSummary]: standalone})}>
-        {titleComponents}
-        <Feed.Date className={classnames({[style.standaloneSummaryDate]: standalone})}>{this.timeAgo.format(new Date(post.createdAt))}</Feed.Date>
-        {
-          post.owner.username===auth.user.username?
-          deleteButton
-          :
-          null
-        }
-      </Feed.Summary>
-    )
   }
 
   openModal(index){
@@ -262,8 +182,7 @@ export default class Post extends Component {
   }
 
   render() {
-    const { post, auth, standalone } = this.props
-    const { replying } = post
+    const { post, auth, standalone, routing } = this.props
     const {busy} = this.state
     const activeLike = post.likes.filter(user=>user.username===auth.user.username).length>0
 
@@ -272,96 +191,149 @@ export default class Post extends Component {
           as={Feed.Event}
           className={classnames({[style.post]: true, [style.standalone]: standalone })}
           dimmed={busy}
-          style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', padding:10, backgroundColor:'#ffffff'}}
+          style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', backgroundColor:'#ffffff', padding: 0}}
       >
         <Dimmer active={busy} inverted>
           <Loader>Generating gif</Loader>
         </Dimmer>
-        <Feed.Label
-            className={classnames(style.clickable)}
-            image={this.getUserImageUrl()}
-            onClick={::this.goto}
-        />
-        <Feed.Content className={classnames({[style.standaloneContent]: standalone})}>
-            {this.getFeedSummary()}
-          <Feed.Extra
-              className={classnames({[style.standaloneText]: standalone})}
-              style={{maxWidth:'none'}}
-              text
-          >
-            <PostEditor
-                post={post}
-                readOnly
-                ref={(el)=>this.postEditorElement = el}
-                standalone={standalone}
+        <div className={classnames(style.postHeader)}>
+          <div className={classnames(style.leftPane)}>
+            <Image
+                avatar
+                href={`/profile/${post.owner.username}`}
+                src={this.getUserImageUrl()}
             />
-          </Feed.Extra>
-          <Feed.Extra className={classnames(style.unselectable, style.photosContainer, {[style.standalonePhotoContainer]: standalone})} images>
-            {post.photos.map((photo, index)=>
-              <PostImage
-                  className={classnames({[style.standaloneImage]: standalone})}
-                  key={index}
-                  onClick={()=>this.openModal(index)}
-                  photo={photo}
+            <div className={classnames(style.headerTextContainer)}>
+              <div className={classnames(style.headerTextTitle)}>
+                {this.getUserFullName()}
+              </div>
+              <div className={classnames(style.headerTextTime)}>
+                {this.timeAgo.format(new Date(post.createdAt))}
+              </div>
+            </div>
+          </div>
+          <div className={classnames(style.rightPane)}>
+            <div className={classnames(style.likeContainer)}>
+              <Button
+                  active={activeLike}
+                  leftIcon="like"
+                  onClick={::this.setLike}
+                  small
               />
-            )}
-          </Feed.Extra>
-          <Feed.Meta className={classnames({[style.standaloneContentMeta]: standalone })}>
-            <Feed.Like
-                className={classnames(style.unselectable, style.blackIcons, {
-                  [style.active]: activeLike,
-                  [style.standaloneUnselectable]: standalone,
-                })}
-                onClick={::this.setLike}
+              {
+                post.likes&&post.likes.length>0&&
+                <div>
+                  {`(${post.likes.length})`}
+                </div>
+              }
+            </div>
+            <DropDown
+                trigger={
+                  <Button
+                      leftIcon="share"
+                      small
+                  />
+                }
             >
-              <Icon className={classnames(style.icon)} name="like"/>
-              {(post.likes&&post.likes.length)||0} Likes
-            </Feed.Like>
-            <Feed.Like
-                className={classnames(
-                  style.unselectable,
-                  style.blackIcons,
-                  {
-                    [style.standaloneUnselectable]: standalone,
-                  }
-                )}
-                onClick={::this.addReply}
-            >
-              <Icon className={classnames(style.icon)} name="reply" />
-              Reply
-            </Feed.Like>
-            <Dropdown
-                text="Share"
-            >
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={::this.sharePostOnFacebook}>
-                  <Icon className={classnames(style.icon)} name="share" />
+              <div className={classnames(style.shareMenu)}>
+                <Button
+                    onClick={::this.sharePostOnFacebook}
+                    simple
+                    small
+                    style={{padding: '0.5em 0'}}
+                >
                   Facebook
-                </Dropdown.Item>
-                <Dropdown.Item onClick={::this.downloadGif}>
-                  <Icon className={classnames(style.icon)} name="download" />
-                  Download
-                </Dropdown.Item>
-                <Dropdown.Item onClick={::this.getLink}>
-                  <Icon className={classnames(style.icon)} name="linkify" />
-                  Get link
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Feed.Meta>
-          <Feed.Extra>
-            <Comments
-                comments={post.comments}
+                </Button>
+                {
+                  post.spot!==undefined&&
+                  <Button
+                      onClick={::this.downloadGif}
+                      simple
+                      small
+                      style={{padding: '0.5em 0'}}
+                  >
+                      Download Gif
+                  </Button>
+                }
+                <Button
+                    onClick={::this.getLink}
+                    simple
+                    small
+                    style={{padding: '0.5em 0'}}
+                >
+                  Get Link
+                </Button>
+              </div>
+            </DropDown>
+            {
+              post.owner.username===auth.user.username&&
+              <DropDown
+                  trigger={
+                    <Button
+                        leftIcon="actionMenu"
+                        small
+                    />
+                  }
+              >
+                <div className={classnames(style.shareMenu)}>
+                  <Button
+                      onClick={::this.deletePost}
+                      simple
+                      small
+                      style={{padding: '0.5em 0'}}
+                  >
+                      Delete Post
+                  </Button>
+                </div>
+              </DropDown>
+            }
+          </div>
+        </div>
+        <div className={classnames(style.postContent)}>
+          <PostEditor
+              post={post}
+              readOnly
+              ref={(el)=>this.postEditorElement = el}
+              standalone={standalone}
+          />
+          {
+            post.photos.length>0&&
+            <div className={classnames(style.photosContainer)}>
+              {post.photos.map((photo, index)=>
+                <PostImage
+                    className={classnames({[style.standaloneImage]: standalone})}
+                    key={index}
+                    onClick={()=>this.openModal(index)}
+                    photo={photo}
+                />
+              )}
+            </div>
+          }
+        </div>
+        <div className={classnames(style.postComments)}>
+          <Comments
+              comments={post.comments}
+              standalone={standalone}
+          />
+          <IsUserLoggedIn>
+            <Reply
+                post={post}
+                removeReply={::this.removeReply}
                 standalone={standalone}
             />
-            {replying&&
-              <Reply
-                  post={post}
-                  removeReply={::this.removeReply}
-                  standalone={standalone}
-              />}
-          </Feed.Extra>
-        </Feed.Content>
+          </IsUserLoggedIn>
+          <IsUserLoggedIn opposite>
+            <div className={classnames(style.signupContainer)}>
+              <Button
+                  onClick={()=>routing.push(`/login?url=/post/${post.id}`)}
+                  primary
+                  style={{width:'30em', textTransform: 'uppercase'}}
+              >
+                Join The Pokerface Community - Sign Up
+              </Button>
+            </div>
+          </IsUserLoggedIn>
+        </div>
       </Dimmer.Dimmable>
     )
   }

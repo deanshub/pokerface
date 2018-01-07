@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import { Comment, Icon, Popup, Button } from 'semantic-ui-react'
+import Image from '../../components/basic/Image'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import PostEditor from '../../components/PostEditor'
@@ -24,15 +24,6 @@ export default class PostComment extends Component {
   constructor(props){
     super(props)
     this.timeAgo = new TimeAgo('en-US')
-  }
-
-  goto(){
-    const {comment, routing, auth} = this.props
-    if (comment.owner.username===auth.user.username){
-      routing.push('/profile')
-    }else{
-      routing.push(`/profile/${comment.owner.username}`)
-    }
   }
 
   getUserFullName(){
@@ -68,78 +59,49 @@ export default class PostComment extends Component {
     const { comment, auth, standalone } = this.props
     const activeLike = comment.likes.filter((user)=>user.username===auth.user.username).length>0
 
-
-    const deleteButton = (
-      <Popup
-          content={
-            <div>
-              Are you sure?
-              <Button.Group compact style={{marginLeft:10}}>
-                <Button
-                    basic
-                    color="green"
-                    onClick={::this.deleteComment}
-                >
-                  Yes
-                </Button>
-                <Button
-                    basic
-                    color="red"
-                    onClick={::this.closeDeletePopup}
-                >
-                  No
-                </Button>
-              </Button.Group>
-            </div>
-          }
-          on="click"
-          onClose={::this.closeDeletePopup}
-          onOpen={::this.openDeletePopup}
-          open={comment.deletePopupOpen}
-          trigger={
-            <Button
-                basic
-                compact
-                floated="right"
-                icon="delete"
-                size="small"
-            />
-          }
-      />
-    )
-
     return (
-      <Comment>
-        <Comment.Avatar
-            as="a"
-            onClick={::this.goto}
+      <div className={classnames(style.commentContainer)}>
+        <Image
+            avatar
+            href={`/profile/${comment.owner.username}`}
             src={this.getUserImageUrl()}
         />
-        <Comment.Content className={classnames({[style.standaloneComment]: standalone})}>
-          <Comment.Author as="a" onClick={::this.goto}>{this.getUserFullName()}</Comment.Author>
-          <Comment.Metadata>
-            <div>{this.timeAgo.format(new Date(comment.createdAt))}</div>
-          </Comment.Metadata>
-          {
-            comment.owner.username===auth.user.username?
-            deleteButton
-            :
-            null
-          }
-          <Comment.Text className={classnames({[style.standaloneCommentText]: standalone})} style={{width:'95%'}}>
+        <div className={classnames(style.commentRightPane)}>
+          <div className={classnames(style.commentDescription)}>
+            <div className={classnames(style.commentOwner)}>
+              {this.getUserFullName()}
+            </div>
+            <div className={classnames(style.divider)}/>
+            <div className={classnames(style.commentTime)}>{this.timeAgo.format(new Date(comment.createdAt))}</div>
+            <div className={classnames(style.divider)}/>
+            <a className={classnames(style.commentLike, {[style.active]:activeLike})} onClick={::this.setLike}>
+              Like
+            </a>
+            {
+              comment.likes.length>0&&
+              <div className={classnames(style.commentLikeLength)}>
+                {`(${comment.likes.length})`}
+              </div>
+            }
+            {
+              comment.owner.username===auth.user.username&&
+              <div className={classnames(style.divider)}/>
+            }
+            {
+              comment.owner.username===auth.user.username&&
+              <a className={classnames(style.commentDelete)} onClick={::this.deleteComment}>
+                Delete
+              </a>
+            }
+          </div>
+          <div className={classnames(style.commentContent)}>
             <PostEditor
                 post={comment}
                 readOnly
             />
-          </Comment.Text>
-          <Comment.Actions onClick={::this.setLike}>
-            <Comment.Action className={classnames({[style.active]: activeLike})}>
-              <Icon className={classnames(style.icon)} name="like"/>
-              {comment.likes.length} Likes
-            </Comment.Action>
-          </Comment.Actions>
-        </Comment.Content>
-      </Comment>
+          </div>
+        </div>
+      </div>
     )
   }
 }

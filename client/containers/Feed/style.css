@@ -1,3 +1,5 @@
+@import '../../constants/styles.css';
+
 .container{
   margin: auto;
   width: 75%;
@@ -13,8 +15,10 @@
 }
 
 .post{
-  box-shadow: 1px 1px #dfdfdf;
-  border-radius: 2px;
+  box-shadow: 0 0 10px 0 #000000;
+  border-radius: 10px;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .blackIcons:hover .icon, .standaloneUnselectable:hover{
@@ -94,22 +98,8 @@
     height: min-content;
 }
 
-.standaloneImage{
-  max-width: 80vw;
-  max-height: 80vh;
-}
-
 .standalonePhotoContainer{
   height: auto !important;
-}
-
-.photosContainer{
-  position: relative;
-  height: 7em;
-}
-
-.postVideo {
-  height: 100%;
 }
 
 .galleryContainer{
@@ -122,4 +112,172 @@
     height: 100%;
     text-align: center;
   }
+}
+
+
+
+
+
+
+
+
+
+/* regular post */
+.postHeader{
+  display: flex;
+  width: 100%;
+  color: textColor;
+  border-bottom: 1px solid $divider;
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+  margin: 0 1.5em;
+  width: 96%;
+}
+.leftPane{
+  flex: 1;
+  display: flex;
+}
+.rightPane{
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.5em;
+}
+
+.likeContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.headerTextContainer{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.headerTextTitle{
+  font-weight: bold;
+  color: #24222e;
+}
+
+
+.postContent{
+  padding: 1em 1.5em;
+  border-bottom: 1px solid commentsDividerColor;
+}
+
+.photosContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mediaContainer{
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 0.5em 0;
+}
+
+.mediaItem {
+  max-width: 100%;
+  object-fit: contain;
+  max-height: 50vh;
+}
+
+.postComments{
+  background-color: commentsBackgroundColor;
+  padding: 0.5em 1.5em;
+  border-radius: 0 0 10px 10px;
+}
+
+.replyContainer{
+  display: flex;
+  align-items: center;
+  color: #9197a3;
+}
+
+.commentTextBox{
+  background-color: white;
+  border-radius: 8px;
+  border: solid 1px textColor;
+  flex: 1;
+  display: flex;
+  color: black;
+}
+
+.commentPlaceholder{
+  padding: 1em;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: textColor;
+}
+
+.shareMenu{
+  width: 9em;
+  padding: 1em;
+}
+.shareMenuItem{
+
+}
+
+/* comment component */
+.commentContainer{
+  display: flex;
+  margin: 2em 0;
+}
+.commentRightPane{
+  flex: 1;
+}
+
+.commentDescription{
+  color: textColor;
+  display: flex;
+}
+
+.commentContent{
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.7em;
+}
+.commentOwner{
+  color: black;
+  font-weight: bold;
+}
+.commentTime{
+
+}
+
+.divider{
+  margin: 0 2em;
+  width: 1px;
+  background-color: textColor;
+}
+.commentLike{
+  cursor: pointer;
+  color: linkColor;
+}
+.commentLike.active{
+  color: hoverLinkColor;
+}
+.commentLike:hover{
+  color: hoverLinkColor;
+}
+.commentLikeLength{
+  padding-left: 0.5em;
+}
+.commentDelete{
+  cursor: pointer;
+  color: linkColor;
+}
+.commentDelete:hover{
+  color: hoverDeleteColor;
+}
+
+.signupContainer{
+  display: flex;
+  justify-content: center;
 }

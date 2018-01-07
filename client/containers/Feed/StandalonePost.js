@@ -7,6 +7,7 @@ import { Container, Loader, Segment } from 'semantic-ui-react'
 import NoMatch from '../../components/NoMatch'
 import Logo from '../../components/Logo'
 import Post from './Post'
+import PhotoGallery from './PhotoGallery'
 
 @inject('routing')
 @inject('feed')
@@ -34,6 +35,7 @@ export default class StandalonePost extends Component {
           text
           textAlign="center"
       >
+        <PhotoGallery/>
         <Segment basic>
           <a href="/" onClick={::this.goHome}>
             <Logo/>

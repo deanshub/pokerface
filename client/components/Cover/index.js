@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import OnlyLoggedinUser from '../OnlyLoggedinUser'
+import IsProfileUser from '../IsProfileUser'
 import classnames from 'classnames'
 import style from './style.css'
 import Button from '../basic/Button'
@@ -80,14 +80,14 @@ export default class Cover extends Component {
       <div className={classnames(style.coverContainer)}>
         <div className={classnames(style.imageContainer)} style={coverDivStyle}>
           <div className={classnames(style.name,{[style.coverImageNotExist]: !details.coverImage})}>{details.fullname}</div>
-          <OnlyLoggedinUser>
+          <IsProfileUser>
             <Button
                 className={classnames(style.edit)}
                 onClick={::this.toggleEditPersonalInfo}
             >
               Edit
             </Button>
-          </OnlyLoggedinUser>
+          </IsProfileUser>
 
           {
             details.avatar&&
