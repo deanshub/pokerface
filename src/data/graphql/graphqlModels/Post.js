@@ -1,12 +1,18 @@
 import path from 'path'
 import DB from '../../db'
+import mongoose from 'mongoose'
 
 export const schema =  [`
+  type File {
+    path: String!
+    type: String
+  }
+
   type Post {
     id: String!
     createdAt: String
     content: String
-    photos: [String]
+    photos: [File]
     likes: [User]
     owner: User
     comments: [Comment]
@@ -43,7 +49,7 @@ export const resolvers = {
     id: (post)=>post._id,
     createdAt: (post)=>post.created,
     content: (post)=>JSON.stringify(post.content),
-    photos: (post)=>post.photos.map(photo=>`/images/${photo}`),
+    photos: (post)=>post.photos,
     likes: (post)=>DB.models.User.find({
       _id:{
         $in: post.likes,
@@ -52,8 +58,12 @@ export const resolvers = {
     owner: (post)=>DB.models.User.findById(post.owner),
     comments: (post)=>DB.models.Comment.find({post:post._id})
       .sort('created'),
+    event: (post)=>DB.models.Game.findById(post.game),
   },
-
+  File:{
+    path: (file) => `/images/${file.path}`,
+    type: (file) => file.type,
+  },
   Query: {
     posts: (_, {id, username, eventId, offset})=>{
       let query
@@ -91,14 +101,15 @@ export const resolvers = {
 
   Mutation: {
     createPost: (_, {content, photos, eventId}, context)=>{
-      const photosUrl = (photos||[]).map(photo=>{
+      const files = (photos||[]).map(photo=>{
         const filename = path.parse(photo.path).base
-        return filename
+        return {path:filename, type:photo.type}
       })
+      console.log("eventId: " + eventId);
       return new DB.models.Post({
         content: JSON.parse(content),
         owner: context.user._id,
-        photos: photosUrl,
+        photos: files,
         game: eventId,
       }).save()
     },
