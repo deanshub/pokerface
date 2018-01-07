@@ -29,8 +29,11 @@ export const schema =  [`
   type Query {
     game(
       gameId: String!
-    ): Game,
+    ): Game
     games: [Game]
+    search(
+      title: String!
+    ): [Game]
   }
 
   type Mutation{
@@ -139,8 +142,22 @@ export const resolvers = {
       .limit(20)
       .sort('-startDate')
     },
-  },
+      search: (_, {title}, context)=>{
+      const permissions = { $or:[{
+        permissions: PUBLIC,
+      },{
+        invited: context.user._id,
+      },{
+        owner: context.user._id,
+      }]}
 
+      const names = {title: {$regex: title, $options: 'i'}}
+
+      return DB.models.Game.find(permissions).where(names)
+        .limit(20)
+        .sort('-startDate')
+    },
+  },
   Mutation: {
     gameAttendanceUpdate: (_, {gameId, attendance}, context)=>{
       return DB.models.Game.findById(gameId)
