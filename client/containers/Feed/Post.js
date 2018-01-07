@@ -204,7 +204,10 @@ export default class Post extends Component {
                 src={this.getUserImageUrl()}
             />
             <div className={classnames(style.headerTextContainer)}>
-              <div className={classnames(style.headerTextTitle)}>
+              <div
+                  className={classnames(style.headerTextTitle)}
+                  onClick={()=>routing.push(`/profile/${post.owner.username}`)}
+              >
                 {this.getUserFullName()}
               </div>
               <div className={classnames(style.headerTextTime)}>
