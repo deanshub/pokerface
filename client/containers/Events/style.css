@@ -123,8 +123,8 @@
 }
 
 .mapImage {
-  width: 100%;
-  min-height: 400px;
+  width: 25em !important;
+  height: 25em !important;
 }
 
 .rsvpButton {

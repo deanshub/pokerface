@@ -62,6 +62,27 @@
   color: textColor;
   background-color: backColor;
   border-radius: 0 0 10px 10px;
+  display: flex;
+}
+
+.detailsLeftPane{
+  flex:1;
+}
+.detailsRightPane{
+  display: flex;
+  align-items: flex-end;
+}
+.imgIcon{
+  cursor: pointer;
+  width: 5em;
+  height: 5em;
+}
+
+.qrContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .detailsText{

@@ -56,7 +56,7 @@ export default class PostComment extends Component {
   }
 
   render() {
-    const { comment, auth, standalone } = this.props
+    const { comment, auth, standalone, routing } = this.props
     const activeLike = comment.likes.filter((user)=>user.username===auth.user.username).length>0
 
     return (
@@ -68,7 +68,10 @@ export default class PostComment extends Component {
         />
         <div className={classnames(style.commentRightPane)}>
           <div className={classnames(style.commentDescription)}>
-            <div className={classnames(style.commentOwner)}>
+            <div
+                className={classnames(style.commentOwner)}
+                onClick={()=>routing.push(`/profile/${comment.owner.username}`)}
+            >
               {this.getUserFullName()}
             </div>
             <div className={classnames(style.divider)}/>
