@@ -254,7 +254,7 @@
 }
 
 .divider{
-  margin: 0 2em;
+  margin: 0 0.5em;
   width: 1px;
   background-color: textColor;
 }
