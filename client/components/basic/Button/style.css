@@ -197,6 +197,56 @@
   background-image: url('../../../assets/addpost/card-hover.png');
 }
 
+.leftIcon.next{
+  background-image: url('../../../assets/actions/next.png');
+}
+.button:not(.disable):hover>.leftIcon.next{
+  background-image: url('../../../assets/actions/next-hover.png');
+}
+.active>.leftIcon.next{
+  background-image: url('../../../assets/actions/next-hover.png');
+}
+
+.leftIcon.like{
+  background-image: url('../../../assets/post/like.png');
+}
+/* .button:not(.disable):hover>.leftIcon.like{
+  background-image: url('../../../assets/spotplayer/like-hover.png');
+}
+.active>.leftIcon.like{
+  background-image: url('../../../assets/spotplayer/like-hover.png');
+} */
+
+.leftIcon.share{
+  background-image: url('../../../assets/post/share.png');
+}
+/* .button:not(.disable):hover>.leftIcon.share{
+  background-image: url('../../../assets/spotplayer/share-hover.png');
+}
+.active>.leftIcon.share{
+  background-image: url('../../../assets/spotplayer/share-hover.png');
+} */
+
+.leftIcon.actionMenu{
+  background-image: url('../../../assets/post/action-menu.png');
+}
+/* .button:not(.disable):hover>.leftIcon.actionMenu{
+  background-image: url('../../../assets/spotplayer/actionMenu-hover.png');
+}
+.active>.leftIcon.actionMenu{
+  background-image: url('../../../assets/spotplayer/actionMenu-hover.png');
+} */
+
+.leftIcon.previous{
+  background-image: url('../../../assets/actions/previous.png');
+}
+.button:not(.disable):hover>.leftIcon.previous{
+  background-image: url('../../../assets/actions/previous-hover.png');
+}
+.active>.leftIcon.previous{
+  background-image: url('../../../assets/actions/previous-hover.png');
+}
+
 .buttonGroup{
   display: flex;
   flex-direction: column;

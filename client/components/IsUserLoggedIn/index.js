@@ -5,13 +5,17 @@ import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 
 @inject('auth')
-@inject('profile')
 @observer
-export default class OnlyLoggedinUser extends Component {
+export default class IsUserLoggedIn extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired,
     opposite: PropTypes.bool,
+  }
+
+  componentWillMount(){
+    this.props.auth.authenticate().then(()=>{
+      this.forceUpdate()
+    })
   }
 
   static defaultProps = {
@@ -19,11 +23,10 @@ export default class OnlyLoggedinUser extends Component {
   }
 
   render() {
-    const { profile, auth, children, opposite } = this.props
-    const user = profile.currentUser
+    const { auth, children, opposite } = this.props
 
-    const isLoggedinUser = user.username===auth.user.username
-    const withOpposite = isLoggedinUser&&!opposite
+    const isLoggedinUser = auth.user.username!==undefined
+    const withOpposite = opposite?!isLoggedinUser:isLoggedinUser
     return withOpposite?React.Children.only(children):null
   }
 }

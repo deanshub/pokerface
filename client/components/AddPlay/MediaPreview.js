@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
+import Video from '../basic/Video'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -25,18 +26,17 @@ export default class AddPlay extends Component {
         {
           feed.previewUploadedMedia.map(({name, type, src})=>{
 
-            let filePreview
-            if (type.startsWith('video')){
-              filePreview = <video className={classnames(style.image)}>
-                <source src={src} type={type}/>
-             </video>
-            // then image
-            }else{
-              filePreview = <img className={classnames(style.image)} src={src}/>
-            }
-
             return <div className={classnames(style.imagePreview)} key={name}>
-              {filePreview}
+              {
+                type.startsWith('video')?
+                  <Video
+                      className={classnames(style.image)}
+                      src={src}
+                      type={type}
+                  />
+                :
+                  <img className={classnames(style.image)} src={src}/>
+              }
               <div className={classnames(style.imagePreviewOverlay)}>
                 <div
                   className={classnames(style.deleteImage)}
