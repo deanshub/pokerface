@@ -55,6 +55,7 @@ export default class Comments extends Component {
               <Image
                   avatar
                   src={avatarImage}
+                  style={{opacity:feed.commentDrafts.get(post.id)?1:0.7}}
               />
             }
             <div className={classnames(style.commentTextBox)}>
