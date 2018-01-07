@@ -6,7 +6,10 @@ export const postsQuery = gql`
       id
       createdAt
       content
-      photos
+      photos{
+        path
+        type
+      }
       likes{
         username
         fullname

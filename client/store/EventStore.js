@@ -2,7 +2,7 @@
 
 import { observable, computed, action, toJS } from 'mobx'
 import graphqlClient from './graphqlClient'
-import {eventsQuery, eventQuery} from './queries/events'
+import {eventsQuery, eventQuery, searchEventsQuery} from './queries/events'
 import {gameAttendanceUpdate, addGame, deleteGame} from './mutations/games'
 import logger from '../utils/logger'
 import moment from 'moment'
@@ -13,11 +13,14 @@ export class EventStore {
   @observable expendedGameId
   @observable currentEvent
   @observable loadingCurrentEvent: boolean
+  @observable searchEventsResult
+  @observable searchLoading: boolean
 
   constructor(){
     this.games = observable.map({})
     this.loading = false
     this.loadingCurrentEvent = false
+    this.searchEventsResult= []
   }
 
   setGame(game){
@@ -139,6 +142,17 @@ export class EventStore {
     })
   }
 
+  @action
+  search(title){
+    this.searchLoading = true
+    graphqlClient.query({query: searchEventsQuery, variables:{title}}).then((result)=>{
+      this.searchEventsResult =  result.data.search
+      this.searchLoading = false
+    }).catch(err=>{
+      this.searchLoading = false
+      console.error(err)
+    })
+  }
 
   @action
   setCurrentEvent(eventId){
@@ -156,6 +170,9 @@ export class EventStore {
     })
   }
 
+  get suggestedEvent(){
+    return toJS(this.searchEventsResult)
+  }
   @computed
   get currentEventDetails(){
     if (!this.currentEvent){

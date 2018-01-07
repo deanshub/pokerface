@@ -10,7 +10,7 @@ import Button from '../basic/Button'
 import DropDown from '../basic/DropDown'
 import classnames from 'classnames'
 import style from './style.css'
-
+import EventBlock from './EventBlock'
 // const shareWithOptions = [{
 //   key: 'everyone',
 //   text: 'Everyone',
@@ -42,7 +42,6 @@ export default class AddPlay extends Component {
     super(props)
 
     this.state = {cardSelectionOpen:false}
-    this.postFiles = []
   }
 
   addPhoto(event){
@@ -117,58 +116,62 @@ export default class AddPlay extends Component {
               post={feed.newPost}
               postEditor
           />
+
           <MediaPreview/>
+          <EventBlock/>
           <div className={classnames(style.buttonsPanel)}>
+            <div className={classnames(style.label)}>
+              insert
+            </div>
             <div className={classnames(style.editPostButtons)}>
-              <div className={classnames(style.insert)}>
-                insert
+              <div className={classnames(style.actionButtons)}>
+                <Button
+                    leftIcon="spot"
+                    onClick={::this.addSpot}
+                    small
+                >
+                  Spot Wizard
+                </Button>
+                <DropDown
+                    open={cardSelectionOpen}
+                    trigger={
+                      <Button leftIcon="card" onClick={() => this.setSelect({cardSelectionOpen:true})}>
+                        Card
+                      </Button>
+                    }
+                >
+                  <CardSelection
+                      amount={1}
+                      onCardSelected={::this.insertCard}
+                  />
+                </DropDown>
+
+                <input
+                    multiple
+                    onChange={::this.photosChanged}
+                    ref={(photosElm)=>this.photosElm=photosElm}
+                    style={{display:'none'}}
+                    type="file"
+                />
+                <Button
+                    leftIcon="photo"
+                    onClick={::this.addPhoto}
+                    small
+                >
+                  Photo/Video
+                </Button>
+                {/* {<Button leftIcon="emoji" small>
+                  Emoji
+                </Button>} */}
               </div>
               <Button
-                  leftIcon="spot"
-                  onClick={::this.addSpot}
-                  small
+                  disable={!hasText}
+                  onClick={::this.addPost}
+                  primary
               >
-                Spot Player
-              </Button>
-              <DropDown
-                  open={cardSelectionOpen}
-                  trigger={
-                    <Button leftIcon="card" onClick={() => this.setSelect({cardSelectionOpen:true})} small>
-                      Card
-                    </Button>
-                  }
-              >
-                <CardSelection
-                    amount={1}
-                    onCardSelected={::this.insertCard}
-                />
-              </DropDown>
-
-              <input
-                  multiple
-                  onChange={::this.photosChanged}
-                  ref={(photosElm)=>this.photosElm=photosElm}
-                  style={{display:'none'}}
-                  type="file"
-              />
-              <Button
-                  leftIcon="photo"
-                  onClick={::this.addPhoto}
-                  small
-              >
-                Photo/Video
-              </Button>
-              <Button leftIcon="emoji" small>
-                Emoji
+                Post
               </Button>
             </div>
-            <Button
-                disable={!hasText}
-                onClick={::this.addPost}
-                primary
-            >
-              Post
-            </Button>
           </div>
           <SpotWizard/>
         </div>

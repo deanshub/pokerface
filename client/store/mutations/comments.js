@@ -4,7 +4,10 @@ export const commentCreate = gql`mutation addComment($post: String!, $comment: S
     id
     createdAt
     content
-    photos
+    photos{
+      path
+      type
+    }
     likes{
       username
       fullname
@@ -48,7 +51,10 @@ export const setCommentLike = gql`mutation setCommentLike($comment: String!, $li
       id
       createdAt
       content
-      photos
+      photos{
+        path
+        type
+      }
       likes{
         username
         fullname

@@ -40,7 +40,12 @@ $disabled: #24222e;
 /* standalone */
 @value subtitleColor: #88869f;
 
-/* profile and event */
+/* profile, event and post  */
 @value textColor: #a0a0b5;
 @value backColor: #2c2938;
 @value eventDividerColor: #74728c;
+@value commentsDividerColor: #ebebed;
+@value commentsBackgroundColor: #ebebee;
+@value linkColor: #1f95c7;
+@value hoverLinkColor: #81dbff;
+@value hoverDeleteColor: #ff5a5a;

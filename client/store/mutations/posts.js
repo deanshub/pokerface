@@ -1,11 +1,14 @@
 import gql from 'graphql-tag'
 
-export const postCreate = gql`mutation createPost($post: String!, $photos: [Upload]){
-  createPost(content:$post, photos:$photos){
+export const postCreate = gql`mutation createPost($eventId: String, $post: String!, $photos: [Upload]){
+  createPost(eventId:$eventId, content:$post, photos:$photos){
     id
     createdAt
     content
-    photos
+    photos{
+      path
+      type
+    }
     likes{
       username
       fullname
@@ -33,6 +36,11 @@ export const postCreate = gql`mutation createPost($post: String!, $photos: [Uplo
       fullname
       avatar
     }
+    event{
+      id
+      title
+      location
+    }
   }
 }
 `
@@ -50,7 +58,10 @@ export const setPostLike = gql`mutation setPostLike($post: String!, $like: Boole
     id
     createdAt
     content
-    photos
+    photos{
+      path
+      type
+    }
     likes{
       username
       fullname
