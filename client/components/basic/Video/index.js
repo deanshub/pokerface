@@ -19,24 +19,5 @@ export default class Video extends Component {
        </video>
      </div>
     )
-    // return (
-    //   <ReactVideo
-    //       className={className}
-    //       controls={['PlayPause', 'Seek', 'Time', 'Volume', 'Fullscreen']}
-    //       onCanPlayThrough={() => {
-    //           // Do stuff
-    //       }}
-    //       poster="http://sourceposter.jpg"
-    //   >
-    //       <source src={src} type={type} />
-    //       <track
-    //           default
-    //           kind="subtitles"
-    //           label="English"
-    //           src="http://source.vtt"
-    //           srcLang="en"
-    //       />
-    //   </ReactVideo>
-    // )
   }
 }

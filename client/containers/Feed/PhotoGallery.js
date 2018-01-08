@@ -30,12 +30,6 @@ export default class PhotoGallery extends Component {
               leftIcon="previous"
               onClick={()=>photoGallery.previousPhoto()}
           />
-          {/* <Image
-              className={classnames(style.clickable)}
-              draggable={false}
-              fluid
-              src={photoGallery.photos[photoGallery.photoIndex]}
-          /> */}
           { photo &&
             (photo.type.startsWith('video')?
               <Video
