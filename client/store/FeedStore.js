@@ -114,12 +114,11 @@ export class FeedStore {
   }
 
   @action
-  addPost(user, spot){
+  addPost(user, spot, eventToNextInit){
     const editorState = this.newPost.content
     const content = editorState.getCurrentContent()
     if (content.hasText()){
       let rawPostContent = convertToRaw(content)
-      this.newPost.content = EditorState.createEmpty()
 
       logger.logEvent({category:'Post',action:'Create'})
       if(spot){
@@ -130,6 +129,7 @@ export class FeedStore {
       const eventId = event?event.id:null
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
       graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(rawPostContent), photos , eventId}})
+
       // if post mutation succeded add id
       .then(result=>{
         this.posts.delete(newPostTempId)
@@ -152,6 +152,7 @@ export class FeedStore {
         comments:[],
         owner:user,
       })
+      this.newPost = {content:EditorState.createEmpty(), event:eventToNextInit}
       this.uploadedMedia=observable.map({})
     }
   }
