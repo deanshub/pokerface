@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import IsProfileUser from '../IsProfileUser'
 import classnames from 'classnames'
 import style from './style.css'
 import Button from '../basic/Button'
@@ -23,12 +22,6 @@ export default class Cover extends Component {
     this.state= {
       editingPersonalInfo: false,
     }
-  }
-
-  toggleEditPersonalInfo(){
-    this.setState({
-      editingPersonalInfo: !this.state.editingPersonalInfo,
-    })
   }
 
   getDetailsElement(){
@@ -69,7 +62,6 @@ export default class Cover extends Component {
 
   render() {
     const {details} = this.props
-    const {editingPersonalInfo} = this.state
 
     let coverDivStyle = {}
     if (details.coverImage){
@@ -80,15 +72,6 @@ export default class Cover extends Component {
       <div className={classnames(style.coverContainer)}>
         <div className={classnames(style.imageContainer)} style={coverDivStyle}>
           <div className={classnames(style.name,{[style.coverImageNotExist]: !details.coverImage})}>{details.fullname}</div>
-          <IsProfileUser>
-            <Button
-                className={classnames(style.edit)}
-                onClick={::this.toggleEditPersonalInfo}
-            >
-              Edit
-            </Button>
-          </IsProfileUser>
-
           {
             details.avatar&&
             <Image
@@ -98,10 +81,6 @@ export default class Cover extends Component {
                 src={details.avatar}
             />
           }
-          <EditInfoModal
-              open={editingPersonalInfo}
-              toggle={::this.toggleEditPersonalInfo}
-          />
         </div>
         {
           details.startDate&&
