@@ -6,18 +6,39 @@ import DevTools from 'mobx-react-devtools'
 import { Route, Switch } from 'react-router-dom'
 import { observer, inject } from 'mobx-react'
 
+import Loadable from 'react-loadable'
+import Loading from '../../components/basic/Loading'
 import Navbar from '../../components/Navbar'
 import Feed from '../Feed'
-import Profile from '../../components/Profile'
-import SpotNote from '../../components/SpotNote'
-import Events from '../Events'
-import Event from '../Event'
 import RebrandedBlindsTimer from '../RebrandedBlindsTimer'
-import Learn from '../../components/Learn'
-import NoMatch from '../../components/NoMatch'
 import TopMenu from './TopMenu'
 
-import 'semantic-ui-css/semantic.min.css'
+const LoadableLearn = Loadable({
+  loader: () => import('../../components/Learn'),
+  loading: Loading,
+})
+const LoadableNoMatch = Loadable({
+  loader: () => import('../../components/NoMatch'),
+  loading: Loading,
+})
+const LoadableSpotNote = Loadable({
+  loader: () => import('../../components/SpotNote'),
+  loading: Loading,
+})
+
+const LoadableProfile = Loadable({
+  loader: () => import('../../components/Profile'),
+  loading: Loading,
+})
+const LoadableSingleEvent = Loadable({
+  loader: () => import('../Event'),
+  loading: Loading,
+})
+const LoadableEvents = Loadable({
+  loader: () => import('../Events'),
+  loading: Loading,
+})
+
 import classnames from 'classnames'
 import style from './style.css'
 import image from '../../assets/landing logo.png'
@@ -59,17 +80,17 @@ export default class Navigation extends Component {
                 />
 
               <Route
-                  component={Profile}
+                  component={LoadableProfile}
                   exact
                   path="/profile/:username"
               />
               <Route
-                  component={Event}
+                  component={LoadableSingleEvent}
                   exact
                   path="/events/:eventId"
               />
               <Route
-                  component={Events}
+                  component={LoadableEvents}
                   exact
                   path="/events"
               />
@@ -79,16 +100,16 @@ export default class Navigation extends Component {
                   path="/timer"
               />
               <Route
-                  component={Learn}
+                  component={LoadableLearn}
                   exact
                   path="/smart"
               />
               <Route
-                  component={SpotNote}
+                  component={LoadableSpotNote}
                   exact
                   path="/spotnote"
               />
-              <Route component={NoMatch}/>
+              <Route component={LoadableNoMatch}/>
             </Switch>
           </div>
           </div>
