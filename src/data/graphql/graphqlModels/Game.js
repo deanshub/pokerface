@@ -143,7 +143,7 @@ export const resolvers = {
         endDate:{$gt: new Date(now - ENDS_UP_X_DAYS*dayInterval), $lt: new Date(now)},
       }]}
 
-      return DB.models.Game.find(authCondition(context)).where(dates)
+      return DB.models.Game.find().and([authCondition(context),dates])
       .limit(20)
       .sort('-startDate')
     },
