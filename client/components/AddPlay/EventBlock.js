@@ -10,8 +10,23 @@ import style from './style.css'
 export default class EventBlock extends Component {
   constructor(props){
     super(props)
-
     this.state = {searchValue:''}
+  }
+
+  componentDidMount(){
+    const {events, feed} = this.props
+    const {currentEventDetails} = events
+
+    feed.newPost.event = currentEventDetails
+    this.setState({searchValue:currentEventDetails?currentEventDetails.title:''})
+  }
+
+  componentWillReceiveProps(nextProps){
+    const {newPost:nextNewPost} = nextProps.feed
+
+    if (!nextNewPost.event){
+      this.setState({searchValue:''})
+    }
   }
 
   searchChange({value}){
@@ -38,7 +53,7 @@ export default class EventBlock extends Component {
     return (
       <div className={classnames(style.suggestionItem)}>
         <div className={classnames(style.header)}>{event.title}</div>
-        <div className={classnames(style.subheader)}>{event.location}</div>
+        <div className={classnames(style.subheader)}>{event.location||' '}</div>
       </div>
     )
   }
@@ -67,8 +82,9 @@ export default class EventBlock extends Component {
   render(){
     const {events, feed} = this.props
     const {searchValue} = this.state
-    const remove = !!feed.newPost.event
-
+    const permenentEvent = !!events.currentEventDetails
+    const remove = !!feed.newPost.event && !permenentEvent
+    console.log("render", feed.newPost.event );
     return(
       <div className={classnames(style.eventPanel)}>
         <div className={classnames(style.label)}>
@@ -87,9 +103,12 @@ export default class EventBlock extends Component {
               events.searchEventsResult.clear()
             }}
             onSuggestionsFetchRequested={::this.searchChange}
-
+            renderInputComponent={(props)=>(
+              <input {...props} disabled={permenentEvent}/>
+            )}
             renderSuggestion={this.renderSuggestion}
             suggestions={events.suggestedEvent}
+
             theme={{
               input: classnames(style.autosuggestInput),
               container: classnames(style.autosuggest),

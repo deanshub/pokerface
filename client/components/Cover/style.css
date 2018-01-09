@@ -2,7 +2,6 @@
 .coverContainer{
   margin-bottom: 5vh;
   box-shadow: 0 0 10px 0 #000000;
-  border-radius: 10px;
 }
 
 .imageContainer{
@@ -15,29 +14,11 @@
   background-color: $gray;
   position: relative;
   background-color: rgba(31,29,40,0.5);
-  border-radius: 10px 10px 0 0;
-}
-
-.edit {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  cursor: pointer;
-  color: white;
-  margin: 20px;
-  z-index: 1;
-  background-color: #17161d;
-  border: 0;
-  padding: 0.5em;
-  border-radius: 0.5em;
-}
-
-.edit:hover {
-  color: $activeButton;
+  border-radius: 0.625em;
 }
 
 .name {
-  border-radius: 10px;
+  border-radius: inherit;
   background-color: rgba(31,29,40,0.5);
   box-shadow: 0 0 20px 0 #000000;
   color: white;
@@ -61,7 +42,6 @@
   padding: 2em 3em;
   color: textColor;
   background-color: backColor;
-  border-radius: 0 0 10px 10px;
   display: flex;
 }
 

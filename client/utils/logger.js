@@ -16,7 +16,7 @@ const logger = {
   setField(obj){
     fields = {...fields, ...obj}
     ReactGA.set(obj)
-    console.log(fields)
+    //console.log(fields)
   },
   logEvent(obj){
     if (obj && typeof(obj.category)==='string' && typeof(obj.action)==='string'){
@@ -28,7 +28,7 @@ const logger = {
         nonInteraction,
         transport,
       } = obj
-      console.log(obj)
+      //console.log(obj)
       ReactGA.event({
         category,
         action,

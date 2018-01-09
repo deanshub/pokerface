@@ -38,8 +38,7 @@ export class FeedStore {
   @observable standalonePost: Object
   @observable loading: boolean
   @observable commentDrafts: Object
-  currentUser: Object
-  currentEventId: Object
+  currentFetchFilter: String
   noMorePosts: boolean
   @observable uploadedMedia: Object
   @observable openCardSelection: boolean
@@ -63,6 +62,7 @@ export class FeedStore {
     })
     this.uploadedMedia=observable.map({})
     this.currentUploadedFiles=0
+    this.currentFetchFilter={}
   }
 
   parsePost(post){
@@ -114,12 +114,11 @@ export class FeedStore {
   }
 
   @action
-  addPost(user, spot){
+  addPost(user, spot, eventToNextInit){
     const editorState = this.newPost.content
     const content = editorState.getCurrentContent()
     if (content.hasText()){
       let rawPostContent = convertToRaw(content)
-      this.newPost.content = EditorState.createEmpty()
 
       logger.logEvent({category:'Post',action:'Create'})
       if(spot){
@@ -130,6 +129,7 @@ export class FeedStore {
       const eventId = event?event.id:null
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
       graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(rawPostContent), photos , eventId}})
+
       // if post mutation succeded add id
       .then(result=>{
         this.posts.delete(newPostTempId)
@@ -152,6 +152,7 @@ export class FeedStore {
         comments:[],
         owner:user,
       })
+      this.newPost = {content:EditorState.createEmpty(), event:eventToNextInit}
       this.uploadedMedia=observable.map({})
     }
   }
@@ -170,7 +171,7 @@ export class FeedStore {
   }
 
   @action
-  addComment(postId){
+  addComment(postId, user){
     const comment = this.commentDrafts.get(postId)
     const commentState = comment.content
     const content = commentState.getCurrentContent()
@@ -209,9 +210,9 @@ export class FeedStore {
         photos:[],
         likes:[],
         owner:{
-          username: this.currentUser,
-          fullname: 'Dean Shub',
-          avatar: '/images/dean2.jpg',
+          username: user.currentUser,
+          fullname: user.fullname,
+          avatar: user.avatar,
         },
       })
     }
@@ -261,89 +262,43 @@ export class FeedStore {
   }
 
   @action
-  fetchPosts(by): void{
-    const username = by&&by.username
-    const eventId = by&&by.eventId
+  fetchPosts(by = {}): void{
+    const serializedBy = JSON.stringify(by)
+    if (this.currentFetchFilter===serializedBy && (this.noMorePosts || this.loading)) return undefined
 
-    // TODO it is not equal to the expression: if (username)
-    if (username|| (!eventId&& !username)){
-      if (this.currentUser===username && (this.noMorePosts || this.loading)) return undefined
-
-      this.loading = true
-      if (this.currentUser!==username){
-        this.posts = observable.map({})
-        this.currentEventId=undefined
-        this.currentUser=username
-        this.noMorePosts = false
-      }
-
-      // const offset = this.offsets[username]||0
-      graphqlClient.watchQuery({
-        query: postsQuery,
-        variables:{
-          username, offset:this.posts.size,
-        },
-        // pollInterval: 10000, //ms
-      }).subscribe({
-        next :(result)=>{
-          const newPosts = result.data.posts.filter(post=>!this.posts.has(post.id))
-          if (newPosts.length===0){
-            this.noMorePosts = true
-          }else{
-            newPosts.forEach((post)=>{
-              const parsedPost = this.parsePost(post)
-              this.posts.set(parsedPost.id, parsedPost)
-            })
-          }
-          setTimeout(()=>{
-            this.loading = false
-          },1000)
-        },
-        error: console.error,
-        complete:()=>{
-          this.loading = false
-        },
-      })
-    }else if (eventId){
-      if (this.currentEventId===eventId && (this.noMorePosts || this.loading)) return undefined
-
-      this.loading = true
-      if (this.currentEventId!==eventId){
-        this.posts = observable.map({})
-        this.currentUser=undefined
-        this.currentEventId=eventId
-        this.noMorePosts = false
-      }
-
-      // const offset = this.offsets[username]||0
-      graphqlClient.watchQuery({
-        query: postsQuery,
-        variables:{
-          eventId,
-          offset:this.posts.size,
-        },
-        // pollInterval: 10000, //ms
-      }).subscribe({
-        next :(result)=>{
-          const newPosts = result.data.posts.filter(post=>!this.posts.has(post.id))
-          if (newPosts.length===0){
-            this.noMorePosts = true
-          }else{
-            newPosts.forEach((post)=>{
-              const parsedPost = this.parsePost(post)
-              this.posts.set(parsedPost.id, parsedPost)
-            })
-          }
-          setTimeout(()=>{
-            this.loading = false
-          },1000)
-        },
-        error: console.error,
-        complete:()=>{
-          this.loading = false
-        },
-      })
+    this.loading = true
+    if (this.currentFetchFilter!==serializedBy){
+      this.posts = observable.map({})
+      this.currentFetchFilter = serializedBy
+      this.noMorePosts = false
     }
+
+    graphqlClient.watchQuery({
+      query: postsQuery,
+      variables:{
+        ...by, offset:this.posts.size,
+      },
+      // pollInterval: 10000, //ms
+    }).subscribe({
+      next :(result)=>{
+        const newPosts = result.data.posts.filter(post=>!this.posts.has(post.id))
+        if (newPosts.length===0){
+          this.noMorePosts = true
+        }else{
+          newPosts.forEach((post)=>{
+            const parsedPost = this.parsePost(post)
+            this.posts.set(parsedPost.id, parsedPost)
+          })
+        }
+        setTimeout(()=>{
+          this.loading = false
+        },1000)
+      },
+      error: console.error,
+      complete:()=>{
+        this.loading = false
+      },
+    })
   }
 
   @action

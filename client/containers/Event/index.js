@@ -39,6 +39,10 @@ export default class Event extends Component {
     events.setCurrentEvent(eventId)
   }
 
+  componentWillUnmount(){
+    this.props.events.clearCurrentEvent()
+  }
+
   render() {
     const { events } = this.props
     const {loadingCurrentEvent, currentEventDetails} = events
