@@ -65,10 +65,6 @@ const authCondition = (context) => {
     owner: context.user._id,
   },{
     invited: context.user._id,
-  },{
-    accepted: context.user._id,
-  },{
-    declined: context.user._id,
   }]}
 }
 
