@@ -206,7 +206,7 @@ export const resolvers = {
     addGame: (_, {title, description, type, subtype, location, from, to, invited, isPublic}, context)=>{
 
       const {user} = context
-      if (isPublic && user.permissions.includes(CREATE_PUBLIC_EVENT)){
+      if (isPublic && (!user.permissions || !user.permissions.includes(CREATE_PUBLIC_EVENT))){
         throw new Error('Not authorized to create public events')
       }
 
