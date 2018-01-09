@@ -127,7 +127,7 @@ export const resolvers = {
       })
     },
     games: (_, args, context)=>{
-      const STARTS_IN_X_DAYS = 7
+      const STARTS_IN_X_DAYS = 30
       const ENDS_UP_X_DAYS = 2
       const dayInterval = 24 * 60 * 60 * 1000
       const now = Date.now()
