@@ -11,7 +11,7 @@ import style from './style.css'
 @inject('auth')
 @inject('feed')
 @observer
-export default class Comments extends Component {
+export default class Reply extends Component {
   constructor(props: Object){
     super(props)
     this.state = {
@@ -20,9 +20,9 @@ export default class Comments extends Component {
   }
 
   addComment(e){
-    const { post, feed } = this.props
+    const { auth, post, feed } = this.props
     e.preventDefault()
-    feed.addComment(post.id)
+    feed.addComment(post.id, auth.user)
   }
   // removeReply(){
   //   const { feed, post } = this.props

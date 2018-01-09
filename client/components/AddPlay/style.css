@@ -67,13 +67,14 @@
   margin-bottom: 0.4em;
 }
 
-.autosuggestInput{
+.autosuggestInput,.autosuggestInput:disabled{
   opacity: 0.6;
   border-width: 0;
   border-radius: 0.6em;
   height: 2.3em;
   width: 10em;
   color: #535168;
+  background-color: inherit;
 }
 
 .autosuggestInput:focus{
@@ -123,6 +124,7 @@
 
   .subheader{
     color: #a0a0b5;
+    white-space: pre;
   }
 
   .subheader:hover{

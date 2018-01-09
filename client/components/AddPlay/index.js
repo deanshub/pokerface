@@ -36,6 +36,7 @@ import EventBlock from './EventBlock'
 @inject('spotPlayer')
 @inject('feed')
 @inject('auth')
+@inject('events')
 @observer
 export default class AddPlay extends Component {
   constructor(props){
@@ -51,12 +52,12 @@ export default class AddPlay extends Component {
 
   addPost(event){
     event.preventDefault()
-    const {feed, auth, spotPlayer} = this.props
+    const {feed, auth, spotPlayer, events:eventsStore} = this.props
     let newSpot
     if(spotPlayer.newSpot.spot.moves.length>0){
       newSpot=spotPlayer.newSpot.spot
     }
-    feed.addPost(auth.user, newSpot)
+    feed.addPost(auth.user, newSpot, eventsStore.currentEventDetails)
     spotPlayer.newSpot = spotPlayer.initNewPost()
   }
 

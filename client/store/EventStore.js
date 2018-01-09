@@ -170,6 +170,11 @@ export class EventStore {
     })
   }
 
+  @action
+  clearCurrentEvent(){
+    this.currentEvent = undefined
+  }
+
   get suggestedEvent(){
     return toJS(this.searchEventsResult)
   }
@@ -180,6 +185,7 @@ export class EventStore {
     }
     const {
       id,
+      title,
       type,
       subtype,
       description,
@@ -192,6 +198,7 @@ export class EventStore {
 
     return {
       id,
+      title,
       type,
       subtype,
       description,
