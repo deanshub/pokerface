@@ -8,10 +8,13 @@ import { observer, inject } from 'mobx-react'
 import Cover from '../../components/Cover'
 import Feed from '../Feed'
 import NoMatch from '../../components/NoMatch'
+import Logo from '../../components/Logo'
+import IsUserLoggedIn from '../../components/IsUserLoggedIn'
 
 @inject('auth')
 @inject('profile')
 @inject('events')
+@inject('routing')
 @observer
 export default class Event extends Component {
   static propTypes = {
@@ -43,8 +46,14 @@ export default class Event extends Component {
     this.props.events.clearCurrentEvent()
   }
 
+  goHome(){
+    event.preventDefault()
+    const { routing } = this.props
+    routing.push('/')
+  }
+
   render() {
-    const { events } = this.props
+    const { events, auth } = this.props
     const {loadingCurrentEvent, currentEventDetails} = events
 
     if (!loadingCurrentEvent && !currentEventDetails){
@@ -53,7 +62,12 @@ export default class Event extends Component {
       )
     }else if (!loadingCurrentEvent && currentEventDetails){
       return (
-        <div>
+        <div style={{margin:auth.user.username?undefined:'0 10em'}}>
+          <IsUserLoggedIn opposite>
+            <a href="/" onClick={::this.goHome}>
+              <Logo />
+            </a>
+          </IsUserLoggedIn>
           <Cover details={currentEventDetails}/>
           <Feed by={{eventId: currentEventDetails.id}}/>
         </div>

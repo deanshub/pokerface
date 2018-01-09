@@ -41,7 +41,6 @@ import EventBlock from './EventBlock'
 export default class AddPlay extends Component {
   constructor(props){
     super(props)
-
     this.state = {cardSelectionOpen:false}
   }
 
@@ -105,8 +104,8 @@ export default class AddPlay extends Component {
                 <SpotPlayer post={spotPlayer.newSpot} style={{height:'40vw', backgroundColor:'white'}}/>
                 <div className={classnames(style.spotPreviewOverlay)}>
                   <div
-                    className={classnames(style.deleteImage)}
-                    onClick={::this.deleteSoptPlayer}
+                      className={classnames(style.deleteImage)}
+                      onClick={::this.deleteSoptPlayer}
                   />
                 </div>
               </div>

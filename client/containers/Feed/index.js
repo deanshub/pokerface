@@ -4,6 +4,7 @@ import { Feed, Loader } from 'semantic-ui-react'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import AddPlay from '../../components/AddPlay'
+import IsUserLoggedIn from '../../components/IsUserLoggedIn'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -42,7 +43,9 @@ export default class FeedContainer extends Component {
 
     return (
       <div className={classnames(style.container)}>
-        <AddPlay />
+        <IsUserLoggedIn>
+          <AddPlay />
+        </IsUserLoggedIn>
         <div>
           <Feed>
             {feed.parsedPosts.map(post=><Post key={post.id} post={post}/>)}

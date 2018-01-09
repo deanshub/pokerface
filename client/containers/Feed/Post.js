@@ -107,15 +107,6 @@ export default class Post extends Component {
           console.error(err)
           reject(err)
         })
-        // const canvas = imageUtils.newCanvas(postElement)
-        // return imageUtils.toImage(postElement, canvas).then((dataUrl)=>{
-        //   const img = new Image()
-        //   img.onload = ()=>{
-        //     resolve(img)
-        //   }
-        //   img.onerror = reject
-        //   img.src = dataUrl
-        // }).catch(reject)
       },300)
     })
   }
@@ -295,7 +286,7 @@ export default class Post extends Component {
             }
           </div>
         </div>
-        <div className={classnames(style.postContent)}>
+        <div className={classnames(style.postContent,{[style.noCommentsSection]:(!post.comments.length>0&&!auth.user.username)})}>
           <PostEditor
               post={post}
               readOnly
@@ -316,30 +307,22 @@ export default class Post extends Component {
             </div>
           }
         </div>
-        <div className={classnames(style.postComments)}>
-          <Comments
-              comments={post.comments}
-              standalone={standalone}
-          />
-          <IsUserLoggedIn>
-            <Reply
-                post={post}
-                removeReply={::this.removeReply}
+        {
+          (post.comments.length>0||auth.user.username!==undefined)&&
+          <div className={classnames(style.postComments)}>
+            <Comments
+                comments={post.comments}
                 standalone={standalone}
             />
-          </IsUserLoggedIn>
-          <IsUserLoggedIn opposite>
-            <div className={classnames(style.signupContainer)}>
-              <Button
-                  onClick={()=>routing.push(`/login?url=/post/${post.id}`)}
-                  primary
-                  style={{width:'30em', textTransform: 'uppercase'}}
-              >
-                Join The Pokerface Community - Sign Up
-              </Button>
-            </div>
-          </IsUserLoggedIn>
-        </div>
+            <IsUserLoggedIn>
+              <Reply
+                  post={post}
+                  removeReply={::this.removeReply}
+                  standalone={standalone}
+              />
+            </IsUserLoggedIn>
+          </div>
+        }
       </Dimmer.Dimmable>
     )
   }

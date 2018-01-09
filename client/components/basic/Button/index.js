@@ -15,13 +15,17 @@ export default class Button extends Component {
       onClick,
       hidden,
       primary,
+      href,
       leftIcon,
       disable,
       small,
       ...restProps
     } = this.props
+
+    const ContainerElement = href?'a':'button'
+
     return(
-      <button
+      <ContainerElement
           className={classnames(
             style.button,
             {[style.active]: active},
@@ -31,6 +35,7 @@ export default class Button extends Component {
             {[style.hidden]: hidden},
             {[style.small]: small},
           )}
+          href={href}
           onClick={(e)=>onClick(e, e.target)}
           {...restProps}
       >
@@ -43,7 +48,7 @@ export default class Button extends Component {
           />
         }
         {children}
-      </button>
+      </ContainerElement>
     )
   }
 }

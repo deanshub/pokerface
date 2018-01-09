@@ -6,8 +6,11 @@ import { observer, inject } from 'mobx-react'
 import { Container, Loader, Segment } from 'semantic-ui-react'
 import NoMatch from '../../components/NoMatch'
 import Logo from '../../components/Logo'
+import Button from '../../components/basic/Button'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('routing')
 @inject('feed')
@@ -52,6 +55,18 @@ export default class StandalonePost extends Component {
             />
             :
             <NoMatch/>
+        }
+        {
+          !loading&&
+          <div className={classnames(style.signupContainer)}>
+            <Button
+                href={post?`/login?url=/post/${post.id}`:'/login'}
+                primary
+                style={{width:'30em', textTransform:'uppercase'}}
+            >
+              Join The Pokerface Community - Sign Up
+            </Button>
+          </div>
         }
       </Container>
     )
