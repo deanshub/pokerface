@@ -1,6 +1,6 @@
 import DB from '../../db'
 import mailer from '../../../utils/mailer'
-import {PUBLIC} from '../../../utils/permissions'
+import {CREATE_PUBLIC_EVENT, PUBLIC} from '../../../utils/permissions'
 import {schema as User} from './User'
 import {schema as Post} from './Post'
 import { prepareEventCoverImage } from '../../helping/user'
@@ -49,13 +49,25 @@ export const schema =  [`
       location: String,
       from: String!,
       to: String,
-      invited: String
+      invited: String,
+      isPublic: Boolean
     ): Game
     deleteGame(
       gameId: String!
     ): Game
   }
 `, ...User, ...Post]
+
+const authCondition = (context) => {
+  return {$or: [{
+    permissions: PUBLIC,
+  },{
+    owner: context.user._id,
+  },{
+    invited: context.user._id,
+  }]}
+}
+
 
 export const resolvers = {
   Game:{
@@ -111,57 +123,45 @@ export const resolvers = {
     game: (_, {gameId}, context)=>{
       return DB.models.Game.findOne({
         _id:gameId,
-        $or: [{
-          permissions: PUBLIC,
-        },{
-          invited: context.user._id,
-        },{
-          owner: context.user._id,
-        }],
+        ...authCondition(context),
       })
     },
     games: (_, args, context)=>{
-      const STARTS_IN_X_DAYS = 7
+      const STARTS_IN_X_DAYS = 30
       const ENDS_UP_X_DAYS = 2
       const dayInterval = 24 * 60 * 60 * 1000
       const now = Date.now()
 
-      return DB.models.Game.find({
-        $or: [{
-          startDate:{$gt: new Date(now - STARTS_IN_X_DAYS*dayInterval)},
-        },{
-          endDate:{$gt: new Date(now + ENDS_UP_X_DAYS*dayInterval)},
-        }],
-      }).or([{
-        permissions: PUBLIC,
+      const dates = {$or:[{
+        // staartDate < now < endDate - currently playing
+        startDate:{$lt: new Date(now)}, endDate: {$gt: new Date(now)},
       },{
-        invited: context.user._id,
+        // now < startDate < now + 7
+        startDate:{$gt: new Date(now), $lt: new Date(now + STARTS_IN_X_DAYS*dayInterval)},
       },{
-        owner: context.user._id,
-      }])
+        // now - 2 < endDate < now
+        endDate:{$gt: new Date(now - ENDS_UP_X_DAYS*dayInterval), $lt: new Date(now)},
+      }]}
+
+      return DB.models.Game.find(authCondition(context)).where(dates)
       .limit(20)
       .sort('-startDate')
     },
-      search: (_, {title}, context)=>{
-      const permissions = { $or:[{
-        permissions: PUBLIC,
-      },{
-        invited: context.user._id,
-      },{
-        owner: context.user._id,
-      }]}
+    search: (_, {title}, context)=>{
 
       const names = {title: {$regex: title, $options: 'i'}}
 
-      return DB.models.Game.find(permissions).where(names)
+      return DB.models.Game.find(authCondition(context)).where(names)
         .limit(20)
         .sort('-startDate')
     },
   },
   Mutation: {
     gameAttendanceUpdate: (_, {gameId, attendance}, context)=>{
-      return DB.models.Game.findById(gameId)
-      .then(game=>{
+      return DB.models.Game.findOne({
+        _id:gameId,
+        ...authCondition(context),
+      }).then(game=>{
         const username = context.user._id
         let invited = game.invited.filter(player=>!player.guest).map(player=>player.username)
 
@@ -203,7 +203,13 @@ export const resolvers = {
         return game
       })
     },
-    addGame: (_, {title, description, type, subtype, location, from, to, invited}, context)=>{
+    addGame: (_, {title, description, type, subtype, location, from, to, invited, isPublic}, context)=>{
+
+      const {user} = context
+      if (isPublic && (!user.permissions || !user.permissions.includes(CREATE_PUBLIC_EVENT))){
+        throw new Error('Not authorized to create public events')
+      }
+
       return new DB.models.Game({
         owner: context.user._id,
         title,
@@ -214,6 +220,7 @@ export const resolvers = {
         startDate: new Date(from),
         endDate: to!==undefined?new Date(to):undefined,
         invited: JSON.parse(invited),
+        permissions: isPublic?[PUBLIC]:undefined,
       }).save()
       .then(game=>{
         mailer.sendGameInvite(game, DB)

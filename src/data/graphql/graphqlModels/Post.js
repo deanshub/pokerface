@@ -1,6 +1,5 @@
 import path from 'path'
 import DB from '../../db'
-import mongoose from 'mongoose'
 
 export const schema =  [`
   type File {
@@ -105,7 +104,7 @@ export const resolvers = {
         const filename = path.parse(photo.path).base
         return {path:filename, type:photo.type}
       })
-      console.log("eventId: " + eventId);
+
       return new DB.models.Post({
         content: JSON.parse(content),
         owner: context.user._id,
