@@ -3,8 +3,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-// import classnames from 'classnames'
-// import style from './style.css'
+import Button from '../../components/basic/Button'
 import Cover from '../../components/Cover'
 import Feed from '../Feed'
 import NoMatch from '../../components/NoMatch'
@@ -69,6 +68,15 @@ export default class Event extends Component {
             </a>
           </IsUserLoggedIn>
           <Cover details={currentEventDetails}/>
+          <IsUserLoggedIn opposite>
+            <Button
+                href={`/login?url=/events/${currentEventDetails.id}`}
+                primary
+                style={{width:'30em', textTransform:'uppercase', margin: '0 auto', marginBottom: '3em'}}
+            >
+              Join The Pokerface Community - Sign Up
+            </Button>
+          </IsUserLoggedIn>
           <Feed by={{eventId: currentEventDetails.id}}/>
         </div>
       )
