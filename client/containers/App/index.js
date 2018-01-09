@@ -7,13 +7,29 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import { Provider } from 'mobx-react'
 import React,{Component} from 'react'
 import {Helmet} from 'react-helmet'
+import Loadable from 'react-loadable'
+import Loading from '../../components/basic/Loading'
 import logger from '../../utils/logger'
+import 'semantic-ui-css/semantic.min.css'
 
-import Login from '../Login'
-import SettingPassword from '../SettingPassword'
-import Navigation from '../Navigation'
 import PrivateRoute from './PrivateRoute'
-import StandalonePost from '../Feed/StandalonePost'
+
+const LoadableLogin = Loadable({
+  loader: () => import('../Login'),
+  loading: Loading,
+})
+const LoadableSettingPassword = Loadable({
+  loader: () => import('../SettingPassword'),
+  loading: Loading,
+})
+const LoadableNavigation = Loadable({
+  loader: () => import('../Navigation'),
+  loading: Loading,
+})
+const LoadableStandalonePost = Loadable({
+  loader: () => import('../Feed/StandalonePost'),
+  loading: Loading,
+})
 
 import classnames from 'classnames'
 import style from './style.css'
@@ -21,6 +37,8 @@ import style from './style.css'
 const browserHistory = createBrowserHistory()
 import stores from './stores'
 const history = syncHistoryWithStore(browserHistory, stores.routing)
+
+
 
 export default class App extends Component {
   logPageView(){
@@ -61,17 +79,17 @@ export default class App extends Component {
                 />
                 <Switch>
                   <Route
-                      component={Login}
+                      component={LoadableLogin}
                       exact
                       path="/login"
                   />
                   <Route
-                      component={SettingPassword}
+                      component={LoadableSettingPassword}
                       exact
                       path="/password/:uuid"
                   />
                   <Route
-                      component={StandalonePost}
+                      component={LoadableStandalonePost}
                       exact
                       path="/post/:id"
                   />
@@ -81,7 +99,7 @@ export default class App extends Component {
                       path="/event/:id"
                   /> */}
                   <PrivateRoute
-                      component={Navigation}
+                      component={LoadableNavigation}
                       path="/"
                   />
                 </Switch>
