@@ -1,6 +1,6 @@
 import DB from '../../db'
 import mailer from '../../../utils/mailer'
-import {PUBLIC} from '../../../utils/permissions'
+import {CREATE_PUBLIC_EVENT, PUBLIC} from '../../../utils/permissions'
 import {schema as User} from './User'
 import {schema as Post} from './Post'
 import { prepareEventCoverImage } from '../../helping/user'
@@ -204,6 +204,12 @@ export const resolvers = {
       })
     },
     addGame: (_, {title, description, type, subtype, location, from, to, invited, isPublic}, context)=>{
+
+      const {user} = context
+      if (isPublic && user.permissions.includes(CREATE_PUBLIC_EVENT)){
+        throw new Error('Not authorized to create public events')
+      }
+
       return new DB.models.Game({
         owner: context.user._id,
         title,
