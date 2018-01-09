@@ -1,0 +1,79 @@
+@import '../../constants/styles.css';
+
+.container{
+  background-color: white;
+  padding: 2em;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  margin-top: 2em;
+  margin-right: 5em;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4em;
+}
+.text{
+  color: textColor;
+  font-size: 1.5em;
+}
+
+.table{
+  font-weight: bold;
+  background-color: white;
+  table-layout: fixed;
+  width: 100%;
+  height: 70vh;
+  min-height: 100%;
+  text-align: left;
+  line-height: normal;
+}
+.tbody{
+  vertical-align: top;
+  font-size: 1.4em;
+}
+.thead{
+  font-size: 1.4em;
+}
+.thead>tr{
+  height: 3em;
+}
+.table td{
+  width: 10%;
+}
+
+.table th, .table td{
+  border-bottom: 1px solid eventDividerColor;
+}
+.table th:last-of-type, .table td:last-of-type{
+  border-right: none;
+}
+.table td:first-of-type{
+  border-right: 1px solid eventDividerColor;
+  border-bottom: 1px solid eventDividerColor;
+}
+.table>tbody tr:last-of-type td{
+  border-bottom: none;
+}
+
+.table th::first-letter, .table td::first-letter{
+  font-size: 2.5em;
+}
+
+@media print{
+  body *{
+    visibility: hidden;
+  }
+  .printable, .printable *{
+    visibility: visible;
+  }
+  .printable{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+}

@@ -22,8 +22,8 @@ export default class CardBlock extends Component {
 
   resetWidth(){
     const element = ReactDOM.findDOMNode(this.cardsPreviewElement)
-    const cardsPreviewElementWidth = parseInt(getComputedStyle(element).width)
-    if (cardsPreviewElementWidth!==this.state.cardsPreviewElementWidth){
+    const cardsPreviewElementWidth = parseFloat(getComputedStyle(element).width)
+    if (!isNaN(cardsPreviewElementWidth)&&cardsPreviewElementWidth!==this.state.cardsPreviewElementWidth){
       this.setState({
         cardsPreviewElementWidth,
       })
