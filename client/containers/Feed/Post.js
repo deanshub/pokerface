@@ -11,6 +11,7 @@ import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import ReactDOM from 'react-dom'
 import domtoimage from 'dom-to-image'
+import { NavLink } from 'react-router-dom'
 // import imageUtils from './imageUtils'
 import GIF from 'gif.js.optimized'
 import workerScript from 'file-loader!gif.js.optimized/dist/gif.worker'
@@ -22,6 +23,7 @@ import PostEditor from '../../components/PostEditor'
 import classnames from 'classnames'
 import style from './style.css'
 import logger from '../../utils/logger'
+import eventIcon from '../../assets/post/date-white.png'
 
 TimeAgo.locale(timeAgoEnLocale)
 
@@ -107,15 +109,6 @@ export default class Post extends Component {
           console.error(err)
           reject(err)
         })
-        // const canvas = imageUtils.newCanvas(postElement)
-        // return imageUtils.toImage(postElement, canvas).then((dataUrl)=>{
-        //   const img = new Image()
-        //   img.onload = ()=>{
-        //     resolve(img)
-        //   }
-        //   img.onerror = reject
-        //   img.src = dataUrl
-        // }).catch(reject)
       },300)
     })
   }
@@ -295,7 +288,17 @@ export default class Post extends Component {
             }
           </div>
         </div>
-        <div className={classnames(style.postContent)}>
+        {post.event&&!routing.location.pathname.startsWith('/events/')&&
+          <NavLink
+              className={classnames(style.eventSection)}
+              exact
+              to={`/events/${post.event.id}`}
+          >
+            <img src={eventIcon} style={{marginRight:'0.5em'}}/> at
+            <div className={classnames(style.eventLocation)}>{post.event.location}</div>
+          </NavLink>
+        }
+        <div className={classnames(style.postContent,{[style.noCommentsSection]:(!post.comments.length>0&&!auth.user.username)})}>
           <PostEditor
               post={post}
               readOnly
@@ -316,30 +319,22 @@ export default class Post extends Component {
             </div>
           }
         </div>
-        <div className={classnames(style.postComments)}>
-          <Comments
-              comments={post.comments}
-              standalone={standalone}
-          />
-          <IsUserLoggedIn>
-            <Reply
-                post={post}
-                removeReply={::this.removeReply}
+        {
+          (post.comments.length>0||auth.user.username!==undefined)&&
+          <div className={classnames(style.postComments)}>
+            <Comments
+                comments={post.comments}
                 standalone={standalone}
             />
-          </IsUserLoggedIn>
-          <IsUserLoggedIn opposite>
-            <div className={classnames(style.signupContainer)}>
-              <Button
-                  onClick={()=>routing.push(`/login?url=/post/${post.id}`)}
-                  primary
-                  style={{width:'30em', textTransform: 'uppercase'}}
-              >
-                Join The Pokerface Community - Sign Up
-              </Button>
-            </div>
-          </IsUserLoggedIn>
-        </div>
+            <IsUserLoggedIn>
+              <Reply
+                  post={post}
+                  removeReply={::this.removeReply}
+                  standalone={standalone}
+              />
+            </IsUserLoggedIn>
+          </div>
+        }
       </Dimmer.Dimmable>
     )
   }

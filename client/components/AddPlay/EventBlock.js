@@ -78,7 +78,7 @@ export default class EventBlock extends Component {
     const {searchValue} = this.state
     const permenentEvent = !!events.currentEventDetails
     const remove = !!feed.newPost.event && !permenentEvent
-    console.log("render", feed.newPost.event );
+
     return(
       <div className={classnames(style.eventPanel)}>
         <div className={classnames(style.label)}>
