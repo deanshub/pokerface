@@ -228,6 +228,21 @@
 
 }
 
+.eventSection{
+  display: flex;
+  background-color: textColor;
+  color: white;
+  padding: 0 2.2em;
+  align-items: center;
+}
+.eventSection:hover{
+  color: white;
+}
+.eventLocation{
+  font-weight: bold;
+  margin-left: 0.5em;
+}
+
 /* comment component */
 .commentContainer{
   display: flex;

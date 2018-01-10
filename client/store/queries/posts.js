@@ -37,6 +37,10 @@ export const postsQuery = gql`
         fullname
         avatar
       }
+      event{
+        id
+        location
+      }
     }
   }
 `

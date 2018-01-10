@@ -11,6 +11,7 @@ import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import ReactDOM from 'react-dom'
 import domtoimage from 'dom-to-image'
+import { NavLink } from 'react-router-dom'
 // import imageUtils from './imageUtils'
 import GIF from 'gif.js.optimized'
 import workerScript from 'file-loader!gif.js.optimized/dist/gif.worker'
@@ -22,6 +23,7 @@ import PostEditor from '../../components/PostEditor'
 import classnames from 'classnames'
 import style from './style.css'
 import logger from '../../utils/logger'
+import eventIcon from '../../assets/post/date-white.png'
 
 TimeAgo.locale(timeAgoEnLocale)
 
@@ -286,6 +288,16 @@ export default class Post extends Component {
             }
           </div>
         </div>
+        {post.event&&!routing.location.pathname.startsWith('/events/')&&
+          <NavLink
+              className={classnames(style.eventSection)}
+              exact
+              to={`/events/${post.event.id}`}
+          >
+            <img src={eventIcon} style={{marginRight:'0.5em'}}/> at
+            <div className={classnames(style.eventLocation)}>{post.event.location}</div>
+          </NavLink>
+        }
         <div className={classnames(style.postContent,{[style.noCommentsSection]:(!post.comments.length>0&&!auth.user.username)})}>
           <PostEditor
               post={post}
