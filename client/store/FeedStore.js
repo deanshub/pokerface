@@ -135,8 +135,6 @@ export class FeedStore {
         variables: {post:JSON.stringify(rawPostContent), photos , eventId},
         update: (proxy, { data: { createPost } }) => {
           const data = proxy.readQuery({ query: postsQuery, variables:{...currentFetchFilter, offset:0}})
-
-          console.log(data, createPost, currentFetchFilter)
           data.posts.push(createPost)
           proxy.writeQuery({
             query: postsQuery,
