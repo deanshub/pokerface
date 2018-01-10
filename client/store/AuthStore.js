@@ -59,6 +59,7 @@ export class AuthStore {
 
     this.authenticating = true
     return request.post('/login/switchToUser').send({userId}).set('Authorization', localStorage.getItem('jwt')).then((res)=>{
+      graphqlClient.resetStore()
       this.authenticating = false
 
       const {token} = res.body
@@ -72,6 +73,7 @@ export class AuthStore {
   @action
   logout(){
     logger.logEvent({category:'User',action:'Logout'})
+    graphqlClient.resetStore()
     this.user = {}
     close()
   }
@@ -87,7 +89,7 @@ export class AuthStore {
   @action
   fetchOptionalUsersSwitch(){
     this.fetchOptionalUsers = true
-    return graphqlClient.query({query:optionalUsersSwitchQuery, fetchPolicy:'network-only'}).then((result) =>{
+    return graphqlClient.query({query:optionalUsersSwitchQuery}).then((result) =>{
       this.optionalUsers = result.data.optionalUsersSwitch
       this.fetchOptionalUsers = false
       return this.optionalUsers
@@ -97,7 +99,7 @@ export class AuthStore {
   @action
   fetchOptionalUsersLogin(){
     this.fetchOptionalUsers = true
-    return graphqlClient.query({query:optionalUsersLoginQuery, fetchPolicy:'network-only'}).then((result) =>{
+    return graphqlClient.query({query:optionalUsersLoginQuery}).then((result) =>{
       this.optionalUsers = result.data.optionalUsersLogin
       this.fetchOptionalUsers = false
       return this.optionalUsers
