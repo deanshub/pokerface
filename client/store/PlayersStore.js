@@ -141,8 +141,10 @@ export class PlayersStore {
 
   @action
   setAuthenticatedUser(user){
-    const extendedUser = this.extendPlayer(user)
-    this.searchPlayers.set(extendedUser.username, extendedUser)
-    this.currentPlayers.push(extendedUser)
+    if (user.username){
+      const extendedUser = this.extendPlayer(user)
+      this.searchPlayers.set(extendedUser.username, extendedUser)
+      this.currentPlayers.push(extendedUser)
+    }
   }
 }

@@ -1,11 +1,11 @@
 // @flow
 
+import React,{Component} from 'react'
 import { Route, Switch, Redirect } from 'react-router'
 import { Router } from 'react-router-dom'
 import { syncHistoryWithStore } from 'mobx-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 import { Provider } from 'mobx-react'
-import React,{Component} from 'react'
 import {Helmet} from 'react-helmet'
 import Loadable from 'react-loadable'
 import Loading from '../../components/basic/Loading'
@@ -37,7 +37,6 @@ import style from './style.css'
 const browserHistory = createBrowserHistory()
 import stores from './stores'
 const history = syncHistoryWithStore(browserHistory, stores.routing)
-
 
 
 export default class App extends Component {
@@ -93,11 +92,6 @@ export default class App extends Component {
                       exact
                       path="/post/:id"
                   />
-                  {/* <Route
-                      component={StandaloneEvent}
-                      exact
-                      path="/event/:id"
-                  /> */}
                   <PrivateRoute
                       component={LoadableNavigation}
                       path="/"

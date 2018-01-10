@@ -34,13 +34,7 @@ export default class EventBlock extends Component {
     events.search(value)
   }
 
-  searchInputChange(e,{newValue, method}){
-    const {events} = this.props
-
-    if (method==='type'){
-      events.search(newValue)
-    }
-
+  searchInputChange(e,{newValue}){
     this.setState({searchValue:newValue})
   }
 

@@ -11,6 +11,11 @@ import style from './style.css'
 @inject('players')
 @observer
 export default class PlayerField extends Component {
+  constructor(props){
+    super(props)
+    this.state = {inputValue:props.user.fullname}
+  }
+
   searchChange({value}){
     const {players} = this.props
     players.search(value)
@@ -43,13 +48,9 @@ export default class PlayerField extends Component {
     const {players, user, playerIndex} = this.props
     players.setPlayer(playerIndex, {...suggestion, cards: user.cards})
   }
+
   searchInputChange(e,{newValue}){
-    const {user} = this.props
-    if (!user.guest){
-      this.onSuggestionSelected(e, {suggestion:{...user, guest:true, fullname:newValue, username:`guest-${Math.random().toString()}`}})
-    }else{
-      user.fullname = newValue
-    }
+    this.setState({inputValue:newValue})
   }
 
   removePlayer(){
@@ -71,6 +72,7 @@ export default class PlayerField extends Component {
 
   render(){
     const {players, playerIndex, isDealer, user, handleAvatarClick} = this.props
+    const {inputValue} = this.state
     const href=`/profile/${user.username}`
 
     return (
@@ -85,11 +87,10 @@ export default class PlayerField extends Component {
         />
         <Autosuggest
             getSuggestionValue={player=>player.fullname}
-            highlightFirstSuggestion
             id={`${playerIndex}`}
             inputProps={{
               placeholder: 'Player',
-              value:user.fullname,
+              value:inputValue,
               onChange: ::this.searchInputChange,
             }}
             onSuggestionSelected={::this.onSuggestionSelected}
