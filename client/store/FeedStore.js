@@ -128,7 +128,23 @@ export class FeedStore {
       const {event} = this.newPost
       const eventId = event?event.id:null
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
-      graphqlClient.mutate({mutation: postCreate, variables: {post:JSON.stringify(rawPostContent), photos , eventId}})
+
+      const currentFetchFilter = this.currentFetchFilter
+      graphqlClient.mutate({
+        mutation: postCreate,
+        variables: {post:JSON.stringify(rawPostContent), photos , eventId},
+        update: (proxy, { data: { createPost } }) => {
+          const data = proxy.readQuery({ query: postsQuery, variables:{...currentFetchFilter, offset:0}})
+
+          console.log(data, createPost, currentFetchFilter)
+          data.posts.push(createPost)
+          proxy.writeQuery({
+            query: postsQuery,
+            variables:{...currentFetchFilter, offset:0},
+            data }
+          )
+        },
+      })
 
       // if post mutation succeded add id
       .then(result=>{
@@ -263,13 +279,15 @@ export class FeedStore {
 
   @action
   fetchPosts(by = {}): void{
-    const serializedBy = JSON.stringify(by)
-    if (this.currentFetchFilter===serializedBy && (this.noMorePosts || this.loading)) return undefined
+    const newByString = JSON.stringify(by)
+    const currentByString = JSON.stringify(this.currentFetchFilter)
+
+    if (currentByString===newByString && (this.noMorePosts || this.loading)) return undefined
 
     this.loading = true
-    if (this.currentFetchFilter!==serializedBy){
+    if (currentByString!==newByString){
       this.posts = observable.map({})
-      this.currentFetchFilter = serializedBy
+      this.currentFetchFilter = by
       this.noMorePosts = false
     }
 

@@ -131,7 +131,7 @@ export class EventStore {
     this.games.clear()
     this.loading = true
     graphqlClient.query({
-      fetchPolicy:'network-only',
+      //fetchPolicy:'network-only',
       query: eventsQuery,
     }).then((result)=>{
       result.data.games.forEach(::this.setGame)
@@ -158,7 +158,6 @@ export class EventStore {
   setCurrentEvent(eventId){
     this.loadingCurrentEvent = true
     graphqlClient.query({
-      // fetchPolicy:'network-only',
       query: eventQuery,
       variables: {eventId},
     }).then((result)=>{
