@@ -114,7 +114,7 @@ export const prepareGeneralImage = (image) => {
   return image?`/images/${image}`:undefined
 }
 
-export const prepareRebrandingDetails = (permissions, rebrandingDetails) =>{
+export const prepareRebrandingDetails = (permissions, rebrandingDetails={}) =>{
   if (!permissions.includes(REBRANDING)){
     return null
   }else{
