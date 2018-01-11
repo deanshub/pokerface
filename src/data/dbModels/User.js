@@ -72,10 +72,19 @@ const schema = Schema(
       }],
     },
     rebrandingDetails:{
+      logo:{
+        type: String,
+      },
+      title:{
+        type: String,
+      },
       primaryColor: {
         type: String,
       },
       secondaryColor: {
+        type: String,
+      },
+      tertiaryColor: {
         type: String,
       },
     },

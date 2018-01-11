@@ -1,9 +1,9 @@
 import express from 'express'
 import authentication from './authentication'
-import {prepareAvatar, prepareCoverImage} from '../data/helping/user'
-import {REBRANDING} from '../utils/permissions'
+import {prepareAvatar, prepareCoverImage, prepareRebrandingDetails} from '../data/helping/user'
 
 const TOKEN_EXPIRATION_DURATION = 1000*600
+
 
 const prepareUserToClient = (user) => {
 
@@ -15,13 +15,24 @@ const prepareUserToClient = (user) => {
     lastname,
     organizations,
     permissions,
+    rebrandingDetails,
   } = user
 
-  let avatar = prepareAvatar(user)
+  const avatar = prepareAvatar(user)
+  const coverImage = prepareCoverImage(user)
+  const newDetails =  prepareRebrandingDetails(permissions, rebrandingDetails)
 
-  let coverImage = prepareCoverImage(user)
-  const rebranding = permissions.includes(REBRANDING)
-  const userToClient = {email, fullname, firstname, lastname, username, avatar, coverImage, organizations, rebranding}
+  const userToClient = {
+    email,
+    fullname,
+    firstname,
+    lastname,
+    username,
+    avatar,
+    coverImage,
+    organizations,
+    rebrandingDetails:newDetails,
+  }
 
   return  userToClient
 }
