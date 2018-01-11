@@ -11,6 +11,7 @@
   padding: 40px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .header{
@@ -45,7 +46,7 @@
   display: flex;
   margin-top: 8em;
   margin-bottom: 15em;
-  padding: 0 18em;
+  max-width: 1300px;
 }
 .leftMain{
   flex: 3;
@@ -64,19 +65,19 @@
 .smallHeader{
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 2.5em;
+  font-size: 2vw;
   color: checkColor;
 }
 .sectionHeader{
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 6em;
+  font-size: 4.5vw;
   margin: 0.2em 0;
   color: white;
 }
 .sectionDescription{
   text-transform: uppercase;
-  font-size: 1.5em;
+  font-size: 1.1vw;
   color: landingLineColor;
   margin-top: 1.1em;
   margin-right: 12em;
@@ -137,4 +138,11 @@
 .forgotPassord {
   margin-left: 1em;
   cursor: pointer;
+}
+
+
+@media (max-width: 900px) {
+  .mainContent{
+    flex-direction: column;
+  }
 }

@@ -187,10 +187,9 @@
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
-  cursor: pointer;
 }
 
-.deleteImage:hover{
+.spotPreviewOverlay:hover .deleteImage{
   background-image: url('../../assets/actions/delete-hover.png');
 }
 
@@ -215,6 +214,8 @@
   box-shadow: 0 0 5px 0 #000000;
   position: absolute;
   bottom: 0;
+  z-index: 1;
+  cursor: pointer;
 }
 
 .spotPreviewOverlay:hover{

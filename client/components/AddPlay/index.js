@@ -102,11 +102,11 @@ export default class AddPlay extends Component {
             hasSpot?(
               <div className={classnames(style.spotWPreview)}>
                 <SpotPlayer post={spotPlayer.newSpot} style={{height:'40vw', backgroundColor:'white'}}/>
-                <div className={classnames(style.spotPreviewOverlay)}>
-                  <div
-                      className={classnames(style.deleteImage)}
-                      onClick={::this.deleteSoptPlayer}
-                  />
+                <div
+                    className={classnames(style.spotPreviewOverlay)}
+                    onClick={::this.deleteSoptPlayer}
+                >
+                  <div className={classnames(style.deleteImage)}/>
                 </div>
               </div>
             ):null
