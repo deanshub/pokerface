@@ -1,5 +1,5 @@
 import DB from '../db'
-import {LOGIN} from '../../utils/permissions'
+import {LOGIN, REBRANDING} from '../../utils/permissions'
 
 export const createUser = (user) => {
   const {
@@ -108,6 +108,20 @@ export const prepareEventCoverImage = (event) => {
 
   return coverImage
 }
+
+export const prepareGeneralImage = (image) => {
+
+  return image?`/images/${image}`:undefined
+}
+
+export const prepareRebrandingDetails = (permissions, rebrandingDetails={}) =>{
+  if (!permissions.includes(REBRANDING)){
+    return null
+  }else{
+    return {...rebrandingDetails, logo:prepareGeneralImage(rebrandingDetails.logo)}
+  }
+}
+
 
 // Organization
 export const loginPermissionFilter = (query) => {

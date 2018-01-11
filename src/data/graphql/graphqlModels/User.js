@@ -4,12 +4,18 @@ import DB from '../../db'
 // import {schema as Comment} from './Comment'
 import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
-import {prepareAvatar, prepareCoverImage, loginPermissionFilter} from '../../helping/user'
+import {prepareAvatar,
+   prepareCoverImage,
+   prepareRebrandingDetails,
+   loginPermissionFilter} from '../../helping/user'
 
 export const schema =  [`
   type RebrandingDetails {
-    primarycolor: String!
-    secondarycolor: String!
+    logo: String
+    title: String
+    primaryColor: String
+    secondaryColor: String
+    tertiaryColor: String
   }
 
   interface User {
@@ -20,7 +26,7 @@ export const schema =  [`
     coverImage: String
     posts: [Post]
     comments: [Comment]
-    rebrandingdetails: RebrandingDetails
+    rebrandingDetails: RebrandingDetails
   }
 
   type Organization implements User {
@@ -31,7 +37,7 @@ export const schema =  [`
     coverImage: String
     posts: [Post]
     comments: [Comment]
-    rebrandingdetails: RebrandingDetails
+    rebrandingDetails: RebrandingDetails
     players: [Player]
   }
 
@@ -43,7 +49,7 @@ export const schema =  [`
     coverImage: String
     posts: [Post]
     comments: [Comment]
-    rebrandingdetails: RebrandingDetails
+    rebrandingDetails: RebrandingDetails
     firstname: String
     lastname: String
     guest: Boolean
@@ -108,6 +114,7 @@ export const resolvers = {
     coverImage: prepareCoverImage,
     posts: getPosts,
     comments: getComments,
+    rebrandingDetails: (user)=>prepareRebrandingDetails(user.permissions, user.rebrandingDetails),
   },
   Organization:{
     players: (organization) => organization.players,
@@ -115,6 +122,14 @@ export const resolvers = {
     coverImage: prepareCoverImage,
     posts: getPosts,
     comments: getComments,
+    rebrandingDetails: (organization)=>prepareRebrandingDetails(organization.permissions, organization.rebrandingDetails),
+  },
+  RebrandingDetails:{
+    logo: (details) => details.logo,
+    title: (details) => details.title,
+    primaryColor: (details) => details.primaryColor,
+    secondaryColor: (details) => details.secondaryColor,
+    tertiaryColor: (details) => details.tertiaryColor,
   },
   Query: {
     users: (_, {phrase, username})=>{
