@@ -5,7 +5,7 @@ import PokerTable from '../PokerTable'
 import PlayersList from './PlayersList'
 import classnames from 'classnames'
 import style from './style.css'
-import { observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 
 @observer
 export default class Spot extends Component {
@@ -31,9 +31,10 @@ export default class Spot extends Component {
   }
 
   render() {
-    const { players, standalone, currency, dealer} = this.props
+    const { players, standalone, currency, dealer, tableBranding} = this.props
     const {upperPlayers, lowerPlayers, upperPlayersAmount} = this.splitPlayers(players)
 
+    const { logo, title, primaryColor, secondaryColor, tertiaryColor } = tableBranding || {}
     // <foreignObject x="0" y="0" width="100%" height="80%">
     return (
         <div className={classnames(style.spot)}>
@@ -45,8 +46,13 @@ export default class Spot extends Component {
           <PokerTable
               currency={currency}
               dealer={dealer}
+              edgeColor={secondaryColor}
+              fabricColor={primaryColor}
+              lineColor={tertiaryColor}
+              logo={logo}
               lowerPlayers={lowerPlayers}
               standalone={standalone}
+              title={title}
               upperPlayers={upperPlayers}
           />
           <PlayersList

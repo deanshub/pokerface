@@ -37,7 +37,7 @@ export default class SpotWizard extends Component {
   }
 
   getMainContent(){
-    const {spotPlayer} = this.props
+    const {auth, spotPlayer} = this.props
     const {step} = spotPlayer.newSpot
 
     if (step===0){
@@ -110,6 +110,7 @@ export default class SpotWizard extends Component {
               dealer={spotPlayer.newSpot.spotPlayerState.dealer}
               movesTotal={spotPlayer.newSpot.spot.moves.length}
               players={spotPlayer.newSpot.spotPlayerState.players}
+              tableBranding={auth.user.rebrandingDetails}
           />
         </div>
       )

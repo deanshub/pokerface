@@ -12,6 +12,7 @@ export default class PokerTable extends Component {
     currency: PropTypes.string,
     edgeColor: PropTypes.string,
     fabricColor: PropTypes.string,
+    lineColor: PropTypes.string,
     logo: PropTypes.string,
     standalone: PropTypes.bool,
     title: PropTypes.string,
@@ -22,6 +23,7 @@ export default class PokerTable extends Component {
   static defaultProps = {
     fabricColor: '#41c86a',
     edgeColor: '#2b3f31',
+    lineColor: '#7ee39d',
     title: 'Pokerface.io',
     standalone: false,
     logo: pokerfaceLogo,
@@ -33,6 +35,7 @@ export default class PokerTable extends Component {
       standalone,
       fabricColor,
       edgeColor,
+      lineColor,
       logo,
       dealer,
       currency,
@@ -49,7 +52,7 @@ export default class PokerTable extends Component {
           style={{backgroundColor: fabricColor, borderColor: edgeColor}}
       >
         <div className={classnames(style.backgroundContainer)}>
-          <div className={classnames(style.line)}>
+          <div className={classnames(style.line)} style={{borderColor: lineColor}}>
             {
               title?(
                 <div className={classnames(style.text)}>

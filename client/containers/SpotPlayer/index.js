@@ -49,6 +49,7 @@ export default class SpotPlayer extends Component {
               movesTotal={post.spot.moves.length}
               players={post.spotPlayerState.players}
               standalone={standalone}
+              tableBranding={post.owner.rebrandingDetails}
           />
         </article>
       </div>
