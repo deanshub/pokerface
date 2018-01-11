@@ -46,6 +46,7 @@ export default class PlayerField extends Component {
 
   onSuggestionSelected(e, {suggestion}){
     const {players, user, playerIndex} = this.props
+
     players.setPlayer(playerIndex, {...suggestion, cards: user.cards})
   }
 
@@ -100,7 +101,7 @@ export default class PlayerField extends Component {
               <Input {...props}/>
             )}
             renderSuggestion={this.renderSuggestion}
-            suggestions={players.immutableAvailablePlayers.concat([{guest:true, fullname:user.fullname, username:`guest-${Math.random().toString()}`}])}
+            suggestions={players.immutableAvailablePlayers.concat([{guest:true, fullname:inputValue, username:`guest-${Math.random().toString()}`}])}
             theme={{
               container: classnames(style.autosuggest),
               suggestionsList: classnames(style.suggestionsList),
