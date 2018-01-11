@@ -16,7 +16,7 @@ export class SpotPlayerStore{
     this.newSpot = this.initNewPost()
   }
 
-  initNewPost(){
+  initNewPost(owner){
     return observable({
       spot:initialSpot,
       step: 0,
@@ -26,6 +26,7 @@ export class SpotPlayerStore{
         bb: 2,
         dealer: 0,
       },
+      owner,
     })
   }
   @action
@@ -34,10 +35,10 @@ export class SpotPlayerStore{
     this.newSpot = this.initNewPost()
   }
   @action
-  openSpotEditing(){
+  openSpotEditing(owner){
     logger.logEvent({category:'Spot',action:'Edit'})
     this.spotWizardOpen=true
-    this.newSpot = this.initNewPost()
+    this.newSpot = this.initNewPost(owner)
   }
 
   @action

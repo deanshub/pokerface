@@ -82,8 +82,8 @@ export default class AddPlay extends Component {
   }
 
   addSpot(){
-    const {spotPlayer} = this.props
-    spotPlayer.openSpotEditing()
+    const {auth,spotPlayer} = this.props
+    spotPlayer.openSpotEditing(auth.user)
   }
 
   render() {

@@ -36,6 +36,13 @@ export const postsQuery = gql`
         username
         fullname
         avatar
+        rebrandingDetails {
+          logo
+          title
+          primaryColor
+          secondaryColor
+          tertiaryColor
+        }
       }
       event{
         id
