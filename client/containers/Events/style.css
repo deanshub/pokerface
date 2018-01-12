@@ -1,16 +1,10 @@
 @import "../../constants/styles";
 
-.container{
-  margin: 20px;
-  padding: 10px;
-  background-color: white;
-  border-radius: 5px;
-}
-
 .containerHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 2em;
 }
 
 .containerHeaderText {
@@ -24,113 +18,4 @@
   top: 0.3rem;
   right: 0;
   max-width: 100px;
-}
-
-.eventPanel{
-  width: 100%;
-    padding: 0.3rem;
-}
-
-.eventPanel:not(:last-of-type) {
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.8rem;
-    border-bottom: 1px solid #e9e9e9;
-}
-
-.expendedrow{
-  background-color: #ececec;
-}
-
-.eventRowHeader {
-  cursor: pointer;
-  display: grid;
-  grid-template-columns: 50px 3fr 4fr 2fr 1.5fr 2fr;
-  width: 100%;
-}
-.eventRowHeader:hover{
-  background-color: #F9F9F9;
-}
-
-.eventRowHeaderExpanded {
-  font-weight: bold;
-  grid-template-columns: 50px 3fr 4fr 3fr 0.5fr 2fr;
-}
-
-.eventRowHeader > div {
-    vertical-align: middle;
-    line-height: 2.5;
-}
-
-.eventRowHeader .eventRowDate {
-  text-transform: capitalize;
-}
-
-.eventRowHeaderExpanded .eventRowDate {
-  text-align: right;
-}
-
-.eventDetails {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  padding: 20px 0px 20px 50px;
-  width: 100%;
-}
-
-.eventDetailsLeft, .eventDetailsRight {
-  vertical-align: top;
-}
-
-.eventDetailsLeft {
-  display: inline-grid;
-  grid-template-rows: 1fr 9fr;
-}
-
-.eventLocation {
-  margin-top: 1em;
-  text-align: center;
-}
-
-.eventDescription {
-  color: gray;
-  font-size: 1em;
-  font-style: oblique;
-}
-
-.rsvpStatics {
-    display: grid;
-    width: 100%;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
-.rsvpStaticsNoUnknown {
-  grid-template-columns: 1fr 1fr;
-}
-
-.rsvpGroup:not(:last-of-type) {
-    border-right: 1px solid #e9e9e9;
-    padding-right: 10px;
-    margin-right: 20px;
-}
-
-.rsvpGroupHeader {
-    font-size: 1em;
-    margin-bottom: 10px;
-}
-
-.rsvpGroupContent {
-  max-height: 267px;
-  overflow-y: auto;
-}
-
-.mapImage {
-  width: 25em !important;
-  height: 25em !important;
-}
-
-.rsvpButton {
-  text-align: right;
-}
-
-.isGoingButton {
-  flex: 0 1 auto !important;
 }

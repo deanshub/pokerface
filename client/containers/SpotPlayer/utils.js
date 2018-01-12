@@ -89,8 +89,8 @@ const utils = {
       }
       const myTurn = index === firstMove.player
       const isDealer = index === dealerPlayerIndex
-      const bet = ante||0
-      const bank = player.bank - bet
+      const bet = 0
+      const bank = player.bank - bet - ante
 
       let playerCards = utils.stringToCards(cards[index])
       if (playerCards.length===0){
@@ -121,7 +121,7 @@ const utils = {
       players: playersState,
       currency,
       dealer:{
-        pot: 0,
+        pot: ante*players.length,
         cards: [],
       },
     }

@@ -4,7 +4,7 @@ $lightGreen50: #F1F8E9;
 $white: #ffffff;
 
 /* App */
-$appBackgroundColor: #24222e;
+@value appBackgroundColor: #24222e;
 
 /* spot player */
 $activeButton: #41c86a;
@@ -49,3 +49,5 @@ $disabled: #24222e;
 @value linkColor: #1f95c7;
 @value hoverLinkColor: #81dbff;
 @value hoverDeleteColor: #ff5a5a;
+@value expandableBackColor: #3f3c4d;
+@value qrBottomBorderColor: #535168;

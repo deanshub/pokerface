@@ -102,6 +102,9 @@ export class EventStore {
       this.add(user, game.declined)
       this.remove(user, game.unresponsive)
     }
+    if (this.currentEvent&&gameId===this.currentEvent.id){
+      this.currentEvent = game
+    }
   }
 
   @action createGame(players, game){
@@ -158,6 +161,7 @@ export class EventStore {
   setCurrentEvent(eventId){
     this.loadingCurrentEvent = true
     graphqlClient.query({
+      // fetchPolicy:'network-only',
       query: eventQuery,
       variables: {eventId},
     }).then((result)=>{
@@ -177,13 +181,19 @@ export class EventStore {
   get suggestedEvent(){
     return toJS(this.searchEventsResult)
   }
+
   @computed
   get currentEventDetails(){
-    if (!this.currentEvent){
+    return this.eventToDetails(this.currentEvent)
+  }
+
+  eventToDetails(eventData){
+    if (!eventData){
       return null
     }
     const {
       id,
+      creator,
       title,
       type,
       subtype,
@@ -191,12 +201,15 @@ export class EventStore {
       location,
       from,
       accepted,
+      declined,
+      unresponsive,
       image: coverImage,
       title: fullname,
-    } = this.currentEvent
+    } = eventData
 
     return {
       id,
+      creator,
       title,
       type,
       subtype,
@@ -206,6 +219,9 @@ export class EventStore {
       going: accepted.length,
       coverImage,
       fullname,
+      accepted,
+      declined,
+      unresponsive,
     }
   }
 }
