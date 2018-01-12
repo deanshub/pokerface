@@ -1,15 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import classnames from 'classnames'
-import style from './style.css'
-import { NavLink } from 'react-router-dom'
+import Cover from '../../components/Cover'
 
-import EventHeader from './EventHeader'
-import MapImage from './MapImage'
-import RSVPStatics from './RSVPStatics'
-
-@inject('auth')
 @inject('events')
 @observer
 export default class EventRow extends Component {
@@ -19,29 +12,14 @@ export default class EventRow extends Component {
   }
 
   render(){
-    const { game, isExpanded } = this.props
+    const { game, events, isExpanded } = this.props
+    const details = events.eventToDetails(game)
     return (
-      <div className={classnames(style.eventPanel)}>
-        <EventHeader {...this.props} />
-        { isExpanded &&
-          <div className={classnames(style.eventDetails)}>
-            <div className={classnames(style.eventDetailsLeft)}>
-              <div className={classnames(style.eventDescription)}>
-                <NavLink
-                    exact
-                    to={`/events/${game.id}`}
-                >
-                  { game.description }
-                </NavLink>
-              </div>
-              <RSVPStatics game={game} />
-            </div>
-              <div className={classnames(style.eventDetailsRight)}>
-                <MapImage location={game.location} />
-                <h4 className={classnames(style.eventLocation)}>{game.location}</h4>
-              </div>
-          </div> }
-      </div>
+      <Cover
+          compact
+          details={details}
+          expanded={isExpanded}
+      />
     )
   }
 }

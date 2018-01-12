@@ -38,6 +38,7 @@ export const eventsQuery = gql`
             avatar
             guest
           }
+          image
           updatedAt
           createdAt
       }
@@ -82,9 +83,9 @@ export const eventQuery = gql`
         avatar
         guest
       }
+      image
       updatedAt
       createdAt
-      image
     }
   }
 `

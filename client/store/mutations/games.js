@@ -34,6 +34,7 @@ export const gameAttendanceUpdate = gql`mutation gameAttendanceUpdate($gameId: S
       fullname
       avatar
     }
+    image
     updatedAt
     createdAt
   }
@@ -75,6 +76,7 @@ export const addGame = gql`mutation addGame($title: String!, $description: Strin
       fullname
       avatar
     }
+    image
     updatedAt
     createdAt
   }
