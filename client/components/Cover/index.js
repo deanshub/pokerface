@@ -109,29 +109,32 @@ export default class Cover extends Component {
               </div>
             }
             {
-              details.going>0&&
+              details.going>0&&(isUnresponsive||isNotGoing||isGoing)&&
               <div className={classnames(style.peopleDivider)}/>
             }
-            <div className={classnames(style.attandanceContainer)}>
-              <div
-                  className={classnames(style.attandanceAction, {[style.active]:isUnresponsive}, style.invited)}
-                  onClick={()=>events.fillAttendance(auth.user, details.id, null)}
-              >
-                Invited
+            {
+              (isUnresponsive||isNotGoing||isGoing)&&
+              <div className={classnames(style.attandanceContainer)}>
+                <div
+                    className={classnames(style.attandanceAction, {[style.active]:isUnresponsive}, style.invited)}
+                    onClick={()=>events.fillAttendance(auth.user, details.id, null)}
+                >
+                  Invited
+                </div>
+                <div
+                    className={classnames(style.attandanceAction, {[style.active]:isNotGoing}, style.notGoing)}
+                    onClick={()=>events.fillAttendance(auth.user, details.id, false)}
+                >
+                  Not Going
+                </div>
+                <div
+                    className={classnames(style.attandanceAction, {[style.active]:isGoing}, style.going)}
+                    onClick={()=>events.fillAttendance(auth.user, details.id, true)}
+                >
+                  Going
+                </div>
               </div>
-              <div
-                  className={classnames(style.attandanceAction, {[style.active]:isNotGoing}, style.notGoing)}
-                  onClick={()=>events.fillAttendance(auth.user, details.id, false)}
-              >
-                Not Going
-              </div>
-              <div
-                  className={classnames(style.attandanceAction, {[style.active]:isGoing}, style.going)}
-                  onClick={()=>events.fillAttendance(auth.user, details.id, true)}
-              >
-                Going
-              </div>
-            </div>
+            }
           </div>
         </div>
         <div className={classnames(style.detailsRightPane)}>
