@@ -23,6 +23,8 @@ export default class Textarea extends Component {
       value,
       type,
       onClick,
+      error,
+      warning,
       ...otherProps
     } = this.props
 
@@ -31,7 +33,11 @@ export default class Textarea extends Component {
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
         <div className={classnames(style.inputContainer)}>
           <textarea
-              className={classnames(style.textareaInput)}
+              className={classnames(
+                style.textareaInput,
+                {[style.error]: error},
+                {[style.warning]: warning},
+              )}
               id={id}
               onChange={(e)=>onChange(e,e.target)}
               onClick={onClick}

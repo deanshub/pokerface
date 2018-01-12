@@ -1,3 +1,4 @@
+@import '../../../constants/styles.css';
 @import '../Input/style.css';
 
 .inputContainer div {
@@ -18,4 +19,9 @@
   margin: 0px;
   height: auto;
   padding: 0px;
+}
+
+.selectError > div:first-child {
+  border: 1px solid errorColor;
+  background: errorColorOpacitated;
 }

@@ -26,25 +26,77 @@ export default class AddGameModal extends Component {
   constructor(props){
     super(props)
 
-    this.state = {activeTab:'edit'}
+    this.state = {
+      activeTab:'edit',
+      wrongFields:{
+        error:{},warning:{},
+      },
+    }
+
+    this.validateFields =  this.validateFields.bind(this)
+    this.handleFieldChange =  this.handleFieldChange.bind(this)
   }
 
   addGame(e: Object){
     e.preventDefault()
     const { game, events, routing} = this.props
-    events.createGame([], game.currentGame)
-    .then(res=>{
-      if (!res.err){
-        game.resetGame()
-        routing.push('/events')
-        game.closeAddGameModal()
+
+    if (this.validateFields() > 0){
+      this.setState({submitted:true})
+    }else{
+      events.createGame([], game.currentGame)
+      .then(res=>{
+        if (!res.err){
+          game.resetGame()
+          routing.push('/events')
+          game.closeAddGameModal()
+        }
+      })
+    }
+  }
+
+  validateFields(){
+    const {game} = this.props
+    let wrongFieldCounter = 0
+
+    const uptededWrongFields ={error:{},warning:{}}
+
+    game.fieldsValidations.forEach(validation => {
+      const {check, field, level} = validation
+      const currentValue = game.currentGame.get(field)
+      if (!check(currentValue)){
+        uptededWrongFields[level][field] = true
+        wrongFieldCounter++
       }
     })
+
+    this.setState({wrongFields:uptededWrongFields})
+
+    return wrongFieldCounter
+  }
+
+  handleFieldChange(fieldName, value){
+    const {game} = this.props
+    const {submitted, wrongFields} = this.state
+
+    // TODO spread
+    const uptededFieldState = wrongFields
+
+    if (submitted){
+
+      const validations = game.fieldsValidations.filter(v => v.field === fieldName)
+
+      validations.forEach(validation => {
+        const {check, level} = validation
+        uptededFieldState[level][fieldName] = !check(value)
+      })
+    }
+    this.setState({wrongFields:uptededFieldState})
   }
 
   render() {
     const { auth, game } = this.props
-    const {activeTab} = this.state
+    const {activeTab, wrongFields} = this.state
 
     const startDate = game.currentGame.get('startDate')
     const endDate = game.currentGame.get('endDate')
@@ -75,49 +127,75 @@ export default class AddGameModal extends Component {
               <div>
                 <div className={classnames(style.fieldsGroup)}>
                   <Input
+                      error={wrongFields.error.title}
                       id="title"
                       label="Title"
-                      onChange={(e, {value})=>game.titleChangeHandler(value)}
+                      onChange={(e, {value})=>{
+                        game.titleChangeHandler(value)
+                        this.handleFieldChange('title', value)
+                      }}
                       placeholder="title"
                   />
                   <Select
+                      error={wrongFields.error.type}
                       label="Game"
-                      onChange={(value)=>game.typeChangeHandler(value)}
+                      onChange={(value)=>{
+                        this.handleFieldChange('type', value)
+                        game.typeChangeHandler(value)
+                      }}
                       options={game.gameTypes}
                       placeholder="game"
                   />
                   <Select
+                      error={wrongFields.error.subType}
                       label="Type"
-                      onChange={(value)=>game.subTypeChangeHandler(value)}
+                      onChange={(value)=>{
+                        this.handleFieldChange('subType', value)
+                        game.subTypeChangeHandler(value)
+                      }}
                       options={game.gameSubTypes}
                       placeholder="type"
                   />
                 </div>
                 <div className={classnames(style.fieldsGroup)}>
                   <Textarea
+                      error={wrongFields.error.description}
                       id="description"
                       label="Description"
-                      onChange={(e, {value})=>game.descriptionChangeHandler(value)}
+                      onChange={(e, {value})=>{
+                        game.descriptionChangeHandler(value)
+                        this.handleFieldChange('description', value)
+                      }}
                       placeholder="description"
                   />
                 </div>
                 <div className={classnames(style.fieldsGroup)}>
                   <Input
+                      error={wrongFields.error.location}
                       id="location"
                       label="Location"
-                      onChange={(e, {value})=>game.locationChangeHandler(value)}
+                      onChange={(e, {value})=>{
+                        game.locationChangeHandler(value)
+                        this.handleFieldChange('location', value)
+                      }}
                       placeholder="location"
                   />
                 </div>
                 <div className={classnames(style.fieldsGroup)}>
                   <DatePicker
                       label="From"
-                      onChange={(startDate)=>game.handleChangeStartDate(startDate)}
+                      onChange={(value)=>{
+                        game.handleChangeStartDate(value)
+                        this.handleFieldChange('startDate', value)
+                      }}
                       value={startDate}
                   />
                   <DatePicker
                       label="To"
-                      onChange={(endDate)=>game.handleChangeEndDate(endDate)}
+                      onChange={(value)=>{
+                        game.handleChangeEndDate(value)
+                        this.handleFieldChange('endDate', value)
+                      }}
                       value={endDate}
                   />
                   {
@@ -126,7 +204,10 @@ export default class AddGameModal extends Component {
                         checkboxLabel="pubilc"
                         id="public"
                         label="publiclication"
-                        onChange={(e, {checked})=>game.publicChangeHandler(checked)}
+                        onChange={(e, {checked})=>{
+                          game.publicChangeHandler(checked)
+                          this.handleFieldChange('public',checked)
+                        }}
                         type="checkbox"
                     />
                   }
