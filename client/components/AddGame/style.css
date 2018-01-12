@@ -1,5 +1,58 @@
 @import "../../constants/styles";
-.playerLabel>img{
+/* .playerLabel>img{
   display: inline-block !important;
   margin-right: 5px;
+} */
+
+.header {
+    display: flex;
+    align-items: center;
+
+    .title {
+      flex:1;
+    }
+}
+
+.tab {
+  height: 34px;
+  width: 34px;
+  padding: 0 0.7em;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.editTab {
+  @extend .tab;
+  background-image: url('../../assets/actions/edit.png');
+}
+
+.editTab:hover {
+  background-image: url('../../assets/actions/edit-hover.png');
+}
+
+.usersTab {
+  @extend .tab;
+  background-image: url('../../assets/user-search.png');
+}
+
+.usersTab:hover {
+  background-image: url('../../assets/user-hover.png');
+}
+
+.editTab.active {
+  background-image: url('../../assets/actions/edit-hover.png');
+}
+
+.usersTab.active {
+  background-image: url('../../assets/user-hover.png');
+}
+
+.fieldsGroup {
+  display: flex;
+}
+
+
+.buttons {
+  display: flex;
+  flex-direction: row-reverse;
 }

@@ -6,10 +6,11 @@ import moment from 'moment'
 import classnames from 'classnames'
 import style from './style.css'
 import AddGameModal from '../../components/AddGame/AddGameModal'
-
+import Button from '../../components/basic/Button'
 import EventRow from './EventRow'
 
 @inject('events')
+@inject('game')
 @observer
 export default class Events extends Component {
   static propTypes = {
@@ -26,7 +27,7 @@ export default class Events extends Component {
   }
 
   render() {
-    const {events} = this.props
+    const {events, game:addGame} = this.props
     const eventRows = events.games.values()
     .sort((a,b)=>{
       return moment.utc(a.from).diff(moment.utc(b.from))
@@ -57,12 +58,17 @@ export default class Events extends Component {
 
     return (
       <div>
-
+        <AddGameModal/>
         { !events.loading && <div className={classnames(style.containerHeader)}>
           <div className={classnames(style.containerHeaderText)}>
               {title}
           </div>
-          <AddGameModal buttonClassName={classnames(style.containerHeaderButton)} />
+          <Button
+              onClick={() => addGame.openAddGameModal()}
+              primary
+          >
+            Add Event
+          </Button>
         </div> }
         { hasEvents && <div className={classnames(style.container)}>{eventRows}</div> }
         {
