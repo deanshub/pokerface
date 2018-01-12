@@ -1,9 +1,11 @@
 import express from 'express'
 import authentication from './authentication'
 import {prepareAvatar, prepareCoverImage, prepareRebrandingDetails} from '../data/helping/user'
+import {CREATE_PUBLIC_EVENT} from '../utils/permissions'
 
 const TOKEN_EXPIRATION_DURATION = 1000*600
 
+const PERMISSIONS_TO_CLIENT = [CREATE_PUBLIC_EVENT]
 
 const prepareUserToClient = (user) => {
 
@@ -22,6 +24,8 @@ const prepareUserToClient = (user) => {
   const coverImage = prepareCoverImage(user)
   const newDetails =  prepareRebrandingDetails(permissions, rebrandingDetails)
 
+  const permissionsToClient = permissions && permissions.filter(permission => PERMISSIONS_TO_CLIENT.includes(permission))
+
   const userToClient = {
     email,
     fullname,
@@ -32,6 +36,7 @@ const prepareUserToClient = (user) => {
     coverImage,
     organizations,
     rebrandingDetails:newDetails,
+    permissions:permissionsToClient,
   }
 
   return  userToClient
