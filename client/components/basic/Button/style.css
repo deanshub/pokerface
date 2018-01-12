@@ -113,7 +113,7 @@
   background-image: url('../../../assets/spotplayer/show-hover-selected.png');
 }
 .active>.leftIcon.show{
-  background-image: url('../../../assets/spotplayer/show-hover-selected.png');
+  background-image: url('../../../assets/spotplayer/show-hover.png');
 }
 
 .leftIcon.raise{
@@ -213,32 +213,42 @@
 .leftIcon.like{
   background-image: url('../../../assets/post/like.png');
 }
-/* .button:not(.disable):hover>.leftIcon.like{
-  background-image: url('../../../assets/spotplayer/like-hover.png');
+.button:not(.disable):hover>.leftIcon.like{
+  background-image: url('../../../assets/post/like-hover.png');
 }
 .active>.leftIcon.like{
-  background-image: url('../../../assets/spotplayer/like-hover.png');
-} */
+  background-image: url('../../../assets/post/like-hover.png');
+}
 
 .leftIcon.share{
   background-image: url('../../../assets/post/share.png');
 }
-/* .button:not(.disable):hover>.leftIcon.share{
-  background-image: url('../../../assets/spotplayer/share-hover.png');
+.button:not(.disable):hover>.leftIcon.share{
+  background-image: url('../../../assets/post/share-hover-open.png');
 }
 .active>.leftIcon.share{
-  background-image: url('../../../assets/spotplayer/share-hover.png');
-} */
+  background-image: url('../../../assets/post/share-hover-open.png');
+}
+
+.leftIcon.visit{
+  background-image: url('../../../assets/post/visit.png');
+}
+.button:not(.disable):hover>.leftIcon.visit{
+  background-image: url('../../../assets/post/visit-hover.png');
+}
+.active>.leftIcon.visit{
+  background-image: url('../../../assets/post/visit-hover.png');
+}
 
 .leftIcon.actionMenu{
   background-image: url('../../../assets/post/action-menu.png');
 }
-/* .button:not(.disable):hover>.leftIcon.actionMenu{
-  background-image: url('../../../assets/spotplayer/actionMenu-hover.png');
+.button:not(.disable):hover>.leftIcon.actionMenu{
+  background-image: url('../../../assets/post/action-menu-hover-open.png');
 }
 .active>.leftIcon.actionMenu{
-  background-image: url('../../../assets/spotplayer/actionMenu-hover.png');
-} */
+  background-image: url('../../../assets/post/action-menu-hover-open.png');
+}
 
 .leftIcon.previous{
   background-image: url('../../../assets/actions/previous.png');

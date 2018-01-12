@@ -24,9 +24,8 @@ export default class AddGameModal extends Component {
                 <Button
                     onClick={() => game.openAddGameModal()}
                     primary
-                    style={{marginRight:'4em'}}
                 >
-                  Add Event
+                  Create Event
                 </Button>}
         >
           <Modal.Header>Create an event</Modal.Header>

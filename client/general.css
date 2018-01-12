@@ -2,7 +2,7 @@
 
 body{
   background:url('./assets/pattern-black.png') !important;
-  background-color: $appBackgroundColor !important;
+  background-color: appBackgroundColor !important;
   background-attachment: fixed !important;
   min-height: 100vh;
 }

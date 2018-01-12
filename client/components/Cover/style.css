@@ -1,11 +1,13 @@
 @import "../../constants/styles.css";
 .coverContainer{
+  background-color: backColor;
+  border-radius: 10px;
   margin-bottom: 5vh;
   box-shadow: 0 0 10px 0 #000000;
 }
 
 .imageContainer{
-  height: 45vh;
+  height: 30em;
   background-size: cover;
   background-position: 50%;
   display: flex;
@@ -15,6 +17,10 @@
   position: relative;
   background-color: rgba(31,29,40,0.5);
   border-radius: 0.625em;
+}
+.compact .imageContainer{
+  height: 15em;
+  cursor: pointer;
 }
 
 .name {
@@ -45,12 +51,27 @@
   display: flex;
 }
 
+.hidden{
+  display: none;
+}
+
+.expandablePanel{
+  color: textColor;
+  background-color: expandableBackColor;
+  padding: 1em 0 1em 3em;
+  display: flex;
+  border-radius: 0 0 10px 10px;
+  align-items: center;
+}
+.compact .expandablePanel{
+  cursor: pointer;
+}
+
 .detailsLeftPane{
   flex:1;
 }
 .detailsRightPane{
   display: flex;
-  align-items: flex-end;
 }
 .imgIcon{
   cursor: pointer;
@@ -59,10 +80,14 @@
 }
 
 .qrContainer{
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  padding: 2em 0;
+  border-bottom: 1px solid qrBottomBorderColor;
+  margin: 0 3em;
 }
 
 .detailsText{
@@ -70,8 +95,19 @@
   display: flex;
   align-items: center;
 }
+.peopleGoingDescription{
+  display: flex;
+  align-items: center;
+}
 .noTopMargin{
   margin-top: 0;
+}
+
+.peopleDivider{
+  width: 1px;
+  height: 1em;
+  background-color: eventDividerColor;
+  margin: 0 1em;
 }
 
 .divider{
@@ -83,4 +119,41 @@
 
 .icon{
   margin-right: 1em;
+}
+
+.actionMenuItems{
+  width: 8em;
+}
+
+.attandanceContainer{
+  display: flex;
+}
+.attandanceAction{
+  padding: 0 1em;
+  cursor: pointer;
+}
+
+.invited{
+  &:hover{
+    color: #e3d357;
+  }
+  &.active{
+    color: #e3d357;
+  }
+}
+.notGoing{
+  &:hover{
+    color: #ff5a5a;
+  }
+  &.active{
+    color: #ff5a5a;
+  }
+}
+.going{
+  &:hover{
+    color: #41c86a;
+  }
+  &.active{
+    color: #41c86a;
+  }
 }
