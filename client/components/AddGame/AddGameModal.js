@@ -8,10 +8,14 @@ import classnames from 'classnames'
 import style from './style.css'
 import Input from '../basic/Input'
 import Select from '../basic/Select'
+import Textarea from '../basic/Textarea'
 import DatePicker from '../basic/DatePicker'
+import Checkbox from '../basic/Checkbox'
 
+@inject('auth')
 @inject('game')
-@inject('players')
+@inject('events')
+@inject('routing')
 @observer
 export default class AddGameModal extends Component {
   static propTypes = {
@@ -23,11 +27,23 @@ export default class AddGameModal extends Component {
     super(props)
 
     this.state = {activeTab:'edit'}
-
   }
-//<AddGame handleClose={() => game.closeAddGameModal()}/>
+
+  addGame(e: Object){
+    e.preventDefault()
+    const { game, events, routing} = this.props
+    events.createGame([], game.currentGame)
+    .then(res=>{
+      if (!res.err){
+        game.resetGame()
+        routing.push('/events')
+        game.closeAddGameModal()
+      }
+    })
+  }
+
   render() {
-    const { game, players } = this.props
+    const { auth, game } = this.props
     const {activeTab} = this.state
 
     const startDate = game.currentGame.get('startDate')
@@ -45,10 +61,10 @@ export default class AddGameModal extends Component {
                   className={classnames(style.editTab, {[style.active]:(activeTab==='edit')})}
                   onClick={() => this.setState({activeTab:'edit'})}
               />
-              <div
+              {/* <div
                   className={classnames(style.usersTab, {[style.active]:(activeTab==='users')})}
                   onClick={() => this.setState({activeTab:'users'})}
-              />
+              /> */}
             </div>
           </ModalHeader>
           <ModalContent>
@@ -66,22 +82,22 @@ export default class AddGameModal extends Component {
                   />
                   <Select
                       label="Game"
-                      onChange={(value)=>game.titleChangeHandler(value)}
+                      onChange={(value)=>game.typeChangeHandler(value)}
                       options={game.gameTypes}
                       placeholder="game"
                   />
                   <Select
                       label="Type"
-                      onChange={(value)=>game.titleChangeHandler(value)}
+                      onChange={(value)=>game.subTypeChangeHandler(value)}
                       options={game.gameSubTypes}
                       placeholder="type"
                   />
                 </div>
                 <div className={classnames(style.fieldsGroup)}>
-                  <Input
+                  <Textarea
                       id="description"
                       label="Description"
-                      onChange={(e, {value})=>game.titleChangeHandler(value)}
+                      onChange={(e, {value})=>game.descriptionChangeHandler(value)}
                       placeholder="description"
                   />
                 </div>
@@ -89,7 +105,7 @@ export default class AddGameModal extends Component {
                   <Input
                       id="location"
                       label="Location"
-                      onChange={(e, {value})=>game.titleChangeHandler(value)}
+                      onChange={(e, {value})=>game.locationChangeHandler(value)}
                       placeholder="location"
                   />
                 </div>
@@ -104,14 +120,24 @@ export default class AddGameModal extends Component {
                       onChange={(endDate)=>game.handleChangeEndDate(endDate)}
                       value={endDate}
                   />
+                  {
+                    auth.publicEventPermission &&
+                    <Checkbox
+                        checkboxLabel="pubilc"
+                        id="public"
+                        label="publiclication"
+                        onChange={(e, {checked})=>game.publicChangeHandler(checked)}
+                        type="checkbox"
+                    />
+                  }
                 </div>
               </div>
             }
           </ModalContent>
           <ModalFooter>
             <div className={classnames(style.buttons)}>
-              <Button primary>Create</Button>
-              <Button> Cancel </Button>
+              <Button onClick={::this.addGame} primary>Create</Button>
+              <Button onClick={() => game.closeAddGameModal()}> Cancel </Button>
             </div>
           </ModalFooter>
         </Modal>

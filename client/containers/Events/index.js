@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import Loading from '../../components/basic/Loading'
+import Button from '../../components/basic/Button'
 import moment from 'moment'
 import classnames from 'classnames'
 import style from './style.css'
@@ -10,6 +11,7 @@ import AddGameModal from '../../components/AddGame/AddGameModal'
 import EventRow from './EventRow'
 
 @inject('events')
+@inject('game')
 @observer
 export default class Events extends Component {
   static propTypes = {
@@ -26,7 +28,7 @@ export default class Events extends Component {
   }
 
   render() {
-    const {events} = this.props
+    const {events, game:addGame} = this.props
     const eventRows = events.games.values()
     .sort((a,b)=>{
       return moment.utc(a.from).diff(moment.utc(b.from))
@@ -52,6 +54,12 @@ export default class Events extends Component {
           !events.loading &&
           <div className={classnames(style.containerHeader)}>
             <div className={classnames(style.containerHeaderText)}/>
+            <Button
+                onClick={() => addGame.openAddGameModal()}
+                primary
+            >
+              Create Event
+            </Button>
             <AddGameModal buttonClassName={classnames(style.containerHeaderButton)} />
           </div>
         }

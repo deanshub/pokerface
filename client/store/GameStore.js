@@ -81,6 +81,9 @@ export class GameStore {
   titleChangeHandler(title){
     this.currentGame.set('title', title)
   }
+  publicChangeHandler(isPublic){
+    this.currentGame.set('isPublic', isPublic)
+  }
 
   @action
   openAddGameModal() {

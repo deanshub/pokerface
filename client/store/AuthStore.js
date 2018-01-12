@@ -1,10 +1,11 @@
 // @flow
 
-import { observable, action } from 'mobx'
+import { observable, action, computed } from 'mobx'
 import request from 'superagent'
 import { close } from './graphqlClient'
 import logger from '../utils/logger'
 import {deleteCookie, getCookieByName} from '../utils/cookies'
+import {CREATE_PUBLIC_EVENT} from '../utils/permissions'
 import {optionalUsersSwitchQuery, optionalUsersLoginQuery} from './queries/users'
 import graphqlClient from './graphqlClient'
 
@@ -104,6 +105,12 @@ export class AuthStore {
       this.fetchOptionalUsers = false
       return this.optionalUsers
     })
+  }
+
+  @computed
+  get publicEventPermission(){
+    const {permissions} = this.user
+    return permissions && permissions.includes(CREATE_PUBLIC_EVENT)
   }
 
   // When login from facebook and google plus the jwt is put in the cookies
