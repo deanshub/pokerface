@@ -1,8 +1,4 @@
 @import "../../constants/styles";
-/* .playerLabel>img{
-  display: inline-block !important;
-  margin-right: 5px;
-} */
 
 .header {
     display: flex;
@@ -50,7 +46,6 @@
 .fieldsGroup {
   display: flex;
 }
-
 
 .buttons {
   display: flex;
