@@ -3,9 +3,6 @@ import classnames from 'classnames'
 import style from './style.css'
 
 export default class Checkbox extends Component {
-  static defaultProps = {
-
-  }
 
   render(){
     const {
@@ -24,7 +21,6 @@ export default class Checkbox extends Component {
               className={classnames(style.box)}
               id={id}
               onChange={(e)=>onChange(e,e.target)}
-              ref={el=>this.input=el}
               type="checkbox"
               value={value}
           />

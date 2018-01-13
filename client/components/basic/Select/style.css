@@ -8,6 +8,8 @@
 
 .inputContainer > div {
     border-radius: 8px;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .inputContainer input {

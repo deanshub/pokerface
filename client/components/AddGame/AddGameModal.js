@@ -32,9 +32,6 @@ export default class AddGameModal extends Component {
         error:{},warning:{},
       },
     }
-
-    this.validateFields =  this.validateFields.bind(this)
-    this.handleFieldChange =  this.handleFieldChange.bind(this)
   }
 
   addGame(e: Object){
@@ -203,7 +200,7 @@ export default class AddGameModal extends Component {
                     <Checkbox
                         checkboxLabel="pubilc"
                         id="public"
-                        label="publiclication"
+                        label="global event?"
                         onChange={(e, {checked})=>{
                           game.publicChangeHandler(checked)
                           this.handleFieldChange('public',checked)

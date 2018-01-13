@@ -32,7 +32,7 @@ export default class InputSelect extends Component{
       warning
     } = this.props
     const {value} = this.state
-//inputRenderer={()=><input className={style.selectInput}/>}
+
     return (
       <div className={classnames(style.field)}>
         {label&&<label className={classnames(style.label)}>{label}</label>}
@@ -42,6 +42,7 @@ export default class InputSelect extends Component{
               {[style.selectError]: error},
               {[style.selectWarning]: warning},
             )}
+            clearable={false}
             inputProps={{className:classnames(style.selectInput)}}
             labelKey={labelKey}
             onChange={::this.handleChange}
