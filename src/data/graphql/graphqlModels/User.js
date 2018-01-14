@@ -4,10 +4,12 @@ import DB from '../../db'
 // import {schema as Comment} from './Comment'
 import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
-import {prepareAvatar,
-   prepareCoverImage,
-   prepareRebrandingDetails,
-   loginPermissionFilter} from '../../helping/user'
+import {
+  prepareAvatar,
+  prepareCoverImage,
+  prepareRebrandingDetails,
+  loginPermissionFilter,
+} from '../../helping/user'
 
 export const schema =  [`
   type RebrandingDetails {

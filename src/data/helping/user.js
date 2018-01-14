@@ -115,7 +115,7 @@ export const prepareGeneralImage = (image) => {
 }
 
 export const prepareRebrandingDetails = (permissions, rebrandingDetails={}) =>{
-  if (!permissions.includes(REBRANDING)){
+  if (!permissions || !permissions.includes(REBRANDING)){
     return null
   }else{
     return {...rebrandingDetails, logo:prepareGeneralImage(rebrandingDetails.logo)}
