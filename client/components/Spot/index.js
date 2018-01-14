@@ -5,7 +5,7 @@ import PokerTable from '../PokerTable'
 import PlayersList from './PlayersList'
 import classnames from 'classnames'
 import style from './style.css'
-import { observer, inject } from 'mobx-react'
+import { observer } from 'mobx-react'
 
 @observer
 export default class Spot extends Component {

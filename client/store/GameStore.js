@@ -13,6 +13,20 @@ export class GameStore {
 
     this.addGameModalOpen = false
 
+    // find another place
+    const notEmpty = (value) => !!value
+    const createValidation = (field, level, check) => ({field, level, check})
+
+    this.fieldsValidations = [
+      createValidation('title', 'error', notEmpty),
+      createValidation('type', 'error', notEmpty),
+      createValidation('subType', 'error', notEmpty),
+      createValidation('description', 'error', notEmpty),
+      createValidation('location', 'error', notEmpty),
+      createValidation('startDate', 'error', notEmpty),
+      createValidation('endDate', 'error', notEmpty),
+    ]
+
     this.gameTypes = [{
       text: 'Texas Hold\'em',
       value: 'Texas Hold\'em',
@@ -81,6 +95,10 @@ export class GameStore {
   titleChangeHandler(title){
     this.currentGame.set('title', title)
   }
+  publicChangeHandler(isPublic){
+    this.currentGame.set('isPublic', isPublic)
+  }
+
 
   @action
   openAddGameModal() {

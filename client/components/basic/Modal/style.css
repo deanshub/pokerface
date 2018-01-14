@@ -27,16 +27,18 @@
   border-bottom: 1px solid $divider;
   font-weight: bold;
   font-size: 2em;
-  padding-bottom: 15px;
+  padding-bottom: 0.4em;
 }
 
 .modalContent{
   flex: 1;
   min-height: 0;
   height: 100%;
+  padding: 0.7em 0em;
+  overflow-y: auto;
 }
 
 .modalFooter{
-  padding-top: 15px;
+  padding-top: 0.4em;
   border-top: 1px solid $divider;
 }

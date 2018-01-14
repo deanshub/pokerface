@@ -1,0 +1,7 @@
+@import '../Input/style.css';
+
+
+.datePickerContainer{
+  @extend .inputContainer;
+  display: block;
+}

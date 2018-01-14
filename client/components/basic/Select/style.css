@@ -1,0 +1,29 @@
+@import '../../../constants/styles.css';
+@import '../Input/style.css';
+
+.inputContainer div {
+    height: auto !important;
+    border: 0px;
+}
+
+.inputContainer > div {
+    border-radius: 8px;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.inputContainer input {
+  padding: 0.5em 0 0.5em 1em !important;
+}
+
+.selectInput{
+  @extend .input;
+  margin: 0px;
+  height: auto;
+  padding: 0px;
+}
+
+.selectError > div:first-child {
+  border: 1px solid errorColor;
+  background: errorColorOpacitated;
+}
