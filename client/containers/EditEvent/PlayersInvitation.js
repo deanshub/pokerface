@@ -70,7 +70,7 @@ export default class PlayersInvitation extends Component {
     if (!playerStatus){
       editEvent.invitePlayer(suggestion)
     }else{
-      editEvent.removePlayer(suggestion.username)
+      editEvent.removePlayer(suggestion.username, playerStatus)
     }
 
     this.setState({searchValue:''})
@@ -96,15 +96,11 @@ export default class PlayersInvitation extends Component {
 
     // filter by current status
     let inviteds
-
-    switch (invitedStatusActive) {
-    case GONING:
+    if (invitedStatusActive === GONING) {
       inviteds = currentEvent.get('accepted')
-      break
-    case NOT_GOING:
+    } else if (invitedStatusActive ===  NOT_GOING) {
       inviteds = currentEvent.get('declined')
-      break
-    default:
+    } else {
       inviteds = currentEvent.get('unresponsive')
     }
 

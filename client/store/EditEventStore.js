@@ -97,11 +97,25 @@ export class EditEventStore {
 
   invitePlayer(player){
     this.currentEvent.get('invited').push(player)
+    this.currentEvent.get('unresponsive').push(player)
   }
 
-  removePlayer(username){
+  removePlayer(username, status){
     const index = this.currentEvent.get('invited').findIndex(p => p.username === username)
-    this.currentEvent.get('invited').splice(index, 1)
+    if (index > 0){
+      this.currentEvent.get('invited').splice(index, 1)
+    }
+
+    if (status === INVITATION_STATUS.GONING) {
+      const index = this.currentEvent.get('accepted').findIndex(p => p.username === username)
+      this.currentEvent.get('accepted').splice(index, 1)
+    } else if (status ===  INVITATION_STATUS.NOT_GOING) {
+      const index = this.currentEvent.get('declined').findIndex(p => p.username === username)
+      this.currentEvent.get('declined').splice(index, 1)
+    } else {
+      const index = this.currentEvent.get('unresponsive').findIndex(p => p.username === username)
+      this.currentEvent.get('unresponsive').splice(index, 1)
+    }
   }
 
   newEvent(){
@@ -111,6 +125,7 @@ export class EditEventStore {
       invited: [],
       accepted: [],
       declined: [],
+      unresponsive: [],
     })
   }
 
