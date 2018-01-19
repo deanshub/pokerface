@@ -1,0 +1,54 @@
+@import "../../constants/styles";
+
+.poll{
+  width: max-content;
+  min-width: 15%;
+}
+.option{
+  margin: 0.5em 0;
+}
+
+.option>input[type="radio"]{
+  display: none;
+}
+
+.radio{
+  display: inline-block;
+  width: 1.3em;
+  height: 1.3em;
+  border-radius: 50%;
+  box-shadow: 0 0 5px textColor;
+}
+
+.option>input[type="radio"]:checked+.textContainer>.radio{
+  background-color: callColor;
+  /* border: 3px solid white; */
+}
+
+.textContainer{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.disabled>.textContainer{
+  cursor: auto;
+}
+
+.label{
+  flex: 1;
+  position: relative;
+  padding: 0 0.5em;
+  margin: 0 0.5em;
+}
+
+.percentage{
+  position: absolute;
+  content: '';
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 10px;
+  transition: all 0.5s ease-in;
+  background: rgba(37, 170, 225, 0.3);
+}
