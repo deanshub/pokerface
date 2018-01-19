@@ -15,7 +15,7 @@ export const schema =  [`
     likes: [User]
     owner: User
     comments: [Comment]
-    event: Game
+    event: Event
   }
 
   type Query {

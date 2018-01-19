@@ -31,13 +31,13 @@ export const createUser = (user) => {
 
 export const findPopulatedUser = (where) => {
   return DB.models.User.findOne(where).populate([
-    {path:'players', select:'username fullanme email avatar'},
+    {path:'players', select:'username fullname email avatar'},
   ])
 }
 
 export const findPopulatedUserById = (id) => {
   return DB.models.User.findById(id).populate([
-    {path:'players', select:'username fullanme email avatar'},
+    {path:'players', select:'username fullname email avatar'},
   ])
 }
 
