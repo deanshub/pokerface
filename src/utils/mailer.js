@@ -177,7 +177,7 @@ function sendPersonalEventInvite(organizer, game, player){
   const message = Object.assign({}, generalInviteMessage, {to:email, attachment:[{data:htmlContent, alternative:true}, {data:ics.toString(), type:'application/ics', name:'pokerface.ics', method:'REQUEST'}]})
 
   if (devEnvironment){
-    console.log(`Send mail of invitation to event to ${player.fullname}`)
+    console.log(`Send mail of invitation to event to ${player.email}`)
   }
 
   return sendMessage(email, message)
@@ -201,7 +201,7 @@ function sendPersonalEventCancellation(organizer, game, player){
   const message = Object.assign({}, generalCancelMessage, {to:email, attachment:[{data:htmlContent, alternative:true}, {data:ics.toString(), type:'application/ics', name:'pokerface.ics', method:'CANCEL'}]})
 
   if (devEnvironment){
-    console.log(`supposed send mail of cancel event to ${player.fullname}`)
+    console.log(`supposed send mail of cancel event to ${player.email}`)
   }
 
   return sendMessage(email, message)

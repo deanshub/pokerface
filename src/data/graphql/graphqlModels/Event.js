@@ -291,16 +291,15 @@ export const resolvers = {
       })
     },
     deleteEvent: (_, {eventId}, context)=>{
-      return DB.models.Game.findById(eventId).then(game=>{
-        if (game.owner===context.user._id){
-          return mailer.sendEventCancelled(game, DB).catch((err)=>{
-            console.error(err)
-            return game.remove()
-          }).then(()=>{
-            return game.remove()
-          })
+      return DB.models.Game.findById(eventId).then(event=>{
+        if (event.owner===context.user._id ){
+          if (event.endDate.getTime() > Date.now()){
+            mailer.sendEventCancelled(event, [...event.invited, ...event.accepted])
+          }
+
+          return event.remove()
         }else{
-          throw new Error('Can\'t delete game of another user')
+          throw new Error('Can\'t delete event of another user')
         }
       })
     },
