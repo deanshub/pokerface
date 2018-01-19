@@ -40,6 +40,10 @@ export const schema =  [`
       content: Boolean!,
       post: String!
     ): Post
+    updatePollAnswer(
+      post: String!,
+      option: Int!
+    ): Post
   }
 `]
 
@@ -134,6 +138,22 @@ export const resolvers = {
 
           post.set('likes', likes)
           return post.save()
+        })
+    },
+    updatePollAnswer(_, {post, option}, context){
+      const username = context.user._id
+
+      return DB.models.Post.findById(post)
+        .then(post=>{
+          const pullQueries = post.content.poll.answers.map((_, index)=>`content.poll.answers.${index}.votes`)
+          const pullQuery = pullQueries.reduce((res,cur,index)=>{
+            if (index!==option){
+              res[cur]=username
+            }
+            return res
+          },{})
+          const pushQuery = {[`content.poll.answers.${option}.votes`]:username}
+          return DB.models.Post.findOneAndUpdate({_id: post}, { $pull: pullQuery, $push: pushQuery })
         })
     },
   },
