@@ -9,11 +9,13 @@ import Feed from '../Feed'
 import NoMatch from '../../components/NoMatch'
 import Logo from '../../components/Logo'
 import IsUserLoggedIn from '../../components/IsUserLoggedIn'
+import EditEvent from '../EditEvent'
 
 @inject('auth')
 @inject('profile')
 @inject('events')
 @inject('routing')
+@inject('editEvent')
 @observer
 export default class Event extends Component {
   static propTypes = {
@@ -52,7 +54,7 @@ export default class Event extends Component {
   }
 
   render() {
-    const { events, auth } = this.props
+    const { events, auth, editEvent } = this.props
     const {loadingCurrentEvent, currentEventDetails} = events
 
     if (!loadingCurrentEvent && !currentEventDetails){
@@ -68,6 +70,7 @@ export default class Event extends Component {
             </a>
           </IsUserLoggedIn>
           <Cover details={currentEventDetails}/>
+          {editEvent.editEventModalOpen && <EditEvent/>}
           <IsUserLoggedIn opposite>
             <Button
                 href={`/login?url=/events/${currentEventDetails.id}`}

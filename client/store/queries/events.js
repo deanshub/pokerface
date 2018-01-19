@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const eventsQuery = gql`
     query _{
-      games{
+      events{
           id
           creator{
             username
@@ -47,7 +47,7 @@ export const eventsQuery = gql`
 
 export const eventQuery = gql`
   query _($eventId: String!) {
-    game(gameId: $eventId) {
+    event(eventId: $eventId) {
       id
       creator{
         username

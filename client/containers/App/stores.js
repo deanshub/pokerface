@@ -1,7 +1,7 @@
 import { RouterStore } from 'mobx-react-router'
 
 import {AuthStore} from '../../store/AuthStore'
-import {GameStore} from '../../store/GameStore'
+import {EditEventStore} from '../../store/EditEventStore'
 import {PlayersStore} from '../../store/PlayersStore'
 import {ProfileStore} from '../../store/ProfileStore'
 import {TimerStore} from '../../store/TimerStore'
@@ -14,7 +14,7 @@ import {SpotPlayerStore} from '../../store/SpotPlayerStore'
 export default {
   routing: new RouterStore(),
   auth: new AuthStore(),
-  game: new GameStore(),
+  editEvent: new EditEventStore(),
   players: new PlayersStore(),
   profile: new ProfileStore(),
   timer: new TimerStore(),

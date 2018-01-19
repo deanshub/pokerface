@@ -94,7 +94,7 @@ export default class Navbar extends Component {
               className={classnames(style.navbarRouteItem)}
               to="/events"
           >
-            Events <Notification number={events.games.size}/>
+            Events <Notification number={events.events.size}/>
           </NavLink>
           <div className={classnames(style.navbarSection)}>
             Tools

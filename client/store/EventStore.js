@@ -3,12 +3,12 @@
 import { observable, computed, action, toJS } from 'mobx'
 import graphqlClient from './graphqlClient'
 import {eventsQuery, eventQuery, searchEventsQuery} from './queries/events'
-import {gameAttendanceUpdate, addGame, deleteGame} from './mutations/games'
+import {eventAttendanceUpdate, addEvent, deleteEvent, updateEvent} from './mutations/events'
 import logger from '../utils/logger'
 import moment from 'moment'
 
 export class EventStore {
-  @observable games
+  @observable events
   @observable loading: boolean
   @observable expendedGameId
   @observable currentEvent
@@ -17,28 +17,28 @@ export class EventStore {
   @observable searchLoading: boolean
 
   constructor(){
-    this.games = observable.map({})
+    this.events = observable.map({})
     this.loading = false
     this.loadingCurrentEvent = false
     this.searchEventsResult= []
   }
 
-  setGame(game){
+  setEvent(game){
     const newGame = {
       ...toJS(game),
-      from : moment(game.from),
-      to : moment(game.to),
+      startDate : moment(game.from),
+      endDate : moment(game.to),
       createdAt : moment(game.createdAt),
       updatedAt : moment(game.updatedAt),
     }
-    this.games.set(newGame.id, newGame)
+    this.events.set(newGame.id, newGame)
   }
 
   @action
   fetchMyGames(): void{
     this.loading = true
     graphqlClient.query({query: eventsQuery}).then((result)=>{
-      result.data.games.forEach(::this.setGame)
+      result.data.events.forEach(::this.setEvent)
       this.loading = false
     }).catch(err=>{
       this.loading = false
@@ -47,15 +47,15 @@ export class EventStore {
   }
 
   @action
-  deleteGame(game){
+  deleteEvent(game){
     logger.logEvent({category:'Game',action:'Delete'})
-    this.games.delete(game.id)
-    graphqlClient.mutate({mutation: deleteGame, variables: {gameId: game.id}})
+    this.events.delete(game.id)
+    graphqlClient.mutate({mutation: deleteEvent, variables: {eventId: game.id}})
     .then(res=>{
-      console.log(res.data.deleteGame)
+      console.log(res.data.deleteEvent)
     }).catch(err=>{
       console.error(err)
-      this.games.set(game.id, game)
+      this.events.set(game.id, game)
     })
   }
 
@@ -73,17 +73,17 @@ export class EventStore {
   }
 
   @action
-  fillAttendance(user, gameId, attendance){
-    let game = this.games.get(gameId)
+  fillAttendance(user, eventId, attendance){
+    let game = this.events.get(eventId)
     const oldGame = toJS(game)
 
-    graphqlClient.mutate({mutation: gameAttendanceUpdate, variables: {gameId, attendance}})
+    graphqlClient.mutate({mutation: eventAttendanceUpdate, variables: {eventId, attendance}})
     .then((res)=>{
-      this.setGame(res.data.gameAttendanceUpdate)
+      this.setEvent(res.data.eventAttendanceUpdate)
     })
     .catch(err=>{
       console.error(err);
-      this.setGame(oldGame)
+      this.setEvent(oldGame)
     })
 
     if (attendance===null){
@@ -102,42 +102,64 @@ export class EventStore {
       this.add(user, game.declined)
       this.remove(user, game.unresponsive)
     }
-    if (this.currentEvent&&gameId===this.currentEvent.id){
+    if (this.currentEvent&&eventId===this.currentEvent.id){
       this.currentEvent = game
     }
   }
 
-  @action createGame(players, game){
-    const normalizedPlayers = players.map(player=>{
+  @action
+  saveEvent(event){
+    let currentGame = toJS(event)
+
+    const normalizedPlayers = currentGame.invited.map(player=>{
       return {
         username: player.guest?undefined:player.username,
         fullname: player.guest?player.fullname:undefined,
         guest: player.guest,
       }
     })
-    let currentGame = toJS(game)
 
-    logger.logEvent({category:'Game',action:'Create'})
-    return graphqlClient.mutate({mutation: addGame, variables: {...currentGame, players:JSON.stringify(normalizedPlayers)}})
-    .then((res)=>{
-      this.setGame(res.data.addGame)
-      return res.data.addGame
-    })
-    .catch(err=>{
-      console.error(err)
-      return {err}
-    })
+    // update
+    if (currentGame.id){
+      logger.logEvent({category:'Game',action:'Update'})
+      return graphqlClient.mutate({
+        mutation: updateEvent,
+        variables: {...currentGame, players:JSON.stringify(normalizedPlayers)},
+      })
+      .then((res)=>{
+        this.setEvent(res.data.updateEvent)
+        return res.data.updateEvent
+      })
+      .catch(err=>{
+        console.error(err)
+        return {err}
+      })
+    }else{
+      logger.logEvent({category:'Game',action:'Create'})
+      return graphqlClient.mutate({
+        mutation: addEvent,
+        variables: {...currentGame, players:JSON.stringify(normalizedPlayers)},
+      })
+      .then((res)=>{
+        this.setEvent(res.data.addEvent)
+        return res.data.addEvent
+      })
+      .catch(err=>{
+        console.error(err)
+        return {err}
+      })
+    }
   }
 
   @action.bound
   refresh(){
-    this.games.clear()
+    this.events.clear()
     this.loading = true
     graphqlClient.query({
       //fetchPolicy:'network-only',
       query: eventsQuery,
     }).then((result)=>{
-      result.data.games.forEach(::this.setGame)
+      result.data.events.forEach(::this.setEvent)
       this.loading = false
     }).catch(err=>{
       this.loading = false
@@ -165,7 +187,7 @@ export class EventStore {
       query: eventQuery,
       variables: {eventId},
     }).then((result)=>{
-      this.currentEvent = result.data.game
+      this.currentEvent = result.data.event
       this.loadingCurrentEvent = false
     }).catch(err=>{
       this.loadingCurrentEvent = false
@@ -199,7 +221,7 @@ export class EventStore {
       subtype,
       description,
       location,
-      from,
+      startDate,
       accepted,
       declined,
       unresponsive,
@@ -215,7 +237,7 @@ export class EventStore {
       subtype,
       description,
       location,
-      startDate: moment(from),
+      startDate: moment(startDate),
       going: accepted.length,
       coverImage,
       fullname,

@@ -17,6 +17,7 @@ import logger from '../../utils/logger'
 import COLORS from '../../constants/styles.css'
 
 @inject('events')
+@inject('editEvent')
 @inject('routing')
 @inject('auth')
 @observer
@@ -65,7 +66,12 @@ export default class Cover extends Component {
   deleteEvent(e){
     const {details, events} = this.props
     e.stopPropagation()
-    events.deleteGame(details)
+    events.deleteEvent(details)
+  }
+
+  editEvent(){
+    const {details, editEvent, events} = this.props
+    editEvent.openEditEventModal(events.events.get(details.id))
   }
 
   getDetailsElement(){
@@ -149,7 +155,7 @@ export default class Cover extends Component {
   }
 
   render() {
-    const {details, auth, compact} = this.props
+    const {details, auth, compact, editEvent} = this.props
     const {expanded, qrOpen} = this.state
 
     let coverDivStyle = {}
@@ -204,6 +210,7 @@ export default class Cover extends Component {
             {
               details.creator&&auth.user&&details.creator.username===auth.user.username&&
               <DropDown
+                  oneClick
                   trigger={
                     <Button
                         leftIcon="actionMenu"
@@ -217,6 +224,12 @@ export default class Cover extends Component {
                       simple
                   >
                     Delete Event
+                  </Button>
+                  <Button
+                      onClick={::this.editEvent}
+                      simple
+                  >
+                    Edit Event
                   </Button>
                 </div>
               </DropDown>
