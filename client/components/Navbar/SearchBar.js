@@ -57,7 +57,12 @@ export default class SearchBar extends Component {
   onSuggestionSelected(e, {suggestion}){
     const {routing, globalPlayersSearch} = this.props
     globalPlayersSearch.searchValue = ''
-    routing.push(`/profile/${suggestion.username}`)
+
+    if (suggestion.section === SECTION_EVENTS){
+      routing.push(`/events/${suggestion.id}`)
+    }else{
+      routing.push(`/profile/${suggestion.username}`)
+    }
   }
 
   searchInputChange(e,{newValue}){
@@ -81,13 +86,27 @@ export default class SearchBar extends Component {
       },
       {organizations:[], players:[]})
 
+    const sections = []
+    if (organizations.length > 0){
+      sections.push({title:SECTION_ORGANIZATIONS, suggestions:organizations})
+    }
+
+    if (players.length > 0){
+      sections.push({title:SECTION_PLAYERS, suggestions:players})
+    }
+
+    if (events.searchEventsResult.length > 0){
+      sections.push({title:SECTION_EVENTS, suggestions:events.suggestedEvent})
+    }
+
     return (
       <Autosuggest
           getSectionSuggestions={::this.getSectionSuggestions}
-          getSuggestionValue={player=>player.fullname}
-          highlightFirstSuggestion
+          getSuggestionValue={item=>{
+            return (item.section === SECTION_EVENTS)?item.title:item.fullname
+          }}
           inputProps={{
-            placeholder: 'Item',
+            placeholder: 'Search',
             value:searchValue,
             onChange: ::this.searchInputChange,
           }}
@@ -100,11 +119,7 @@ export default class SearchBar extends Component {
           onSuggestionsFetchRequested={::this.searchChange}
           renderSectionTitle={::this.renderSectionTitle}
           renderSuggestion={::this.renderSuggestion}
-          suggestions={[
-            {title:SECTION_ORGANIZATIONS, suggestions:organizations},
-            {title:SECTION_PLAYERS, suggestions:players},
-            {title:SECTION_EVENTS, suggestions:events.suggestedEvent},
-          ]}
+          suggestions={sections}
           theme={{
             input: classnames(style.autosuggestInput),
             container: classnames(style.autosuggest),

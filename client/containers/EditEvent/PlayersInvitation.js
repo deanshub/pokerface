@@ -29,10 +29,6 @@ export default class PlayersInvitation extends Component {
     }
   }
 
-  onSearchInputBlur(){
-    this.setState({searchInputFocused:false})
-  }
-
   renderSuggestion(player, {query}){
     const {editEvent} = this.props
     const playerStatus = editEvent.involvedPlayersStatus.get(player.username)
@@ -45,6 +41,7 @@ export default class PlayersInvitation extends Component {
       (!playerStatus)?
         <div className={classnames(style.suggestionItem, style.notInvitedPlayerItem)}>
           <Image avatar src={player.avatar}/>
+          <div>org</div>
           <div className={classnames(style.name)}>{player.fullname}</div>
           <div className={classnames(style.status)}>Invited</div>
         </div>
@@ -114,7 +111,7 @@ export default class PlayersInvitation extends Component {
               placeholder: 'Search players...',
               value:searchValue,
               onChange: ::this.searchInputChange,
-              onBlur: ::this.onSearchInputBlur,
+              onBlur: () => {this.setState({searchInputFocused:false})},
               onFocus: () => {this.setState({searchInputFocused:true})},
             }}
             onSuggestionSelected={::this.onSuggestionSelected}
