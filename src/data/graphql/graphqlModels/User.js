@@ -26,6 +26,7 @@ export const schema =  [`
     email: String
     avatar: String
     coverImage: String
+    organization: Boolean
     posts: [Post]
     comments: [Comment]
     rebrandingDetails: RebrandingDetails
@@ -37,6 +38,7 @@ export const schema =  [`
     email: String
     avatar: String
     coverImage: String
+    organization: Boolean
     posts: [Post]
     comments: [Comment]
     rebrandingDetails: RebrandingDetails
@@ -49,6 +51,7 @@ export const schema =  [`
     email: String
     avatar: String
     coverImage: String
+    organization: Boolean
     posts: [Post]
     comments: [Comment]
     rebrandingDetails: RebrandingDetails
@@ -114,6 +117,7 @@ export const resolvers = {
     email: (user)=> user.email,
     avatar: prepareAvatar,
     coverImage: prepareCoverImage,
+    organization: (user) => !!user.organization,
     posts: getPosts,
     comments: getComments,
     rebrandingDetails: (user)=>prepareRebrandingDetails(user.permissions, user.rebrandingDetails),
@@ -122,6 +126,7 @@ export const resolvers = {
     players: (organization) => organization.players,
     avatar: prepareAvatar,
     coverImage: prepareCoverImage,
+    organization: (user) => user.organization,
     posts: getPosts,
     comments: getComments,
     rebrandingDetails: (organization)=>prepareRebrandingDetails(organization.permissions, organization.rebrandingDetails),
