@@ -267,19 +267,32 @@ export class TimerStore {
   }
 
   @action updateRound(round, propName, value){
-
-    round[propName] = value
-    if (propName==='smallBlind'){
-      round['bigBlind'] = value*2
+    if (isNaN(value)){
+      value=0
     }
 
+    round[propName] = value
+    const changedRoundIndex = this.rounds.indexOf(round)
+
     if (this.autoUpdateBlinds){
-      const changedRoundIndex = this.rounds.indexOf(round)
-      const oldSmallBlinds = this.rounds.slice(0, changedRoundIndex+1).map((round)=>round.smallBlind)
-      const newSmallBlinds = fillBlinds(oldSmallBlinds, this.rounds.length)
-      for(let index=changedRoundIndex+1; index<newSmallBlinds.length; index++){
-        this.rounds[index].smallBlind = newSmallBlinds[index]
-        this.rounds[index].bigBlind = this.rounds[index].smallBlind*2
+      if (propName==='smallBlind'){
+        round['bigBlind'] = value*2
+        const oldSmallBlinds = this.rounds.slice(0, changedRoundIndex+1).map((round)=>round.smallBlind)
+        const newSmallBlinds = fillBlinds(oldSmallBlinds, this.rounds.length)
+        for(let index=changedRoundIndex+1; index<newSmallBlinds.length; index++){
+          this.rounds[index].smallBlind = newSmallBlinds[index]
+          this.rounds[index].bigBlind = this.rounds[index].smallBlind*2
+        }
+      }else if(propName==='ante'){
+        const oldAntes = this.rounds.slice(0, changedRoundIndex+1).map((round)=>round.ante)
+        const newAntes = fillBlinds(oldAntes, this.rounds.length)
+        for(let index=changedRoundIndex+1; index<newAntes.length; index++){
+          this.rounds[index].ante = newAntes[index]
+        }
+      }else if(propName==='time'){
+        for(let index=changedRoundIndex+1; index<this.rounds.length; index++){
+          this.rounds[index].time = value
+        }
       }
     }
 
