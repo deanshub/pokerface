@@ -66,7 +66,7 @@ export class EditEventStore {
 
   @action handleChangeStartDate(startDate){
     this.currentEvent.set('startDate', startDate)
-    this.currentEvent.set('endDate', startDate)
+    this.currentEvent.set('endDate', moment(startDate).add(10, 'hours'))
   }
   @action handleChangeEndDate(endDate){
     this.currentEvent.set('endDate', endDate)
@@ -119,9 +119,13 @@ export class EditEventStore {
   }
 
   newEvent(){
+
+    // The next 20:00
+    const startDate = moment().add(4, 'hours').startOf('day').hours(20)
+    const endDate = moment(startDate).add(10, 'hours')
     return observable.map({
-      startDate: moment(),
-      endDate: moment(),
+      startDate,
+      endDate,
       invited: [],
       accepted: [],
       declined: [],

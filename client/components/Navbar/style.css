@@ -3,6 +3,7 @@
 
 .container {
   position: fixed;
+  width: 20%;
 }
 
 .navbarItem {
@@ -53,6 +54,7 @@
 .autosuggest {
   margin: 0px;
   margin-top: 1.1em;
+  max-width: 15em;
 }
 
 .autosuggestInput{

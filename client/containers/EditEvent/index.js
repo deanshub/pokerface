@@ -94,6 +94,7 @@ export default class EditEvent extends Component {
   getForm(){
     const {auth, editEvent } = this.props
     const {activeTab, wrongFields} = this.state
+    const endDate = editEvent.currentEvent.get('endDate')
 
     return (
       <div className={classnames({[style.hidden]:activeTab!==FORM_TAB})}>
@@ -171,9 +172,9 @@ export default class EditEvent extends Component {
               label="To"
               onChange={(value)=>{
                 editEvent.handleChangeEndDate(value)
-                this.handleFieldChange('endDate', value)
+                //this.handleFieldChange('endDate', value)
               }}
-              value={this.state.endDate}
+              value={endDate}
           />
           {
             auth.publicEventPermission &&
