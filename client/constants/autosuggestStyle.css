@@ -26,11 +26,6 @@
   background-color: #535168;
 }
 
-.suggestion{
-  cursor: pointer;
-  border-bottom: 1px solid $divider;
-  /* border-radius: 0.45em; */
-}
 
 .suggestionsContainer{
   position: absolute;
@@ -42,21 +37,37 @@
   border-radius: 0.45em;
   margin-top: 1px;
   z-index: 1;
+  border: 1px solid $divider;
 }
 .suggestionsContainerOpen{
   display: block;
 }
 
+.sectionContainer {
+}
+
+.sectionContainerFirst {
+}
+
+.sectionTitle {
+  padding-left: 0.7em;
+  background-color: $divider;
+}
+
 .suggestionsList{
-  border: 1px solid $divider;
   margin: 0;
   padding: 0;
   list-style-type: none;
   border-radius: 0.45em;
 }
 
-.suggestionsList:last-child{
-  border-bottom: 0;
+.suggestion{
+  cursor: pointer;
+  border-top: 1px solid $divider;
+  /* border-radius: 0.45em; */
+}
+.suggestionFirst{
+  border-top: 0px;
 }
 
 .suggestionItem {

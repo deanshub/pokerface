@@ -3,25 +3,18 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import Autosuggest from 'react-autosuggest'
 import classnames from 'classnames'
 import style from './style.css'
 import { NavLink } from 'react-router-dom'
-import UserSmallCard from '../UserSmallCard'
 import Notification from './Notification'
+import SearchBar from './SearchBar'
 
-@inject('globalPlayersSearch')
-@inject('routing')
 @inject('auth')
 @inject('events')
 @inject('feed')
 @inject('timer')
 @observer
 export default class Navbar extends Component {
-  constructor(props: Object){
-    super(props)
-    this.state = {searchValue:''}
-  }
 
   componentWillMount(){
     this.props.auth.fetchOptionalUsersSwitch()
@@ -36,40 +29,8 @@ export default class Navbar extends Component {
     return true
   }
 
-  searchChange({value}){
-    const {globalPlayersSearch} = this.props
-    globalPlayersSearch.search(value)
-  }
-
-  renderSuggestion(player){
-    return (
-      <UserSmallCard
-          className={style.suggestionItem}
-          header={player.fullname}
-          image={player.avatar}
-      />
-    )
-  }
-
-  onSuggestionSelected(e, {suggestion}){
-    const {routing, globalPlayersSearch} = this.props
-    globalPlayersSearch.searchValue = ''
-    routing.push(`/profile/${suggestion.username}`)
-  }
-
-  searchInputChange(e,{newValue, method}){
-    const {globalPlayersSearch} = this.props
-
-    if (method==='type'){
-      globalPlayersSearch.search(newValue)
-    }
-
-    this.setState({searchValue:newValue})
-  }
-
   render() {
-    const {globalPlayersSearch, auth, events} = this.props
-    const {searchValue} = this.state
+    const {auth, events} = this.props
     const {username} = auth.user
 
     return (
@@ -123,31 +84,7 @@ export default class Navbar extends Component {
             <div className={classnames(style.navbarSection)}>
               Search
             </div>
-
-            <Autosuggest
-                getSuggestionValue={player=>player.fullname}
-                highlightFirstSuggestion
-                inputProps={{
-                  placeholder: 'Player',
-                  value:searchValue,
-                  onChange: ::this.searchInputChange,
-                }}
-                onSuggestionSelected={::this.onSuggestionSelected}
-                onSuggestionsClearRequested={()=>globalPlayersSearch.availablePlayers.clear()}
-                onSuggestionsFetchRequested={::this.searchChange}
-
-                renderSuggestion={this.renderSuggestion}
-                suggestions={globalPlayersSearch.immutableAvailablePlayers}
-                theme={{
-                  input: classnames(style.autosuggestInput),
-                  container: classnames(style.autosuggest),
-                  suggestionsList: classnames(style.suggestionsList),
-                  suggestion: classnames(style.suggestion),
-                  suggestionHighlighted: classnames(style.suggestionHighlighted),
-                  suggestionsContainer: classnames(style.suggestionsContainer),
-                  suggestionsContainerOpen: classnames(style.suggestionsContainerOpen),
-                }}
-            />
+            <SearchBar/>
           </div>
     )
   }
