@@ -1,7 +1,5 @@
 import path from 'path'
 import DB from '../../db'
-// import {schema as Post} from './Post'
-// import {schema as Comment} from './Comment'
 import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
 import {
