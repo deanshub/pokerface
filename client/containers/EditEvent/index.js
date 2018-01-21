@@ -172,7 +172,6 @@ export default class EditEvent extends Component {
               label="To"
               onChange={(value)=>{
                 editEvent.handleChangeEndDate(value)
-                //this.handleFieldChange('endDate', value)
               }}
               value={endDate}
           />

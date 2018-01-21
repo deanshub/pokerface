@@ -41,13 +41,14 @@ export default class PlayersInvitation extends Component {
       (!playerStatus)?
         <div className={classnames(style.suggestionItem, style.notInvitedPlayerItem)}>
           <Image avatar src={player.avatar}/>
-          <div>org</div>
+          {player.organization && <div className={classnames(style.org)}>org</div>}
           <div className={classnames(style.name)}>{player.fullname}</div>
           <div className={classnames(style.status)}>Invited</div>
         </div>
         :
         <div className={classnames(style.suggestionItem, style.invitedPlayerItem)}>
           <Image avatar src={player.avatar}/>
+          {player.organization && <div className={classnames(style.org)}>org</div>}
           <div className={classnames(style.name)}>{player.fullname}</div>
           <div className={classnames(style.remove)}/>
         <div className={classnames(style.status)}>{playerStatus}</div>
@@ -120,7 +121,13 @@ export default class PlayersInvitation extends Component {
             }}
             onSuggestionsFetchRequested={::this.searchChange}
             renderInputComponent={(props)=>(
-              <div className={classnames(style.inputContainer, {[style.inputContainerFocused]:searchInputFocused})}>
+              <div
+                  className={classnames(
+                    style.inputContainer,
+                    {[style.inputContainerFocused]:searchInputFocused},
+                    {[style.inputContainerNotEmpty]:searchValue!== ''},
+                  )}
+              >
                 <input {...props}/>
                 <div className={classnames(style.searchImg)}/>
               </div>
@@ -155,6 +162,7 @@ export default class PlayersInvitation extends Component {
               return (
                 <div className={classnames(style.invitedPlayerItem)} key={player.username}>
                   <Image avatar src={player.avatar}/>
+                  {player.organization && <div className={classnames(style.org)}>org</div>}
                   <div className={classnames(style.name)}>{player.fullname}</div>
                   <Button
                       leftIcon="remove"

@@ -117,6 +117,9 @@
 
 .inputContainerFocused {
   border-color: #a0a0b5;
+}
+
+.inputContainerNotEmpty{
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
 }
@@ -147,6 +150,7 @@
 }
 
 .invitedPlayerItem {
+  position: relative;
   display: flex;
   align-items: center;
   width: 100%;
@@ -166,6 +170,16 @@
     background-image:url('../../assets/actions/delete.png');
     width: 34px;
     height: 34px;
+  }
+
+  .org {
+    position: absolute;
+    align-self: flex-end;
+    background-color: #ff1b1ba1;
+    font-size: .8em;
+    border-radius: 50%;
+    padding: .1em;
+    left: 4.3em;
   }
 }
 
