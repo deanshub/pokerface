@@ -73,7 +73,7 @@ export class EditEventStore {
   }
 
   @action resetGame(){
-    this.currentEvent = this.newEvent()
+    this.lastNewEvent = this.newEvent()
   }
 
   typeChangeHandler(type){
