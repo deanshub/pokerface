@@ -64,9 +64,10 @@ export default class Cover extends Component {
   }
 
   deleteEvent(e){
-    const {details, events} = this.props
+    const {details, events, routing} = this.props
     e.stopPropagation()
     events.deleteEvent(details)
+    routing.push('/events')
   }
 
   editEvent(){

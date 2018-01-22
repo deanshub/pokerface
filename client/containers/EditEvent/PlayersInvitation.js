@@ -43,7 +43,7 @@ export default class PlayersInvitation extends Component {
           <Image avatar src={player.avatar}/>
           {player.organization && <div className={classnames(style.org)}>org</div>}
           <div className={classnames(style.name)}>{player.fullname}</div>
-          <div className={classnames(style.status)}>Invited</div>
+          <div className={classnames(style.status)}>Invite</div>
         </div>
         :
         <div className={classnames(style.suggestionItem, style.invitedPlayerItem)}>
@@ -108,6 +108,7 @@ export default class PlayersInvitation extends Component {
         <Autosuggest
             focusInputOnSuggestionClick={false}
             getSuggestionValue={event=>event.username}
+            highlightFirstSuggestion
             inputProps={{
               placeholder: 'Search players...',
               value:searchValue,

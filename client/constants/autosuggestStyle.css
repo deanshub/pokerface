@@ -34,6 +34,7 @@
   background-color: $white;
   max-height: 14.4em;
   overflow-y:auto;
+  overflow-x: hidden;
   border-radius: 0.45em;
   margin-top: 1px;
   z-index: 1;
