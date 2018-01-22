@@ -10,5 +10,6 @@
   "FACEBOOK_APP_ID": "471349949896195",
   "FACEBOOK_SECRET_ID": "23da997ccb85a542a193b8cbac4a31dd",
   "GOOGLE_APP_ID": "861666006669-tuf7n6hbdps2lapqcq3o9agnl8tsd6l9.apps.googleusercontent.com",
-  "GOOGLE_SECRET_ID": "bY6Rspl1uRf7dmePm9XuWnDi"
+  "GOOGLE_SECRET_ID": "bY6Rspl1uRf7dmePm9XuWnDi",
+  "DISABLE_MAIL_SENDING":true
 }

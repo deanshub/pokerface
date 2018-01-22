@@ -12,7 +12,7 @@ import {eventConnectionListener as timerListener} from '../../utils/blindTimers'
 import { schema as PostSchema, resolvers as PostResolvers } from './graphqlModels/Post'
 import { schema as CommentSchema, resolvers as CommentResolvers } from './graphqlModels/Comment'
 import { schema as UserSchema, resolvers as UserResolvers } from './graphqlModels/User'
-import { schema as GameSchema, resolvers as GameResolvers } from './graphqlModels/Game'
+import { schema as EventSchema, resolvers as EventResolvers } from './graphqlModels/Event'
 import { schema as UploadSchema, resolvers as UploadResolvers } from './graphqlModels/UploadedFile'
 import { schema as TimerSchema, resolvers as TimerResolvers } from './graphqlModels/Timer'
 
@@ -21,7 +21,7 @@ const schema = makeExecutableSchema({
     ...PostSchema,
     ...CommentSchema,
     ...UserSchema,
-    ...GameSchema,
+    ...EventSchema,
     ...UploadSchema,
     ...TimerSchema,
   ])],
@@ -29,7 +29,7 @@ const schema = makeExecutableSchema({
     PostResolvers,
     CommentResolvers,
     UserResolvers,
-    GameResolvers,
+    EventResolvers,
     UploadResolvers,
     TimerResolvers,
   ),

@@ -1,12 +1,16 @@
 import emailjs from 'emailjs'
 import icalToolkit from 'ical-toolkit'
 import config from 'config'
+import {getSendableInviteds} from '../data/helping/event'
 
-const hostLocation = (config.NODE_ENV==='development')?
+const devEnvironment = (config.NODE_ENV==='development')
+
+const hostLocation = devEnvironment?
     `localhost:${config.PORT}`
   :
     'pokerface.io'
 
+const sendMailFlag = !config.DISABLE_MAIL_SENDING
 // create reusable transporter object using the default SMTP transport
 const server = emailjs.server.connect({
   user: config.GMAIL_USER,
@@ -23,8 +27,6 @@ const generalSignupMessage = {
   // text: 'Hello world ?', // plain text body
   // html: '<b>Hello world ?</b>' // html body
 }
-
-const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 function generateIcs(game, cancel=false){
   let builder = icalToolkit.createIcsFileBuilder()
@@ -135,94 +137,100 @@ function generateIcs(game, cancel=false){
   return builder
 }
 
-function sendPersonalGameInvite(organizer, game, player){
-  const email = player.email
-  const newPlayer = player.new
-
+function sendMessage(email, message){
   return new Promise((resolve,reject)=>{
-    const generalInviteMessage = {
-      from: '"Pokerface.io" <support@pokerface.io>', // sender address
-      subject: game.title||'Game Invitation', // Subject line
+    if (!sendMailFlag){
+      resolve({email,sucess:1})
+    }else{
+      server.send(message, (error) => {
+        if (error) {
+          reject(error)
+        }else{
+          resolve({email,sucess:1})
+        }
+      })
     }
-    const htmlContent = `<div>${organizer.fullname} invited you to a game.</div>
-    <br/>
-    <div>${game.description||''}</div>
-    <br/><br/>
-    <div>${newPlayer?'You are not a registered user, if you wish to RSVP please signup at <a href="http://pokerface.io/login">Pokerface.io</a>':'Please RSVP at <a href="http://pokerface.io/events">Pokerface.io</a>'}</div>
-    <br/><br/><br/>
-    <small>For more information checkout <a href="http://pokerface.io/events">Pokerface.io</a></small>`
-
-    const ics = generateIcs(game)
-
-    const message = Object.assign({}, generalInviteMessage, {to:email, attachment:[{data:htmlContent, alternative:true}, {data:ics.toString(), type:'application/ics', name:'pokerface.ics', method:'REQUEST'}]})
-
-    server.send(message, (error, message) => {
-      if (error) {
-        reject(error)
-      }else{
-        resolve({email,sucess:1})
-      }
-    })
   }).catch(err=>{
     console.error(err)
     return {email, sucess:0}
   })
 }
 
-function sendPersonalGameCancellation(organizer, game, player){
+function sendPersonalEventInvite(organizer, game, player){
+  const email = player.email
+  const newPlayer = player.new
+  const organization = player.organization?` (via ${organization})`:''
+
+  const generalInviteMessage = {
+    from: '"Pokerface.io" <support@pokerface.io>', // sender address
+    subject: game.title||'Game Invitation', // Subject line
+  }
+  const htmlContent = `<div>${organizer.fullname} invited you ${organization} to a game.</div>
+  <br/>
+  <div>${game.description||''}</div>
+  <br/><br/>
+  <div>${newPlayer?'You are not a registered user, if you wish to RSVP please signup at <a href="http://pokerface.io/login">Pokerface.io</a>':'Please RSVP at <a href="http://pokerface.io/events">Pokerface.io</a>'}</div>
+  <br/><br/><br/>
+  <small>For more information checkout <a href="http://pokerface.io/events">Pokerface.io</a></small>`
+
+  const ics = generateIcs(game)
+  const message = Object.assign({}, generalInviteMessage, {to:email, attachment:[{data:htmlContent, alternative:true}, {data:ics.toString(), type:'application/ics', name:'pokerface.ics', method:'REQUEST'}]})
+
+  if (devEnvironment){
+    console.log(`Send mail of invitation to event to ${player.email}`)
+  }
+
+  return sendMessage(email, message)
+}
+
+function sendPersonalEventCancellation(organizer, game, player){
   const email = player.email
   const newPlayer = player.new
 
-  return new Promise((resolve,reject)=>{
-    const generalCancelMessage = {
-      from: '"Pokerface.io" <support@pokerface.io>', // sender address
-      subject: game.title?`${game.title} Cancelled`:'Game Cancelled', // Subject line
-    }
-    const htmlContent = `<div>${organizer.fullname} canelled the game.</div>
-    <br/><br/>
-    <div>${newPlayer?'You\'re not a registered user, if you wish to register please signup at <a href="http://pokerface.io/login">Pokerface.io</a>':''}</div>
-    <br/><br/><br/>
-    <small>For more information checkout <a href="http://pokerface.io/events">Pokerface.io</a></small>`
+  const generalCancelMessage = {
+    from: '"Pokerface.io" <support@pokerface.io>', // sender address
+    subject: game.title?`${game.title} Cancelled`:'Game Cancelled', // Subject line
+  }
+  const htmlContent = `<div>${organizer.fullname} canelled the game.</div>
+  <br/><br/>
+  <div>${newPlayer?'You\'re not a registered user, if you wish to register please signup at <a href="http://pokerface.io/login">Pokerface.io</a>':''}</div>
+  <br/><br/><br/>
+  <small>For more information checkout <a href="http://pokerface.io/events">Pokerface.io</a></small>`
 
-    const ics = generateIcs(game, true)
+  const ics = generateIcs(game, true)
+  const message = Object.assign({}, generalCancelMessage, {to:email, attachment:[{data:htmlContent, alternative:true}, {data:ics.toString(), type:'application/ics', name:'pokerface.ics', method:'CANCEL'}]})
 
-    const message = Object.assign({}, generalCancelMessage, {to:email, attachment:[{data:htmlContent, alternative:true}, {data:ics.toString(), type:'application/ics', name:'pokerface.ics', method:'CANCEL'}]})
+  if (devEnvironment){
+    console.log(`supposed send mail of cancel event to ${player.email}`)
+  }
 
-    server.send(message, (error, message) => {
-      if (error) {
-        reject(error)
-      }else{
-        resolve({email,sucess:1})
-      }
-    })
-  }).catch(err=>{
-    console.error(err)
-    return {email, sucess:0}
-  })
+  return sendMessage(email, message)
 }
 
-function getAllPlayers(game, Db){
-  const invitedUsers = game.invited.filter(player=>!player.guest).map(player=>player.username)
-  const invitedGuests = game.invited.filter(player=>player.guest)
+function sendPersonalEventUpdate(organizer, game, player){
+  const email = player.email
+  const newPlayer = player.new
+  const organization = player.organization?` (via ${organization})`:''
 
-  return Db.models.User.find({
-    _id: {
-      $in: [...invitedUsers, game.owner],
-    },
-  }).then(players=>{
-    const orgenizer = players.filter(player=>player.username===game.owner)[0]
+  const generalInviteMessage = {
+    from: '"Pokerface.io" <support@pokerface.io>', // sender address
+    subject: game.title||'Game Invitation Updating', // Subject line
+  }
+  const htmlContent = `<div>${organizer.fullname} update the game you are invited organization.</div>
+  <br/>
+  <div>${game.description||''}</div>
+  <br/><br/>
+  <div>${newPlayer?'You are not a registered user, if you wish to RSVP please signup at <a href="http://pokerface.io/login">Pokerface.io</a>':'Please RSVP at <a href="http://pokerface.io/events">Pokerface.io</a>'}</div>
+  <br/><br/><br/>
+  <small>For more information checkout <a href="http://pokerface.io/events">Pokerface.io</a></small>`
 
-    const additionalPlayers = invitedGuests.filter(player=>emailRegex.test(player.fullname)).map(player=>{
-      return {
-        email: player.fullname,
-        new: true,
-      }
-    })
+  const ics = generateIcs(game)
+  const message = Object.assign({}, generalInviteMessage, {to:email, attachment:[{data:htmlContent, alternative:true}, {data:ics.toString(), type:'application/ics', name:'pokerface.ics', method:'REQUEST'}]})
 
-    const registeredPlayersEmails = players.map(player=>player.email)
-    const additionalPlayersEmails = additionalPlayers.filter(newPlayer=>!registeredPlayersEmails.includes(newPlayer.email))
-    return {players:players.concat(additionalPlayersEmails), orgenizer}
-  })
+  if (devEnvironment){
+    console.log(`supposed send mail of update event to ${player.email}`)
+  }
+  return sendMessage(email, message)
 }
 
 function sendSignupMessage(firstname, lastname, email, uuid){
@@ -244,16 +252,7 @@ function sendSignupMessage(firstname, lastname, email, uuid){
   `
   const message = Object.assign({}, generalSignupMessage, {to:email, attachment:[{data:htmlContent, alternative:true}]})
 
-  return new Promise((resolve, reject)=>{
-    // send mail with defined transport object
-    server.send(message, (error, message) => {
-      if (error) {
-        reject(error)
-      }else{
-        resolve(message)
-      }
-    })
-  })
+  return sendMessage(email, message)
 }
 
 function sendResetPasswordMessage(firstname, lastname, email, uuid){
@@ -275,30 +274,25 @@ function sendResetPasswordMessage(firstname, lastname, email, uuid){
   `
   const message = Object.assign({}, generalSignupMessage, {to:email, attachment:[{data:htmlContent, alternative:true}]})
 
-  return new Promise((resolve, reject)=>{
-    // send mail with defined transport object
-    server.send(message, (error, message) => {
-      if (error) {
-        reject(error)
-      }else{
-        resolve(message)
-      }
-    })
-  })
+  return sendMessage(email, message)
 }
-
 
 export default {
   sendSignupMessage,
   sendResetPasswordMessage,
-  sendGameInvite(game, Db){
-    return getAllPlayers(game, Db).then(({players,orgenizer})=>{
-      return Promise.all(players.map(player=>sendPersonalGameInvite(orgenizer, game, player)))
+  sendEventInvite(event, inviteds){
+    return getSendableInviteds(inviteds).then(players=>{
+      return Promise.all(players.map(player=>sendPersonalEventInvite(event.owner, event, player)))
     })
   },
-  sendGameCancelled(game, Db){
-    return getAllPlayers(game, Db).then(({players,orgenizer})=>{
-      return Promise.all(players.map(player=>sendPersonalGameCancellation(orgenizer, game, player)))
+  sendEventCancelled(event, inviteds){
+    return getSendableInviteds(inviteds).then(players=>{
+      return Promise.all(players.map(player=>sendPersonalEventCancellation(event.owner, event, player)))
+    })
+  },
+  sendEventUpadte(event, inviteds){
+    return getSendableInviteds(inviteds).then(players=>{
+      return Promise.all(players.map(player=>sendPersonalEventUpdate(event.owner, event, player)))
     })
   },
 }
