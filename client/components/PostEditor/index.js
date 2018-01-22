@@ -45,6 +45,7 @@ import 'draft-js-linkify-plugin/lib/plugin.css'
 import 'draft-js-video-plugin/lib/plugin.css'
 
 import SpotPlayer from '../../containers/SpotPlayer'
+import Poll from '../Poll'
 
 @inject('spotPlayer')
 @inject('feed')
@@ -150,6 +151,11 @@ export default class PostEditor extends Component {
     feed.updatePost(post ,{content: editorState}, spotPlayer)
   }
 
+  pollOptionSelected(option){
+    const {feed, post} = this.props
+    feed.updatePollAnswer(post.id, option)
+  }
+
   render(){
     const {
       post,
@@ -188,6 +194,15 @@ export default class PostEditor extends Component {
             suggestions={globalPlayersSearch.immutableAvailablePlayers}
         />
         <EmojiSuggestions/>
+        {
+          post.poll&&
+          <Poll
+              answers={post.poll.answers}
+              id={post.id}
+              onSelect={::this.pollOptionSelected}
+              readOnly={readOnly}
+          />
+        }
         {
           post.spot?(
           <SpotPlayer

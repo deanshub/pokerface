@@ -5,7 +5,7 @@ import { observable, computed, action, toJS, extendObservable } from 'mobx'
 import { EditorState, convertToRaw, Modifier, convertFromRaw } from 'draft-js'
 import graphqlClient from './graphqlClient'
 import {postsQuery} from './queries/posts'
-import {postCreate, setPostLike, postDelete} from './mutations/posts'
+import {postCreate, setPostLike, postDelete, updatePollAnswer} from './mutations/posts'
 import {commentCreate, setCommentLike, commentDelete} from './mutations/comments'
 import utils from '../containers/SpotPlayer/utils'
 import logger from '../utils/logger'
@@ -75,7 +75,14 @@ export class FeedStore {
 
     const spotPlayerState = utils.generateInitialState(content.spot)
 
-    let parsedPost = Object.assign({}, post, {content: newContent, replying: false, deletePopupOpen: false, spot:content.spot, spotPlayerState})
+    let parsedPost = Object.assign({}, post, {
+      content: newContent,
+      replying: false,
+      deletePopupOpen: false,
+      spot:content.spot,
+      poll:content.poll,
+      spotPlayerState,
+    })
 
     parsedPost.comments = parsedPost.comments.map((comment)=>{
       let originalContent = JSON.parse(comment.content)
@@ -449,6 +456,16 @@ export class FeedStore {
   @action
   refresh(){
     this.fetchPosts()
+  }
+
+  updatePollAnswer(postId, option){
+    graphqlClient.mutate({mutation: updatePollAnswer, variables: {post:postId, option}})
+    .then(result=>{
+      console.log(result.data.updatePollAnswer)
+    })
+    .catch(err=>{
+      console.error(err)
+    })
   }
 
   @computed

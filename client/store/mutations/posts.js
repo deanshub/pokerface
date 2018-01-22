@@ -92,3 +92,44 @@ export const setPostLike = gql`mutation setPostLike($post: String!, $like: Boole
   }
 }
 `
+
+
+export const updatePollAnswer = gql`mutation updatePollAnswer($post: String!, $option: Int!){
+  updatePollAnswer(post: $post, option: $option){
+    id
+    createdAt
+    content
+    photos{
+      path
+      type
+    }
+    likes{
+      username
+      fullname
+      avatar
+    }
+    comments{
+      id
+      post{
+        id
+      }
+      likes{
+        username
+        fullname
+        avatar
+      }
+      content
+      owner{
+        username
+        fullname
+        avatar
+      }
+    }
+    owner{
+      username
+      fullname
+      avatar
+    }
+  }
+}
+`
