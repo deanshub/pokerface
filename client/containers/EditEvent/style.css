@@ -1,0 +1,236 @@
+@import "../../constants/styles";
+@import "../../constants/autosuggestStyle";
+
+.header {
+    display: flex;
+    align-items: center;
+
+    .title {
+      flex:1;
+    }
+}
+
+.tab {
+  height: 34px;
+  width: 34px;
+  padding: 0 0.7em;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.editTab {
+  @extend .tab;
+  background-image: url('../../assets/actions/edit.png');
+}
+
+.editTab:hover {
+  background-image: url('../../assets/actions/edit-hover.png');
+}
+
+.usersTab {
+  @extend .tab;
+  background-image: url('../../assets/user-search.png');
+}
+
+.usersTab:hover {
+  background-image: url('../../assets/user-hover.png');
+}
+
+.editTab.active {
+  background-image: url('../../assets/actions/edit-hover.png');
+}
+
+.usersTab.active {
+  background-image: url('../../assets/user-hover.png');
+}
+
+.fieldsGroup {
+  display: flex;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+/* PlayersInvitation */
+
+.playersInvitationContainer{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 2;
+}
+
+.hidden{
+  display: none;
+}
+
+.guestStatusMenu{
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.guestStatusTab {
+  position: relative;
+  color: #8c8aa1;
+  text-align: center;
+  padding: 0.8em;
+  cursor: pointer;
+}
+
+.guestStatusTab:hover{
+  color: #41c86a;
+}
+
+.guestStatusTab.active {
+  color: #41c86a;
+}
+
+.guestStatusTab.active::after {
+  position: absolute;
+  content: '';
+  bottom: -0.6em;
+  left: calc(50% - 0.5em);
+  width: 1em;
+  height: 1em;
+  transform: rotate(45deg);
+  color: #41c86a;
+  border: 1px solid #e4e4e4;
+  background-color: white;
+}
+
+.searchImg {
+  background-image: url('../../assets/actions/search.png');
+  height: 34px;
+  width: 34px;
+}
+
+.inputContainer{
+  margin: 0;
+  display: flex;
+  border: 1px solid borderColor;
+  border-radius: 8px;
+}
+
+.inputContainerFocused {
+  border-color: #a0a0b5;
+}
+
+.inputContainerNotEmpty{
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.autosuggest {
+  z-index: 2;
+}
+.autosuggestInput,.autosuggestInput:disabled{
+  width: 100%;
+  padding-left: 1em;
+  padding-top: 0.5em;
+}
+
+.suggestionItem{
+  padding: 0.6em 0.8em;
+  padding-right: 1em;
+}
+
+.suggestionsContainer{
+  border: 1px solid #a0a0b5;
+  border-top-color: borderColor;
+  margin-top: -1px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.suggestionsList{
+  border: 0px;
+}
+
+.invitedPlayerItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  min-height: fit-content;
+
+  .name {
+    flex: 1;
+  }
+
+  .status{
+    color: #b1b1c6;
+  }
+
+  .remove{
+    background-image:url('../../assets/actions/delete.png');
+    width: 34px;
+    height: 34px;
+  }
+
+  .org {
+    position: absolute;
+    align-self: flex-end;
+    background-color: rgba(0,0,0,0.3);
+    font-size: .8em;
+    border-radius: 50%;
+    padding: .1em;
+    left: 4.3em;
+  }
+}
+
+.notInvitedPlayerItem {
+  @extend .invitedPlayerItem;
+
+  .status {
+    color: #74728c;
+    text-transform: uppercase;
+  }
+}
+
+.suggestionHighlighted{
+  .invitedPlayerItem {
+    background-color: #ffd1d180;
+
+    .name {
+      color: initial;
+    }
+
+    .remove{
+      background-image:url('../../assets/actions/delete-hover.png');
+    }
+  }
+
+  .notInvitedPlayerItem{
+    .status {
+      color: white;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.playersList{
+  flex: 1;
+  background-color: white;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.playersList > .invitedPlayerItem {
+  border-bottom: 1px solid $divider;
+  padding: 0.6em 0.4em;
+}
+
+.playersListNoGuests{
+  justify-content: center;
+}
+
+.noPlayersMessage{
+  color: #a0a0b5;
+}

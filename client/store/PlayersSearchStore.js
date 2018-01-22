@@ -60,6 +60,7 @@ export class PlayersSearchStore {
         fullname: player.fullname,
         avatar: player.avatar,
         username: player.username,
+        organization: player.organization,
         link: `/profile/${player.username}`,
       }
     })

@@ -50,8 +50,10 @@ export default class PlayerField extends Component {
     players.setPlayer(playerIndex, {...suggestion, cards: user.cards})
   }
 
-  searchInputChange(e,{newValue}){
-    this.setState({inputValue:newValue})
+  searchInputChange(e,{newValue, method}){
+    if (method ==='type'){
+      this.setState({inputValue:newValue})
+    }
   }
 
   removePlayer(){
@@ -88,6 +90,7 @@ export default class PlayerField extends Component {
         />
         <Autosuggest
             getSuggestionValue={player=>player.fullname}
+            highlightFirstSuggestion
             id={`${playerIndex}`}
             inputProps={{
               placeholder: 'Player',

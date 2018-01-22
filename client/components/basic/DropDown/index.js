@@ -27,6 +27,15 @@ export default class DropDown extends Component {
     })
   }
 
+  handleClick(e){
+    const {oneClick} = this.props
+    if (oneClick){
+      this.setState({open:false})
+    }
+
+    e.stopPropagation()
+  }
+
   render(){
     const {children, trigger, onOpen} = this.props
     const {open} = this.state
@@ -46,7 +55,7 @@ export default class DropDown extends Component {
                     style.dropDown,
                     {[style.dropDownOpen]: openByBlur},
                   )}
-                  onClick={e=>e.stopPropagation()}
+                  onClick={::this.handleClick}
               >
                 {children}
               </div>
@@ -64,7 +73,7 @@ export default class DropDown extends Component {
                     style.dropDown,
                     {[style.dropDownOpen]: openByBlur},
                   )}
-                  onClick={e=>e.stopPropagation()}
+                  onClick={::this.handleClick}
               >
                 {children}
               </div>

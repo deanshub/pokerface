@@ -9,18 +9,9 @@ export default class InputSelect extends Component{
     labelKey: 'text',
   }
 
-  constructor(props){
-    super(props)
-
-    const {defaultValue} = this.props
-    this.state = {value:defaultValue?defaultValue:''}
-  }
-
   handleChange = (selectedOption) => {
-    const {labelKey, onChange} = this.props
-
+    const {onChange} = this.props
     onChange(selectedOption.value)
-    this.setState({value:selectedOption[labelKey]})
   }
 
   render(){
@@ -29,9 +20,9 @@ export default class InputSelect extends Component{
       labelKey,
       options,
       error,
-      warning
+      warning,
+      value,
     } = this.props
-    const {value} = this.state
 
     return (
       <div className={classnames(style.field)}>

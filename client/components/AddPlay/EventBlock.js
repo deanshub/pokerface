@@ -109,6 +109,7 @@ export default class EventBlock extends Component {
               suggestionsList: classnames(style.suggestionsList),
               suggestion: classnames(style.suggestion),
               suggestionHighlighted: classnames(style.suggestionHighlighted),
+              suggestionFirst: classnames(style.suggestionFirst),
               suggestionsContainer: classnames(style.suggestionsContainer),
               suggestionsContainerOpen: classnames(style.suggestionsContainerOpen),
             }}

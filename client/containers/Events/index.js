@@ -6,12 +6,12 @@ import Button from '../../components/basic/Button'
 import moment from 'moment'
 import classnames from 'classnames'
 import style from './style.css'
-import AddGameModal from '../../components/AddGame/AddGameModal'
+import EditEvent from '../EditEvent'
 
 import EventRow from './EventRow'
 
 @inject('events')
-@inject('game')
+@inject('editEvent')
 @observer
 export default class Events extends Component {
   static propTypes = {
@@ -28,8 +28,8 @@ export default class Events extends Component {
   }
 
   render() {
-    const {events, game:addGame} = this.props
-    const eventRows = events.games.values()
+    const {events, editEvent} = this.props
+    const eventRows = events.events.values()
     .sort((a,b)=>{
       return moment.utc(a.from).diff(moment.utc(b.from))
     })
@@ -45,8 +45,8 @@ export default class Events extends Component {
       )
     })
 
-    const gamesAmount = events.games.size
-    const hasEvents = gamesAmount > 0
+    const eventsAmount = events.events.size
+    const hasEvents = eventsAmount > 0
 
     return (
       <div>
@@ -55,12 +55,12 @@ export default class Events extends Component {
           <div className={classnames(style.containerHeader)}>
             <div className={classnames(style.containerHeaderText)}/>
             <Button
-                onClick={() => addGame.openAddGameModal()}
+                onClick={() => editEvent.openEditEventModal()}
                 primary
             >
               Create Event
             </Button>
-            <AddGameModal buttonClassName={classnames(style.containerHeaderButton)} />
+            {editEvent.editEventModalOpen && <EditEvent/>}
           </div>
         }
         {
