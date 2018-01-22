@@ -45,15 +45,12 @@ export default class PostEditor extends Component {
     }
   }
 
-  renderAnswer(answer, index, countVotes){
+  renderAnswer(answer, index, countVotes, userAnswer=-1){
     const { id, auth } = this.props
-    const { answers } = this.state
     let percentage = countVotes===0?0:answer.votes.length/countVotes*100
     percentage = percentage%1?percentage.toFixed(2):percentage
-
-    const userAnswer = answers.findIndex((answer)=>{
-      return answer.votes.includes(auth.user.username)
-    })
+    const percentageText = userAnswer===-1?'':`(${percentage}%)`
+    const right = userAnswer===-1?'100%':`${100-percentage}%`
 
     return (
       <div
@@ -71,8 +68,8 @@ export default class PostEditor extends Component {
         <label className={classnames(style.textContainer)} htmlFor={`${id}.${index}`}>
           <span className={classnames(style.radio)}/>
           <span className={classnames(style.label)}>
-            <div className={classnames(style.percentage)} style={{right: `${100-percentage}%`}}/>
-            {answer.text} ({percentage}%)
+            <div className={classnames(style.percentage)} style={{right}}/>
+            {answer.text} {percentageText}
           </span>
         </label>
       </div>
@@ -81,13 +78,18 @@ export default class PostEditor extends Component {
 
   render(){
     const { answers } = this.state
+    const { auth } = this.props
     const countVotes = answers.reduce((res,cur)=>{
       return res + cur.votes.length
     },0)
 
+    const userAnswer = answers.findIndex((answer)=>{
+      return answer.votes.includes(auth.user.username)
+    })
+
     return (
       <form className={classnames(style.poll)}>
-        {answers.map((answer, index)=>this.renderAnswer(answer, index, countVotes))}
+        {answers.map((answer, index)=>this.renderAnswer(answer, index, countVotes, userAnswer))}
       </form>
     )
   }
