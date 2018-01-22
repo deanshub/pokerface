@@ -10,7 +10,7 @@ const hostLocation = devEnvironment?
   :
     'pokerface.io'
 
-const sendMailFlag = !config.DISABLE_SENDING_MAIL
+const sendMailFlag = !config.DISABLE_MAIL_SENDING
 // create reusable transporter object using the default SMTP transport
 const server = emailjs.server.connect({
   user: config.GMAIL_USER,
