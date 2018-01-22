@@ -86,7 +86,7 @@ export class PlayersStore {
   setPlayer(playerIndex, newUser){
     if (newUser.guest){
       newUser.username = `guest-${Math.random().toString()}`
-      newUser.avatar = 'images/avatar.png'
+      newUser.avatar = '/images/avatar.png'
     }
     this.currentPlayers[playerIndex] = newUser
   }
