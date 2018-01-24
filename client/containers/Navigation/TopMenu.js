@@ -24,6 +24,13 @@ export default class TopMenu extends Component {
     routing.replace('/login')
   }
 
+  moveToProfile(){
+    const {auth, routing} = this.props
+    const {username} = auth.user
+
+    routing.push(`/profile/${username}`)
+  }
+
   toggleEditPersonalInfo(){
     this.setState({
       editingPersonalInfo: !this.state.editingPersonalInfo,
@@ -54,15 +61,19 @@ export default class TopMenu extends Component {
 
     return (
       <div>
-        <DropDown trigger={trigger}>
+        <DropDown oneClick trigger={trigger}>
           <div className={classnames(style.topMenu)}>
-           <div className={classnames(style.topMenuItem, style.signedInAsCard)}>
-             <img src={user.avatar}/>
-             <div>
-               <div className={classnames(style.name)}>{user.fullname}</div>
-               <div className={classnames(style.email)}>{user.email}</div>
-             </div>
+            <div
+                className={classnames(style.topMenuItem, style.signedInAsCard)}
+                onClick={::this.moveToProfile}
+            >
+              <img src={user.avatar}/>
+              <div>
+                <div className={classnames(style.name)}>{user.fullname}</div>
+                <div className={classnames(style.email)}>{user.email}</div>
+              </div>
            </div>
+           <div className={classnames(style.divider)}/>
            <div
                className={classnames(style.topMenuItem, style.topMenuClickableItem)}
                onClick={::this.toggleEditPersonalInfo}
