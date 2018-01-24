@@ -21,73 +21,94 @@ export default class SliderPokerface extends Component {
     const {autoplay, children} = this.props
 
     if (autoplay && children.length > 1){
-      this.interval = setInterval(() => {
-        const {displayedItemIndex} = this.state
-        this.setState({displayedItemIndex:(displayedItemIndex+1)%children.length})
-      }, PLAYING_TIME_DURATION)
+      this.setAutoplayInterval()
     }
   }
 
+  setAutoplayInterval(){
+    const {children} = this.props
+
+    this.interval = setInterval(() => {
+      const {displayedItemIndex} = this.state
+      this.setState({displayedItemIndex:(displayedItemIndex+1)%children.length})
+    }, PLAYING_TIME_DURATION)
+  }
+
   updateItem(newIndex){
-    const {autoplay, children} = this.props
+    const {autoplay} = this.props
 
     if (autoplay){
       clearInterval(this.interval)
-
-      this.interval = setInterval(() => {
-        const {displayedItemIndex} = this.state
-        this.setState({displayedItemIndex:(displayedItemIndex+1)%children.length})
-      }, PLAYING_TIME_DURATION)
+      this.setAutoplayInterval()
     }
 
     this.setState({displayedItemIndex:newIndex})
   }
 
-  next(){
+  nextIndex(){
     const {displayedItemIndex} = this.state
     const {children} = this.props
 
-    this.updateItem((displayedItemIndex+1)%children.length)
+    return (displayedItemIndex+1)%children.length
   }
 
-  previous(){
-    const {displayedItemIndex} = this.state
-    const {children} = this.props
+  nextItem(){
+    this.updateItem(this.nextIndex())
+  }
 
-    this.updateItem((displayedItemIndex===0)?children.length-1:displayedItemIndex-1)
+  previousIndex(){
+    const {children} = this.props
+    const {displayedItemIndex} = this.state
+    return (displayedItemIndex===0)?children.length-1:displayedItemIndex-1
+  }
+
+  previousItem(){
+    this.updateItem(this.previousIndex())
   }
 
   render(){
     const {displayedItemIndex} = this.state
     const {children} = this.props
+    const previousIndex = this.previousIndex()
+    const nextIndex = this.nextIndex()
     const onlyOnePhoto = children.length === 1
+
     return (
         <div className={classnames(style.container)}>
           <div
               className={classnames(style.previous)}
               disabled={onlyOnePhoto}
-              onClick={::this.previous}
+              onClick={::this.previousItem}
           />
           <div className={classnames(style.sliderDisplay)}>
-            <div
-                className={classnames(style.allItems)}
-                onClick={::this.next}
-                style={{transform: `translate(${-100*(displayedItemIndex)}%,0px)`}}
-            >
-              {children.map((item, index) => {
-                return (
-                  <div className={classnames(style.playingItemContainer)} key={index}>
-                    {item}
-                  </div>
-                )
-              })}
+            <div className={classnames(style.allItems)}>
+              <div
+                  className={classnames(style.playingItemContainer)}
+                  key={previousIndex}
+                  style={{transform: 'translate(-100%,0px)'}}
+              >
+                {children[previousIndex]}
+              </div>
+              <div className={classnames(style.playingItemContainer)} key={displayedItemIndex}>
+                {children[displayedItemIndex]}
+              </div>
+              <div
+                  className={classnames(style.playingItemContainer)}
+                  key={nextIndex}
+                  style={{transform: 'translate(100%,0px)'}}
+              >
+                {children[nextIndex]}
+              </div>
             </div>
           </div>
           <div
               className={classnames(style.next)}
               disabled={onlyOnePhoto}
-              onClick={::this.next}
+              onClick={::this.nextItem}
           />
+          {/* <div className={classnames(style.autoplay)}>
+            {autoplay?'Stop Sliding':'Auto Sliding'}
+          </div> */}
         </div>
     )
   }
