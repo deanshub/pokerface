@@ -29,15 +29,31 @@
   }
 }
 
-.config {
-  background-image:url('../../assets/cog.png');
-  width: 34px;
-  height: 34px;
+/* topMenu */
+.triggerContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
   cursor:pointer;
+
+  .avatar {
+    margin-right: 0.5em;
+  }
+
+  .configPointer {
+    width: 10px;
+    height: 5px;
+
+    border-left: solid 5px #535168;
+    border-right: solid 5px #535168;
+    border-top: solid 5px #a0a0b5;
+  }
 }
 
-.config:hover {
-  background-image:url('../../assets/cog-hover.png');
+.triggerContainer:hover{
+  .configPointer {
+    border-top: solid 5px #41c86a;
+  }
 }
 
 .container {

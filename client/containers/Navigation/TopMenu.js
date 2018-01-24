@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import DropDown from '../../components/basic/DropDown'
 import SelectUserModal from '../SelectUserModal'
 import EditInfoModal from '../../components/Cover/EditInfoModal'
+import Image from '../../components/basic/Image'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -35,11 +36,21 @@ export default class TopMenu extends Component {
 
     const {user} = auth
     const {editingPersonalInfo, selectUserModalOpen} = this.state
-    const trigger = <div
-        className={classnames(style.config)}
-        onBlur={() => {this.setState({showTopMenu:false})}}
-        onClick={() => {this.setState({showTopMenu:true})}}
-    />
+    const trigger = (
+        <div
+            className={classnames(style.triggerContainer)}
+            onBlur={() => {this.setState({showTopMenu:false})}}
+            onClick={() => {this.setState({showTopMenu:true})}}
+        >
+          <Image
+              avatar
+              className={classnames(style.avatar)}
+              small
+              src={user.avatar}
+          />
+          <div className={classnames(style.configPointer)}/>
+        </div>
+    )
 
     return (
       <div>
