@@ -3,53 +3,56 @@ import classnames from 'classnames'
 import style from './style.css'
 
 
-const PLAYING_TIME_DURATION = 3000
-
 export default class SliderPokerface extends Component {
   static defaultProps = {
-    displayedItemIndex: 0,
+    displayItemIndex: 0,
+    autoplay:false,
+    displayItemsDuration:[],
+    defaultDisplayDuration: 3000
   }
 
   constructor(props){
     super(props)
-    const {autoplay, displayedItemIndex} = props
-    this.state = {autoplay, displayedItemIndex}
+    const {autoplay, displayItemIndex} = props
+    this.state = {autoplay, displayItemIndex}
   }
 
   componentDidMount(){
-
     const {autoplay, children} = this.props
 
     if (autoplay && children.length > 1){
-      this.setAutoplayInterval()
+      this.setAutoplayTimeout()
     }
   }
 
-  setAutoplayInterval(){
-    const {children} = this.props
+  setAutoplayTimeout(){
+    const {displayItemIndex} = this.state
 
-    this.interval = setInterval(() => {
-      const {displayedItemIndex} = this.state
-      this.setState({displayedItemIndex:(displayedItemIndex+1)%children.length})
-    }, PLAYING_TIME_DURATION)
+    const timeoutCallback = () => {
+      const nextDisplayItem = this.nextIndex()
+      this.setState({displayItemIndex:nextDisplayItem})
+      this.timeout = setTimeout(timeoutCallback, this.displayItemTime(nextDisplayItem))
+    }
+
+    this.timeout = setTimeout(timeoutCallback, this.displayItemTime(displayItemIndex))
   }
 
   updateItem(newIndex){
     const {autoplay} = this.props
 
     if (autoplay){
-      clearInterval(this.interval)
-      this.setAutoplayInterval()
+      clearTimeout(this.timeout)
+      this.setAutoplayTimeout()
     }
 
-    this.setState({displayedItemIndex:newIndex})
+    this.setState({displayItemIndex:newIndex})
   }
 
   nextIndex(){
-    const {displayedItemIndex} = this.state
+    const {displayItemIndex} = this.state
     const {children} = this.props
 
-    return (displayedItemIndex+1)%children.length
+    return (displayItemIndex+1)%children.length
   }
 
   nextItem(){
@@ -58,16 +61,23 @@ export default class SliderPokerface extends Component {
 
   previousIndex(){
     const {children} = this.props
-    const {displayedItemIndex} = this.state
-    return (displayedItemIndex===0)?children.length-1:displayedItemIndex-1
+    const {displayItemIndex} = this.state
+    return (displayItemIndex===0)?children.length-1:displayItemIndex-1
   }
 
   previousItem(){
     this.updateItem(this.previousIndex())
   }
 
+  displayItemTime(index){
+    const {defaultDisplayDuration, displayItemsDuration} = this.props
+    const duration = displayItemsDuration[index]
+
+    return (duration && duration > 0)?duration:defaultDisplayDuration
+  }
+
   render(){
-    const {displayedItemIndex} = this.state
+    const {displayItemIndex} = this.state
     const {children} = this.props
     const previousIndex = this.previousIndex()
     const nextIndex = this.nextIndex()
@@ -89,8 +99,8 @@ export default class SliderPokerface extends Component {
               >
                 {children[previousIndex]}
               </div>
-              <div className={classnames(style.playingItemContainer)} key={displayedItemIndex}>
-                {children[displayedItemIndex]}
+              <div className={classnames(style.playingItemContainer)} key={displayItemIndex}>
+                {children[displayItemIndex]}
               </div>
               <div
                   className={classnames(style.playingItemContainer)}

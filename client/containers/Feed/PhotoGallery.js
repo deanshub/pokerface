@@ -42,7 +42,7 @@ export default class PhotoGallery extends Component {
           open={photoGallery.open}
           simple
       >
-        <Slider autoplay displayedItemIndex={photoGallery.photoIndex}>
+        <Slider autoplay displayItemIndex={photoGallery.photoIndex}>
           {items}
         </Slider>
       </Modal>
