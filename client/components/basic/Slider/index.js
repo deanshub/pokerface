@@ -25,6 +25,10 @@ export default class SliderPokerface extends Component {
     }
   }
 
+  componentWillUnmount(){
+    clearTimeout(this.timeout)
+  }
+
   setAutoplayTimeout(){
     const {displayItemIndex} = this.state
 
