@@ -4,7 +4,14 @@ import style from './style.css'
 
 export default class Modal extends Component {
   render(){
-    const {open,children,onClose, closeOnBlur} = this.props
+    const {
+      open,
+      children,
+      onClose,
+      closeOnBlur,
+      simple,
+      inverted,
+    } = this.props
     if (open){
       let overlayProps = {}
       let containerProps = {
@@ -18,8 +25,8 @@ export default class Modal extends Component {
       }
 
       return(
-        <div className={classnames(style.overlay)} {...overlayProps}>
-          <div className={classnames(style.modalContainer)} {...containerProps}>
+        <div className={classnames(style.overlay, {[style.inverted]: inverted})} {...overlayProps}>
+          <div className={classnames(style.modalContainer, {[style.modalBackground]: !simple})} {...containerProps}>
             {children}
           </div>
         </div>

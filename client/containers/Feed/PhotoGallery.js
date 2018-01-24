@@ -2,12 +2,14 @@
 
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
+
 import Video from '../../components/basic/Video'
 import Modal from '../../components/basic/Modal'
-import Button from '../../components/basic/Button'
+import Slider from '../../components/basic/Slider'
 
 import classnames from 'classnames'
 import style from './style.css'
+
 
 @inject('photoGallery')
 @observer
@@ -15,38 +17,34 @@ export default class PhotoGallery extends Component {
   render() {
     const { photoGallery } = this.props
 
-    const onlyOnePhoto = photoGallery.photos.length===1
-
-    const photo = photoGallery.photos[photoGallery.photoIndex]
+    const items = photoGallery.photos.map((photo, index) => {
+      return (
+        photo.type.startsWith('video')?
+          <Video
+              autoplay
+              controls
+              key={index}
+              src={photo.path} type={photo.type}
+          />
+        :
+        <img
+            draggable={false}
+            key={index}
+            src={photo.path}
+        />
+      )
+    })
     return (
       <Modal
           closeOnBlur
+          inverted
           onClose={()=>{photoGallery.open=false}}
           open={photoGallery.open}
+          simple
       >
-        <div className={classnames(style.galleryContainer)}>
-          <Button
-              disabled={onlyOnePhoto}
-              leftIcon="previous"
-              onClick={()=>photoGallery.previousPhoto()}
-          />
-          { photo &&
-            (photo.type.startsWith('video')?
-              <Video
-                  autoplay
-                  className={classnames(style.galleryImage)}
-                  controls
-                  src={photo.path} type={photo.type}
-              />
-            :
-              <img className={classnames(style.galleryImage)} draggable={false} src={photo.path}/>)
-          }
-          <Button
-              disabled={onlyOnePhoto}
-              leftIcon="next"
-              onClick={()=>photoGallery.nextPhoto()}
-          />
-        </div>
+        <Slider autoplay displayedItemIndex={photoGallery.photoIndex}>
+          {items}
+        </Slider>
       </Modal>
     )
   }
