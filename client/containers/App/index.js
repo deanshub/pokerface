@@ -11,7 +11,7 @@ import Loadable from 'react-loadable'
 import Loading from '../../components/basic/Loading'
 import logger from '../../utils/logger'
 import 'semantic-ui-css/semantic.min.css'
-
+import MobileNavbar from '../../components/Navbar/Mobile'
 import PrivateRoute from './PrivateRoute'
 
 const LoadableLogin = Loadable({
@@ -23,7 +23,7 @@ const LoadableSettingPassword = Loadable({
   loading: Loading,
 })
 const LoadableNavigation = Loadable({
-  loader: () => import('../Navigation'),
+  loader: () => import('../Navigation/Mobile'),
   loading: Loading,
 })
 const LoadableStandalonePost = Loadable({
@@ -77,6 +77,10 @@ export default class App extends Component {
                     }}
                 />
                 <Switch>
+                  <Route
+                      component={MobileNavbar}
+                      path="/mobilenavbar"
+                  />
                   <Route
                       component={LoadableLogin}
                       exact
