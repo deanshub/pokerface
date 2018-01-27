@@ -11,14 +11,18 @@ import style from './style.css'
 @observer
 export default class Navigation extends Component {
 
+  onClose(){
+    this.props.onClose()
+  }
+
   render() {
-    const {auth, events, open, onClose} = this.props
+    const {auth, events, open} = this.props
     const {username} = auth.user
 
     return (
       <div className={classnames(style.container, {[style.closed]:!open})}>
         <div className={classnames(style.header)}>
-          <div className={classnames(style.back)} onClick={() => onClose()}/>
+          <div className={classnames(style.back)} onClick={::this.onClose}/>
           <div className={classnames(style.title)}>
             Pokerface
           </div>
@@ -28,7 +32,8 @@ export default class Navigation extends Component {
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               exact
-              to="/mobilenavbar"
+              onClick={::this.onClose}
+              to="/"
           >
             <div className={classnames(style.home)}/>
             Home
@@ -36,6 +41,7 @@ export default class Navigation extends Component {
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
+              onClick={::this.onClose}
               to="/events"
           >
             <div className={classnames(style.events)}>
@@ -46,6 +52,7 @@ export default class Navigation extends Component {
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
+              onClick={::this.onClose}
               to={`/profile/${username}`}
           >
             <div className={classnames(style.profile)}/>
@@ -54,6 +61,7 @@ export default class Navigation extends Component {
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
+              onClick={::this.onClose}
               to="/smart"
           >
             <div className={classnames(style.chart)}/>
@@ -62,6 +70,7 @@ export default class Navigation extends Component {
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
+              onClick={::this.onClose}
               to="/timer"
           >
             <div className={classnames(style.blindsTimer)}/>

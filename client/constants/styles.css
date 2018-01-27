@@ -51,3 +51,6 @@ $disabled: #24222e;
 @value hoverDeleteColor: #ff5a5a;
 @value expandableBackColor: #3f3c4d;
 @value qrBottomBorderColor: #535168;
+
+/* mobile */
+@value mobileMaxWidth: 800;
