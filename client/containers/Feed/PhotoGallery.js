@@ -7,10 +7,6 @@ import Video from '../../components/basic/Video'
 import Modal from '../../components/basic/Modal'
 import Slider from '../../components/basic/Slider'
 
-import classnames from 'classnames'
-import style from './style.css'
-
-
 @inject('photoGallery')
 @observer
 export default class PhotoGallery extends Component {
@@ -21,7 +17,7 @@ export default class PhotoGallery extends Component {
       return (
         photo.type.startsWith('video')?
           <Video
-              autoplay
+              autoplay={index===photoGallery.photoIndex}
               controls
               key={index}
               src={photo.path} type={photo.type}
@@ -42,7 +38,7 @@ export default class PhotoGallery extends Component {
           open={photoGallery.open}
           simple
       >
-        <Slider autoplay displayItemIndex={photoGallery.photoIndex}>
+        <Slider displayItemIndex={photoGallery.photoIndex}>
           {items}
         </Slider>
       </Modal>

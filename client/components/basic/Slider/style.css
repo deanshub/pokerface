@@ -29,12 +29,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition-duration: 1s;
 }
 
 .playingItemContainer > * {
   max-width: 100%;
   max-height: 100%;
+}
+
+.previousItemContainer {
+  left: -100%;
+}
+
+.nextItemContainer {
+  left: 100%;
 }
 
 .navButton{
@@ -72,4 +79,44 @@
 
 .autoplay:hover{
   text-shadow: 0px 0px 0.5em white;
+}
+
+@keyframes left-out {
+  from {transform: translate(100%, 0px);}
+  to {transform: translate(0px, 0px);}
+}
+
+.leftOut {
+  animation: left-out 1s;
+}
+
+@keyframes left-in {
+    from {transform: translate(100%, 0px);}
+    to {transform: translate(0px, 0px);}
+}
+
+.leftIn {
+  animation: left-in 1s;
+}
+
+@keyframes right-out {
+  from {transform: translate(-100%, 0px);}
+  to {transform: translate(0px, 0px);}
+}
+
+.rightOut {
+  animation: right-out 1s;
+}
+
+@keyframes right-in {
+    from {transform: translate(-100%, 0px);}
+    to {transform: translate(0px, 0px);}
+}
+
+.rightIn {
+  animation: right-in 1s;
+}
+
+.hidden {
+  display: none;
 }

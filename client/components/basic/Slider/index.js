@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import classnames from 'classnames'
 import style from './style.css'
 
+const NAV_NEXT = 'next'
+const NAV_PREVIOUS = 'previous'
 
-export default class SliderPokerface extends Component {
+export default class Slider extends Component {
   static defaultProps = {
     displayItemIndex: 0,
     autoplay:false,
     displayItemsDuration:[],
+    permanentItems:[],
     defaultDisplayDuration: 3000
   }
 
@@ -34,6 +37,7 @@ export default class SliderPokerface extends Component {
 
     const timeoutCallback = () => {
       const nextDisplayItem = this.nextIndex()
+
       this.setState({displayItemIndex:nextDisplayItem})
       this.timeout = setTimeout(timeoutCallback, this.displayItemTime(nextDisplayItem))
     }
@@ -41,7 +45,7 @@ export default class SliderPokerface extends Component {
     this.timeout = setTimeout(timeoutCallback, this.displayItemTime(displayItemIndex))
   }
 
-  updateItem(newIndex){
+  updateItem(newIndex, lastAction){
     const {autoplay} = this.props
 
     if (autoplay){
@@ -49,7 +53,7 @@ export default class SliderPokerface extends Component {
       this.setAutoplayTimeout()
     }
 
-    this.setState({displayItemIndex:newIndex})
+    this.setState({displayItemIndex:newIndex, lastAction})
   }
 
   nextIndex(){
@@ -60,7 +64,7 @@ export default class SliderPokerface extends Component {
   }
 
   nextItem(){
-    this.updateItem(this.nextIndex())
+    this.updateItem(this.nextIndex(), NAV_NEXT)
   }
 
   previousIndex(){
@@ -70,7 +74,7 @@ export default class SliderPokerface extends Component {
   }
 
   previousItem(){
-    this.updateItem(this.previousIndex())
+    this.updateItem(this.previousIndex(), NAV_PREVIOUS)
   }
 
   displayItemTime(index){
@@ -80,11 +84,51 @@ export default class SliderPokerface extends Component {
     return (duration && duration > 0)?duration:defaultDisplayDuration
   }
 
-  render(){
-    const {displayItemIndex} = this.state
-    const {children} = this.props
+  getItemsToRender(){
+    const {displayItemIndex, lastAction} = this.state
+    const {children, permanentItems} = this.props
     const previousIndex = this.previousIndex()
     const nextIndex = this.nextIndex()
+
+    // Render the items sorted by key
+    const items = children.reduce((list, currentItem, currentIndex) => {
+
+      let className
+
+      // Current display item
+      if(currentIndex === displayItemIndex){
+        className = classnames(style.playingItemContainer, {[style.leftIn]:lastAction===NAV_NEXT, [style.rightIn]:lastAction===NAV_PREVIOUS})
+
+      // The previous item by next click
+      } else if (lastAction===NAV_NEXT && currentIndex === previousIndex){
+        className = classnames(style.playingItemContainer, style.previousItemContainer, style.leftOut)
+
+      // The previous item by previous click
+      } else if (lastAction===NAV_PREVIOUS && currentIndex === nextIndex){
+        className = classnames(style.playingItemContainer, style.nextItemContainer, style.rightOut)
+
+      // Permanen tItems
+      } else if (permanentItems.includes(currentIndex)){
+        className = classnames(style.playingItemContainer, style.hidden)
+      }
+
+      if (className){
+        list.push(
+          <div className={className} key={currentIndex}>
+            {currentItem}
+          </div>
+        )
+      }
+
+      return list
+    },[])
+
+
+    return items
+  }
+
+  render(){
+    const {children} = this.props
     const onlyOnePhoto = children.length === 1
 
     return (
@@ -96,23 +140,7 @@ export default class SliderPokerface extends Component {
           />
           <div className={classnames(style.sliderDisplay)}>
             <div className={classnames(style.allItems)}>
-              <div
-                  className={classnames(style.playingItemContainer)}
-                  key={previousIndex}
-                  style={{transform: 'translate(-100%,0px)'}}
-              >
-                {children[previousIndex]}
-              </div>
-              <div className={classnames(style.playingItemContainer)} key={displayItemIndex}>
-                {children[displayItemIndex]}
-              </div>
-              <div
-                  className={classnames(style.playingItemContainer)}
-                  key={nextIndex}
-                  style={{transform: 'translate(100%,0px)'}}
-              >
-                {children[nextIndex]}
-              </div>
+              {this.getItemsToRender()}
             </div>
           </div>
           <div
