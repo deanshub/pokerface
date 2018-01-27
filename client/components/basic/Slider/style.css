@@ -29,6 +29,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 
 .playingItemContainer > * {
@@ -65,6 +66,11 @@
   @extend .navButton;
   background-image: url('../../../assets/actions/next-large.png');
   right: -20%;
+}
+
+.disabledNavButton {
+  cursor: default;
+  opacity: 0.3;
 }
 
 .autoplay{
