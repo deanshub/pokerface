@@ -128,14 +128,13 @@ export default class Slider extends Component {
 
   render(){
     const {children} = this.props
-    const onlyOnePhoto = children.length === 1
+    const moreThenOnePhoto = children.length > 1
 
     return (
         <div className={classnames(style.container)}>
           <div
-              className={classnames(style.previous)}
-              disabled={onlyOnePhoto}
-              onClick={::this.previousItem}
+              className={classnames(style.previous, {[style.disabledNavButton]:!moreThenOnePhoto})}
+              onClick={moreThenOnePhoto && ::this.previousItem}
           />
           <div className={classnames(style.sliderDisplay)}>
             <div className={classnames(style.allItems)}>
@@ -143,9 +142,8 @@ export default class Slider extends Component {
             </div>
           </div>
           <div
-              className={classnames(style.next)}
-              disabled={onlyOnePhoto}
-              onClick={::this.nextItem}
+              className={classnames(style.next, {[style.disabledNavButton]:!moreThenOnePhoto})}
+              onClick={moreThenOnePhoto && ::this.nextItem}
           />
           {/* <div className={classnames(style.autoplay)}>
             {autoplay?'Stop Sliding':'Auto Sliding'}
