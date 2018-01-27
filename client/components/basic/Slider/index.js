@@ -123,7 +123,6 @@ export default class Slider extends Component {
       return list
     },[])
 
-
     return items
   }
 
