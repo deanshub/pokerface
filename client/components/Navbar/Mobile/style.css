@@ -9,7 +9,6 @@
   height: 100%;
   width: 100%;
   color: #b4b4cc;
-  font-size: 2em;
   top: 0;
   z-index: 6;
   transition-duration: 400ms;
@@ -24,14 +23,21 @@
   display: flex;
   align-items: center;
   position: relative;
-  margin: 2em 1em;
 }
 
 .back {
-  position: absolute;
-  background-image:url('../../../assets/mobile/x-menu@3x.png');
-  width: 102px;
-  height: 102px;
+  width: 34px;
+  height: 34px;
+  padding: 1.2em 1.43em;
+  background-image:url('../../../assets/mobile/x-menu.png');
+  background-position: 1.43em 1.2em;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  box-sizing: initial;
+}
+
+.back:hover {
+  background-image:url('../../../assets/mobile/x-menu-hover.png');
 }
 
 .title {
@@ -47,7 +53,7 @@
   justify-content: flex-start;
   align-content: center;
   flex-wrap: wrap;;
-  width: calc(162px * 3 + 4.8em);
+  width: calc(65px * 3 + 3.2em);
   margin: auto;
   text-align: center;
   margin-bottom: 2em;
@@ -58,8 +64,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: .8em;
-  width: min-content;
+  margin: .5em;
+  width: 65px;
   color: #a0a0b5;
   line-height: 1.3em;
 }
@@ -70,8 +76,8 @@
 
 .icon {
   position: relative;
-  width: 162px;
-  height: 162px;
+  width: 54px;
+  height: 54px;
 
   > * {
     position: absolute;
@@ -82,27 +88,27 @@
 
 .home {
   @extend .icon;
-  background-image:url('../../../assets/mobile/navbar/home@3x.png');
+  background-image:url('../../../assets/mobile/navbar/home.png');
 }
 
 .events {
   @extend .icon;
-  background-image:url('../../../assets/mobile/navbar/events@3x.png');
+  background-image:url('../../../assets/mobile/navbar/events.png');
 }
 
 .profile {
   @extend .icon;
-  background-image:url('../../../assets/mobile/navbar/profile@3x.png');
+  background-image:url('../../../assets/mobile/navbar/profile.png');
 }
 
 .chart {
   @extend .icon;
-  background-image:url('../../../assets/mobile/navbar/chart@3x.png');
+  background-image:url('../../../assets/mobile/navbar/chart.png');
 }
 
 .blindsTimer {
   @extend .icon;
-  background-image:url('../../../assets/mobile/navbar/timer@3x.png');
+  background-image:url('../../../assets/mobile/navbar/timer.png');
 }
 
 .navbarRouteItemActive {
@@ -110,35 +116,38 @@
   color: #41c86a;
 
   .home {
-    background-image:url('../../../assets/mobile/navbar/home-selected@3x.png');
+    background-image:url('../../../assets/mobile/navbar/home-selected.png');
   }
 
   .events {
-    background-image:url('../../../assets/mobile/navbar/events-selected@3x.png');
+    background-image:url('../../../assets/mobile/navbar/events-selected.png');
   }
 
   .profile {
-    background-image:url('../../../assets/mobile/navbar/profile-selected@3x.png');
+    background-image:url('../../../assets/mobile/navbar/profile-selected.png');
   }
 
   .chart {
-    background-image:url('../../../assets/mobile/navbar/chart-selected@3x.png');
+    background-image:url('../../../assets/mobile/navbar/chart-selected.png');
   }
 
   .blindsTimer {
-    background-image:url('../../../assets/mobile/navbar/timer-selected@3x.png');
+    background-image:url('../../../assets/mobile/navbar/timer-selected.png');
   }
 
 }
 
 .divider {
-  border-top: 2px solid #a0a0b5;
+  border-top: 1px solid #a0a0b5;
   margin: 0px 3em;
 }
 
 .footer {
   display: flex;
   flex-direction: row-reverse;
-  margin: 2em;
   text-transform: uppercase;
+}
+
+.logout {
+  padding: 1.2em 1.43em;
 }

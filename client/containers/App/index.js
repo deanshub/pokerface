@@ -52,6 +52,7 @@ export default class App extends Component {
               <link href="http://pokerface.io" rel="canonical" />
               <meta content="Social platform for poker players" name="description" />
               <meta content={`http://pokerface.io${require('../../assets/logo.png')}`} property="og:image" />
+              <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
               <link href={require('../../assets/logo.png')} rel="image_src"/>
               <link
                   href={require('../../assets/favicon-32x32.png')}

@@ -1,5 +1,6 @@
 @import "../../constants/styles";
 
+/* heaader */
 .header {
   width: 100%;
   display: flex;
@@ -9,14 +10,12 @@
   z-index: 4;
   justify-content: space-between;
   align-items: center;
-  padding-left: 1.2em;
-  padding-right: 1.2em;
 }
 
 .title {
   color: #b4b4cc;
   font-size: 2em;
-  padding: 0.5em;
+  padding: 0.5em 0.71em;
   font-weight: bold;
   display: flex;
   line-height: 1.1em;
@@ -30,12 +29,47 @@
   }
 }
 
+.menu {
+  width: 34px;
+  height: 34px;
+  padding: 1.2em 1.43em;
+  background-image: url('../../assets/mobile/menu-mobile.png');
+  background-position: 1.43em 1.2em;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  box-sizing: initial;
+}
+
+.menu:hover {
+  background-image: url('../../assets/mobile/menu-mobile-hover.png');
+}
+
+.logo {
+  padding: 10px;
+}
+
+.search {
+  width: 34px;
+  height: 34px;
+  padding: 1.2em 1.43em;
+  background-image: url('../../assets/mobile/search-mobile.png');
+  background-position: 1.43em 1.2em;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  box-sizing: initial;
+}
+
+.search:hover {
+  background-image: url('../../assets/mobile/search-mobile-hover.png');
+}
+
 /* topMenu */
 .triggerContainer {
   position: relative;
   display: flex;
   align-items: center;
   cursor:pointer;
+  padding-right: 1.43em;
 
   .avatar {
     margin-right: 0.5em;
@@ -65,7 +99,7 @@
 
 .mobileContainer {
   padding: 1.43em;
-  padding-top: calc(100px + 1.4em);
+  padding-top: calc(60px + 1.5em);
 }
 
 .navbar {
@@ -125,8 +159,4 @@
 
 .content {
   flex: 4.5;
-}
-
-.logo {
-  padding: 10px;
 }

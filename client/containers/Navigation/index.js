@@ -16,9 +16,7 @@ import IsMobile from '../../components/IsMobile'
 import classnames from 'classnames'
 import style from './style.css'
 import image from '../../assets/landing logo.png'
-import menu from '../../assets/mobile/menu-mobile@2x.png'
-import logo from '../../assets/mobile/logo-mobile@2x.png'
-import search from '../../assets/mobile/search@2x.png'
+import logo from '../../assets/mobile/logo-mobile.png'
 
 const LoadableLearn = Loadable({
   loader: () => import('../../components/Learn'),
@@ -67,13 +65,9 @@ export default class Navigation extends Component {
   getHeader(isMobile){
     return isMobile?
       <div className={classnames(style.header)}>
-        <img
-            className={classnames(style.menu)}
-            onClick={::this.openMobileNavbar}
-            src={menu}
-        />
+        <div className={classnames(style.menu)} onClick={::this.openMobileNavbar} />
         <img className={classnames(style.logo)} src={logo}/>
-        <img className={classnames(style.search)} src={search}/>
+        <div className={classnames(style.search)}/>
       </div>
     :
     <div className={classnames(style.header)}>

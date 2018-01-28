@@ -80,7 +80,9 @@ export default class Navigation extends Component {
         <div className={classnames(style.divider)}/>
         <div className={classnames(style.footer)}>
           <div className={classnames(style.footerItem)}>
-            Logout
+            <div className={classnames(style.logout)}>
+              Logout
+            </div>
           </div>
         </div>
       </div>
