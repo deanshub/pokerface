@@ -12,6 +12,7 @@ export default class Modal extends Component {
       closeOnBlur,
       simple,
       inverted,
+      compact,
     } = this.props
     if (open){
       let overlayProps = {}
@@ -28,7 +29,7 @@ export default class Modal extends Component {
       return(
         <div className={classnames(style.overlay, {[style.inverted]: inverted})} {...overlayProps}>
           <ResponsiveContainer
-              desktopClassName={classnames(style.modalContainer, {[style.modalBackground]: !simple})}
+              desktopClassName={classnames(style.modalContainer, {[style.modalBackground]: !simple, [style.compact]: compact})}
               mobileClassName={classnames(style.mobileModalContainer, {[style.inverted]: inverted})}
               {...containerProps}
           >
