@@ -12,7 +12,7 @@ import Navbar from '../../components/Navbar'
 import MobileNavbar from '../../components/Navbar/Mobile'
 import TopMenu from './TopMenu'
 import IsMobile from '../../components/IsMobile'
-
+import ResponsiveContainer from '../../components/ResponsiveContainer'
 import classnames from 'classnames'
 import style from './style.css'
 import image from '../../assets/landing logo.png'
@@ -84,21 +84,6 @@ export default class Navigation extends Component {
   render() {
     const {navbarOpen} = this.state
 
-    const Container = ({children}) => {
-      return (
-        <IsMobile
-            render={(isMobile) => {
-              const className = isMobile?style.mobileContainer:style.container
-              return (
-                  <div className={classnames(className)}>
-                  {children}
-                </div>
-              )
-            }}
-        />
-      )
-    }
-
     return (
       <DocumentTitle title="Pokerface.io">
         <div>
@@ -107,7 +92,10 @@ export default class Navigation extends Component {
           }
 
           <IsMobile render={::this.getHeader}/>
-          <Container>
+          <ResponsiveContainer
+              desktopClassName={classnames(style.container)}
+              mobileClassName={classnames(style.mobileContainer)}
+          >
             <IsMobile
                 render={(isMobile) => {
                   return !isMobile?
@@ -158,7 +146,7 @@ export default class Navigation extends Component {
                 <Route component={LoadableNoMatch}/>
               </Switch>
             </div>
-          </Container>
+          </ResponsiveContainer>
           <IsMobile
               render={(isMobile) => {
                 return isMobile?<MobileNavbar onClose={::this.onCloseMobileNavbar} open={navbarOpen}/>:null

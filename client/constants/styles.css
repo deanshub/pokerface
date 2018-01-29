@@ -54,3 +54,4 @@ $disabled: #24222e;
 
 /* mobile */
 @value mobileMaxWidth: 800;
+$mobileMaxWidth: 800px;

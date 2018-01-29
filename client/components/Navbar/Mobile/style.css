@@ -26,14 +26,16 @@
 }
 
 .back {
+  position: absolute;
   width: 34px;
   height: 34px;
-  padding: 1.2em 1.43em;
+  padding: 10px 10px;
   background-image:url('../../../assets/mobile/x-menu.png');
-  background-position: 1.43em 1.2em;
+  background-position: 10px 10px;
   background-repeat: no-repeat;
   cursor: pointer;
   box-sizing: initial;
+  margin-top: 3px;
 }
 
 .back:hover {
@@ -44,6 +46,8 @@
   flex: 1;
   text-align: center;
   font-size: 2em;
+  height: 40px;
+  line-height: 40px;
 }
 
 .navbar {
@@ -81,7 +85,7 @@
 
   > * {
     position: absolute;
-    bottom: 27px;
+    bottom: 3px;
     right: -0.2em;
   }
 }

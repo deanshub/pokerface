@@ -32,9 +32,9 @@
 .menu {
   width: 34px;
   height: 34px;
-  padding: 1.2em 1.43em;
+  padding: 0.5em 1.43em;
   background-image: url('../../assets/mobile/menu-mobile.png');
-  background-position: 1.43em 1.2em;
+  background-position: 1.43em 0.5em;
   background-repeat: no-repeat;
   cursor: pointer;
   box-sizing: initial;
@@ -45,15 +45,15 @@
 }
 
 .logo {
-  padding: 10px;
+  padding: 5px;
 }
 
 .search {
   width: 34px;
   height: 34px;
-  padding: 1.2em 1.43em;
+  padding: 0.5em 1.43em;
   background-image: url('../../assets/mobile/search-mobile.png');
-  background-position: 1.43em 1.2em;
+  background-position: 1.43em 0.5em;
   background-repeat: no-repeat;
   cursor: pointer;
   box-sizing: initial;
@@ -98,8 +98,8 @@
 }
 
 .mobileContainer {
-  padding: 1.43em;
-  padding-top: calc(60px + 1.5em);
+  /* padding: 1.43em; */
+  padding-top: 62px;
 }
 
 .navbar {

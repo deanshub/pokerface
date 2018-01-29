@@ -5,6 +5,7 @@ import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import AddPlay from '../../components/AddPlay'
 import IsUserLoggedIn from '../../components/IsUserLoggedIn'
+import ResponsiveContainer from '../../components/ResponsiveContainer'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -42,7 +43,10 @@ export default class FeedContainer extends Component {
     const { feed } = this.props
 
     return (
-      <div className={classnames(style.container)}>
+      <ResponsiveContainer
+          desktopClassName={classnames(style.container)}
+          mobileClassName={classnames(style.mobileContainer)}
+      >
         <IsUserLoggedIn>
           <AddPlay />
         </IsUserLoggedIn>
@@ -59,7 +63,7 @@ export default class FeedContainer extends Component {
           </Feed>
           <PhotoGallery/>
         </div>
-    </div>
+      </ResponsiveContainer>
     )
   }
 }
