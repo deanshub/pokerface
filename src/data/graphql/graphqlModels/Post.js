@@ -106,7 +106,11 @@ export const resolvers = {
     createPost: (_, {content, photos, eventId}, context)=>{
       const files = (photos||[]).map(photo=>{
         const filename = path.parse(photo.path).base
-        return {path:filename, type:photo.type}
+        if (photo.type.includes('image')||photo.type.includes('video')){
+          return {path:filename, type:photo.type}
+        }else{
+          throw new Error(`Can't upload a file with type ${photo.type}`)
+        }
       })
 
       return new DB.models.Post({
