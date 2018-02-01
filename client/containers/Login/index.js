@@ -16,7 +16,6 @@ import style from './style.css'
 import SelectUserModal from '../SelectUserModal'
 import ForgotPasswordModal from './ForgotPasswordModal'
 
-// TODO: remove loginForm and signUpForm components when done
 @inject('routing')
 @inject('auth')
 @observer

@@ -19,6 +19,7 @@ export default class Button extends Component {
       leftIcon,
       disable,
       small,
+      stretch,
       ...restProps
     } = this.props
 
@@ -34,6 +35,7 @@ export default class Button extends Component {
             {[style.simple]: simple},
             {[style.hidden]: hidden},
             {[style.small]: small},
+            {[style.stretch]: stretch}
           )}
           href={href}
           onClick={(e)=>onClick(e, e.target)}

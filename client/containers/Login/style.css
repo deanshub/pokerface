@@ -114,30 +114,12 @@
   background-color: landingLineColor;
 }
 
-.label{
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  padding: 1em;
-  text-transform: none;
-}
-.success{
-  background-color: successColor;
-}
-.error{
-  background-color: errorColor;
-}
-
 .uppercase{
   text-transform: uppercase;
 }
 
-.forgotPassord {
-  margin-left: 1em;
-  cursor: pointer;
+.forgotPasswordContent {
+  width: 17em;
 }
 
 

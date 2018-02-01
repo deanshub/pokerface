@@ -3,10 +3,10 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import { observer, inject } from 'mobx-react'
-import { Container, Loader, Segment } from 'semantic-ui-react'
 import NoMatch from '../../components/NoMatch'
 import Logo from '../../components/Logo'
 import Button from '../../components/basic/Button'
+import Loading from '../../components/basic/Loading'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import classnames from 'classnames'
@@ -33,20 +33,16 @@ export default class StandalonePost extends Component {
     const {loading, post} = feed.standalonePost
 
     return (
-      <Container
-          style={{width:'80vw', maxWidth: 'none'}}
-          text
-          textAlign="center"
-      >
+      <div>
         <PhotoGallery/>
-        <Segment basic>
+        <div>
           <a href="/" onClick={::this.goHome}>
             <Logo/>
           </a>
-        </Segment>
+        </div>
         {
           loading?
-          <Loader active inline="centered">Loading</Loader>
+          <Loading/>
           :
           post?
             <Post
@@ -68,7 +64,7 @@ export default class StandalonePost extends Component {
             </Button>
           </div>
         }
-      </Container>
+      </div>
     )
   }
 }

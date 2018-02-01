@@ -71,7 +71,7 @@
   margin: .5em;
   width: 65px;
   color: #a0a0b5;
-  line-height: 1.3em;
+  line-height: 1.3;
 }
 
 .navbarRouteItem:hover {

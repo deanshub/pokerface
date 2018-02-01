@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Grid, Icon, Input, List, Button } from 'semantic-ui-react'
+import Button from '../basic/Button'
+import Input from '../basic/Input'
 import { observer, inject } from 'mobx-react'
 
 @inject('players')
@@ -12,33 +13,33 @@ export default class Winnings extends Component {
   render() {
     const {user, players} = this.props
     return (
-      <Grid.Row>
-        <List horizontal>
-          <List.Item>
-            <Icon name="trophy"/>
-          </List.Item>
-          {user.winnings.map((win, index)=>
-            <List.Item key={win.key}>
+      <div>
+        <div>
+          <div>
+            {/* <Icon name="trophy"/> */}
+          </div>
+          {user.winnings.map((win)=>
+            <div key={win.key}>
               <Input
-                  action={<Button icon="remove" onClick={()=>players.removeWin(user.username, index)}/>}
+                  // action={<Button icon="remove" onClick={()=>players.removeWin(user.username, index)}/>}
                   actionPosition="left"
                   defaultValue={win.value}
                   placeholder="0"
                   size="mini"
               />
-            </List.Item>
+            </div>
           )}
-          <List.Item>
+          <div>
             <Button
                 icon
                 onClick={()=>players.addWin(user.username)}
                 size="mini"
             >
-              <Icon name="add" />
+              add
             </Button>
-          </List.Item>
-        </List>
-      </Grid.Row>
+          </div>
+        </div>
+      </div>
     )
   }
 }
