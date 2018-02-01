@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import DropDown from '../../components/basic/DropDown'
 import SelectUserModal from '../SelectUserModal'
 import EditInfoModal from '../../components/Cover/EditInfoModal'
+import Image from '../../components/basic/Image'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -23,6 +24,13 @@ export default class TopMenu extends Component {
     routing.replace('/login')
   }
 
+  moveToProfile(){
+    const {auth, routing} = this.props
+    const {username} = auth.user
+
+    routing.push(`/profile/${username}`)
+  }
+
   toggleEditPersonalInfo(){
     this.setState({
       editingPersonalInfo: !this.state.editingPersonalInfo,
@@ -35,23 +43,37 @@ export default class TopMenu extends Component {
 
     const {user} = auth
     const {editingPersonalInfo, selectUserModalOpen} = this.state
-    const trigger = <div
-        className={classnames(style.config)}
-        onBlur={() => {this.setState({showTopMenu:false})}}
-        onClick={() => {this.setState({showTopMenu:true})}}
-    />
+    const trigger = (
+        <div
+            className={classnames(style.triggerContainer)}
+            onBlur={() => {this.setState({showTopMenu:false})}}
+            onClick={() => {this.setState({showTopMenu:true})}}
+        >
+          <Image
+              avatar
+              className={classnames(style.avatar)}
+              small
+              src={user.avatar}
+          />
+          <div className={classnames(style.configPointer)}/>
+        </div>
+    )
 
     return (
       <div>
-        <DropDown trigger={trigger}>
+        <DropDown oneClick trigger={trigger}>
           <div className={classnames(style.topMenu)}>
-           <div className={classnames(style.topMenuItem, style.signedInAsCard)}>
-             <img src={user.avatar}/>
-             <div>
-               <div className={classnames(style.name)}>{user.fullname}</div>
-               <div className={classnames(style.email)}>{user.email}</div>
-             </div>
+            <div
+                className={classnames(style.topMenuItem, style.signedInAsCard)}
+                onClick={::this.moveToProfile}
+            >
+              <img src={user.avatar}/>
+              <div>
+                <div className={classnames(style.name)}>{user.fullname}</div>
+                <div className={classnames(style.email)}>{user.email}</div>
+              </div>
            </div>
+           <div className={classnames(style.divider)}/>
            <div
                className={classnames(style.topMenuItem, style.topMenuClickableItem)}
                onClick={::this.toggleEditPersonalInfo}

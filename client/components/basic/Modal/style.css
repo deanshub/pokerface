@@ -6,22 +6,29 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 5;
+  z-index: 200;
   padding: 4%;
   background-color: rgba(255,255,255,0.7);
 }
+
+.inverted{
+  background-color: rgba(0,0,0,0.7);
+}
+
 .modalContainer{
   padding: 24px;
   display: flex;
   flex-direction: column;
-  background-color: $white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px 0 #000000;
   margin: 0 auto;
   width: 50%;
   height: 100%;
   min-height: 0;
   min-width: 500px;
+}
+.modalBackground{
+  background-color: $white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 #000000;
 }
 
 .modalHeader{
