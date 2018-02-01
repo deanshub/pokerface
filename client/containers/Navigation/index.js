@@ -5,7 +5,7 @@ import DocumentTitle from 'react-document-title'
 import DevTools from 'mobx-react-devtools'
 import { Route, Switch } from 'react-router-dom'
 import Loadable from 'react-loadable'
-import Loading from '../../components/basic/Loading'
+import Loader from '../../components/basic/Loader'
 import Feed from '../Feed'
 import RebrandedBlindsTimer from '../RebrandedBlindsTimer'
 import Navbar from '../../components/Navbar'
@@ -20,27 +20,27 @@ import logo from '../../assets/mobile/logo-mobile.png'
 
 const LoadableLearn = Loadable({
   loader: () => import('../../components/Learn'),
-  loading: Loading,
+  loading: Loader,
 })
 const LoadableNoMatch = Loadable({
   loader: () => import('../../components/NoMatch'),
-  loading: Loading,
+  loading: Loader,
 })
 const LoadableSpotNote = Loadable({
   loader: () => import('../../components/SpotNote'),
-  loading: Loading,
+  loading: Loader,
 })
 const LoadableProfile = Loadable({
   loader: () => import('../../components/Profile'),
-  loading: Loading,
+  loading: Loader,
 })
 const LoadableSingleEvent = Loadable({
   loader: () => import('../Event'),
-  loading: Loading,
+  loading: Loader,
 })
 const LoadableEvents = Loadable({
   loader: () => import('../Events'),
-  loading: Loading,
+  loading: Loader,
 })
 
 

@@ -8,26 +8,26 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import { Provider } from 'mobx-react'
 import {Helmet} from 'react-helmet'
 import Loadable from 'react-loadable'
-import Loading from '../../components/basic/Loading'
+import Loader from '../../components/basic/Loader'
 import logger from '../../utils/logger'
 import 'semantic-ui-css/semantic.min.css'
 import PrivateRoute from './PrivateRoute'
 
 const LoadableLogin = Loadable({
   loader: () => import('../Login'),
-  loading: Loading,
+  loading: Loader,
 })
 const LoadableSettingPassword = Loadable({
   loader: () => import('../SettingPassword'),
-  loading: Loading,
+  loading: Loader,
 })
 const LoadableNavigation = Loadable({
   loader: () => import('../Navigation'),
-  loading: Loading,
+  loading: Loader,
 })
 const LoadableStandalonePost = Loadable({
   loader: () => import('../Feed/StandalonePost'),
-  loading: Loading,
+  loading: Loader,
 })
 
 import classnames from 'classnames'

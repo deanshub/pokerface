@@ -138,6 +138,7 @@ export default class Login extends Component {
       email,
       signingupSuccess,
       signingupInFail,
+      signingupInPorgress,
       signingupFailMessage,
     } = this.state
 
@@ -175,6 +176,7 @@ export default class Login extends Component {
                     Forgot password?
                   </a>
                   <Button
+                      loading={loggingInPorgress}
                       primary
                       type="submit"
                   >
@@ -239,6 +241,7 @@ export default class Login extends Component {
                   style={{padding:'0.7em'}}
               />
               <Button
+                  loading={signingupInPorgress}
                   primary
                   style={{width: '98%', margin: '1em auto', textTransform: 'uppercase'}}
                   type="submit"

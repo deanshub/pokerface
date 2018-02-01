@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Feed, Loader } from 'semantic-ui-react'
+import Loader from '../../components/basic/Loader'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import AddPlay from '../../components/AddPlay'
@@ -51,16 +51,12 @@ export default class FeedContainer extends Component {
           <AddPlay />
         </IsUserLoggedIn>
         <div>
-          <Feed>
             {feed.parsedPosts.map(post=><Post key={post.id} post={post}/>)}
             {feed.loading?
-              <Feed.Event>
-                 <Loader active inline="centered">Loading</Loader>
-              </Feed.Event>
+              <Loader compact/>
             :
               null
             }
-          </Feed>
           <PhotoGallery/>
         </div>
       </ResponsiveContainer>

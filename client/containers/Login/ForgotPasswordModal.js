@@ -55,7 +55,7 @@ export default class LoginForm extends Component {
   render(){
     const {open} = this.props
     const {
-      //loading,
+      loading,
       success,
       error,
       errorMessage,
@@ -105,7 +105,13 @@ export default class LoginForm extends Component {
                 <Button onClick={::this.onClose} primary>OK</Button>
               :
               [
-                <Button onClick={::this.handleSending} primary>Send</Button>,
+                <Button
+                    loading={loading}
+                    onClick={::this.handleSending}
+                    primary
+                >
+                  Send
+                </Button>,
                 <Button onClick={::this.onClose}>Close</Button>,
               ]
             }

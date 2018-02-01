@@ -97,7 +97,6 @@ export default class SettingPassword extends Component {
       settingFailed,
     } = this.state
 
-
     return (
       <PublicPageTemplate horizontal>
         {
@@ -138,6 +137,7 @@ export default class SettingPassword extends Component {
               />
               <div className={classnames(style.buttonContainer)}>
                 <Button
+                    loading={settingChecking}
                     onClick={::this.handleSettingPassowrd}
                     primary
                     stretch
@@ -145,7 +145,6 @@ export default class SettingPassword extends Component {
                     Set password
                 </Button>
               </div>
-
               <Message
                   displayNone={!clientError}
                   error

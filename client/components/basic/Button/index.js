@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Loader from '../Loader'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -20,6 +21,7 @@ export default class Button extends Component {
       disable,
       small,
       stretch,
+      loading,
       ...restProps
     } = this.props
 
@@ -37,6 +39,7 @@ export default class Button extends Component {
             {[style.small]: small},
             {[style.stretch]: stretch}
           )}
+          disabled={loading}
           href={href}
           onClick={(e)=>onClick(e, e.target)}
           {...restProps}
@@ -49,7 +52,11 @@ export default class Button extends Component {
               )}
           />
         }
-        {children}
+        {loading?
+          <Loader bright={primary} small/>
+        :
+          children
+        }
       </ContainerElement>
     )
   }

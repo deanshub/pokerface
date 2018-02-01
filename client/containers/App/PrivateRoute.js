@@ -3,11 +3,11 @@ import React,{Component} from 'react'
 import { Route, Redirect } from 'react-router'
 import { observer, inject } from 'mobx-react'
 import Loadable from 'react-loadable'
-import Loading from '../../components/basic/Loading'
+import Loader from '../../components/basic/Loader'
 
 const LoadableSingleEvent = Loadable({
   loader: () => import('../Event'),
-  loading: Loading,
+  loading: Loader,
 })
 
 @inject('auth')
@@ -28,7 +28,7 @@ export default class PrivateRoute extends Component {
           render={(props) => {
             if (auth.authenticating) {
               return (
-                <Loading/>
+                <Loader/>
               )
             }else if (auth.user.username){
               return (
