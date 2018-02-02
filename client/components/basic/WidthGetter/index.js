@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export default class WidthGetter extends Component {
   static propTypes = {
-    render: PropTypes.function,
+    render: PropTypes.func.isRequired,
   }
 
   constructor(props) {

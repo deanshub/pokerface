@@ -7,7 +7,7 @@ import WidthGetter from '../basic/WidthGetter'
 
 export default class IsMobile extends Component {
   static propTypes = {
-    render: PropTypes.function,
+    render: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
