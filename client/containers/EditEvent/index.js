@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import Modal, {ModalHeader,ModalContent,ModalFooter}  from '../../components/basic/Modal'
-import Button from '../../components/basic/Button'
+import Button, {ButtonGroup} from '../../components/basic/Button'
 import Input from '../../components/basic/Input'
 import Select from '../../components/basic/Select'
 import Textarea from '../../components/basic/Textarea'
@@ -220,10 +220,14 @@ export default class EditEvent extends Component {
             {this.getForm()}
           </ModalContent>
           <ModalFooter>
-            <div className={classnames(style.buttons)}>
+            <ButtonGroup
+                horizontal
+                noEqual
+                reversed
+            >
               <Button onClick={::this.saveEvent} primary>Save</Button>
               <Button onClick={() => editEvent.closeEditEventModal()}> Cancel </Button>
-            </div>
+            </ButtonGroup>
           </ModalFooter>
         </Modal>
     )

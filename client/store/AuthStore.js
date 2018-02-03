@@ -113,6 +113,10 @@ export class AuthStore {
     return permissions && permissions.includes(CREATE_PUBLIC_EVENT)
   }
 
+  get isLoggedIn(){
+    return !!this.user.username
+  }
+
   // When login from facebook and google plus the jwt is put in the cookies
   // and we need to move it to local store
   moveCookieJwtToLocalStorage(){

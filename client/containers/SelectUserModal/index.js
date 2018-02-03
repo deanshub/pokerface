@@ -1,9 +1,12 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Modal, Button, Dimmer, Loader } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
-import SelectUser from '../../components/SelectUser'
+import Modal, { ModalHeader, ModalContent, ModalFooter } from '../../components/basic/Modal'
+import Button, {ButtonGroup} from '../../components/basic/Button'
+import UserSmallCard from '../../components/UserSmallCard'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('routing')
 @inject('auth')
@@ -51,24 +54,35 @@ export default class SelectUserModal extends Component {
 
     return (
       <Modal
+          compact
           onClose={onClose}
           open
-          size="mini"
       >
-        <Dimmer active={fetchOptionalUsers}>
-          <Loader>Loading</Loader>
-        </Dimmer>
-        <Modal.Header>
+        <ModalHeader>
           Please choose user
-        </Modal.Header>
-        <Modal.Content>
-          <SelectUser onSelectUser={::this.onSelectUser} users={optionalUsers}/>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button onClick={::this.cancel}>
-              Cancel
-          </Button>
-        </Modal.Actions>
+        </ModalHeader>
+        <ModalContent>
+          {optionalUsers.map((user) => (
+            <div
+                className={classnames(style.optionalUsers)}
+                key={user.username}
+                onClick={() => this.onSelectUser(user.username)}
+            >
+                <UserSmallCard header={user.fullname} image={user.avatar}/>
+            </div>
+          ))}
+        </ModalContent>
+        <ModalFooter>
+          <ButtonGroup
+              horizontal
+              noEqual
+              reversed
+          >
+            <Button onClick={::this.cancel}>
+                Cancel
+            </Button>
+          </ButtonGroup>
+        </ModalFooter>
       </Modal>
     )
   }

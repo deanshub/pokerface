@@ -3,8 +3,9 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-
-import { Grid, Header, Form, Container, Button, Message, Modal } from 'semantic-ui-react'
+import Input from '../../components/basic/Input'
+import Button from '../../components/basic/Button'
+import Message from '../../components/basic/Message'
 import request from 'superagent'
 import logger from '../../utils/logger'
 import PublicPageTemplate from '../../components/PublicPageTemplate'
@@ -20,7 +21,7 @@ export default class SettingPassword extends Component {
     super(props)
     this.state = {
       settingChecking: false,
-      undeterminedError: false,
+      clientError: false,
       errorMessage: null,
       settingFailed: false,
       settingSuccesseded: false,
@@ -82,7 +83,7 @@ export default class SettingPassword extends Component {
     }
 
     if (errorMessage){
-      this.setState({undeterminedError:true, errorMessage})
+      this.setState({clientError:true, errorMessage})
       return false
     }
     return true
@@ -91,66 +92,66 @@ export default class SettingPassword extends Component {
   render() {
     const {
       settingChecking,
-      undeterminedError,
+      clientError,
       errorMessage,
       settingFailed,
     } = this.state
 
-
     return (
       <PublicPageTemplate horizontal>
-        <Grid stretched verticalAlign="middle">
-          <Grid.Row centered stretched>
-            <Grid.Column width={4}>
-              {
-                settingFailed?
-                  <Container >
-                    <Header size="large">
-                      The setting password failed.
-                    </Header>
-                    <Header size="medium">
-                     The Registration might expired. <br/> Check your email for another messages or
-                     try to sign up again:
-                    </Header>
-                    <Button onClick={::this.signUpRedirect} primary>Sign-up</Button>
-                  </Container>
-                :
-                  <Form
-                      error={undeterminedError}
-                      loading={settingChecking}
-                      onSubmit={::this.handleSettingPassowrd}
-                  >
-                    <Header className={classnames(style.white)} size="medium">Setting Password</Header>
-                    <Form.Input
-                        className={classnames(style.white)}
-                        focus
-                        label="Password"
-                        name="password"
-                        onChange={::this.handleInputChange}
-                        placeholder="password"
-                        required
-                        type="password"
-                    />
-                    <Form.Input
-                        className={classnames(style.white)}
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        onChange={::this.handleInputChange}
-                        placeholder="confirm password"
-                        required
-                        type="password"
-                    />
-                    <Button primary type="submit">Set password</Button>
-                    <Message
-                        content={errorMessage}
-                        error
-                        header="Setting password error!"
-                    />
-                  </Form>
-              }
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        {
+          settingFailed?
+            <div className={classnames(style.failureContent)}>
+              <div className={classnames(style.failureHeader)}>
+                The setting password failed.
+              </div>
+              <div className={classnames(style.failureExplanation)}>
+               The Registration might expired. <br/> Check your email for another messages or
+               try to sign up again:
+              </div>
+              <Button
+                  onClick={::this.signUpRedirect}
+                  primary
+                  stretch
+              >
+                Sign-up
+              </Button>
+            </div>
+          :
+            <div className={classnames(style.form)}>
+              <div className={classnames(style.header)} size="medium">
+                Setting Password
+              </div>
+              <Input
+                  focus
+                  name="password"
+                  onChange={::this.handleInputChange}
+                  placeholder="password"
+                  type="password"
+              />
+              <Input
+                  name="confirmPassword"
+                  onChange={::this.handleInputChange}
+                  placeholder="confirm password"
+                  type="password"
+              />
+              <div className={classnames(style.buttonContainer)}>
+                <Button
+                    loading={settingChecking}
+                    onClick={::this.handleSettingPassowrd}
+                    primary
+                    stretch
+                >
+                    Set password
+                </Button>
+              </div>
+              <Message
+                  displayNone={!clientError}
+                  error
+                  message={errorMessage}
+              />
+            </div>
+        }
     </PublicPageTemplate>
     )
   }

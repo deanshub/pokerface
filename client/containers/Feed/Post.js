@@ -5,7 +5,6 @@ import { observer, inject } from 'mobx-react'
 import { Feed, Dimmer, Loader } from 'semantic-ui-react'
 import Button from '../../components/basic/Button'
 import BasicImage from '../../components/basic/Image'
-import IsUserLoggedIn from '../../components/IsUserLoggedIn'
 import DropDown from '../../components/basic/DropDown'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
@@ -326,13 +325,14 @@ export default class Post extends Component {
                 comments={post.comments}
                 standalone={standalone}
             />
-            <IsUserLoggedIn>
+            {auth.isLoggedIn?
               <Reply
                   post={post}
                   removeReply={::this.removeReply}
                   standalone={standalone}
               />
-            </IsUserLoggedIn>
+              :null
+          }
           </div>
         }
       </Dimmer.Dimmable>

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import { Feed, Loader } from 'semantic-ui-react'
+import Loader from '../../components/basic/Loader'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import AddPlay from '../../components/AddPlay'
 import IsUserLoggedIn from '../../components/IsUserLoggedIn'
+import ResponsiveContainer from '../../components/ResponsiveContainer'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -42,24 +43,23 @@ export default class FeedContainer extends Component {
     const { feed } = this.props
 
     return (
-      <div className={classnames(style.container)}>
+      <ResponsiveContainer
+          desktopClassName={classnames(style.container)}
+          mobileClassName={classnames(style.mobileContainer)}
+      >
         <IsUserLoggedIn>
           <AddPlay />
         </IsUserLoggedIn>
         <div>
-          <Feed>
             {feed.parsedPosts.map(post=><Post key={post.id} post={post}/>)}
             {feed.loading?
-              <Feed.Event>
-                 <Loader active inline="centered">Loading</Loader>
-              </Feed.Event>
+              <Loader compact/>
             :
               null
             }
-          </Feed>
           <PhotoGallery/>
         </div>
-    </div>
+      </ResponsiveContainer>
     )
   }
 }

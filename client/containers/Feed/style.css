@@ -6,6 +6,10 @@
   min-width: 600px;
 }
 
+.mobileContainer {
+  width: 100%;
+}
+
 .clickable{
   cursor: pointer;
 }
