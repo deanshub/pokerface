@@ -8,8 +8,20 @@ import style from './style.css'
 
 @inject('auth')
 @inject('routing')
+@inject('events')
 @observer
 export default class Navigation extends Component {
+
+  componentDidMount(){
+    this.props.events.fetchMyGames()
+  }
+
+  handleLogout(){
+    const {routing, auth} = this.props
+    localStorage.removeItem('jwt')
+    auth.logout()
+    routing.replace('/login')
+  }
 
   onClose(){
     this.props.onClose()
@@ -45,7 +57,7 @@ export default class Navigation extends Component {
               to="/events"
           >
             <div className={classnames(style.events)}>
-              <Notification number={45}/>
+              <Notification number={events.events.size}/>
             </div>
             Events
           </NavLink>
@@ -79,10 +91,8 @@ export default class Navigation extends Component {
         </div>
         <div className={classnames(style.divider)}/>
         <div className={classnames(style.footer)}>
-          <div className={classnames(style.footerItem)}>
-            <div className={classnames(style.logout)}>
+          <div className={classnames(style.footerItem)} onClick={::this.handleLogout}>
               Logout
-            </div>
           </div>
         </div>
       </div>
