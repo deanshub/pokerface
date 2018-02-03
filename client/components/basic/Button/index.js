@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Loader from '../Loader'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -19,6 +20,8 @@ export default class Button extends Component {
       leftIcon,
       disable,
       small,
+      stretch,
+      loading,
       ...restProps
     } = this.props
 
@@ -34,7 +37,9 @@ export default class Button extends Component {
             {[style.simple]: simple},
             {[style.hidden]: hidden},
             {[style.small]: small},
+            {[style.stretch]: stretch}
           )}
+          disabled={loading}
           href={href}
           onClick={(e)=>onClick(e, e.target)}
           {...restProps}
@@ -47,7 +52,11 @@ export default class Button extends Component {
               )}
           />
         }
-        {children}
+        {loading?
+          <Loader bright={primary} small/>
+        :
+          children
+        }
       </ContainerElement>
     )
   }
@@ -55,13 +64,14 @@ export default class Button extends Component {
 
 export class ButtonGroup extends Component {
   render(){
-    const {horizontal, children, noEqual, ...restProps} = this.props
+    const {horizontal, children, noEqual, reversed, ...restProps} = this.props
     return(
       <div
           className={classnames(
             style.buttonGroup,
             {[style.horizontal]:horizontal},
             {[style.noEqual]:noEqual},
+            {[style.reversed]:reversed}
           )}
           {...restProps}
       >

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import Loading from '../../components/basic/Loading'
+import Loader from '../../components/basic/Loader'
 import Button from '../../components/basic/Button'
 import moment from 'moment'
 import classnames from 'classnames'
@@ -69,7 +69,7 @@ export default class Events extends Component {
         }
         {
           events.loading &&
-          <Loading/>
+          <Loader/>
         }
       </div>
     )

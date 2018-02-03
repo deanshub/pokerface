@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Button, Modal, Form, Message, Dimmer, Loader } from 'semantic-ui-react'
+import Modal, { ModalHeader, ModalContent, ModalFooter } from '../../components/basic/Modal'
+import Button, {ButtonGroup} from '../../components/basic/Button'
+import Input from '../../components/basic/Input'
+import Message from '../../components/basic/Message'
+import classnames from 'classnames'
+import style from './style.css'
+
 import request from 'superagent'
 import {viewParam, isEmailPattern} from '../../utils/generalUtils'
 
@@ -57,27 +63,22 @@ export default class LoginForm extends Component {
 
     return (
       <Modal
-          closeOnDimmerClick={false}
-          dimmer="inverted"
+          compact
           onClose={::this.onClose}
           open={open}
-          size="mini"
       >
-        <Dimmer active={loading} inverted>
-          <Loader content="Loading" inverted/>
-        </Dimmer>
-        <Modal.Header>
+        <ModalHeader>
           Reseting Password
-        </Modal.Header>
-        <Modal.Content>
+        </ModalHeader>
+        <ModalContent>
           {
             success?
-              'Please check your email for further details'
+              <div>
+                Please check your email for further details
+              </div>
             :
-              <Form
-                  error={error}
-              >
-                <Form.Input
+              <div className={classnames(style.forgotPasswordContent)}>
+                <Input
                     focus
                     label="Email"
                     name="email"
@@ -87,22 +88,35 @@ export default class LoginForm extends Component {
                 />
                 <Message
                     error
-                    header={errorMessage}
+                    hidden={!error}
+                    message={errorMessage}
                 />
-            </Form>
+            </div>
           }
-        </Modal.Content>
-          {
-            success?
-              <Modal.Actions>
+        </ModalContent>
+        <ModalFooter>
+          <ButtonGroup
+              horizontal
+              noEqual
+              reversed
+          >
+            {
+              success?
                 <Button onClick={::this.onClose} primary>OK</Button>
-              </Modal.Actions>
-            :
-              <Modal.Actions>
-                <Button onClick={::this.onClose}>Close</Button>
-                <Button onClick={::this.handleSending} primary>Send</Button>
-              </Modal.Actions>
-          }
+              :
+              [
+                <Button
+                    loading={loading}
+                    onClick={::this.handleSending}
+                    primary
+                >
+                  Send
+                </Button>,
+                <Button onClick={::this.onClose}>Close</Button>,
+              ]
+            }
+          </ButtonGroup>
+        </ModalFooter>
       </Modal>)
   }
 }

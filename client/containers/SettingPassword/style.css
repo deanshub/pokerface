@@ -1,7 +1,28 @@
-.white{
-  color: white !important;
+.form{
+  width: 24.3em;
+  margin: auto;
 }
 
-.white>label{
-  color: white !important;
+.header{
+  font-size: 2em;
+  line-height: 1.5;
+  margin: 0 6px;
+}
+
+.buttonContainer{
+  margin: 12px 0;
+}
+
+.failureContent{
+  width: 24.3em;
+  margin: auto;
+}
+
+.failureHeader{
+  font-size: 1.5em;
+  margin: auto;
+}
+
+.failureExplanation{
+  margin: 2em 0px;
 }

@@ -49,11 +49,6 @@
   display: flex;
 }
 
-.buttons {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
 /* PlayersInvitation */
 
 .playersInvitationContainer{

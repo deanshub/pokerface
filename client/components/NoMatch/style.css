@@ -15,3 +15,14 @@
 .h2{
   font-size: 2em;
 }
+
+.home{
+  width: 162px;
+  height: 162px;
+  background-image: url('../../assets/home@3x.png');
+  background-repeat: no-repeat;
+}
+
+.home:hover{
+  background-image: url('../../assets/home-hover@3x.png');
+}

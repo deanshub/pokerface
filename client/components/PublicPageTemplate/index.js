@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Dimmer, Grid, Loader } from 'semantic-ui-react'
+import classnames from 'classnames'
+import style from './style.css'
 import Footer from '../../containers/PublicPageFooter'
 import Logo from '../Logo'
 
@@ -12,25 +13,20 @@ export default class PublicPageTemplate extends Component {
     const { children, horizontal, loading } = this.props
 
     return (
-      <Grid divided="vertically">
-        <Dimmer active={loading} inverted>
-          <Loader content="Loading" inverted/>
-        </Dimmer>
-        <Grid.Row columns={1}>
-          <Grid.Column>
-            <Logo/>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row centered columns="equal">
+      <div className={classnames(style.container)}>
+        <div>
+          <Logo/>
+        </div>
+        <div className={classnames(style.content)}>
             {
               (Array.isArray(children) && horizontal)?
-                children.map((child, index) => <Grid.Column key={index}>{child}</Grid.Column>)
+                children.map((child, index) => <div key={index}>{child}</div>)
               :
-                <Grid.Column>{children}</Grid.Column>
+                children
             }
-        </Grid.Row>
+        </div>
         <Footer/>
-      </Grid>
+      </div>
     )
   }
 }

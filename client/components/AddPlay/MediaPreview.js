@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
+import Loader from '../basic/Loader'
 import Video from '../basic/Video'
 import classnames from 'classnames'
 import style from './style.css'
@@ -26,27 +27,29 @@ export default class AddPlay extends Component {
         {
           feed.previewUploadedMedia.map(({name, type, src})=>{
 
-            return <div className={classnames(style.imagePreview)} key={name}>
-              {
-                type.startsWith('video')?
-                  <Video
-                      className={classnames(style.image)}
-                      src={src}
-                      type={type}
+            return (
+              <div className={classnames(style.imagePreview)} key={name}>
+                {
+                  type.startsWith('video')?
+                    <Video
+                        className={classnames(style.image)}
+                        src={src}
+                        type={type}
+                    />
+                  :
+                    <img className={classnames(style.image)} src={src}/>
+                }
+                <div className={classnames(style.imagePreviewOverlay)}>
+                  <div
+                      className={classnames(style.deleteImage)}
+                      onClick={() => {this.deletePhoto(name)}}
                   />
-                :
-                  <img className={classnames(style.image)} src={src}/>
-              }
-              <div className={classnames(style.imagePreviewOverlay)}>
-                <div
-                  className={classnames(style.deleteImage)}
-                  onClick={() => {this.deletePhoto(name)}}
-                />
+                </div>
               </div>
-           </div>
+            )
           })
         }
-        {feed.uploadingMedia && <div>loading</div>}
+        {feed.uploadingMedia && <Loader small/>}
       </div>
     )
   }

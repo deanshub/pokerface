@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ResponsiveContainer from '../../ResponsiveContainer'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -11,6 +12,7 @@ export default class Modal extends Component {
       closeOnBlur,
       simple,
       inverted,
+      compact,
     } = this.props
     if (open){
       let overlayProps = {}
@@ -26,9 +28,13 @@ export default class Modal extends Component {
 
       return(
         <div className={classnames(style.overlay, {[style.inverted]: inverted})} {...overlayProps}>
-          <div className={classnames(style.modalContainer, {[style.modalBackground]: !simple})} {...containerProps}>
+          <ResponsiveContainer
+              desktopClassName={classnames(style.modalContainer, {[style.modalBackground]: !simple, [style.compact]: compact})}
+              mobileClassName={classnames(style.mobileModalContainer, {[style.inverted]: inverted})}
+              {...containerProps}
+          >
             {children}
-          </div>
+          </ResponsiveContainer>
         </div>
       )
     }
