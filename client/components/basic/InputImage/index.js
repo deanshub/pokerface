@@ -28,7 +28,6 @@ export default class InputImage extends Component {
       <div className={classnames(style.field)}>
         <label className={classnames(style.label)}>
           {label}
-          {src && <span className={classnames(style.changePhoto)} onClick={::this.selectImage}>Change</span>}
         </label>
         <input
             onChange={::this.onSelectImage}
@@ -36,12 +35,14 @@ export default class InputImage extends Component {
             style={{display:'none'}}
             type="file"
         />
-        <div className={classnames(style.imageContainer)} style={backgroundImage}>
-          {!src &&
-            <div className={classnames(style.selectPhoto)} onClick={::this.selectImage}>
-              Select Photo
-            </div>
-          }
+        <div
+            className={classnames(style.imageContainer)}
+            onClick={::this.selectImage}
+            style={backgroundImage}
+        >
+          <div className={classnames(style.selectPhoto)} >
+            {src?'Change':'Select Photo'}
+          </div>
           {loading && <Loader/>}
         </div>
       </div>

@@ -10,22 +10,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.selectPhoto {
-  padding: 0.8em;
   cursor: pointer;
+
+  .selectPhoto {
+    padding: 0.5em;
+    background-color: rgba(31,29,40,0.3);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 0.4em;
+  }
 }
 
-.selectPhoto:hover {
-  color: #41c86a;
-}
-
-.changePhoto {
-  margin-left: 1em;
-  cursor: pointer;
-}
-
-.changePhoto:hover {
-  color: #41c86a;
+.imageContainer:hover {
+  .selectPhoto {
+    color: #41c86a;
+  }
 }
