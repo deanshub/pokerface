@@ -30,6 +30,7 @@ export default class InputImage extends Component {
           {label}
         </label>
         <input
+            accept="image/*"
             onChange={::this.onSelectImage}
             ref={(imageElm)=>this.imageElm=imageElm}
             style={{display:'none'}}
