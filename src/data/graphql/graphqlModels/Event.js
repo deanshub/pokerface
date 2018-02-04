@@ -1,4 +1,5 @@
 import DB from '../../db'
+import path from 'path'
 import mailer from '../../../utils/mailer'
 import {CREATE_PUBLIC_EVENT, PUBLIC} from '../../../utils/permissions'
 import { prepareEventCoverImage } from '../../helping/user'
@@ -20,7 +21,7 @@ export const schema =  [`
     updatedAt: String
     createdAt: String
     creator: User
-    image: String
+    coverImage: String
     posts: [Post]
   }
 
@@ -48,7 +49,8 @@ export const schema =  [`
       from: String!,
       to: String,
       invited: String,
-      isPublic: Boolean
+      isPublic: Boolean,
+      coverImage: Upload
     ): Event
     updateEvent(
       id: String!,
@@ -61,6 +63,7 @@ export const schema =  [`
       to: String,
       invited: String,
       isPublic: Boolean
+      coverImage: Upload
     ): Event
     deleteEvent(
       eventId: String!
@@ -125,7 +128,7 @@ export const resolvers = {
     updatedAt: (game)=>game.updated,
     createdAt: (game)=>game.created,
     creator: (game)=>DB.models.User.findById(game.owner),
-    image: prepareEventCoverImage,
+    coverImage: prepareEventCoverImage,
     posts: (game)=> DB.models.Post.find({game: game.id}),
   },
 
@@ -213,7 +216,7 @@ export const resolvers = {
         return game
       })
     },
-    addEvent: (_, {title, description, type, subtype, location, from, to, invited, isPublic}, context)=>{
+    addEvent: (_, {title, description, type, subtype, location, from, to, invited, isPublic, coverImage}, context)=>{
 
       const {user} = context
       if (isPublic && (!user.permissions || !user.permissions.includes(CREATE_PUBLIC_EVENT))){
@@ -229,6 +232,7 @@ export const resolvers = {
         location,
         startDate: new Date(from),
         endDate: to!==undefined?new Date(to):undefined,
+        coverImage: coverImage?path.parse(coverImage.path).base:undefined,
         invited: JSON.parse(invited),
         permissions: isPublic?[PUBLIC]:undefined,
       }).save()
@@ -237,7 +241,7 @@ export const resolvers = {
         return event
       })
     },
-    updateEvent: (_, {id, title, description, type, subtype, location, from, to, invited, isPublic}, context) => {
+    updateEvent: (_, {id, title, description, type, subtype, location, from, to, invited, isPublic, coverImage}, context) => {
       const {user} = context
       if (isPublic && (!user.permissions || !user.permissions.includes(CREATE_PUBLIC_EVENT))){
         throw new Error('Not authorized to create public events')
@@ -256,6 +260,7 @@ export const resolvers = {
         event.location = location
         event.startDate = from
         event.endDate = to
+        event.coverImage = coverImage?path.parse(coverImage.path).base:undefined
         event.permissions = isPublic?[PUBLIC]:undefined
         event.invited = clientInvited
 
