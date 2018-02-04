@@ -1,0 +1,31 @@
+@import '../Input/style.css';
+
+
+.imageContainer {
+  @extend .inputContainer;
+  height: 20vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectPhoto {
+  padding: 0.8em;
+  cursor: pointer;
+}
+
+.selectPhoto:hover {
+  color: #41c86a;
+}
+
+.changePhoto {
+  margin-left: 1em;
+  cursor: pointer;
+}
+
+.changePhoto:hover {
+  color: #41c86a;
+}

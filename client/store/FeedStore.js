@@ -405,7 +405,7 @@ export class FeedStore {
     for (let imageIndex = 0; imageIndex < files.length; imageIndex++) {
       const file = files[imageIndex]
       const {name:fileName} = file
-      //this.uploadedMedia.set(fileName, {file})
+
       let reader = new FileReader()
       reader.onload = (e)=>{
         this.currentUploadedFiles--
