@@ -149,7 +149,7 @@ export default class BlindsTimer extends Component {
           </div>
           <div
               style={{
-                paddingRight:20,
+                paddingRight:'2%',
                 width: '30%',
                 textAlign: 'center',
                 verticalAlign: 'top',

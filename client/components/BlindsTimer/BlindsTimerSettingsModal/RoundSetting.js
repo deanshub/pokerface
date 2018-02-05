@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Table, Label, Input, Button, Icon, Header } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('timer')
 @observer
@@ -34,7 +36,7 @@ export default class BlindsTimer extends Component {
       :
       <Table.Row>
         <Table.Cell textAlign="center">
-          <Label circular>{roundIndex+1}</Label>
+          <Label circular className={classnames(style.roundNumber)}>{roundIndex+1}</Label>
         </Table.Cell>
         <Table.Cell>
           <Input

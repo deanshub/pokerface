@@ -59,7 +59,7 @@
 }
 
 .autosuggestInput{
-  background-color: #0d0d0f;
+  background-color: darkBackgroundColor;
   background-image: url("../../assets/user-search.png");
   background-repeat: no-repeat;
   padding-left: 3em;
@@ -69,8 +69,8 @@
 }
 
 .autosuggestInput:focus{
-  background-color: #403e50;
-  color: #f0f0f0;
+  color: darkBackgroundFontColor;
+  background-color: darkBackgroundFocusedColor;
 }
 
 .suggestion{

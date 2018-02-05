@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import YouTubeComp from 'react-youtube'
 import PropTypes from 'prop-types'
 import { parse } from 'qs'
+import Input from '../basic/Input'
+import Button from '../basic/Button'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -19,6 +21,17 @@ export default class YouTube extends Component {
   constructor(props){
     super(props)
     this.state = this.analyzePhrase(props.phrase.substring(props.phrase.indexOf('?')+1))
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.width && nextProps.height){
+      this.videoPlayer.setSize(nextProps.width, nextProps.height)
+    }
+    this.phraseChange(nextProps.phrase)
+  }
+
+  shouldComponentUpdate(){
+    return false
   }
 
   analyzePhrase(phrase){
@@ -46,10 +59,31 @@ export default class YouTube extends Component {
   }
 
   onReady(event){
-    // event.target.pauseVideo()
+    this.videoPlayer = event.target
   }
-  nextSong(event){
-    event.target.nextVideo()
+  nextSong(){
+    this.videoPlayer.nextVideo()
+  }
+
+  phraseChange(phrase){
+    if (this.props.phrase!==phrase){
+      const playerVars = this.analyzePhrase(phrase)
+      if (playerVars.videoId){
+        this.videoPlayer.loadVideoById(playerVars.videoId)
+      }else {
+        this.videoPlayer.loadPlaylist(playerVars)
+      }
+    }
+  }
+
+  seachChange(e){
+    this.inStatePhrase = e.target.value
+  }
+
+  submitSearch(e){
+    e.preventDefault()
+    this.phraseChange(this.inStatePhrase)
+    this.videoPlayer.a.focus()
   }
 
   render(){
@@ -69,13 +103,32 @@ export default class YouTube extends Component {
     }
 
     return (
-      <YouTubeComp
-          className={classnames(style.youtube)}
-          onError={::this.nextSong}
-          onReady={::this.onReady}
-          opts={opts}
-          videoId={videoId}
-      />
+      <form onSubmit={::this.submitSearch}>
+        <div className={classnames(style.searchContainer)}>
+          <Input
+              borderColor="#545454"
+              className={classnames(style.search)}
+              dir="auto"
+              onChange={::this.seachChange}
+              placeholder="YouTube link \ Search..."
+              rightButton={
+                <Button
+                    small
+                    type="submit"
+                >
+                  Serach
+                </Button>
+              }
+          />
+        </div>
+        <YouTubeComp
+            className={classnames(style.youtube)}
+            onError={::this.nextSong}
+            onReady={::this.onReady}
+            opts={opts}
+            videoId={videoId}
+        />
+      </form>
     )
   }
 }

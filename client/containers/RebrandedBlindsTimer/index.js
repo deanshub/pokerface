@@ -10,7 +10,7 @@ import WidthGetter from '../../components/basic/WidthGetter'
 export default class RebrandedBlindsTimer extends Component {
   renderYoutube(width, height){
     return (
-      <YouTube height={height} width={width}/>
+      <YouTube height={height-250} width={width}/>
     )
   }
 
