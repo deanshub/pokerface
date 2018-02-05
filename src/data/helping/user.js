@@ -98,7 +98,7 @@ export const prepareCoverImage = (user) => {
 }
 
 export const prepareEventCoverImage = (event) => {
-  const coverImage = event.image
+  const {coverImage} = event
 
   if (!coverImage){
     return `/api/avatarGenerator?username=${event.title}`

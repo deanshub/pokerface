@@ -56,7 +56,7 @@ const schema = mongoose.Schema({
       type: String,
     }],
   },
-  image: {
+  coverImage: {
     type: String,
   },
   updated: { type: Date, default: Date.now },
