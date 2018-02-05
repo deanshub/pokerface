@@ -8,6 +8,7 @@ import Select from '../../components/basic/Select'
 import Textarea from '../../components/basic/Textarea'
 import DatePicker from '../../components/basic/DatePicker'
 import Checkbox from '../../components/basic/Checkbox'
+import InputImage from '../../components/basic/InputImage'
 import PlayersInvitation from './PlayersInvitation'
 import {FORM_TAB, INVITATION_TAB} from '../../constants/event'
 import classnames from 'classnames'
@@ -42,7 +43,7 @@ export default class EditEvent extends Component {
     if (this.validateFields() > 0){
       this.setState({submitted:true, activeTab:FORM_TAB})
     }else{
-      events.saveEvent(editEvent.currentEvent)
+      events.saveEvent(editEvent.currentEvent, editEvent.newCoverImageFile)
       .then(res=>{
         if (!res.err){
           editEvent.resetGame()
@@ -190,9 +191,21 @@ export default class EditEvent extends Component {
             />
           }
         </div>
+        <div className={classnames(style.fieldsGroup)}>
+          <InputImage
+              label="Cover Photo"
+              loading={editEvent.loadingCoverImage}
+              onSelect={(image) => {
+                const {editEvent} = this.props
+                editEvent.coverImageChangeHandler(image)
+              }}
+              src={editEvent.formFields.coverImage}
+          />
+        </div>
       </div>
     )
   }
+
   render() {
     const {editEvent} = this.props
     const {activeTab} = this.state

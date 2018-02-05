@@ -3,7 +3,13 @@ import React from 'react'
 import classnames from 'classnames'
 import style from './style.css'
 
-export default ({bright, compact, small, large}) => {
+export default ({
+  children,
+  bright,
+  compact,
+  small,
+  large
+}) => {
   return (
     <div
         className={classnames(
@@ -14,6 +20,9 @@ export default ({bright, compact, small, large}) => {
           {[style.large]:large || !small},
         )}
     >
+      <div className={classnames(style.content)}>
+        {children}
+      </div>
       <div className={classnames(style.point)}/>
       <div className={classnames(style.point)}/>
       <div className={classnames(style.point)}/>

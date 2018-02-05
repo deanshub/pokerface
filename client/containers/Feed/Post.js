@@ -2,9 +2,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import { Feed, Dimmer, Loader } from 'semantic-ui-react'
+// import { Feed, Dimmer, Loader } from 'semantic-ui-react'
 import Button from '../../components/basic/Button'
 import BasicImage from '../../components/basic/Image'
+import Dimmer from '../../components/basic/Dimmer'
 import DropDown from '../../components/basic/DropDown'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
@@ -182,15 +183,12 @@ export default class Post extends Component {
     const activeLike = post.likes.filter(user=>user.username===auth.user.username).length>0
 
     return (
-      <Dimmer.Dimmable
-          as={Feed.Event}
-          className={classnames({[style.post]: true, [style.standalone]: standalone })}
-          dimmed={busy}
-          style={{marginTop:10, marginBottom:10, border: '1px solid #dfdfdf', backgroundColor:'#ffffff', padding: 0}}
+      <Dimmer
+          busy={busy}
+          className={classnames(style.postContainer)}
+          label="download gif"
       >
-        <Dimmer active={busy} inverted>
-          <Loader>Generating gif</Loader>
-        </Dimmer>
+        <div className={classnames({[style.post]: true, [style.standalone]: standalone })}>
         <div className={classnames(style.postHeader)}>
           <div className={classnames(style.leftPane)}>
             <BasicImage
@@ -335,7 +333,8 @@ export default class Post extends Component {
           }
           </div>
         }
-      </Dimmer.Dimmable>
+        </div>
+      </Dimmer>
     )
   }
 }

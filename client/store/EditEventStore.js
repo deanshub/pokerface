@@ -6,8 +6,10 @@ export class EditEventStore {
   @observable currentEvent
   @observable addGameModalOpen
   @observable editEventModalOpen
+  @observable loadingCoverImage
 
   constructor(){
+    this.loadingCoverImage = false
     this.editEventModalOpen = false
     this.currentEvent = this.newEvent()
     this.lastNewEvent = this.currentEvent
@@ -68,11 +70,14 @@ export class EditEventStore {
     this.currentEvent.set('startDate', startDate)
     this.currentEvent.set('endDate', moment(startDate).add(10, 'hours'))
   }
-  @action handleChangeEndDate(endDate){
+  @action
+  handleChangeEndDate(endDate){
     this.currentEvent.set('endDate', endDate)
   }
 
-  @action resetGame(){
+  @action
+  resetGame(){
+    this.newCoverImageFile = undefined
     this.lastNewEvent = this.newEvent()
   }
 
@@ -93,6 +98,20 @@ export class EditEventStore {
   }
   publicChangeHandler(isPublic){
     this.currentEvent.set('isPublic', isPublic)
+  }
+
+  @action
+  coverImageChangeHandler(imageFile){
+    this.loadingCoverImage = true
+    let reader = new FileReader()
+
+    reader.onload = (e)=>{
+      this.currentEvent.set('coverImage', e.target.result)
+      this.newCoverImageFile = imageFile
+      this.loadingCoverImage= false
+    }
+    reader.readAsDataURL(imageFile)
+
   }
 
   invitePlayer(player){
