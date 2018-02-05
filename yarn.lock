@@ -2322,7 +2322,7 @@ execa@^0.7.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
-exenv@^1.2.1:
+exenv@^1.2.0, exenv@^1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
 
@@ -5004,6 +5004,13 @@ react-input-autosize@^2.1.2:
   resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-2.2.1.tgz#ec428fa15b1592994fb5f9aa15bb1eb6baf420f8"
   dependencies:
     prop-types "^15.5.8"
+
+react-key-handler@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-key-handler/-/react-key-handler-1.0.1.tgz#1fc0f4f4855f506a192c2cbe9fe8cb78fc553191"
+  dependencies:
+    exenv "^1.2.0"
+    prop-types "^15.5.7"
 
 react-loadable@^5.3.1:
   version "5.3.1"

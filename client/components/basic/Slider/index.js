@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import KeyHandler, {KEYDOWN} from 'react-key-handler'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -131,36 +132,57 @@ export default class Slider extends Component {
     return items
   }
 
+  moveSlide(side){
+    if (side==='right'){
+      this.nextItem()
+    }else{
+      this.previousItem()
+    }
+  }
+
   render(){
     const {children, style:customStyle} = this.props
     const childrenArr = React.Children.toArray(children)
     const moreThenOnePhoto = childrenArr.length && (childrenArr.length > 1)
 
     return (
-        <div className={classnames(style.container)} style={customStyle}>
-          <div className={classnames(style.sliderDisplay)}>
-            <div className={classnames(style.allItems)}>
-              {this.getItemsToRender()}
-            </div>
+      <div
+          className={classnames(style.container)}
+          style={customStyle}
+      >
+        <KeyHandler
+            keyEventName={KEYDOWN}
+            keyValue="ArrowRight"
+            onKeyHandle={()=>this.moveSlide('right')}
+        />
+        <KeyHandler
+            keyEventName={KEYDOWN}
+            keyValue="ArrowLeft"
+            onKeyHandle={()=>this.moveSlide('left')}
+        />
+        <div className={classnames(style.sliderDisplay)}>
+          <div className={classnames(style.allItems)}>
+            {this.getItemsToRender()}
           </div>
-          {
-            moreThenOnePhoto&&
-            <div
-                className={classnames(style.previous, {[style.disabledNavButton]:!moreThenOnePhoto})}
-                onClick={moreThenOnePhoto? ::this.previousItem : undefined}
-            />
-          }
-          {
-            moreThenOnePhoto&&
-            <div
-                className={classnames(style.next, {[style.disabledNavButton]:!moreThenOnePhoto})}
-                onClick={moreThenOnePhoto? ::this.nextItem : undefined}
-            />
-          }
-          {/* <div className={classnames(style.autoplay)}>
-            {autoplay?'Stop Sliding':'Auto Sliding'}
-          </div> */}
         </div>
+        {
+          moreThenOnePhoto&&
+          <div
+              className={classnames(style.previous, {[style.disabledNavButton]:!moreThenOnePhoto})}
+              onClick={moreThenOnePhoto? ::this.previousItem : undefined}
+          />
+        }
+        {
+          moreThenOnePhoto&&
+          <div
+              className={classnames(style.next, {[style.disabledNavButton]:!moreThenOnePhoto})}
+              onClick={moreThenOnePhoto? ::this.nextItem : undefined}
+          />
+        }
+        {/* <div className={classnames(style.autoplay)}>
+          {autoplay?'Stop Sliding':'Auto Sliding'}
+        </div> */}
+      </div>
     )
   }
 }
