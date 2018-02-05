@@ -217,10 +217,12 @@ export const resolvers = {
       })
     },
     addEvent: (_, {title, description, type, subtype, location, from, to, invited, isPublic, coverImage}, context)=>{
-
       const {user} = context
       if (isPublic && (!user.permissions || !user.permissions.includes(CREATE_PUBLIC_EVENT))){
         throw new Error('Not authorized to create public events')
+      }
+      if (!coverImage.type || !coverImage.type.includes('image')){
+        throw new Error('Image is not valid')
       }
 
       return new DB.models.Game({
