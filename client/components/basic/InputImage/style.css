@@ -1,0 +1,27 @@
+@import '../Input/style.css';
+
+
+.imageContainer {
+  @extend .inputContainer;
+  height: 20vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .selectPhoto {
+    padding: 0.5em;
+    background-color: rgba(31,29,40,0.3);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 0.4em;
+  }
+}
+
+.imageContainer:hover {
+  .selectPhoto {
+    color: #41c86a;
+  }
+}

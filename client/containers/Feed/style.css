@@ -18,19 +18,26 @@
   user-select: none;
 }
 
-.post{
-  box-shadow: 0 0 10px 0 #000000;
+.postContainer{
   border-radius: 10px;
-  display: flex !important;
-  flex-direction: column !important;
+  margin:10px 0px;
+  border: 1px solid #dfdfdf;
+  background-color: white;
 }
 
-.blackIcons:hover .icon, .standaloneUnselectable:hover{
-  color: black !important;
+.post{
+  box-shadow: 0 0 10px 0 black;
+  border-radius: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+/* .blackIcons:hover .icon, .standaloneUnselectable:hover{
+  color: black;
 }
 .active .icon{
-  color: #FF2733 !important;
-}
+  color: #FF2733;
+} */
 
 .standalone {
   display: flex;

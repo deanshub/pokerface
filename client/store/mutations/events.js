@@ -34,15 +34,15 @@ export const eventAttendanceUpdate = gql`mutation eventAttendanceUpdate($eventId
       fullname
       avatar
     }
-    image
+    coverImage
     updatedAt
     createdAt
   }
 }
 `
 
-export const addEvent = gql`mutation addEvent($title: String!, $description: String, $type: String, $subtype: String, $location: String, $startDate: String!, $endDate: String, $players: String!, $isPublic: Boolean){
-  addEvent(title:$title, description:$description, type:$type, subtype:$subtype, location:$location, from: $startDate, to:$endDate, invited: $players, isPublic: $isPublic){
+export const addEvent = gql`mutation addEvent($title: String!, $description: String, $type: String, $subtype: String, $location: String, $startDate: String!, $endDate: String, $players: String!, $isPublic: Boolean, $coverImage: Upload){
+  addEvent(title:$title, description:$description, type:$type, subtype:$subtype, location:$location, from: $startDate, to:$endDate, invited: $players, isPublic: $isPublic, coverImage: $coverImage){
     id
     creator{
       username
@@ -76,15 +76,15 @@ export const addEvent = gql`mutation addEvent($title: String!, $description: Str
       fullname
       avatar
     }
-    image
+    coverImage
     updatedAt
     createdAt
   }
 }
 `
 
-export const updateEvent = gql`mutation updateEvent($id: String!, $title: String!, $description: String, $type: String, $subtype: String, $location: String, $startDate: String!, $endDate: String, $players: String!, $isPublic: Boolean){
-  updateEvent(id:$id, title:$title, description:$description, type:$type, subtype:$subtype, location:$location, from: $startDate, to:$endDate, invited: $players, isPublic: $isPublic){
+export const updateEvent = gql`mutation updateEvent($id: String!, $title: String!, $description: String, $type: String, $subtype: String, $location: String, $startDate: String!, $endDate: String, $players: String!, $isPublic: Boolean, $coverImage: Upload){
+  updateEvent(id:$id, title:$title, description:$description, type:$type, subtype:$subtype, location:$location, from: $startDate, to:$endDate, invited: $players, isPublic: $isPublic, coverImage: $coverImage){
     id
     creator{
       username
@@ -118,7 +118,7 @@ export const updateEvent = gql`mutation updateEvent($id: String!, $title: String
       fullname
       avatar
     }
-    image
+    coverImage
     updatedAt
     createdAt
   }

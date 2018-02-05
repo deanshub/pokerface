@@ -108,7 +108,7 @@ export class EventStore {
   }
 
   @action
-  saveEvent(event){
+  saveEvent(event, coverImageFile){
     let currentGame = toJS(event)
 
     const normalizedPlayers = currentGame.invited.map(player=>{
@@ -119,12 +119,14 @@ export class EventStore {
       }
     })
 
+    const coverImage = coverImageFile || null
+
     // update
     if (currentGame.id){
       logger.logEvent({category:'Game',action:'Update'})
       return graphqlClient.mutate({
         mutation: updateEvent,
-        variables: {...currentGame, players:JSON.stringify(normalizedPlayers)},
+        variables: {...currentGame, coverImage, players:JSON.stringify(normalizedPlayers)},
       })
       .then((res)=>{
         this.setEvent(res.data.updateEvent)
@@ -138,7 +140,7 @@ export class EventStore {
       logger.logEvent({category:'Game',action:'Create'})
       return graphqlClient.mutate({
         mutation: addEvent,
-        variables: {...currentGame, players:JSON.stringify(normalizedPlayers)},
+        variables: {...currentGame, coverImage, players:JSON.stringify(normalizedPlayers)},
       })
       .then((res)=>{
         this.setEvent(res.data.addEvent)
@@ -225,7 +227,7 @@ export class EventStore {
       accepted,
       declined,
       unresponsive,
-      image: coverImage,
+      coverImage,
       title: fullname,
     } = eventData
 
