@@ -185,9 +185,13 @@
   width: 34px;
   height: 34px;
   padding: 13px 16px;
-  background-image:url('../../assets/mobile/x-search.png');
+  background-image: url('../../assets/mobile/x-search.png');
   background-position: 13px 16px;
   background-repeat: no-repeat;
   cursor: pointer;
   box-sizing: initial;
+}
+
+.back:hover {
+  background-image: url('../../assets/mobile/x-search-hover.png');
 }

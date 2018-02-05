@@ -173,11 +173,11 @@ export default class Cover extends Component {
     return (
       <div className={classnames(style.coverContainer,{[style.compact]:compact})}>
         <div
-            className={classnames(style.imageContainer)}
+            className={classnames(style.imageContainer,{[style.coverImageNotExist]: details.fullname && !details.coverImage})}
             onClick={::this.visitEvent}
             style={coverDivStyle}
         >
-          <div className={classnames(style.name,{[style.coverImageNotExist]: !details.coverImage})}>{details.fullname}</div>
+          <div className={classnames(style.name)}>{details.fullname}</div>
           {
             details.avatar&&
             <Image

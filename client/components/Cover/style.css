@@ -7,19 +7,19 @@
 }
 
 .imageContainer{
+  position: relative;
   height: 30em;
   background-size: cover;
   background-position: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $gray;
-  position: relative;
   background-color: rgba(31,29,40,0.5);
   border-radius: 0.625em;
 }
+
 .compact .imageContainer{
-  height: 15em;
+  height: 10em;
   cursor: pointer;
 }
 
@@ -36,8 +36,14 @@
 }
 
 .coverImageNotExist {
-  background-color: inherit;
-  box-shadow: none;
+  background-image: url('../../assets/bitmap.png');
+  background-size: auto;
+  background-position: 0px;
+
+  .name {
+    background-color: inherit;
+    box-shadow: none;
+  }
 }
 
 .avatar{
