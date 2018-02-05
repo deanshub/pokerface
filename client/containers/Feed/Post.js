@@ -186,7 +186,7 @@ export default class Post extends Component {
       <Dimmer
           busy={busy}
           className={classnames(style.postContainer)}
-          label="download gif"
+          label="Downloading gif"
       >
         <div className={classnames({[style.post]: true, [style.standalone]: standalone })}>
         <div className={classnames(style.postHeader)}>

@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import ResponsiveContainer from '../../ResponsiveContainer'
+import Button from '../Button'
 import classnames from 'classnames'
 import style from './style.css'
 
 export default class Modal extends Component {
   render(){
     const {
+      showCloseButton,
       open,
       children,
       onClose,
@@ -33,6 +35,13 @@ export default class Modal extends Component {
               mobileClassName={classnames(style.mobileModalContainer, {[style.inverted]: inverted})}
               {...containerProps}
           >
+            {showCloseButton&&
+              <Button
+                  className={classnames(style.closeModal)}
+                  leftIcon="fold"
+                  onClick={onClose}
+              />
+            }
             {children}
           </ResponsiveContainer>
         </div>

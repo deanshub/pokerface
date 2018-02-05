@@ -9,7 +9,10 @@ export default class WidthGetter extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {width: window.outerWidth || 0}
+    this.state = {
+      width: window.outerWidth || 0,
+      height: window.outerHeight || 0,
+    }
     this.resizeHandler = this.resizeHandler.bind(this)
   }
 
@@ -22,13 +25,16 @@ export default class WidthGetter extends Component {
   }
 
   resizeHandler() {
-    this.setState({width: window.outerWidth})
+    this.setState({
+      width: window.outerWidth,
+      height: window.outerHeight,
+    })
   }
 
   render() {
     const { render } = this.props
-    const { width } = this.state
+    const { width, height } = this.state
 
-    return render(width)
+    return render(width, height)
   }
 }

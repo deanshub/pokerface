@@ -30,16 +30,18 @@
   border-collapse: collapse;
   font-weight: bold;
   color: subtitleColor;
+  font-size: 2.5vw;
 }
 .inFeed.handchartContainer{
   font-size: 0.8em;
 }
 .hand{
   border:1px solid #d0d0da;
-  padding: 0.5em;
+  padding: 0.4em;
   text-align: center;
   cursor: pointer;
   background-color: #f2f2f2;
+  max-width: 6.5vw;
 }
 .hand:hover{
   font-weight: bold;
