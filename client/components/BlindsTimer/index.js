@@ -102,7 +102,7 @@ export default class BlindsTimer extends Component {
         <Header
             inverted={inverted}
             key="2"
-            style={{fontSize:'9vw', margin:0, lineHeight:0.8}}
+            style={{fontSize:'20vmin', margin:0, lineHeight:0.8}}
         >
           {timer.ante||'0'}
         </Header>,
@@ -179,7 +179,7 @@ export default class BlindsTimer extends Component {
           </div>
 
           <div style={{textAlign:'center', width:'100%', display:'flex', maxHeight:'50vh'}}>
-            <Header inverted={inverted} style={{fontSize:'25vw', flex:1, lineHeight: 'normal'}}>{timer.timeLeft}</Header>
+            <Header inverted={inverted} style={{fontSize:'35vmin', flex:1, lineHeight: 'normal'}}>{timer.timeLeft}</Header>
           </div>
 
           <div style={{textAlign:'center', width:'100%', verticalAlign:'top'}}>
@@ -188,12 +188,13 @@ export default class BlindsTimer extends Component {
                 inverted={inverted}
                 percent={timer.precentageComplete}
                 size="tiny"
+                style={{margin:0}}
             />
           </div>
 
           <div style={{textAlign:'center', width:'44%'}}>
             <Header color="grey" inverted={inverted}>Blinds</Header>
-            <Header inverted={inverted} style={{fontSize:'9vw', margin:0, lineHeight:0.8}}>{timer.blinds}</Header>
+            <Header inverted={inverted} style={{fontSize:'20vmin', margin:0, lineHeight:0.8}}>{timer.blinds}</Header>
             <Header inverted={inverted}>{timer.nextBlinds}</Header>
           </div>
           <div

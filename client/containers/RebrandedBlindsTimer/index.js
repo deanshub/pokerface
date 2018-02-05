@@ -25,7 +25,7 @@ export default class RebrandedBlindsTimer extends Component {
       title = user.fullname
     }
     return (
-      <Slider style={{height:'90vh', backgroundColor:'black'}}>
+      <Slider style={{height:'89vh', backgroundColor:'black'}}>
         <BlindsTimer image={image} title={title}/>
         <WidthGetter render={this.renderYoutube}/>
       </Slider>
