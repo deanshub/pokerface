@@ -127,7 +127,6 @@ export default class BlindsTimer extends Component {
 
         <div
             className={classnames(style.redesign)}
-            stretched
             style={{backgroundColor:!inverted?'white':undefined, paddingTop:25}}
         >
           <div style={{width:'30%'}}>
