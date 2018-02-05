@@ -240,7 +240,7 @@ export class FeedStore {
   }
 
   @action
-  updatePost(post, changes, spotPlayer){
+  updatePost(post, changes, spotPlayer, user){
     Object.keys(changes).forEach(key=>{
       // if(key==='content'){
       //   post[key]=EditorState.forceSelection(changes[key], changes[key].getSelection())
@@ -257,7 +257,7 @@ export class FeedStore {
           if (spotPlayer.newSpot.spot.moves.length===0){
             // console.log(res.body);
             const spot = res.body
-            extendObservable(spotPlayer.newSpot, {spotPlayerState:utils.generateInitialState(spot)})
+            extendObservable(spotPlayer.newSpot, {spotPlayerState:utils.generateInitialState(spot), owner:user})
             spotPlayer.newSpot.spot = spot
           }
         }).catch(err=>{

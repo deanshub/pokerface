@@ -160,3 +160,34 @@
 .content {
   flex: 4.5;
 }
+
+
+.mobileSearchBar {
+  position: fixed;
+  display: flex;
+  background-color: rgba(36, 34, 46, 0.9);
+  height: 100%;
+  width: 100%;
+  top: 0;
+  z-index: 6;
+  transition-duration: 400ms;
+  overflow-y: hidden;
+}
+
+.closed {
+  height: 0px;
+  overflow-y: hidden;
+}
+
+.back {
+  position: absolute;
+  right: 0px;
+  width: 34px;
+  height: 34px;
+  padding: 13px 16px;
+  background-image:url('../../assets/mobile/x-search.png');
+  background-position: 13px 16px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  box-sizing: initial;
+}

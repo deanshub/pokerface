@@ -50,34 +50,3 @@
   text-align: center;
   margin-left: .7em;
 }
-
-/* search player */
-.autosuggest {
-  margin: 0px;
-  margin-top: 1.1em;
-  max-width: 15em;
-}
-
-.autosuggestInput{
-  background-color: #0d0d0f;
-  background-image: url("../../assets/user-search.png");
-  background-repeat: no-repeat;
-  padding-left: 3em;
-  background-position: 0.3em;
-  min-width: 10em;
-  width: 100%;
-}
-
-.autosuggestInput:focus{
-  background-color: #403e50;
-  color: #f0f0f0;
-}
-
-.suggestion{
-  border-radius: 0.45em;
-}
-
-.suggestionsContainer{
-  width: 100%;
-  box-shadow: 0 0 10px 0 #000000;
-}

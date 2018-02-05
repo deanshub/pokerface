@@ -50,6 +50,7 @@ import Poll from '../Poll'
 @inject('spotPlayer')
 @inject('feed')
 @inject('globalPlayersSearch')
+@inject('auth')
 @observer
 export default class PostEditor extends Component {
   static propTypes = {
@@ -115,12 +116,6 @@ export default class PostEditor extends Component {
     }
   }
 
-  componentDidMount(){
-    setTimeout(()=>{
-      this.focus()
-    })
-  }
-
   focus() {
     const { onFocus, readOnly } = this.props
     if (this.editor && !readOnly){
@@ -147,8 +142,8 @@ export default class PostEditor extends Component {
   }
 
   postContentChange(editorState){
-    const {feed, post, spotPlayer} = this.props
-    feed.updatePost(post ,{content: editorState}, spotPlayer)
+    const {auth, feed, post, spotPlayer} = this.props
+    feed.updatePost(post ,{content: editorState}, spotPlayer, auth.user)
   }
 
   pollOptionSelected(option){
