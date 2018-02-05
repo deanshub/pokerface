@@ -1,10 +1,18 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import BlindsTimer from '../../components/BlindsTimer'
+import YouTube from '../../components/YouTube'
+import Slider from '../../components/basic/Slider'
+import WidthGetter from '../../components/basic/WidthGetter'
 
 @inject('auth')
 @observer
 export default class RebrandedBlindsTimer extends Component {
+  renderYoutube(width, height){
+    return (
+      <YouTube height={height} width={width}/>
+    )
+  }
 
   render(){
     const {user} = this.props.auth
@@ -16,7 +24,12 @@ export default class RebrandedBlindsTimer extends Component {
       image = user.avatar
       title = user.fullname
     }
-    return <BlindsTimer image={image} title={title}/>
+    return (
+      <Slider style={{height:'90vh', backgroundColor:'black'}}>
+        <BlindsTimer image={image} title={title}/>
+        <WidthGetter render={this.renderYoutube}/>
+      </Slider>
+    )
   }
 
 }

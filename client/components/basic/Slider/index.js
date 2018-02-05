@@ -22,8 +22,9 @@ export default class Slider extends Component {
 
   componentDidMount(){
     const {autoplay, children} = this.props
+    const childrenArr = React.Children.toArray(children)
 
-    if (autoplay && children.length > 1){
+    if (autoplay && childrenArr.length > 1){
       this.setAutoplayTimeout()
     }
   }
@@ -59,8 +60,9 @@ export default class Slider extends Component {
   nextIndex(){
     const {displayItemIndex} = this.state
     const {children} = this.props
+    const childrenArr = React.Children.toArray(children)
 
-    return (displayItemIndex+1)%children.length
+    return (displayItemIndex+1)%childrenArr.length
   }
 
   nextItem(){
@@ -70,7 +72,8 @@ export default class Slider extends Component {
   previousIndex(){
     const {children} = this.props
     const {displayItemIndex} = this.state
-    return (displayItemIndex===0)?children.length-1:displayItemIndex-1
+    const childrenArr = React.Children.toArray(children)
+    return (displayItemIndex===0)?childrenArr.length-1:displayItemIndex-1
   }
 
   previousItem(){
@@ -90,8 +93,10 @@ export default class Slider extends Component {
     const previousIndex = this.previousIndex()
     const nextIndex = this.nextIndex()
 
+    const childrenArr = React.Children.toArray(children)
+
     // Render the items sorted by key
-    const items = children.reduce((list, currentItem, currentIndex) => {
+    const items = childrenArr.reduce((list, currentItem, currentIndex) => {
 
       let className
 
@@ -127,24 +132,31 @@ export default class Slider extends Component {
   }
 
   render(){
-    const {children} = this.props
-    const moreThenOnePhoto = children.length > 1
+    const {children, style:customStyle} = this.props
+    const childrenArr = React.Children.toArray(children)
+    const moreThenOnePhoto = childrenArr.length && (childrenArr.length > 1)
 
     return (
-        <div className={classnames(style.container)}>
-          <div
-              className={classnames(style.previous, {[style.disabledNavButton]:!moreThenOnePhoto})}
-              onClick={moreThenOnePhoto && ::this.previousItem}
-          />
+        <div className={classnames(style.container)} style={customStyle}>
           <div className={classnames(style.sliderDisplay)}>
             <div className={classnames(style.allItems)}>
               {this.getItemsToRender()}
             </div>
           </div>
-          <div
-              className={classnames(style.next, {[style.disabledNavButton]:!moreThenOnePhoto})}
-              onClick={moreThenOnePhoto && ::this.nextItem}
-          />
+          {
+            moreThenOnePhoto&&
+            <div
+                className={classnames(style.previous, {[style.disabledNavButton]:!moreThenOnePhoto})}
+                onClick={moreThenOnePhoto? ::this.previousItem : undefined}
+            />
+          }
+          {
+            moreThenOnePhoto&&
+            <div
+                className={classnames(style.next, {[style.disabledNavButton]:!moreThenOnePhoto})}
+                onClick={moreThenOnePhoto? ::this.nextItem : undefined}
+            />
+          }
           {/* <div className={classnames(style.autoplay)}>
             {autoplay?'Stop Sliding':'Auto Sliding'}
           </div> */}

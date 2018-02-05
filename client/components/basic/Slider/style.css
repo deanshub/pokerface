@@ -30,6 +30,8 @@
   align-items: center;
   justify-content: center;
   user-select: none;
+  /* TODO: this is because semantic-ui is shit */
+  box-sizing: unset;
 }
 
 .playingItemContainer > * {
@@ -47,7 +49,7 @@
 
 .navButton{
   position: absolute;
-  width: 20%;
+  width: 10%;
   height: 20%;
   background-repeat: no-repeat;
   background-position: center;
@@ -55,17 +57,21 @@
   top: 40%;
   cursor: pointer;
 }
+.navButton:hover{
+  background-color: rgba(0,0,0,0.3);
+  z-index: 1;
+}
 
 .previous{
   @extend .navButton;
   background-image: url('../../../assets/actions/previous-large.png');
-  left: -20%;
+  left: 0%;
 }
 
 .next {
   @extend .navButton;
   background-image: url('../../../assets/actions/next-large.png');
-  right: -20%;
+  right: 0%;
 }
 
 .disabledNavButton {

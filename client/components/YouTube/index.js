@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import YouTubeComp from 'react-youtube'
 import PropTypes from 'prop-types'
 import { parse } from 'qs'
-// import classnames from 'classnames'
-// import style from './style.css'
+import classnames from 'classnames'
+import style from './style.css'
 
 export default class YouTube extends Component {
   static propTypes = {
@@ -54,10 +54,10 @@ export default class YouTube extends Component {
 
   render(){
     const { videoId, ...playerVars } = this.state
-    console.log(videoId);
+    const { width, height } = this.props
     const opts = {
-      width: '100%',
-      height: '800em',
+      width: width||'1500em',
+      height: height||'800em',
       playerVars: {
         autoplay: 1,
         fs: 0,
@@ -70,6 +70,7 @@ export default class YouTube extends Component {
 
     return (
       <YouTubeComp
+          className={classnames(style.youtube)}
           onError={::this.nextSong}
           onReady={::this.onReady}
           opts={opts}
