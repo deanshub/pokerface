@@ -39,13 +39,13 @@
   display: flex;
   position: relative;
   justify-content: space-between;
+  padding-left: 1em;
 
   .actionButtons {
     display: flex;
     align-items: center;
 
     justify-content: space-around;
-    width: 50%;
   }
 }
 
