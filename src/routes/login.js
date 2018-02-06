@@ -21,7 +21,7 @@ const prepareUserToClient = (user) => {
   } = user
 
   const avatar = prepareAvatar(user)
-  const coverImage = prepareCoverImage(user)
+  const coverImage = prepareCoverImage(user.coverImage)
   const newDetails =  prepareRebrandingDetails(permissions, rebrandingDetails)
 
   const permissionsToClient = permissions && permissions.filter(permission => PERMISSIONS_TO_CLIENT.includes(permission))
