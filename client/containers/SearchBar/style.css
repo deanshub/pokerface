@@ -26,8 +26,8 @@
 }
 
 .autosuggestInput:focus{
-  background-color: darkBackgroundFontColor;
-  color: darkBackgroundFocusedColor;
+  background-color:darkBackgroundFocusedColor;
+  color: darkBackgroundFontColor;
 }
 
 .autosuggestInputMobile {
