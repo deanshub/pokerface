@@ -45,7 +45,7 @@
 }
 
 .logo {
-  padding: 5px;
+  padding: 10px;
 }
 
 .search {
@@ -98,8 +98,7 @@
 }
 
 .mobileContainer {
-  /* padding: 1.43em; */
-  padding-top: 62px;
+  padding-top: 72px;
 }
 
 .navbar {

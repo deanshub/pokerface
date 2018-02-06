@@ -29,9 +29,9 @@
   position: absolute;
   width: 34px;
   height: 34px;
-  padding: 10px 10px;
+  padding: 13px 16px;
   background-image:url('../../../assets/mobile/x-menu.png');
-  background-position: 10px 10px;
+  background-position: 16px 13px;
   background-repeat: no-repeat;
   cursor: pointer;
   box-sizing: initial;
