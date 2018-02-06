@@ -34,6 +34,7 @@ export default class Input extends Component {
   render(){
     const {
       id,
+      borderColor,
       label,
       onChange,
       placeholder,
@@ -51,9 +52,12 @@ export default class Input extends Component {
     const {open} = this.state
 
     return(
-      <div className={classnames(style.field)} onClick={onClick||::this.focus}>
+      <div
+          className={classnames(style.field)}
+          onClick={onClick||::this.focus}
+      >
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
-        <div className={classnames(style.inputContainer, {[style.range]:type==='range'})}>
+        <div className={classnames(style.inputContainer, {[style.range]:type==='range'})} style={{borderColor}}>
           <input
               className={classnames(
                 style.input,

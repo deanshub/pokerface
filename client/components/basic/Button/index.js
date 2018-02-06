@@ -22,6 +22,7 @@ export default class Button extends Component {
       small,
       stretch,
       loading,
+      className,
       ...restProps
     } = this.props
 
@@ -30,6 +31,7 @@ export default class Button extends Component {
     return(
       <ContainerElement
           className={classnames(
+            className,
             style.button,
             {[style.active]: active},
             {[style.primary]: primary},

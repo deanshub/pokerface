@@ -36,6 +36,7 @@ export default class PhotoGallery extends Component {
           inverted
           onClose={()=>{photoGallery.open=false}}
           open={photoGallery.open}
+          showCloseButton
           simple
       >
         <Slider displayItemIndex={photoGallery.photoIndex}>

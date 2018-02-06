@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import { Grid, Button, Header, Progress, Icon, Checkbox, Dimmer, Loader, Image } from 'semantic-ui-react'
+import { Button, Header, Progress, Icon, Checkbox, Image } from 'semantic-ui-react'
+import Dimmer from '../basic/Dimmer'
+
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -68,7 +70,7 @@ export default class BlindsTimer extends Component {
       if (!inverted){
         this.toggleInverted()
       }
-      ReactDOM.findDOMNode(this).requestFullscreen()
+      ReactDOM.findDOMNode(this).parentElement.parentElement.parentElement.parentElement.requestFullscreen()
     } else {
       if (document.exitFullscreen) {
         if (inverted){
@@ -100,7 +102,7 @@ export default class BlindsTimer extends Component {
         <Header
             inverted={inverted}
             key="2"
-            style={{fontSize:'9vw', margin:0, lineHeight:0.8}}
+            style={{fontSize:'20vmin', margin:0, lineHeight:0.8}}
         >
           {timer.ante||'0'}
         </Header>,
@@ -115,41 +117,42 @@ export default class BlindsTimer extends Component {
       null
 
     return (
-      <Dimmer.Dimmable
-          as={Grid}
+      <Dimmer
+          busy={timer.loading}
           className={classnames(style.fullScreen)}
-          dimmed={timer.loading}
-          stretched
+          label="Loading"
       >
-       <Dimmer active={timer.loading} inverted>
-         <Loader>Loading</Loader>
-       </Dimmer>
-
         <BlindTimerResetModal/>
         <BlindsTimerSettingsModal/>
 
-        <Grid.Row
+        <div
             className={classnames(style.redesign)}
-            color={inverted?'black':undefined}
-            stretched
             style={{backgroundColor:!inverted?'white':undefined, paddingTop:25}}
         >
-          <Grid.Column width={5}>
-            <Header color="grey" inverted={inverted}>Round {timer.round}</Header>
-          </Grid.Column>
-          <Grid.Column textAlign="center" width={6}>
+          <div style={{width:'30%'}}>
+            <Header
+                color="grey"
+                inverted={inverted}
+                style={{textAlign:'left', paddingLeft:'2vw'}}
+            >
+              Round {timer.round}
+            </Header>
+          </div>
+          <div style={{width:'38%', textAlign:'center'}}>
             <Image
                 centered
                 size="mini"
                 src={image}
             />
             <Header inverted={inverted} style={{textDecoration: 'underline'}}>{title}</Header>
-          </Grid.Column>
-          <Grid.Column
-              style={{ paddingRight:20 }}
-              textAlign="center"
-              verticalAlign="top"
-              width={5}
+          </div>
+          <div
+              style={{
+                paddingRight:'2%',
+                width: '30%',
+                textAlign: 'center',
+                verticalAlign: 'top',
+              }}
           >
             <Button.Group
                 basic={!inverted}
@@ -157,6 +160,7 @@ export default class BlindsTimer extends Component {
                 compact
                 icon
                 inverted={inverted}
+                style={{width:'100%'}}
             >
               <Button onClick={::this.toggleInverted}>
                 <Checkbox
@@ -171,35 +175,35 @@ export default class BlindsTimer extends Component {
                 <Icon name="expand"/>
               </Button>
             </Button.Group>
-          </Grid.Column>
+          </div>
 
-          <Grid.Column textAlign="center" width={16}>
-            <Header inverted={inverted} style={{fontSize:'25vw', margin:0, lineHeight:1}}>{timer.timeLeft}</Header>
-          </Grid.Column>
+          <div style={{textAlign:'center', width:'100%', display:'flex', maxHeight:'50vh'}}>
+            <Header inverted={inverted} style={{fontSize:'35vmin', flex:1, lineHeight: 'normal'}}>{timer.timeLeft}</Header>
+          </div>
 
-          <Grid.Column
-              textAlign="center"
-              verticalAlign="top"
-              width={16}
-          >
+          <div style={{textAlign:'center', width:'100%', verticalAlign:'top'}}>
             <Progress
                 color="red"
                 inverted={inverted}
                 percent={timer.precentageComplete}
                 size="tiny"
+                style={{margin:0}}
             />
-          </Grid.Column>
+          </div>
 
-          <Grid.Column textAlign="center" width={6}>
+          <div style={{textAlign:'center', width:'44%'}}>
             <Header color="grey" inverted={inverted}>Blinds</Header>
-            <Header inverted={inverted} style={{fontSize:'9vw', margin:0, lineHeight:0.8}}>{timer.blinds}</Header>
+            <Header inverted={inverted} style={{fontSize:'20vmin', margin:0, lineHeight:0.8}}>{timer.blinds}</Header>
             <Header inverted={inverted}>{timer.nextBlinds}</Header>
-          </Grid.Column>
-          <Grid.Column width={1}/>
-          <Grid.Column
-              textAlign="center"
-              verticalAlign="middle"
-              width={2}
+          </div>
+          <div
+              style={{
+                textAlign:'center',
+                verticalAlign:'middle',
+                width:'12%',
+                display:'flex',
+                flexDirection:'column',
+              }}
           >
             {
               timer.paused?
@@ -242,14 +246,14 @@ export default class BlindsTimer extends Component {
                 <Icon name="step forward"/>
               </Button>
             </Button.Group>
-          </Grid.Column>
-          <Grid.Column textAlign="center" width={7}>
+          </div>
+          <div style={{textAlign:'center', width:'44%'}}>
             {
               anteSection
             }
-          </Grid.Column>
-        </Grid.Row>
-      </Dimmer.Dimmable>
+          </div>
+        </div>
+      </Dimmer>
     )
   }
 }
