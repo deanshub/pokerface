@@ -8,6 +8,7 @@ import SpotWizard from '../SpotWizard'
 import SpotPlayer from '../../containers/SpotPlayer'
 import Button from '../basic/Button'
 import DropDown from '../basic/DropDown'
+import IsMobile from '../IsMobile'
 import classnames from 'classnames'
 import style from './style.css'
 import EventBlock from './EventBlock'
@@ -92,6 +93,56 @@ export default class AddPlay extends Component {
     const hasSpot = spotPlayer.newSpot.spot.moves.length>0
     const hasText = feed.newPost.content.getCurrentContent().hasText()
 
+    const ActionButtons = () => {
+      return (
+        <IsMobile render={(isMobile) => {
+          return (
+            <div className={classnames(style.actionButtons)}>
+              <Button
+                  leftIcon="spot"
+                  onClick={::this.addSpot}
+                  small
+              >
+                {!isMobile?'Spot Wizard':''}
+              </Button>
+              <DropDown
+                  open={cardSelectionOpen}
+                  trigger={
+                    <Button leftIcon="card" onClick={() => this.setSelect({cardSelectionOpen:true})}>
+                      {!isMobile?'Card':''}
+                    </Button>
+                  }
+              >
+                <CardSelection
+                    amount={1}
+                    onCardSelected={::this.insertCard}
+                />
+              </DropDown>
+
+              <input
+                  multiple
+                  onChange={::this.photosChanged}
+                  ref={(photosElm)=>this.photosElm=photosElm}
+                  style={{display:'none'}}
+                  type="file"
+              />
+              <Button
+                  leftIcon="photo"
+                  onClick={::this.addPhoto}
+                  small
+              >
+                {!isMobile?'Photo/Video':''}
+              </Button>
+              {/* {<Button leftIcon="emoji" small>
+                {!isMobile && 'Emoji'}
+              </Button>} */}
+            </div>
+          )
+        }}
+        />
+      )
+    }
+
     return (
       <div>
         <div className={classnames(style.info)}>
@@ -124,46 +175,7 @@ export default class AddPlay extends Component {
               insert
             </div>
             <div className={classnames(style.editPostButtons)}>
-              <div className={classnames(style.actionButtons)}>
-                <Button
-                    leftIcon="spot"
-                    onClick={::this.addSpot}
-                    small
-                >
-                  Spot Wizard
-                </Button>
-                <DropDown
-                    open={cardSelectionOpen}
-                    trigger={
-                      <Button leftIcon="card" onClick={() => this.setSelect({cardSelectionOpen:true})}>
-                        Card
-                      </Button>
-                    }
-                >
-                  <CardSelection
-                      amount={1}
-                      onCardSelected={::this.insertCard}
-                  />
-                </DropDown>
-
-                <input
-                    multiple
-                    onChange={::this.photosChanged}
-                    ref={(photosElm)=>this.photosElm=photosElm}
-                    style={{display:'none'}}
-                    type="file"
-                />
-                <Button
-                    leftIcon="photo"
-                    onClick={::this.addPhoto}
-                    small
-                >
-                  Photo/Video
-                </Button>
-                {/* {<Button leftIcon="emoji" small>
-                  Emoji
-                </Button>} */}
-              </div>
+              <ActionButtons/>
               <Button
                   disable={!hasText}
                   onClick={::this.addPost}

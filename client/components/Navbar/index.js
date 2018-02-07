@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import style from './style.css'
 import { NavLink } from 'react-router-dom'
 import Notification from './Notification'
-import SearchBar from './SearchBar'
+import SearchBar from '../../containers/SearchBar'
 
 @inject('auth')
 @inject('events')

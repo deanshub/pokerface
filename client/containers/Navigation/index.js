@@ -11,6 +11,7 @@ import RebrandedBlindsTimer from '../RebrandedBlindsTimer'
 import Navbar from '../../components/Navbar'
 import MobileNavbar from '../../components/Navbar/Mobile'
 import TopMenu from './TopMenu'
+import MobileSearchBar from './MobileSearchBar'
 import IsMobile from '../../components/IsMobile'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 import classnames from 'classnames'
@@ -51,7 +52,7 @@ export default class Navigation extends Component {
 
   constructor(props){
     super(props)
-    this.state = {navbarOpen:false}
+    this.state = {navbarOpen:false, searchBarOpen:false}
   }
 
   onCloseMobileNavbar(){
@@ -62,12 +63,20 @@ export default class Navigation extends Component {
     this.setState({navbarOpen:true})
   }
 
+  onCloseMobileSearchBar(){
+    this.setState({searchBarOpen:false})
+  }
+
+  openMobileSearchBar(){
+    this.setState({searchBarOpen:true})
+  }
+
   getHeader(isMobile){
     return isMobile?
       <div className={classnames(style.header)}>
-        <div className={classnames(style.menu)} onClick={::this.openMobileNavbar} />
+        <div className={classnames(style.menu)} onClick={::this.openMobileNavbar}/>
         <img className={classnames(style.logo)} src={logo}/>
-        <div className={classnames(style.search)}/>
+        <div className={classnames(style.search)} onClick={::this.openMobileSearchBar}/>
       </div>
     :
     <div className={classnames(style.header)}>
@@ -82,7 +91,7 @@ export default class Navigation extends Component {
   }
 
   render() {
-    const {navbarOpen} = this.state
+    const {navbarOpen, searchBarOpen} = this.state
 
     return (
       <DocumentTitle title="Pokerface.io">
@@ -149,7 +158,23 @@ export default class Navigation extends Component {
           </ResponsiveContainer>
           <IsMobile
               render={(isMobile) => {
-                return isMobile?<MobileNavbar onClose={::this.onCloseMobileNavbar} open={navbarOpen}/>:null
+                return (
+                  isMobile?
+                  <React.Fragment>
+                    <MobileNavbar
+                        key="navbar"
+                        onClose={::this.onCloseMobileNavbar}
+                        open={navbarOpen}
+                    />
+                    <MobileSearchBar
+                        key="searchBar"
+                        onClose={::this.onCloseMobileSearchBar}
+                        open={searchBarOpen}
+                    />
+                  </React.Fragment>
+                  :
+                    null
+                )
               }}
           />
 
