@@ -14,7 +14,7 @@ import style from './style.css'
 export default class TopMenu extends Component {
   constructor(props){
     super(props)
-    this.state = {showTopMenu:false, editingPersonalInfo:false, selectUserModalOpen:false}
+    this.state = {editingPersonalInfo:false, selectUserModalOpen:false}
   }
 
   handleLogout(){
@@ -44,11 +44,7 @@ export default class TopMenu extends Component {
     const {user} = auth
     const {editingPersonalInfo, selectUserModalOpen} = this.state
     const trigger = (
-        <div
-            className={classnames(style.triggerContainer)}
-            onBlur={() => {this.setState({showTopMenu:false})}}
-            onClick={() => {this.setState({showTopMenu:true})}}
-        >
+        <div className={classnames(style.triggerContainer)}>
           <Image
               avatar
               className={classnames(style.avatar)}
@@ -84,7 +80,7 @@ export default class TopMenu extends Component {
              showSwitchUser &&
              <div
                  className={classnames(style.topMenuItem, style.topMenuClickableItem)}
-                 onClick={() => this.setState({selectUserModalOpen:true,showTopMenu:false})}
+                 onClick={() => this.setState({selectUserModalOpen:true})}
              >
                Switch user
              </div>

@@ -4,10 +4,15 @@ import style from './style.css'
 import OnBlur from '../OnBlur'
 
 export default class DropDown extends Component {
+  static defaultProps = {
+    on: 'click',
+  }
+
   constructor(props){
     super(props)
     this.state={
       open: props.open||false,
+      openByHover:false,
     }
   }
 
@@ -36,9 +41,25 @@ export default class DropDown extends Component {
     e.stopPropagation()
   }
 
-  render(){
-    const {children, trigger, onOpen} = this.props
+  handleMouseEnter(){
+    this.setState({
+      openByHover: true,
+    })
+  }
+
+  handleMouseLeave(){
     const {open} = this.state
+    console.log("leaveeee");
+    if (!open){
+      this.setState({
+        openByHover: false,
+      })
+    }
+  }
+
+  render(){
+    const {children, trigger, onOpen, on} = this.props
+    const {open, openByHover} = this.state
 
     if(open && onOpen){
       setTimeout(onOpen)
@@ -53,7 +74,7 @@ export default class DropDown extends Component {
               <div
                   className={classnames(
                     style.dropDown,
-                    {[style.dropDownOpen]: openByBlur},
+                    {[style.dropDownOpen]: openByBlur || openByHover},
                   )}
                   onClick={::this.handleClick}
               >
@@ -83,11 +104,17 @@ export default class DropDown extends Component {
       </OnBlur>
     )
 
-
-    return React.cloneElement(trigger, {
+    const newProps = {
       onClick: ::this.toggle,
       style: {...trigger.props.style, position:'relative'},
-    }, (
+    }
+
+    if (on==='hover'){
+      newProps.onMouseEnter = ::this.handleMouseEnter
+      newProps.onMouseLeave = ::this.handleMouseLeave
+    }
+
+    return React.cloneElement(trigger, newProps, (
       allChildren
     ))
   }
