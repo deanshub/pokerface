@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-// import { Feed, Dimmer, Loader } from 'semantic-ui-react'
 import Button from '../../components/basic/Button'
 import BasicImage from '../../components/basic/Image'
 import Dimmer from '../../components/basic/Dimmer'

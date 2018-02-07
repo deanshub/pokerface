@@ -28,7 +28,8 @@ export default class SettingPassword extends Component {
     }
   }
 
-  handleSettingPassowrd(){
+  handleSettingPassowrd(e){
+    e.preventDefault()
 
     if (this.passwordClientCheck()){
       const { routing , match:{params:{uuid}} } = this.props
@@ -67,7 +68,9 @@ export default class SettingPassword extends Component {
     })
   }
 
-  signUpRedirect(){
+  signUpRedirect(e){
+    e.preventDefault()
+
     const { routing } = this.props
     routing.push('/login') // TODO change to replace on it will work
   }
@@ -101,7 +104,7 @@ export default class SettingPassword extends Component {
       <PublicPageTemplate horizontal>
         {
           settingFailed?
-            <div className={classnames(style.failureContent)}>
+            <form className={classnames(style.failureContent)} onSubmit={::this.signUpRedirect}>
               <div className={classnames(style.failureHeader)}>
                 The setting password failed.
               </div>
@@ -110,15 +113,15 @@ export default class SettingPassword extends Component {
                try to sign up again:
               </div>
               <Button
-                  onClick={::this.signUpRedirect}
                   primary
                   stretch
+                  type="submit"
               >
                 Sign-up
               </Button>
-            </div>
+            </form>
           :
-            <div className={classnames(style.form)}>
+            <form className={classnames(style.form)} onSubmit={::this.handleSettingPassowrd}>
               <div className={classnames(style.header)} size="medium">
                 Setting Password
               </div>
@@ -138,9 +141,9 @@ export default class SettingPassword extends Component {
               <div className={classnames(style.buttonContainer)}>
                 <Button
                     loading={settingChecking}
-                    onClick={::this.handleSettingPassowrd}
                     primary
                     stretch
+                    type="submit"
                 >
                     Set password
                 </Button>
@@ -150,7 +153,7 @@ export default class SettingPassword extends Component {
                   error
                   message={errorMessage}
               />
-            </div>
+            </form>
         }
     </PublicPageTemplate>
     )
