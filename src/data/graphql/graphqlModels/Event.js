@@ -2,7 +2,7 @@ import DB from '../../db'
 import path from 'path'
 import mailer from '../../../utils/mailer'
 import {CREATE_PUBLIC_EVENT, PUBLIC} from '../../../utils/permissions'
-import { prepareEventCoverImage } from '../../helping/user'
+import { prepareCoverImage } from '../../helping/user'
 import { getInvitedsEventChange, equalInvitedPlayers } from '../../helping/event'
 export const schema =  [`
   type Event {
@@ -128,7 +128,7 @@ export const resolvers = {
     updatedAt: (game)=>game.updated,
     createdAt: (game)=>game.created,
     creator: (game)=>DB.models.User.findById(game.owner),
-    coverImage: prepareEventCoverImage,
+    coverImage: (game)=>prepareCoverImage(game.coverImage),
     posts: (game)=> DB.models.Post.find({game: game.id}),
   },
 
@@ -221,7 +221,7 @@ export const resolvers = {
       if (isPublic && (!user.permissions || !user.permissions.includes(CREATE_PUBLIC_EVENT))){
         throw new Error('Not authorized to create public events')
       }
-      if (!coverImage.type || !coverImage.type.includes('image')){
+      if (coverImage && (!coverImage.type || !coverImage.type.includes('image'))){
         throw new Error('Image is not valid')
       }
 

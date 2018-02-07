@@ -85,24 +85,9 @@ export const prepareAvatar = (user) => {
   return avatar
 }
 
-export const prepareCoverImage = (user) => {
-  const {coverImage, username} = user
+export const prepareCoverImage = (coverImage) => {
 
-  if (!coverImage){
-    return `/api/avatarGenerator?username=${username}`
-  }else if (!coverImage.startsWith('http')) {
-    return `/images/${coverImage}`
-  }
-
-  return coverImage
-}
-
-export const prepareEventCoverImage = (event) => {
-  const {coverImage} = event
-
-  if (!coverImage){
-    return `/api/avatarGenerator?username=${event.title}`
-  }else if (!coverImage.startsWith('http')) {
+  if (coverImage && !coverImage.startsWith('http')) {
     return `/images/${coverImage}`
   }
 

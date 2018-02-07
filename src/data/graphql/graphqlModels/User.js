@@ -114,7 +114,7 @@ export const resolvers = {
     fullname: (user)=>user.fullname,
     email: (user)=> user.email,
     avatar: prepareAvatar,
-    coverImage: prepareCoverImage,
+    coverImage: (user)=>prepareCoverImage(user.coverImage),
     organization: (user) => !!user.organization,
     posts: getPosts,
     comments: getComments,
@@ -123,7 +123,7 @@ export const resolvers = {
   Organization:{
     players: (organization) => organization.players,
     avatar: prepareAvatar,
-    coverImage: prepareCoverImage,
+    coverImage: (user)=>prepareCoverImage(user.coverImage),
     organization: (user) => user.organization,
     posts: getPosts,
     comments: getComments,
