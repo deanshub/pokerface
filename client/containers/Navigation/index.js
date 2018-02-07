@@ -161,8 +161,16 @@ export default class Navigation extends Component {
                 return (
                   isMobile?
                   [
-                    <MobileNavbar onClose={::this.onCloseMobileNavbar} open={navbarOpen}/>,
-                    <MobileSearchBar onClose={::this.onCloseMobileSearchBar} open={searchBarOpen}/>,
+                    <MobileNavbar
+                        key="navbar"
+                        onClose={::this.onCloseMobileNavbar}
+                        open={navbarOpen}
+                    />,
+                    <MobileSearchBar
+                        key="searchBar"
+                        onClose={::this.onCloseMobileSearchBar}
+                        open={searchBarOpen}
+                    />,
                   ]
                   :
                     null
