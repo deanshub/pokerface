@@ -44,7 +44,9 @@ export default class Cover extends Component {
   visitEvent(e){
     const {routing, details} = this.props
     e.stopPropagation()
-    routing.push(`/events/${details.id}`)
+    if (details.startDate){
+      routing.push(`/events/${details.id}`)
+    }
   }
 
   shareEvent(e){
