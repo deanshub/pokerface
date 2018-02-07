@@ -134,7 +134,6 @@ export default class SearchBar extends Component {
                 placeholder: 'Search',
                 value:searchValue,
                 onChange: ::this.searchInputChange,
-                focued: isMobile,
               }}
               multiSection
               onSuggestionSelected={::this.onSuggestionSelected}
