@@ -129,7 +129,7 @@ export default class Login extends Component {
     })
   }
 
-  getSignupForm(){
+  getSignupForm(isMobile){
     const {
       signingupSuccess,
       signingupInFail,
@@ -142,7 +142,12 @@ export default class Login extends Component {
           className={classnames(style.rightMain)}
           onSubmit={::this.handleSignup}
       >
-        <div className={classnames(style.formDescription, style.uppercase)}>
+        <div className={classnames(
+          style.formDescription,
+          style.uppercase,
+          {[style.mobileDesc]:isMobile},
+        )}
+        >
           Enter Your Name and Email
         </div>
         <ButtonGroup horizontal>
@@ -180,7 +185,12 @@ export default class Login extends Component {
           <Message error message={signingupFailMessage}/>
         }
 
-        <div className={classnames(style.formDescription, style.uppercase)}>
+        <div className={classnames(
+          style.formDescription,
+          style.uppercase,
+          {[style.mobileDesc]:isMobile},
+        )}
+        >
           Or Sign Up Using
         </div>
         <ButtonGroup horizontal>
@@ -292,7 +302,7 @@ export default class Login extends Component {
                     </div>
                   </div>
                 }
-                {this.getSignupForm()}
+                {this.getSignupForm(isMobile)}
               </div>
             )
           }}
