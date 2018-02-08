@@ -203,7 +203,7 @@ export default class PostEditor extends Component {
           <SpotPlayer
               post={post}
               standalone={standalone}
-              style={{height:'40vw'}}
+              style={{height:'40em',minHeight:'40vw'}}
           />
           ):null
         }

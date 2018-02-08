@@ -140,7 +140,6 @@ export default class BlindsTimer extends Component {
           </div>
           <div style={{width:'38%', textAlign:'center'}}>
             <Image
-                centered
                 size="mini"
                 src={image}
             />
