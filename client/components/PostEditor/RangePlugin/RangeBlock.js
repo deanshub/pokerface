@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import DropDown from '../../basic/DropDown'
+import Tooltip from '../../basic/Tooltip'
 import prange, {reverse} from '../../../utils/rangeParser/prange'
 import CardsTable from '../../CardsTable'
 import classnames from 'classnames'
@@ -25,8 +25,7 @@ export default class RangeBlock extends Component {
       )
     }else{
       return(
-        <DropDown
-            on="hover"
+        <Tooltip
             trigger={<span className={classnames(style.rangeBlock)}>{children}</span>}
         >
           <CardsTable
@@ -38,7 +37,7 @@ export default class RangeBlock extends Component {
               textColor="black"
               title={reverse(range)}
           />
-        </DropDown>
+        </Tooltip>
       )
     }
   }
