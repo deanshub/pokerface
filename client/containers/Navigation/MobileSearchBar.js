@@ -6,7 +6,7 @@ import style from './style.css'
 export default ({onClose, open}) => {
   return (
     <div className={classnames(style.mobileSearchBar, {[style.closed]:!open})}>
-      <SearchBar onItemSelect={onClose}/>
+      <SearchBar autoFocus={open} onItemSelect={onClose}/>
       <div className={classnames(style.back)} onClick={onClose}/>
     </div>
   )

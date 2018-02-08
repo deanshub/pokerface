@@ -66,7 +66,7 @@ export default class SearchBar extends Component {
       routing.push(`/profile/${suggestion.username}`)
     }
 
-    this.setState({searchValue:false})
+    this.setState({searchValue:''})
 
     if (onItemSelect){
       onItemSelect()
@@ -75,6 +75,20 @@ export default class SearchBar extends Component {
 
   searchInputChange(e,{newValue}){
     this.setState({searchValue:newValue})
+  }
+
+  storeInputReference = autosuggest => {
+    if (autosuggest !== null) {
+      this.input = autosuggest.input
+    }
+  };
+
+  componentDidUpdate(prevProps){
+    const {autoFocus} = this.props
+
+    if (!prevProps.autoFocus && autoFocus){
+      this.input.focus()
+    }
   }
 
   render(){
@@ -128,6 +142,7 @@ export default class SearchBar extends Component {
                 globalPlayersSearch.availablePlayers.clear()
               }}
               onSuggestionsFetchRequested={::this.searchChange}
+              ref={this.storeInputReference}
               renderSectionTitle={::this.renderSectionTitle}
               renderSuggestion={::this.renderSuggestion}
               suggestions={sections}

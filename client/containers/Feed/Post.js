@@ -169,6 +169,15 @@ export default class Post extends Component {
     window.open(shareurl,'', 'height=570,width=520')
   }
 
+  shareMobile(){
+    const { post } = this.props
+    logger.logEvent({category:'Post',action:'Mobile share'})
+    const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/post/${post.id}`
+    const title='Pokerface.io'
+    const text = `Post by ${post.owner.fullname}`
+    navigator.share({url:shareurl, title, text}).catch(console.error)
+  }
+
   getLink(){
     const { post } = this.props
     logger.logEvent({category:'Post',action:'Get link'})
@@ -231,14 +240,26 @@ export default class Post extends Component {
                 }
             >
               <div className={classnames(style.shareMenu)}>
-                <Button
-                    onClick={::this.sharePostOnFacebook}
-                    simple
-                    small
-                    style={{padding: '0.5em 0'}}
-                >
-                  Facebook
-                </Button>
+                {
+                  navigator.share?
+                  <Button
+                      onClick={::this.shareMobile}
+                      simple
+                      small
+                      style={{padding: '0.5em 0'}}
+                  >
+                    Share
+                  </Button>
+                  :
+                  <Button
+                      onClick={::this.sharePostOnFacebook}
+                      simple
+                      small
+                      style={{padding: '0.5em 0'}}
+                  >
+                    Facebook
+                  </Button>
+                }
                 {
                   post.spot!==undefined&&
                   <Button

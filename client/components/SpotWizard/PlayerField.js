@@ -51,7 +51,8 @@ export default class PlayerField extends Component {
   }
 
   searchInputChange(e,{newValue, method}){
-    if (method ==='type'){
+
+    if (method !== 'up' && method !== 'down'){
       this.setState({inputValue:newValue})
     }
   }

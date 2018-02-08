@@ -160,10 +160,18 @@ export default class Navigation extends Component {
               render={(isMobile) => {
                 return (
                   isMobile?
-                  [
-                    <MobileNavbar onClose={::this.onCloseMobileNavbar} open={navbarOpen}/>,
-                    <MobileSearchBar onClose={::this.onCloseMobileSearchBar} open={searchBarOpen}/>,
-                  ]
+                  <React.Fragment>
+                    <MobileNavbar
+                        key="navbar"
+                        onClose={::this.onCloseMobileNavbar}
+                        open={navbarOpen}
+                    />
+                    <MobileSearchBar
+                        key="searchBar"
+                        onClose={::this.onCloseMobileSearchBar}
+                        open={searchBarOpen}
+                    />
+                  </React.Fragment>
                   :
                     null
                 )
