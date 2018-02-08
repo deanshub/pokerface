@@ -74,7 +74,6 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  padding: 0 10%;
 }
 .pot{
   flex:1;
@@ -83,7 +82,7 @@
   display: flex;
 }
 .potWidth{
-  width:40%;
+  min-width:40%;
 }
 
 .betContainer{
