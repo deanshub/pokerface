@@ -9,7 +9,7 @@
 .playersList{
   flex: 9;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin-bottom: -25px;
   z-index: 1;
 }
@@ -21,10 +21,10 @@
 
 .playerSpace{
   width: 20%;
-  max-width: 6vw;
+  max-width: 7em;
   border-radius: 8px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
-  margin: 0 4%;
+  margin: 0 1%;
   display: flex;
   flex-direction: column;
   position: relative;
