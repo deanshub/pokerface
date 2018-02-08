@@ -9,7 +9,9 @@ import request from 'superagent'
 import {viewParam} from '../../utils/generalUtils'
 import Button, {ButtonGroup} from '../../components/basic/Button'
 import Input from '../../components/basic/Input'
-import DropDown from '../../components/basic/DropDown'
+import Message from '../../components/basic/Message'
+import IsMobile from '../../components/IsMobile'
+import Logo from '../../components/Logo'
 import landingLogo from '../../assets/landing logo.png'
 import classnames from 'classnames'
 import style from './style.css'
@@ -127,6 +129,93 @@ export default class Login extends Component {
     })
   }
 
+  getSignupForm(isMobile){
+    const {
+      signingupSuccess,
+      signingupInFail,
+      signingupInPorgress,
+      signingupFailMessage,
+    } = this.state
+
+    return (
+      <form
+          className={classnames(style.rightMain)}
+          onSubmit={::this.handleSignup}
+      >
+        <div className={classnames(
+          style.formDescription,
+          style.uppercase,
+          {[style.mobileDesc]:isMobile},
+        )}
+        >
+          Enter Your Name and Email
+        </div>
+        <ButtonGroup horizontal>
+          <Input
+              name="firstName"
+              onChange={::this.handleInputChange}
+              placeholder="First Name"
+          />
+          <Input
+              name="lastName"
+              onChange={::this.handleInputChange}
+              placeholder="Last Name"
+          />
+        </ButtonGroup>
+        <Input
+            name="email"
+            onChange={::this.handleInputChange}
+            placeholder="Email"
+        />
+        <Button
+            className={style.signupButton}
+            loading={signingupInPorgress}
+            primary
+            stretch
+            type="submit"
+        >
+          Create Account
+        </Button>
+        {
+          signingupSuccess&&
+          <Message message="Account created successfully. Check your email." success/>
+        }
+        {
+          signingupInFail&&
+          <Message error message={signingupFailMessage}/>
+        }
+
+        <div className={classnames(
+          style.formDescription,
+          style.uppercase,
+          {[style.mobileDesc]:isMobile},
+        )}
+        >
+          Or Sign Up Using
+        </div>
+        <ButtonGroup horizontal>
+          <a
+              className={classnames(style.link)}
+              href="/login/facebook"
+              style={{background:'linear-gradient(106deg, #6482b3, #3c5896)'}}
+          >
+            Facebook
+          </a>
+          <a
+              className={classnames(style.link)}
+              href="/login/googleplus"
+              style={{background:'linear-gradient(106deg, #dc7869, #dc4e40)'}}
+          >
+            Google
+          </a>
+        </ButtonGroup>
+        <div className={classnames(style.terms)}>
+          By signing up, I agree to Pokerface.io's <span style={{color:'#25aae1'}}>Terms of Service</span> and <span style={{color:'#25aae1'}}>Privacy Policy</span>.
+        </div>
+      </form>
+    )
+  }
+
   render(){
     const {
       loggingInPorgress,
@@ -136,27 +225,20 @@ export default class Login extends Component {
       selectUserModalOpen,
       redirectUrl,
       email,
-      signingupSuccess,
-      signingupInFail,
-      signingupInPorgress,
-      signingupFailMessage,
     } = this.state
 
     return(
       <div className={classnames(style.landing)}>
         <div className={classnames(style.sectionOne)}>
           <div className={classnames(style.header)}>
-            <div className={classnames(style.title)}>
-              Pokerface.io
-            </div>
+            <IsMobile render={(isMobile) => {
+              return (!isMobile && <div className={classnames(style.title)}>
+                Pokerface.io
+              </div>)
+            }}
+            />
             <div className={classnames(style.login)}>
-              Already have an account?
-              <DropDown
-                  trigger={
-                    <Button small style={{padding:'0.5em 3em', marginLeft: '2em'}}>Login</Button>
-                  }
-              >
-                <form className={classnames(style.loginDropdown)} onSubmit={::this.handleLogin}>
+                <form className={classnames(style.loginForm)} onSubmit={::this.handleLogin}>
                   <Input
                       name="email"
                       onChange={::this.handleInputChange}
@@ -169,13 +251,8 @@ export default class Login extends Component {
                       placeholder="Password"
                       type="password"
                   />
-                  <a
-                      onClick={() => this.setState({forgotPasswordModalOpen:true})}
-                      style={{color:'#25aae1', textTransform:'none'}}
-                  >
-                    Forgot password?
-                  </a>
                   <Button
+                      className={style.loginButton}
                       loading={loggingInPorgress}
                       primary
                       type="submit"
@@ -184,108 +261,52 @@ export default class Login extends Component {
                   </Button>
                   {
                     loggingInFail&&
-                    <div className={classnames(style.label,style.error)} style={{marginTop:'2em'}}>
-                      {loginFailMessage}
-                    </div>
+                    <Message
+                        className={style.loginMessage}
+                        error
+                        message={loginFailMessage}
+                    />
                   }
                 </form>
-              </DropDown>
+                <a
+                    className={classnames(style.forgotPassword)}
+                    onClick={() => this.setState({forgotPasswordModalOpen:true})}
+                >
+                  Forgot password?
+                </a>
             </div>
           </div>
-
-          <div className={classnames(style.mainContent)}>
-            <div className={classnames(style.leftMain)}>
-              <img src={landingLogo} />
-              <div className={classnames(style.line)}/>
-              <div className={classnames(style.smallHeader)}>
-                pokerface.io
+          <IsMobile render={(isMobile) => {
+            return (
+              <div className={classnames(style.mainContent,{[style.mobileMainContent]:isMobile})}>
+                {isMobile?
+                  <div className={classnames(style.leftMain)}>
+                    <Logo/>
+                  </div>
+                :
+                  <div className={classnames(style.leftMain)}>
+                    <img src={landingLogo} />
+                    <div className={classnames(style.line)}/>
+                    <div className={classnames(style.smallHeader)}>
+                      pokerface.io
+                    </div>
+                    <div className={classnames(style.sectionHeader)}>
+                      The Poker Community
+                    </div>
+                    <div className={classnames(style.sectionDescription)}>
+                      Learn
+                      <div className={classnames(style.divider)}/>
+                      Share
+                      <div className={classnames(style.divider)}/>
+                      Win
+                    </div>
+                  </div>
+                }
+                {this.getSignupForm(isMobile)}
               </div>
-              <div className={classnames(style.sectionHeader)}>
-                The Poker Community
-              </div>
-              <div className={classnames(style.sectionDescription)}>
-                Share
-                <div className={classnames(style.divider)}/>
-                Learn
-                <div className={classnames(style.divider)}/>
-                Win
-              </div>
-            </div>
-
-            <form
-                className={classnames(style.rightMain)}
-                onSubmit={::this.handleSignup}
-                style={{marginTop:70}}
-            >
-              <div className={classnames(style.uppercase)} style={{marginLeft:'2em', marginBottom:'1em'}}>
-                Enter Your Name and Email
-              </div>
-              <ButtonGroup horizontal>
-                <Input
-                    name="firstName"
-                    onChange={::this.handleInputChange}
-                    placeholder="First Name"
-                    style={{padding:'1.1em'}}
-                />
-                <Input
-                    name="lastName"
-                    onChange={::this.handleInputChange}
-                    placeholder="Last Name"
-                    style={{padding:'1.1em'}}
-                />
-              </ButtonGroup>
-              <Input
-                  name="email"
-                  onChange={::this.handleInputChange}
-                  placeholder="Email"
-                  style={{padding:'0.7em'}}
-              />
-              <Button
-                  loading={signingupInPorgress}
-                  primary
-                  style={{width: '98%', margin: '1em auto', textTransform: 'uppercase'}}
-                  type="submit"
-              >
-                Create Account
-              </Button>
-              {
-                signingupSuccess&&
-                <div className={classnames(style.label,style.success)}>
-                  <div>Account created successfully.</div>
-                  <div>Check your email.</div>
-                </div>
-              }
-              {
-                signingupInFail&&
-                <div className={classnames(style.label,style.error)}>
-                  {signingupFailMessage}
-                </div>
-              }
-
-              <div className={classnames(style.uppercase)} style={{marginLeft:'2em', marginTop:'4em', marginBottom:'1em'}}>
-                Or Sign Up Using
-              </div>
-              <ButtonGroup horizontal>
-                <a
-                    className={classnames(style.link)}
-                    href="/login/facebook"
-                    style={{background:'linear-gradient(106deg, #6482b3, #3c5896)'}}
-                >
-                  Facebook
-                </a>
-                <a
-                    className={classnames(style.link)}
-                    href="/login/googleplus"
-                    style={{background:'linear-gradient(106deg, #dc7869, #dc4e40)'}}
-                >
-                  Google
-                </a>
-              </ButtonGroup>
-              <div style={{marginTop:'1em', marginLeft:'2em'}}>
-                By signing up, I agree to Pokerface.io's <span style={{color:'#25aae1'}}>Terms of Service</span> and <span style={{color:'#25aae1'}}>Privacy Policy</span>.
-              </div>
-            </form>
-          </div>
+            )
+          }}
+          />
         </div>
         {
           selectUserModalOpen &&

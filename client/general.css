@@ -5,4 +5,5 @@ body{
   background-color: appBackgroundColor !important;
   background-attachment: fixed !important;
   min-height: 100vh;
+  margin: 0px;
 }

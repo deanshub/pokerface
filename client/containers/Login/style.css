@@ -8,10 +8,12 @@
 }
 .sectionOne{
   width: 100%;
-  padding: 40px;
+  height: 100%;
+  padding: 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .header{
@@ -26,38 +28,29 @@
   font-weight: bold;
 }
 
-.login{
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-.login>button{
-  border: 1px solid landingLineColor;
-  border-radius: 6px;
-  text-transform: uppercase;
-}
-.login>button:hover{
-  border-color: checkColor;
-}
-
 .mainContent{
-  width: 100%;
+  /* width: 100%; */
   display: flex;
-  margin-top: 8em;
-  margin-bottom: 15em;
+  justify-content: space-around;
+  margin-top: 2em;
   max-width: 1300px;
 }
-.leftMain{
-  flex: 3;
+
+.mobileMainContent{
+    flex-direction: column;
 }
+
+.leftMain{
+  flex-basis: 40%;
+}
+
 .rightMain{
-  flex: 2;
+  flex-basis: 40%;
 }
 
 .line{
   background-color: landingLineColor;
-  width: 10em;
+  width: 116px;
   height: 1em;
   margin: 1em 0;
 }
@@ -77,10 +70,10 @@
 }
 .sectionDescription{
   text-transform: uppercase;
-  font-size: 1.1vw;
+  font-size: 1.5em;
   color: landingLineColor;
-  margin-top: 1.1em;
-  margin-right: 12em;
+  margin-top: 2.1em;
+  margin-right: 8vw;
   display: flex;
   justify-content: space-around;
 }
@@ -101,12 +94,51 @@
   color: white;
 }
 
-.loginDropdown{
+.formDescription{
+  margin-left: 2em;
+  margin-top: 4em;
+  margin-bottom: 1em;
+}
+
+.mobileDesc{
+  margin-top: 1em;
+  margin-bottom: 0.3em;
+}
+.terms{
+  margin: 0.5em 2em;
+}
+
+.login{
+  position: relative;
+  flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+}
+
+.loginButton{
+  margin: 0px;
+}
+.signupButton{
+  margin-top: 10px;
+}
+
+.loginForm{
+  display: flex;
   justify-content: center;
-  align-items: center;
-  width: 15em;
+  align-items: baseline;
+}
+
+.loginMessage{
+  position: absolute;
+  right: -6px;
+  top: 80%;
+}
+.forgotPassword{
+  margin: 0 6px;
+  color: #25aae1;
+  text-transform: none;
+  cursor: pointer;
 }
 
 .divider{
@@ -116,15 +148,4 @@
 
 .uppercase{
   text-transform: uppercase;
-}
-
-.forgotPasswordContent {
-  width: 17em;
-}
-
-
-@media (max-width: 900px) {
-  .mainContent{
-    flex-direction: column;
-  }
 }
