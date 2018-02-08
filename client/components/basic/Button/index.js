@@ -31,7 +31,6 @@ export default class Button extends Component {
     return(
       <ContainerElement
           className={classnames(
-            className,
             style.button,
             {[style.active]: active},
             {[style.primary]: primary},
@@ -39,7 +38,8 @@ export default class Button extends Component {
             {[style.simple]: simple},
             {[style.hidden]: hidden},
             {[style.small]: small},
-            {[style.stretch]: stretch}
+            {[style.stretch]: stretch},
+            className,
           )}
           disabled={loading}
           href={href}

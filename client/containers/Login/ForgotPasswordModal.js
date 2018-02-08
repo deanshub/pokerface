@@ -18,7 +18,8 @@ export default class LoginForm extends Component {
     }
   }
 
-  handleSending(){
+  handleSending(e){
+    e.preventDefault()
     const {email} = this.state
 
     if (!isEmailPattern(email)){
@@ -47,7 +48,8 @@ export default class LoginForm extends Component {
   }
 
 
-  onClose(){
+  onClose(e){
+    e.preventDefault()
     this.setState({success:false,error:false,loading:false})
     const {onClose} = this.props
     onClose()
@@ -73,50 +75,51 @@ export default class LoginForm extends Component {
         <ModalContent>
           {
             success?
-              <div>
+              <form onSubmit={::this.onClose}>
                 Please check your email for further details
-              </div>
+                <ButtonGroup
+                    horizontal
+                    noEqual
+                    reversed
+                >
+                  <Button primary type="submit">OK</Button>
+                </ButtonGroup>
+              </form>
             :
-              <div className={classnames(style.forgotPasswordContent)}>
-                <Input
-                    focus
-                    label="Email"
-                    name="email"
-                    onChange={::this.handleInputChange}
-                    required
-                    type="email"
-                />
-                <Message
-                    error
-                    hidden={!error}
-                    message={errorMessage}
-                />
-            </div>
-          }
-        </ModalContent>
-        <ModalFooter>
-          <ButtonGroup
-              horizontal
-              noEqual
-              reversed
-          >
-            {
-              success?
-                <Button onClick={::this.onClose} primary>OK</Button>
-              :
-              [
+              <form onSubmit={::this.handleSending}>
+                <div className={classnames(style.forgotPasswordContent)}>
+                  <Input
+                      focus
+                      label="Email"
+                      name="email"
+                      onChange={::this.handleInputChange}
+                      required
+                      type="email"
+                  />
+                  <Message
+                      error
+                      hidden={!error}
+                      message={errorMessage}
+                  />
+                </div>
+                <ButtonGroup
+                    horizontal
+                    noEqual
+                    reversed
+                >
                 <Button
                     loading={loading}
-                    onClick={::this.handleSending}
                     primary
+                    type="submit"
                 >
                   Send
-                </Button>,
-                <Button onClick={::this.onClose}>Close</Button>,
-              ]
-            }
-          </ButtonGroup>
-        </ModalFooter>
+                </Button>
+                <Button onClick={::this.onClose}>Close</Button>
+              </ButtonGroup>
+            </form>
+          }
+        </ModalContent>
+
       </Modal>)
   }
 }
