@@ -27,7 +27,6 @@ export default class PlayerField extends Component {
         <div className={classnames(style.suggestionItem)}>
           <Image
               avatar
-              centered
               small
               src={player.avatar}
               target="_blank"
@@ -83,7 +82,6 @@ export default class PlayerField extends Component {
       <div className={classnames(style.playerRow)}>
         <Image
             avatar
-            centered
             href={href}
             onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
             src={user.avatar}
