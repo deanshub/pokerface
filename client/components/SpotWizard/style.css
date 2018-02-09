@@ -20,6 +20,7 @@
   padding-bottom: 25px;
   align-items: flex-end;
   border-bottom: 1px solid $divider;
+  flex-wrap: wrap;
 }
 
 .autosuggest{
@@ -70,6 +71,7 @@
 .blinds{
   padding-top: 20px;
   display: flex;
+  flex-wrap: wrap;
   border-bottom: 1px solid $divider;
   padding-bottom: 30px;
 }
@@ -105,5 +107,5 @@
 }
 
 .raiseBox{
-
+  min-width: 10em;
 }
