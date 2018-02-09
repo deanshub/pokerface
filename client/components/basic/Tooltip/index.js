@@ -61,17 +61,20 @@ export default class Tooltip extends Component {
       onClick: ::this.toggle,
     }
 
-    if (event==='hover'){
+    const isHoverEvent = (event==='hover')
+    if (isHoverEvent){
       containerProps.onMouseEnter = ::this.handleMouseEnter
       containerProps.onMouseLeave = ::this.handleMouseLeave
     }
+
+    const renderPopup = opened || isHoverEvent
 
     return (
       <Manager className={classnames(className, style.manager)} {...containerProps}>
         <Target className={classnames(style.triggerContainer)}>
           {trigger}
         </Target>
-        {opened && <Popper className={classnames(style.popperContainer)} placement={placement}>
+        {renderPopup && <Popper className={classnames(style.popperContainer)} placement={placement}>
             <OnBlur open={open}>
               {
                 (openByBlur)=>{
