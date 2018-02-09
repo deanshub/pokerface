@@ -30,7 +30,6 @@ export default class GeneralSettings extends Component {
     const {players} = this.props
     const newAmount = parseInt(value)
     if (players.currentPlayers.length<newAmount){
-
       const amountOfPlayerToAdd = newAmount - players.currentPlayers.length
       const anonymosPlayers = players.currentPlayers.filter((player)=>/^Player (\d)+$/.test(player.fullname))
       const lastIndex = anonymosPlayers.reduce((res,player)=>{
@@ -44,6 +43,9 @@ export default class GeneralSettings extends Component {
       for (let index = 0; index<amountOfPlayerToAdd; index++) {
         players.addGuest(`Player ${lastIndex + index+1}`)
       }
+      setTimeout(()=>{
+        this.playersElement.scrollTop=this.playersElement.scrollHeight
+      })
     }else if(players.currentPlayers.length>newAmount && newAmount>0){
       const amountOfPlayerToDelete = players.currentPlayers.length-newAmount
 
@@ -100,6 +102,7 @@ export default class GeneralSettings extends Component {
               value={settings.ante}
           />
           <Input
+              containerStyle={{minWidth:'12em'}}
               id="form-input-control-small-blind"
               label="Small Blind"
               onChange={::this.smallBlindChange}
@@ -108,6 +111,7 @@ export default class GeneralSettings extends Component {
               value={settings.sb}
           />
           <Input
+              containerStyle={{minWidth:'12em'}}
               id="form-input-control-big-blind"
               label="Big Blind"
               onChange={(e,{value})=>settings.bb=parseInt(value)||0}
@@ -117,7 +121,7 @@ export default class GeneralSettings extends Component {
           />
         </div>
 
-        <div className={classnames(style.players)}>
+        <div className={classnames(style.players)} ref={el=>this.playersElement=el}>
           {
             players.currentPlayers.map((user, playerIndex)=>{
               const dealerIndex = settings.dealer||0

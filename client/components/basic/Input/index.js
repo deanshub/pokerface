@@ -35,6 +35,7 @@ export default class Input extends Component {
     const {
       id,
       borderColor,
+      containerStyle,
       label,
       onChange,
       placeholder,
@@ -55,6 +56,7 @@ export default class Input extends Component {
       <div
           className={classnames(style.field)}
           onClick={onClick||::this.focus}
+          style={containerStyle}
       >
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
         <div className={classnames(style.inputContainer, {[style.range]:type==='range'})} style={{borderColor}}>
