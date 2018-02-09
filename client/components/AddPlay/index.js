@@ -7,7 +7,7 @@ import MediaPreview from './MediaPreview'
 import SpotWizard from '../SpotWizard'
 import SpotPlayer from '../../containers/SpotPlayer'
 import Button from '../basic/Button'
-import DropDown from '../basic/DropDown'
+import Tooltip from '../basic/Tooltip'
 import IsMobile from '../IsMobile'
 import classnames from 'classnames'
 import style from './style.css'
@@ -105,10 +105,10 @@ export default class AddPlay extends Component {
               >
                 {!isMobile?'Spot Wizard':''}
               </Button>
-              <DropDown
+              <Tooltip
                   open={cardSelectionOpen}
                   trigger={
-                    <Button leftIcon="card" onClick={() => this.setSelect({cardSelectionOpen:true})}>
+                    <Button leftIcon="card" onClick={() => this.setState({cardSelectionOpen:true})}>
                       {!isMobile?'Card':''}
                     </Button>
                   }
@@ -117,7 +117,7 @@ export default class AddPlay extends Component {
                     amount={1}
                     onCardSelected={::this.insertCard}
                 />
-              </DropDown>
+              </Tooltip>
 
               <input
                   multiple

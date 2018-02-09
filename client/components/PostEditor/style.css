@@ -19,3 +19,7 @@
   height: 1.7em;
   top: -0.1em;
 }
+
+.container :global(.DraftEditor-editorContainer){
+  z-index: auto;
+}

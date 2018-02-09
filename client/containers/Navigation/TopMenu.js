@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import DropDown from '../../components/basic/DropDown'
+import Tooltip from '../../components/basic/Tooltip'
 import SelectUserModal from '../SelectUserModal'
 import EditInfoModal from '../../components/Cover/EditInfoModal'
 import Image from '../../components/basic/Image'
@@ -57,7 +57,11 @@ export default class TopMenu extends Component {
 
     return (
       <div>
-        <DropDown oneClick trigger={trigger}>
+        <Tooltip
+            className={style.tooltipClassName}
+            oneClick
+            trigger={trigger}
+        >
           <div className={classnames(style.topMenu)}>
             <div
                 className={classnames(style.topMenuItem, style.signedInAsCard)}
@@ -93,7 +97,7 @@ export default class TopMenu extends Component {
              Logout
            </div>
          </div>
-        </DropDown>
+        </Tooltip>
        {
          selectUserModalOpen &&
          <SelectUserModal

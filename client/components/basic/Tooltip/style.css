@@ -1,0 +1,84 @@
+
+.manager {
+  position: relative;
+  display: inline-block;
+}
+
+.triggerContainer{
+  display: flex;
+  height: 100%;
+}
+
+.popperContainer{
+  z-index: 10;
+}
+
+.popper {
+  display: none;
+  background-color: white;
+  padding: 0.6em;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.popperOpen{
+  display: block;
+}
+
+.popper .popper__arrow {
+  width: 0.8em;
+  height: 0.8em;
+  position: absolute;
+  color: white;
+  box-sizing: border-box;
+  transform-origin: 0 0;
+  transform: rotate(45deg) translate(0.25em, -0.25em);
+  background-color: white;
+  /* margin: 5px; */
+}
+
+
+[data-placement^="bottom"] > .popper {
+  margin-top: 0.5em;
+}
+
+[data-placement^="bottom"] > .popper .popper__arrow {
+  top: 0em;
+  left: calc(50% - 0.7em);
+  box-shadow: -4px -4px 10px -2.5px rgba(0,0,0,0.3);
+}
+
+.popperContainer[data-placement^="top"] .popper {
+  margin-bottom: 0.6em;
+}
+
+.popperContainer[data-placement^="top"] .popper .popper__arrow {
+  bottom: 0.4em;
+  left: calc(50% - 0.7em);
+  box-shadow: 4px 4px 10px -2.5px rgba(0,0,0,0.3);
+}
+
+
+.popperContainer[data-placement^="right"] .popper {
+  margin-left: 0.4em;
+}
+
+.popperContainer[data-placement^="right"] .popper .popper__arrow {
+  left: 0em;
+  top: calc(50% - 0.7em);
+  box-shadow: -4px 4px 10px -2.5px rgba(0,0,0,0.3);
+}
+
+.popperContainer[data-placement^="left"] .popper {
+  margin-right: 0.4em;
+}
+
+.popperContainer[data-placement^="left"] .popper .popper__arrow {
+  right: 0em;
+  top: calc(50% - 0.7em);
+  box-shadow: 4px -4px 10px -2.5px rgba(0,0,0,0.3);
+}
+
+.popper[data-x-out-of-boundaries] {
+    display: none;
+}

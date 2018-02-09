@@ -26,7 +26,7 @@ export default class RangeBlock extends Component {
     }else{
       return(
         <Tooltip
-            trigger={<span className={classnames(style.rangeBlock)}>{children}</span>}
+            event="hover" trigger={<span className={classnames(style.rangeBlock)}>{children}</span>}
         >
           <CardsTable
               inFeed

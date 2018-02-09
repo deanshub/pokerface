@@ -7,10 +7,12 @@
 }
 
 .spotContainer{
+  z-index: 0;
   flex: 1;
   background-color: $white;
 }
 .stepsPlayerContainer{
   margin-top: 15px;
   margin-bottom: 20px;
+  z-index: 0;
 }

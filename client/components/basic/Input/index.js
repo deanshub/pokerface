@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import DropDown from '../DropDown'
+import Tooltip from '../Tooltip'
 import CardSelection from '../../AddPlay/CardSelection'
 
 import classnames from 'classnames'
@@ -76,7 +76,7 @@ export default class Input extends Component {
           />
           {
             cardSelection&&
-            <DropDown
+            <Tooltip
                 open={open}
                 trigger={
                   <button
@@ -92,7 +92,7 @@ export default class Input extends Component {
                   amount={amount}
                   onCardSelected={::this.cardSelectChange}
               />
-            </DropDown>
+            </Tooltip>
           }
           {
             rightButton&&

@@ -64,12 +64,16 @@
 }
 
 /* topMenu */
+
+.tooltipClassName {
+  margin-right: 1.43em;
+}
+
 .triggerContainer {
   position: relative;
   display: flex;
   align-items: center;
   cursor:pointer;
-  margin-right: 1.43em;
 
   .avatar {
     margin-right: 0.5em;
