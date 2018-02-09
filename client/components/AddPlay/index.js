@@ -40,10 +40,6 @@ import EventBlock from './EventBlock'
 @inject('events')
 @observer
 export default class AddPlay extends Component {
-  constructor(props){
-    super(props)
-    this.state = {cardSelectionOpen:false}
-  }
 
   addPhoto(event){
     event.preventDefault()
@@ -89,7 +85,6 @@ export default class AddPlay extends Component {
 
   render() {
     const {feed, spotPlayer} = this.props
-    const {cardSelectionOpen} = this.state
     const hasSpot = spotPlayer.newSpot.spot.moves.length>0
     const hasText = feed.newPost.content.getCurrentContent().hasText()
 
@@ -106,9 +101,8 @@ export default class AddPlay extends Component {
                 {!isMobile?'Spot Wizard':''}
               </Button>
               <Tooltip
-                  open={cardSelectionOpen}
                   trigger={
-                    <Button leftIcon="card" onClick={() => this.setState({cardSelectionOpen:true})}>
+                    <Button leftIcon="card">
                       {!isMobile?'Card':''}
                     </Button>
                   }
