@@ -8,6 +8,7 @@
   height: 100%;
   user-select: none;
   align-items: center;
+  line-height: normal;
 }
 .inFeed.container{
   font-size: 1em;
