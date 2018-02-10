@@ -2,16 +2,13 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import PostEditor from '../PostEditor'
-import CardSelection from './CardSelection'
 import MediaPreview from './MediaPreview'
 import SpotWizard from '../SpotWizard'
 import SpotPlayer from '../../containers/SpotPlayer'
-import Button from '../basic/Button'
-import Tooltip from '../basic/Tooltip'
-import IsMobile from '../IsMobile'
 import classnames from 'classnames'
 import style from './style.css'
 import EventBlock from './EventBlock'
+import ButtonsPanel from './ButtonsPanel'
 // const shareWithOptions = [{
 //   key: 'everyone',
 //   text: 'Everyone',
@@ -36,105 +33,16 @@ import EventBlock from './EventBlock'
 
 @inject('spotPlayer')
 @inject('feed')
-@inject('auth')
-@inject('events')
 @observer
 export default class AddPlay extends Component {
-
-  addPhoto(event){
-    event.preventDefault()
-    this.photosElm.click()
-  }
-
-  addPost(event){
-    event.preventDefault()
-    const {feed, auth, spotPlayer, events:eventsStore} = this.props
-    let newSpot
-    if(spotPlayer.newSpot.spot.moves.length>0){
-      newSpot=spotPlayer.newSpot.spot
-    }
-    feed.addPost(auth.user, newSpot, eventsStore.currentEventDetails)
-    spotPlayer.newSpot = spotPlayer.initNewPost()
-  }
-
-  photosChanged(){
-    const {feed} = this.props
-    feed.addPreviewUploadMedia(this.photosElm.files)
-  }
-
-  deleteSoptPlayer(){
+  deleteSpotPlayer(){
     const {spotPlayer} = this.props
     spotPlayer.newSpot = spotPlayer.initNewPost()
-  }
-
-  tagFriends(event){
-    event.preventDefault()
-    const {feed} = this.props
-    feed.addFriendTag()
-  }
-  insertCard(card){
-    const {feed} = this.props
-    feed.addCard(card)
-  }
-
-  addSpot(){
-    const {auth,spotPlayer} = this.props
-    spotPlayer.openSpotEditing(auth.user)
   }
 
   render() {
     const {feed, spotPlayer} = this.props
     const hasSpot = spotPlayer.newSpot.spot.moves.length>0
-    const hasText = feed.newPost.content.getCurrentContent().hasText()
-
-    const ActionButtons = () => {
-      return (
-        <IsMobile render={(isMobile) => {
-          return (
-            <div className={classnames(style.actionButtons)}>
-              <Button
-                  leftIcon="spot"
-                  onClick={::this.addSpot}
-                  small
-              >
-                {!isMobile?'Spot Wizard':''}
-              </Button>
-              <Tooltip
-                  trigger={
-                    <Button leftIcon="card">
-                      {!isMobile?'Card':''}
-                    </Button>
-                  }
-              >
-                <CardSelection
-                    amount={1}
-                    onCardSelected={::this.insertCard}
-                />
-              </Tooltip>
-
-              <input
-                  multiple
-                  onChange={::this.photosChanged}
-                  ref={(photosElm)=>this.photosElm=photosElm}
-                  style={{display:'none'}}
-                  type="file"
-              />
-              <Button
-                  leftIcon="photo"
-                  onClick={::this.addPhoto}
-                  small
-              >
-                {!isMobile?'Photo/Video':''}
-              </Button>
-              {/* {<Button leftIcon="emoji" small>
-                {!isMobile && 'Emoji'}
-              </Button>} */}
-            </div>
-          )
-        }}
-        />
-      )
-    }
 
     return (
       <div>
@@ -148,7 +56,7 @@ export default class AddPlay extends Component {
                 <SpotPlayer post={spotPlayer.newSpot} style={{height:'40em',minHeight:'40vw', backgroundColor:'white'}}/>
                 <div
                     className={classnames(style.spotPreviewOverlay)}
-                    onClick={::this.deleteSoptPlayer}
+                    onClick={::this.deleteSpotPlayer}
                 >
                   <div className={classnames(style.deleteImage)}/>
                 </div>
@@ -163,21 +71,7 @@ export default class AddPlay extends Component {
 
           <MediaPreview/>
           <EventBlock/>
-          <div className={classnames(style.buttonsPanel)}>
-            <div className={classnames(style.label)}>
-              insert
-            </div>
-            <div className={classnames(style.editPostButtons)}>
-              <ActionButtons/>
-              <Button
-                  disable={!hasText}
-                  onClick={::this.addPost}
-                  primary
-              >
-                Post
-              </Button>
-            </div>
-          </div>
+          <ButtonsPanel/>
           <SpotWizard/>
         </div>
       </div>
