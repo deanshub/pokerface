@@ -112,7 +112,7 @@ export default class CardsTable extends Component {
       return set
     })
     return (
-      <div className={classnames(style.container)} style={{color:textColor}}>
+      <div className={classnames(style.container, {[style.inFeed]:inFeed})} style={{color:textColor}}>
         <div className={classnames(style.title, style.maintitle, {[style.inFeed]:inFeed})}>
           {title}
         </div>

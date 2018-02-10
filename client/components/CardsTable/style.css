@@ -10,11 +10,11 @@
   user-select: none;
   align-items: center;
   line-height: normal;
-  width: 90vw;
-  max-width: 40em;
+  width: 90vmin;
+  max-width: 60em;
 }
 .inFeed.container{
-  font-size: 1em;
+  max-width: 30em;
 }
 
 .title{
