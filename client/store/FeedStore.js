@@ -41,7 +41,6 @@ export class FeedStore {
   currentFetchFilter: String
   noMorePosts: boolean
   @observable uploadedMedia: Object
-  @observable openCardSelection: boolean
   @observable currentUploadedFiles: Number
 
   constructor(){
@@ -55,7 +54,6 @@ export class FeedStore {
       deletePopupOpen: false,
       eventId: undefined,
     })
-    this.openCardSelection = false
     this.standalonePost = observable({
       loading: true,
       post: undefined,

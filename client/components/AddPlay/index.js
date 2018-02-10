@@ -74,7 +74,6 @@ export default class AddPlay extends Component {
   }
   insertCard(card){
     const {feed} = this.props
-    feed.openCardSelection=false
     feed.addCard(card)
   }
 
