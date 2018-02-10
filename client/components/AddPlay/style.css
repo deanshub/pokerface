@@ -149,7 +149,9 @@
 .cardSelectionContainer{
   display: flex;
   flex-direction: column;
-  padding: 10px 15px 10px 15px;
+  padding: 0.2em 0.4em 0em 0.4em;
+  /* remove when remove semantic ui*/
+  box-sizing: initial;
 }
 
 .sideDivider{
@@ -160,7 +162,7 @@
 
 .divider{
   border-top: 1px solid #f0f0f0;
-  margin: 8px 0;
+  margin: 0.3em 0 0.4em 0;
 }
 .signLine{
   display: flex;
@@ -173,24 +175,24 @@
 
 .card{
   border-radius: 5px;
-  padding: 2px 1px;
+  padding: 0.4em 0.5em;;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
   color: #24222e;
-  font-size: 1.1em;
 }
 .rankCard{
-  width: 1.6vw;
-  height: 1.9vw;
+  font-size: 1.1em;
 }
 .signCard{
-  width: 2vw;
-  height: 2vw;
+  margin: 0.1em;
 }
 
+.signCardImg{
+  height: 1.4em;
+}
 .rankCard:hover{
   color: checkColor;
 }
@@ -198,8 +200,9 @@
   color: checkColor;
 }
 
-.selected{
+.selected, .selected:hover{
   background-color: checkColor;
+  color: white;
 }
 
 .removeSpot{
