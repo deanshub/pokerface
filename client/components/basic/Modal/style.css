@@ -14,7 +14,6 @@
 .closeModal{
   z-index: 1;
   position: absolute;
-  right: 50%;
   top: 10%;
 }
 .closeModal>div{

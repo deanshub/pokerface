@@ -64,12 +64,16 @@
 }
 
 /* topMenu */
+
+.tooltipClassName {
+  margin-right: 1.43em;
+}
+
 .triggerContainer {
   position: relative;
   display: flex;
   align-items: center;
-  cursor:pointer;
-  padding-right: 1.43em;
+  cursor: pointer;
 
   .avatar {
     margin-right: 0.5em;
@@ -116,6 +120,7 @@
 
 .topMenuItem{
   margin-top: 0.7em;
+  cursor: pointer;
 }
 
 .topMenuClickableItem:hover{

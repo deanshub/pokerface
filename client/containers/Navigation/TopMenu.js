@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import DropDown from '../../components/basic/DropDown'
+import Tooltip from '../../components/basic/Tooltip'
 import SelectUserModal from '../SelectUserModal'
 import EditInfoModal from '../../components/Cover/EditInfoModal'
 import Image from '../../components/basic/Image'
@@ -14,7 +14,7 @@ import style from './style.css'
 export default class TopMenu extends Component {
   constructor(props){
     super(props)
-    this.state = {showTopMenu:false, editingPersonalInfo:false, selectUserModalOpen:false}
+    this.state = {editingPersonalInfo:false, selectUserModalOpen:false}
   }
 
   handleLogout(){
@@ -44,11 +44,7 @@ export default class TopMenu extends Component {
     const {user} = auth
     const {editingPersonalInfo, selectUserModalOpen} = this.state
     const trigger = (
-        <div
-            className={classnames(style.triggerContainer)}
-            onBlur={() => {this.setState({showTopMenu:false})}}
-            onClick={() => {this.setState({showTopMenu:true})}}
-        >
+        <div className={classnames(style.triggerContainer)}>
           <Image
               avatar
               className={classnames(style.avatar)}
@@ -61,7 +57,11 @@ export default class TopMenu extends Component {
 
     return (
       <div>
-        <DropDown oneClick trigger={trigger}>
+        <Tooltip
+            className={style.tooltipClassName}
+            oneClick
+            trigger={trigger}
+        >
           <div className={classnames(style.topMenu)}>
             <div
                 className={classnames(style.topMenuItem, style.signedInAsCard)}
@@ -84,7 +84,7 @@ export default class TopMenu extends Component {
              showSwitchUser &&
              <div
                  className={classnames(style.topMenuItem, style.topMenuClickableItem)}
-                 onClick={() => this.setState({selectUserModalOpen:true,showTopMenu:false})}
+                 onClick={() => this.setState({selectUserModalOpen:true})}
              >
                Switch user
              </div>
@@ -97,7 +97,7 @@ export default class TopMenu extends Component {
              Logout
            </div>
          </div>
-        </DropDown>
+        </Tooltip>
        {
          selectUserModalOpen &&
          <SelectUserModal

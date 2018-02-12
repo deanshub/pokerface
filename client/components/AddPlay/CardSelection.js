@@ -80,6 +80,7 @@ export default class CardSelection extends Component {
       >
 
         <img
+            className={classnames(style.signCardImg)}
             src={SVG_SUITES[sign.name]}
         />
       </div>

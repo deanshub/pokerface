@@ -41,7 +41,6 @@ export class FeedStore {
   currentFetchFilter: String
   noMorePosts: boolean
   @observable uploadedMedia: Object
-  @observable openCardSelection: boolean
   @observable currentUploadedFiles: Number
 
   constructor(){
@@ -55,7 +54,6 @@ export class FeedStore {
       deletePopupOpen: false,
       eventId: undefined,
     })
-    this.openCardSelection = false
     this.standalonePost = observable({
       loading: true,
       post: undefined,
@@ -426,7 +424,33 @@ export class FeedStore {
     const contentState = this.newPost.content.getCurrentContent()
     const targetRange = this.newPost.content.getSelection()
 
-    const newContentState = Modifier.replaceText(contentState, targetRange, `[${card}] `)
+    let newContentState = Modifier.removeRange(
+      contentState,
+      targetRange,
+      'backward'
+    )
+
+    newContentState = newContentState.createEntity('CARD', 'IMMUTABLE', {card})
+    newContentState = Modifier.insertText(newContentState, newContentState.getSelectionAfter(), `[${card}]`)
+    // const newEditorState = EditorState.push(
+    //   this.newPost.content,
+    //   newContentState,
+    //   'convert-to-immutable-cards',
+    //   // this.newPost.content.getLastChangeType(),
+    // )
+
+    const cardEndPos = targetRange.getAnchorOffset()
+    const blockKey = targetRange.getAnchorKey()
+    const blockSize = contentState.getBlockForKey(blockKey).getLength()
+
+    if (cardEndPos === blockSize) {
+      newContentState = Modifier.insertText(
+        newContentState,
+        newContentState.getSelectionAfter(),
+        ' ',
+     )
+    }
+
     const newEditorState = EditorState.push(
       this.newPost.content,
       newContentState,
@@ -434,7 +458,8 @@ export class FeedStore {
       // this.newPost.content.getLastChangeType(),
     )
 
-    this.newPost.content = EditorState.moveFocusToEnd(newEditorState)
+    // this.newPost.content = EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter())
+    this.newPost.content = EditorState.acceptSelection(newEditorState, newContentState.getSelectionAfter())
   }
 
   @action

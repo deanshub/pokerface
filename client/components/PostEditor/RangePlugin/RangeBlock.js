@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import { Popup } from 'semantic-ui-react'
-import classnames from 'classnames'
-
+import Tooltip from '../../basic/Tooltip'
 import prange, {reverse} from '../../../utils/rangeParser/prange'
 import CardsTable from '../../CardsTable'
+import classnames from 'classnames'
 import style from './style.css'
 
 export default class RangeBlock extends Component {
@@ -26,11 +25,8 @@ export default class RangeBlock extends Component {
       )
     }else{
       return(
-        <Popup
-            flowing
-            hoverable
-            on={['hover','click','focus']}
-            trigger={<span className={classnames(style.rangeBlock)}>{children}</span>}
+        <Tooltip
+            event="hover" trigger={<span className={classnames(style.rangeBlock)}>{children}</span>}
         >
           <CardsTable
               inFeed
@@ -41,7 +37,7 @@ export default class RangeBlock extends Component {
               textColor="black"
               title={reverse(range)}
           />
-        </Popup>
+        </Tooltip>
       )
     }
   }

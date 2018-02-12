@@ -8,7 +8,7 @@ import { observer, inject } from 'mobx-react'
 import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 
-import createFocusPlugin from 'draft-js-focus-plugin'
+// import createFocusPlugin from 'draft-js-focus-plugin'
 import createInlineToolbarPlugin, {Separator}  from 'draft-js-inline-toolbar-plugin'
 import createMentionPlugin from 'draft-js-mention-plugin'
 import PlayerMention from './PlayerMention'
@@ -36,7 +36,7 @@ import AddVideoButton from './AddVideoButton'
 
 import style from './style.css'
 import 'draft-js/dist/Draft.css'
-import 'draft-js-focus-plugin/lib/plugin.css'
+// import 'draft-js-focus-plugin/lib/plugin.css'
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
 import 'draft-js-mention-plugin/lib/plugin.css'
 import 'draft-js-emoji-plugin/lib/plugin.css'
@@ -70,7 +70,7 @@ export default class PostEditor extends Component {
 
   constructor(props){
     super(props)
-    const focusPlugin = createFocusPlugin()
+    // const focusPlugin = createFocusPlugin()
     const inlineToolbarPlugin = createInlineToolbarPlugin({
       structure: [
         BoldButton,
@@ -97,7 +97,7 @@ export default class PostEditor extends Component {
     const rangePlugin = createRangePlugin()
 
     this.plugins = [
-      focusPlugin,
+      // focusPlugin,
       inlineToolbarPlugin,
       emojiPlugin,
       mentionPlugin,
@@ -117,7 +117,7 @@ export default class PostEditor extends Component {
   }
 
   focus() {
-    const { onFocus, readOnly } = this.props
+    const { readOnly } = this.props
     if (this.editor && !readOnly){
       try{
         this.editor.focus()

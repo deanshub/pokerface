@@ -1,6 +1,7 @@
 @import '../../constants/styles.css';
 
 .container{
+  margin: 0 auto;
   color: white;
   display: flex;
   flex-direction: column;
@@ -9,18 +10,19 @@
   user-select: none;
   align-items: center;
   line-height: normal;
+  width: 90vmin;
+  max-width: 60em;
 }
 .inFeed.container{
-  font-size: 1em;
+  max-width: 30em;
 }
 
 .title{
   font-weight: bold;
   text-align: center;
-  margin: 10px;
+  margin-bottom: 10px;
 }
 .maintitle{
-  margin: 10px;
   font-size: 2em;
 }
 .inFeed.maintitle{
@@ -31,18 +33,16 @@
   border-collapse: collapse;
   font-weight: bold;
   color: subtitleColor;
-  font-size: 2.5vw;
+  width: 100%;
 }
 .inFeed.handchartContainer{
-  font-size: 0.8em;
 }
 .hand{
   border:1px solid #d0d0da;
-  padding: 0.4em;
   text-align: center;
   cursor: pointer;
   background-color: #f2f2f2;
-  max-width: 6.5vw;
+  max-width: 8vw;
 }
 .hand:hover{
   font-weight: bold;

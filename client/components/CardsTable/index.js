@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import ReactFitText from 'react-fittext'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -111,7 +112,7 @@ export default class CardsTable extends Component {
       return set
     })
     return (
-      <div className={classnames(style.container)} style={{color:textColor}}>
+      <div className={classnames(style.container, {[style.inFeed]:inFeed})} style={{color:textColor}}>
         <div className={classnames(style.title, style.maintitle, {[style.inFeed]:inFeed})}>
           {title}
         </div>
@@ -125,19 +126,21 @@ export default class CardsTable extends Component {
             })}
         >
           <tbody>
-          {
-            ranks.map((rank1, index)=>{
-              return (
-                <tr key={index}>
-                  {
-                    ranks.map((rank2)=>{
-                      return this.getHandElement(rank1,rank2, normalizedSets)
-                    })
-                  }
-                </tr>
-              )
-            })
-          }
+            {
+              ranks.map((rank1, index)=>{
+                return (
+                  <ReactFitText compressor={2.8} key={index}>
+                    <tr>
+                      {
+                        ranks.map((rank2)=>{
+                          return this.getHandElement(rank1,rank2, normalizedSets)
+                        })
+                      }
+                    </tr>
+                  </ReactFitText>
+                )
+              })
+            }
           </tbody>
         </table>
         {

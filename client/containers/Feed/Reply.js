@@ -22,7 +22,9 @@ export default class Reply extends Component {
   addComment(e){
     const { auth, post, feed } = this.props
     e.preventDefault()
-    feed.addComment(post.id, auth.user)
+    if (feed.commentDrafts.get(post.id)){
+      feed.addComment(post.id, auth.user)
+    }
   }
   // removeReply(){
   //   const { feed, post } = this.props

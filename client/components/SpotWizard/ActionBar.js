@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import style from './style.css'
 import Button from '../basic/Button'
 import Input from '../basic/Input'
-import DropDown from '../basic/DropDown'
+import Tooltip from '../basic/Tooltip'
 
 @inject('spotPlayer')
 @observer
@@ -110,7 +110,7 @@ export default class SpotWizard extends Component {
       }
       actions.push(<div className={classnames(style.divider)} key="d2"/>)
       actions.push(
-        <DropDown
+        <Tooltip
             key="raise"
             onOpen={()=>this.raiseInput&&this.raiseInput.focus()}
             open={raiseOpen}
@@ -148,7 +148,7 @@ export default class SpotWizard extends Component {
                 value={raiseValue}
             />
           </div>
-        </DropDown>
+        </Tooltip>
       )
     }else if(!gameEnded){
       actions.push(

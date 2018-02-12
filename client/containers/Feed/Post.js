@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react'
 import Button from '../../components/basic/Button'
 import BasicImage from '../../components/basic/Image'
 import Dimmer from '../../components/basic/Dimmer'
-import DropDown from '../../components/basic/DropDown'
+import Tooltip from '../../components/basic/Tooltip'
 import TimeAgo from 'javascript-time-ago'
 import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import ReactDOM from 'react-dom'
@@ -231,7 +231,7 @@ export default class Post extends Component {
                 </div>
               }
             </div>
-            <DropDown
+            <Tooltip
                 trigger={
                   <Button
                       leftIcon="share"
@@ -280,10 +280,10 @@ export default class Post extends Component {
                   Get Link
                 </Button>
               </div>
-            </DropDown>
+            </Tooltip>
             {
               post.owner.username===auth.user.username&&
-              <DropDown
+              <Tooltip
                   trigger={
                     <Button
                         leftIcon="actionMenu"
@@ -301,7 +301,7 @@ export default class Post extends Component {
                       Delete Post
                   </Button>
                 </div>
-              </DropDown>
+              </Tooltip>
             }
           </div>
         </div>

@@ -8,7 +8,7 @@ import classnames from 'classnames'
 import style from './style.css'
 import Button from '../basic/Button'
 import Image from '../basic/Image'
-import DropDown from '../basic/DropDown'
+import Tooltip from '../basic/Tooltip'
 import dateIcon from '../../assets/profile/date-gray.png'
 import mapIcon from '../../assets/profile/map.png'
 import userIcon from '../../assets/profile/user-search.png'
@@ -212,7 +212,7 @@ export default class Cover extends Component {
           <div className={classnames(style.detailsRightPane)}>
             {
               details.creator&&auth.user&&details.creator.username===auth.user.username&&
-              <DropDown
+              <Tooltip
                   oneClick
                   trigger={
                     <Button
@@ -235,7 +235,7 @@ export default class Cover extends Component {
                     Edit Event
                   </Button>
                 </div>
-              </DropDown>
+              </Tooltip>
             }
             <Button
                 leftIcon="share"
