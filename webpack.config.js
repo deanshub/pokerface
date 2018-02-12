@@ -45,6 +45,7 @@ const config = {
     ],
     html: './index.html',
     vendor: [
+      'babel-polyfill',
       ...hotloaderEntries,
       'react',
       'react-dom',

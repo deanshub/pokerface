@@ -1,3 +1,6 @@
+import 'intl'
+import 'intl/locale-data/jsonp/en'
+
 import ReactDOM from 'react-dom'
 import React from 'react'
 import { AppContainer } from 'react-hot-loader'
