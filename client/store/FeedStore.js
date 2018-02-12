@@ -32,6 +32,25 @@ const boomPlayerRegex = /www\.boomplayer\.com\/([^\s]+)/gi
 //   )
 // }
 
+const parseOwner = (owner)=>{
+  let rebrandingDetails
+  if (owner.rebrandingDetails){
+    rebrandingDetails = Object.keys(owner.rebrandingDetails).reduce((res,detailName)=>{
+      if(!owner.rebrandingDetails[detailName]){
+        res[detailName] = undefined
+      }else{
+        res[detailName] = owner.rebrandingDetails[detailName]
+      }
+      return res
+    },{})
+  }
+
+  return {
+    ...owner,
+    rebrandingDetails,
+  }
+}
+
 export class FeedStore {
   @observable posts: Object
   @observable newPost: Object
@@ -80,6 +99,7 @@ export class FeedStore {
       spot:content.spot,
       poll:content.poll,
       spotPlayerState,
+      owner: parseOwner(post.owner),
     })
 
     parsedPost.comments = parsedPost.comments.map((comment)=>{
