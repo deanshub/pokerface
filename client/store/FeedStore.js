@@ -2,7 +2,7 @@
 
 import { observable, computed, action, toJS, extendObservable } from 'mobx'
 // import { fromResource } from 'mobx-utils'
-import { EditorState, convertToRaw, Modifier, convertFromRaw, Entity } from 'draft-js'
+import { EditorState, convertToRaw, Modifier, convertFromRaw } from 'draft-js'
 import graphqlClient from './graphqlClient'
 import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike, postDelete, updatePollAnswer} from './mutations/posts'
@@ -430,8 +430,8 @@ export class FeedStore {
       'backward'
     )
 
-    const entityKey = Entity.create('CARD', 'IMMUTABLE', {card})
-    newContentState = Modifier.insertText(newContentState, newContentState.getSelectionAfter(), `[${card}]`, null, entityKey)
+    newContentState = newContentState.createEntity('CARD', 'IMMUTABLE', {card})
+    newContentState = Modifier.insertText(newContentState, newContentState.getSelectionAfter(), `[${card}]`)
     // const newEditorState = EditorState.push(
     //   this.newPost.content,
     //   newContentState,
