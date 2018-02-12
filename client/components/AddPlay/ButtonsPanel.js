@@ -12,8 +12,8 @@ import style from './style.css'
 @inject('feed')
 @inject('auth')
 @inject('events')
-// TODO: observer is commented because it makes this component re-render every blur, we should understand which observable is making the component re-render and fix it
-// @observer
+
+@observer
 export default class ButtonsPanel extends Component {
   constructor(props){
     super(props)
