@@ -2,7 +2,7 @@
 
 import { observable, computed, action, toJS, extendObservable } from 'mobx'
 // import { fromResource } from 'mobx-utils'
-import { EditorState, convertToRaw, Modifier, convertFromRaw } from 'draft-js'
+import { EditorState, convertToRaw, Modifier, convertFromRaw, Entity } from 'draft-js'
 import graphqlClient from './graphqlClient'
 import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike, postDelete, updatePollAnswer} from './mutations/posts'
@@ -424,7 +424,33 @@ export class FeedStore {
     const contentState = this.newPost.content.getCurrentContent()
     const targetRange = this.newPost.content.getSelection()
 
-    const newContentState = Modifier.replaceText(contentState, targetRange, `[${card}] `)
+    let newContentState = Modifier.removeRange(
+      contentState,
+      targetRange,
+      'backward'
+    )
+
+    const entityKey = Entity.create('CARD', 'IMMUTABLE', {card})
+    newContentState = Modifier.insertText(newContentState, newContentState.getSelectionAfter(), `[${card}]`, null, entityKey)
+    // const newEditorState = EditorState.push(
+    //   this.newPost.content,
+    //   newContentState,
+    //   'convert-to-immutable-cards',
+    //   // this.newPost.content.getLastChangeType(),
+    // )
+
+    const cardEndPos = targetRange.getAnchorOffset()
+    const blockKey = targetRange.getAnchorKey()
+    const blockSize = contentState.getBlockForKey(blockKey).getLength()
+
+    if (cardEndPos === blockSize) {
+      newContentState = Modifier.insertText(
+        newContentState,
+        newContentState.getSelectionAfter(),
+        ' ',
+     )
+    }
+
     const newEditorState = EditorState.push(
       this.newPost.content,
       newContentState,
@@ -432,7 +458,8 @@ export class FeedStore {
       // this.newPost.content.getLastChangeType(),
     )
 
-    this.newPost.content = EditorState.moveFocusToEnd(newEditorState)
+    // this.newPost.content = EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter())
+    this.newPost.content = EditorState.acceptSelection(newEditorState, newContentState.getSelectionAfter())
   }
 
   @action

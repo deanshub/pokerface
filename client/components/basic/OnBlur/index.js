@@ -25,6 +25,10 @@ export default class OnBlur extends Component {
     })
   }
 
+  componentWillUnmount(){
+    window.removeEventListener('click', this.closeFn , false)
+  }
+
   render(){
     const {children} = this.props
     const {open} = this.state

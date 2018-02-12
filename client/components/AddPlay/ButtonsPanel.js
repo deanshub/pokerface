@@ -15,6 +15,12 @@ import style from './style.css'
 // TODO: observer is commented because it makes this component re-render every blur, we should understand which observable is making the component re-render and fix it
 // @observer
 export default class ButtonsPanel extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      cardSelectionOpen: false,
+    }
+  }
   addSpot(){
     const {auth,spotPlayer} = this.props
     spotPlayer.openSpotEditing(auth.user)
@@ -45,10 +51,14 @@ export default class ButtonsPanel extends Component {
   insertCard(card){
     const {feed} = this.props
     feed.addCard(card)
+    this.setState({
+      cardSelectionOpen:false,
+    })
   }
 
   render(){
-    const {feed, spotPlayer} = this.props
+    const {feed} = this.props
+    const {cardSelectionOpen} = this.state
     const hasText = feed.newPost.content.getCurrentContent().hasText()
 
     const ActionButtons = () => {
@@ -64,6 +74,7 @@ export default class ButtonsPanel extends Component {
                 {!isMobile?'Spot Wizard':''}
               </Button>
               <Tooltip
+                  open={cardSelectionOpen}
                   trigger={
                     <Button leftIcon="card">
                       {!isMobile?'Card':''}
