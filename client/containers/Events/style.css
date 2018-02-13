@@ -1,5 +1,9 @@
 @import "../../constants/styles";
 
+.events{
+  margin: 0 2em;
+}
+
 .containerHeader {
   display: flex;
   justify-content: space-between;
@@ -18,4 +22,109 @@
   top: 0.3rem;
   right: 0;
   max-width: 100px;
+}
+
+.container{
+  line-height: normal;
+}
+
+.eventRow{
+  display: flex;
+  background-color: backColor;
+  color: textColor;
+  box-shadow: 0 0 10px 0 #000000;
+  border-radius: 10px;
+  margin-bottom: 1.5em;
+}
+
+.date{
+  cursor: pointer;
+  background-color: qrBottomBorderColor;
+  width: 8em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px 0px 0px 10px;
+  padding: 1em 0;
+}
+.month{
+  color: white;
+}
+.day{
+  color: white;
+  font-size: 3em;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+}
+
+.details{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1em 0em 1em 2em;
+}
+
+.titleRow{
+  display: flex;
+  flex-wrap: wrap;
+}
+.title{
+  flex: 1;
+  color: white;
+  font-weight: bold;
+}
+.actions{
+  display: flex;
+}
+.actionMenuItems{
+  width: 8em;
+}
+
+.attandanceContainer{
+  display: flex;
+}
+.attandanceAction{
+  padding: 0 1em;
+  cursor: pointer;
+}
+
+.invited{
+  &:hover{
+    color: #e3d357;
+  }
+  &.active{
+    color: #e3d357;
+  }
+}
+.notGoing{
+  &:hover{
+    color: #ff5a5a;
+  }
+  &.active{
+    color: #ff5a5a;
+  }
+}
+.going{
+  &:hover{
+    color: #41c86a;
+  }
+  &.active{
+    color: #41c86a;
+  }
+}
+
+.location{
+  margin-bottom: 1.5em;
+}
+.attendance{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.peopleDivider{
+  width: 1px;
+  height: 1em;
+  background-color: eventDividerColor;
+  margin: 0 1em;
 }

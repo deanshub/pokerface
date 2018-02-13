@@ -49,16 +49,17 @@ export default class Events extends Component {
     const hasEvents = eventsAmount > 0
 
     return (
-      <div>
+      <div className={classnames(style.events)}>
         {
           !events.loading &&
           <div className={classnames(style.containerHeader)}>
             <div className={classnames(style.containerHeaderText)}/>
             <Button
+                active
                 onClick={() => editEvent.openEditEventModal()}
-                primary
+                simple
             >
-              Create Event
+              CREATE EVENT
             </Button>
             {editEvent.editEventModalOpen && <EditEvent/>}
           </div>
