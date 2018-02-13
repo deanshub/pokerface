@@ -4,6 +4,7 @@ import { observable, computed, action, toJS } from 'mobx'
 import graphqlClient from './graphqlClient'
 import {eventsQuery, eventQuery, searchEventsQuery} from './queries/events'
 import {eventAttendanceUpdate, addEvent, deleteEvent, updateEvent} from './mutations/events'
+import { eventChanged } from './subscriptions/events'
 import logger from '../utils/logger'
 import moment from 'moment'
 
@@ -21,6 +22,15 @@ export class EventStore {
     this.loading = false
     this.loadingCurrentEvent = false
     this.searchEventsResult= []
+
+    graphqlClient.subscribe({
+      query:eventChanged,
+    }).subscribe({
+      next:({eventChanged})=>{
+        // console.log('receive timer:', timerChanged)
+        console.log(eventChanged)
+      },
+    })
   }
 
   setEvent(game){

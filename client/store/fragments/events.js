@@ -1,0 +1,41 @@
+import gql from 'graphql-tag'
+
+export const eventFields = gql`fragment EventFields on Event {
+  id
+  creator{
+    username
+    fullname
+    avatar
+  }
+  title
+  description
+  type
+  subtype
+  location
+  from
+  to
+  isPublic
+  invited{
+    username
+    fullname
+    avatar
+  }
+  accepted{
+    username
+    fullname
+    avatar
+  }
+  declined{
+    username
+    fullname
+    avatar
+  }
+  unresponsive{
+    username
+    fullname
+    avatar
+  }
+  coverImage
+  updatedAt
+  createdAt
+}`

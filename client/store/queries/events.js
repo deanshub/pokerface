@@ -1,93 +1,22 @@
 import gql from 'graphql-tag'
+import {eventFields} from '../fragments/events'
 
 export const eventsQuery = gql`
-    query _{
-      events{
-          id
-          creator{
-            username
-            fullname
-            avatar
-          }
-          title
-          description
-          type
-          subtype
-          location
-          from
-          to
-          invited{
-            username
-            fullname
-            avatar
-            guest
-          }
-          accepted{
-            username
-            fullname
-            avatar
-          }
-          declined{
-            username
-            fullname
-            avatar
-          }
-          unresponsive{
-            username
-            fullname
-            avatar
-            guest
-          }
-          coverImage
-          updatedAt
-          createdAt
-      }
+  query _{
+    events{
+      ...EventFields
     }
+  }
+  ${eventFields}
 `
 
 export const eventQuery = gql`
   query _($eventId: String!) {
     event(eventId: $eventId) {
-      id
-      creator{
-        username
-        fullname
-        avatar
-      }
-      title
-      description
-      type
-      subtype
-      location
-      from
-      to
-      invited{
-        username
-        fullname
-        avatar
-        guest
-      }
-      accepted{
-        username
-        fullname
-        avatar
-      }
-      declined{
-        username
-        fullname
-        avatar
-      }
-      unresponsive{
-        username
-        fullname
-        avatar
-        guest
-      }
-      coverImage
-      updatedAt
-      createdAt
+      ...EventFields
     }
   }
+  ${eventFields}
 `
 
 export const searchEventsQuery = gql`
@@ -98,5 +27,4 @@ export const searchEventsQuery = gql`
       location
     }
   }
-
 `
