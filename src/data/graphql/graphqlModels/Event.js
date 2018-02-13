@@ -1,9 +1,48 @@
+import {withFilter} from 'graphql-subscriptions'
+import pubSub from './pubSub'
 import DB from '../../db'
 import path from 'path'
 import mailer from '../../../utils/mailer'
 import {CREATE_PUBLIC_EVENT, PUBLIC} from '../../../utils/permissions'
 import { prepareCoverImage } from '../../helping/user'
 import { getInvitedsEventChange, equalInvitedPlayers } from '../../helping/event'
+
+const getGqlEvent = ({
+  id,
+  title,
+  description,
+  type,
+  subtype,
+  location,
+  from,
+  to,
+  invited,
+  accepted,
+  declined,
+  unresponsive,
+  updatedAt,
+  createdAt,
+  owner,
+  coverImage,
+}) => ({
+  id,
+  title,
+  description,
+  type,
+  subtype,
+  location,
+  from,
+  to,
+  invited,
+  accepted,
+  declined,
+  unresponsive,
+  updatedAt,
+  createdAt,
+  creator:owner,
+  coverImage,
+})
+
 export const schema =  [`
   type Event {
     id: String!
@@ -14,6 +53,7 @@ export const schema =  [`
     location: String
     from: String
     to: String
+    isPublic: Boolean
     invited: [Player]
     accepted: [Player]
     declined: [Player]
@@ -23,6 +63,17 @@ export const schema =  [`
     creator: User
     coverImage: String
     posts: [Post]
+  }
+
+  enum EventChangeType {
+    ADD
+    UPDATE
+    DELETE
+  }
+
+  type SubscribedEvent {
+    event: Event
+    changeType: EventChangeType
   }
 
   type Query {
@@ -69,6 +120,10 @@ export const schema =  [`
       eventId: String!
     ): Event
   }
+
+  type Subscription {
+    eventChanged: Event
+  }
 `]
 
 const authCondition = (context) => {
@@ -81,7 +136,6 @@ const authCondition = (context) => {
   }]}
 }
 
-
 export const resolvers = {
   Event:{
     id: (game)=>game._id,
@@ -92,6 +146,7 @@ export const resolvers = {
     location: (game)=>game.location,
     from: (game)=>game.startDate,
     to: (game)=>game.endDate,
+    isPublic: (game)=>game.permissions && game.permissions.includes(PUBLIC),
     invited: (game)=>{
       const invitedUsers = game.invited.filter(player=>!player.guest).map(player=>player.username)
       const invitedGuests = game.invited.filter(player=>player.guest)
@@ -225,6 +280,7 @@ export const resolvers = {
         throw new Error('Image is not valid')
       }
 
+      pubSub.publish('eventChanged', {eventChanged:{id:"4",title:'titleee'}})
       return new DB.models.Game({
         owner: context.user._id,
         title,
@@ -239,7 +295,9 @@ export const resolvers = {
         permissions: isPublic?[PUBLIC]:undefined,
       }).save()
       .then(event=>{
-        mailer.sendEventInvite(event, event.invited)
+        const eventRaw = event.toJSON()
+        mailer.sendEventInvite(eventRaw, eventRaw.invited)
+
         return event
       })
     },
@@ -309,6 +367,21 @@ export const resolvers = {
           throw new Error('Can\'t delete event of another user')
         }
       })
+    },
+  },
+  Subscription: {
+    eventChanged: {
+      subscribe: withFilter(
+        () => pubSub.asyncIterator('eventChanged'),
+        (payload, _, {userId}) => {
+          console.log("payload: ", payload);
+          if (payload){
+            const invitedUsers = payload.eventChanged.invited.filter(player=>!player.guest).map(player=>player.username)
+            return invitedUsers.contains(userId)
+          }
+          return false
+        }
+      ),
     },
   },
 }

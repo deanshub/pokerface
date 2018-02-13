@@ -1,7 +1,6 @@
-import {PubSub, withFilter} from 'graphql-subscriptions'
+import {withFilter} from 'graphql-subscriptions'
+import pubSub from './pubSub'
 import {timerActions} from '../../../utils/blindTimers'
-
-const pubsub = new PubSub()
 
 export const schema =  [`
   input TimerRoundInput {
@@ -92,7 +91,7 @@ export const resolvers = {
       const {currentTime, round, offset, clientSocketId} = args
       const timer = timerActions.pause(userId, parseInt(currentTime), round, parseInt(offset))
 
-      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
+      pubSub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
     resumeTimer: (_, args, {user:{_id:userId}}) => {
@@ -104,7 +103,7 @@ export const resolvers = {
         parseInt(endTime)
       )
 
-      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
+      pubSub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
     updateRound: (_, args ,{user:{_id:userId}}) => {
@@ -117,28 +116,28 @@ export const resolvers = {
         parseInt(endTime)
       )
 
-      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
+      pubSub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
     updateTimerRounds: (_, args, {user:{_id:userId}}) => {
       const {currentTime, rounds:{rounds}, clientSocketId} = args
       const timer = timerActions.updateTimerRounds(userId, parseInt(currentTime), rounds)
 
-      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
+      pubSub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
     setResetClientResponse: (_, args, {user:{_id:userId}}) => {
       const {currentTime, reset, clientSocketId} = args
       const timer = timerActions.setResetClientResponse(userId, parseInt(currentTime), reset)
 
-      pubsub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
+      pubSub.publish('timerChanged', {timerChanged: timer, clientSocketId, userId})
       return timer
     },
   },
   Subscription: {
     timerChanged: {
       subscribe: withFilter(
-        () => pubsub.asyncIterator('timerChanged'),
+        () => pubSub.asyncIterator('timerChanged'),
         (payload ,_ ,{userId, clientSocketId}) => {
           if (payload){
             const {userId:userIdPublisher, clientSocketId:socketIdPublisher} = payload

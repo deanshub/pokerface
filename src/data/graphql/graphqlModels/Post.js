@@ -47,6 +47,17 @@ export const schema =  [`
   }
 `]
 
+const prepareRelatedUsers = (content) => {
+  const entitys = content.entityMap
+  if (!entitys){
+    return undefined
+  }
+
+  const mentions = Object.values(entitys).filter(entity => entity.type === 'mention')
+
+  return mentions.map(entity => entity.data.mention.username)
+}
+
 export const resolvers = {
   Post:{
     id: (post)=>post._id,
@@ -70,6 +81,7 @@ export const resolvers = {
   Query: {
     posts: (_, {id, username, eventId, offset})=>{
       let query
+
       if (id!==undefined){
         query = DB.models.Post.find({_id: id})
       }else if (username!==undefined) {
@@ -79,6 +91,8 @@ export const resolvers = {
             $or:[
               {owner: username},
               {_id:{$in:posts}},
+              {'content.spot.players.username': username},
+              {relatedUsers: username},
             ],
           })
           .limit(20)
@@ -113,11 +127,13 @@ export const resolvers = {
         }
       })
 
+      const parsedContent = JSON.parse(content)
       return new DB.models.Post({
-        content: JSON.parse(content),
+        content: parsedContent,
         owner: context.user._id,
         photos: files,
         game: eventId,
+        relatedUsers: prepareRelatedUsers(parsedContent),
       }).save()
     },
     deletePost:(_, {postId}, context)=>{
