@@ -212,7 +212,7 @@ export function getNextStep(spot, currentSpotPlayerState, ereaseDescription=true
 
 export function getPreviousStep(spot, currentSpotPlayerState, ereaseDescription=true){
   let currentState = utils.generateInitialState(spot)
-  let previousState
+  let previousState = currentState
   while(currentState.nextMoveIndex<currentSpotPlayerState.nextMoveIndex-1){
     previousState = currentState
     currentState = getNextStep(spot, currentState, ereaseDescription)
