@@ -10,6 +10,7 @@
   z-index: 0;
   flex: 1;
   background-color: $white;
+  display: flex;
 }
 .stepsPlayerContainer{
   margin-top: 15px;
