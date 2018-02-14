@@ -22,6 +22,7 @@ export default class Navbar extends Component {
 
   componentDidMount(){
     this.props.events.fetchMyGames()
+    this.props.events.startSubscription()
   }
 
   // TODO: Consult with Dean

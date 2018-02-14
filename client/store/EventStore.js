@@ -22,15 +22,22 @@ export class EventStore {
     this.loading = false
     this.loadingCurrentEvent = false
     this.searchEventsResult= []
+    this.subscribed = false
+  }
 
-    graphqlClient.subscribe({
-      query:eventChanged,
-    }).subscribe({
-      next:({eventChanged})=>{
-        // console.log('receive timer:', timerChanged)
-        console.log(eventChanged)
-      },
-    })
+  @action
+  startSubscription(){
+    if (!this.subscribed){
+      graphqlClient.subscribe({
+        query:eventChanged,
+      }).subscribe({
+        next:({eventChanged})=>{
+          if (eventChanged.changeType === 'ADD') {
+            this.setEvent(eventChanged.event)
+          }
+        },
+      })
+    }
   }
 
   setEvent(game){
