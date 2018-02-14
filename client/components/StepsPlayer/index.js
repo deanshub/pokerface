@@ -16,6 +16,7 @@ export default class StepsPlayer extends Component {
   static propTypes = {
     currentStepIndex: PropTypes.number.isRequired,
     hasNextStep: PropTypes.bool,
+    hasPreviousStep: PropTypes.bool,
     onNextStep: PropTypes.func.isRequired,
     onPreviousStep: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
@@ -87,6 +88,7 @@ export default class StepsPlayer extends Component {
       onNextStep,
       onPreviousStep,
       hasNextStep,
+      hasPreviousStep,
       steps,
       currentStepIndex,
     } = this.props
@@ -151,7 +153,7 @@ export default class StepsPlayer extends Component {
           </button>
           <div className={classnames(style.divider)}/>
           <button
-              className={classnames(style.button,{[style.disable]:true})}
+              className={classnames(style.button,{[style.disable]:!hasPreviousStep})}
               name="back"
               onClick={onPreviousStep}
           >

@@ -2,8 +2,9 @@ import { observable, extendObservable } from 'mobx'
 import MOVES from './constants'
 import {getNextPlayer} from './players'
 import {stringToCards} from './cards'
+import utils from '../../containers/SpotPlayer/utils'
 
-export function makeMove(spot, currentSpotPlayerState, ereaseDescription=true){
+export function getNextStep(spot, currentSpotPlayerState, ereaseDescription=true){
   const move = spot.moves[currentSpotPlayerState.nextMoveIndex]
   const nextPlayer = getNextPlayer(spot.moves, currentSpotPlayerState)
   let newSpotPlayerState = observable(Object.assign({}, currentSpotPlayerState))
@@ -138,11 +139,11 @@ export function makeMove(spot, currentSpotPlayerState, ereaseDescription=true){
     newPlayersState[move.player].showCards=true
     newSpotPlayerState.players = newPlayersState
     newSpotPlayerState.nextMoveIndex++
-    return makeMove(spot, newSpotPlayerState, false)
+    return getNextStep(spot, newSpotPlayerState, false)
   }
   case MOVES.PLAYER_META_ACTIONS.DEALER:{
     newSpotPlayerState.nextMoveIndex++
-    return makeMove(spot, newSpotPlayerState, false)
+    return getNextStep(spot, newSpotPlayerState, false)
   }
   // case MOVES.PLAYER_META_ACTIONS.MOCKS:
   //   break
@@ -206,5 +207,19 @@ export function makeMove(spot, currentSpotPlayerState, ereaseDescription=true){
     newSpotPlayerState.nextMoveIndex++
     return newSpotPlayerState
   }
+  }
+}
+
+export function getPreviousStep(spot, currentSpotPlayerState, ereaseDescription=true){
+  let currentState = utils.generateInitialState(spot)
+  let previousState
+  while(currentState.nextMoveIndex<currentSpotPlayerState.nextMoveIndex-1){
+    previousState = currentState
+    currentState = getNextStep(spot, currentState, ereaseDescription)
+  }
+  if (currentState.nextMoveIndex<currentSpotPlayerState.nextMoveIndex){
+    return currentState
+  }else{
+    return previousState
   }
 }

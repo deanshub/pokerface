@@ -117,12 +117,6 @@ const utils = {
     // dealer {pot, cards, }
   },
 
-  getPreviousStep(spot, currentSpotPlayerState){
-    // currentSpotPlayerState.nextMoveIndex
-    console.log('getPreviousStep');
-    return currentSpotPlayerState
-  },
-
   amountToCoins(amount, coins) {
     // if (cache[amount]!==undefined){
     //   return cache[amount];
