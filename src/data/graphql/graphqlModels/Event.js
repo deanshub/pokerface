@@ -7,42 +7,7 @@ import {CREATE_PUBLIC_EVENT, PUBLIC} from '../../../utils/permissions'
 import { prepareCoverImage } from '../../helping/user'
 import { getInvitedsEventChange, equalInvitedPlayers } from '../../helping/event'
 
-const getGqlEvent = ({
-  id,
-  title,
-  description,
-  type,
-  subtype,
-  location,
-  from,
-  to,
-  invited,
-  accepted,
-  declined,
-  unresponsive,
-  updatedAt,
-  createdAt,
-  owner,
-  coverImage,
-}) => ({
-  id,
-  title,
-  description,
-  type,
-  subtype,
-  location,
-  from,
-  to,
-  invited,
-  accepted,
-  declined,
-  unresponsive,
-  updatedAt,
-  createdAt,
-  creator:owner,
-  coverImage,
-})
-
+const EVENT_CHANGED = 'eventChanged'
 export const schema =  [`
   type Event {
     id: String!
@@ -122,7 +87,7 @@ export const schema =  [`
   }
 
   type Subscription {
-    eventChanged: Event
+    ${EVENT_CHANGED}: SubscribedEvent
   }
 `]
 
@@ -280,7 +245,6 @@ export const resolvers = {
         throw new Error('Image is not valid')
       }
 
-      pubSub.publish('eventChanged', {eventChanged:{id:"4",title:'titleee'}})
       return new DB.models.Game({
         owner: context.user._id,
         title,
@@ -295,9 +259,9 @@ export const resolvers = {
         permissions: isPublic?[PUBLIC]:undefined,
       }).save()
       .then(event=>{
-        const eventRaw = event.toJSON()
-        mailer.sendEventInvite(eventRaw, eventRaw.invited)
-
+        //const eventRaw = event.toJSON()
+        mailer.sendEventInvite(event, event.invited)
+        pubSub.publish(EVENT_CHANGED, {[EVENT_CHANGED]:{event, changeType:'ADD'}})
         return event
       })
     },
@@ -370,14 +334,14 @@ export const resolvers = {
     },
   },
   Subscription: {
-    eventChanged: {
+    [EVENT_CHANGED]: {
       subscribe: withFilter(
-        () => pubSub.asyncIterator('eventChanged'),
+        () => pubSub.asyncIterator(EVENT_CHANGED),
         (payload, _, {userId}) => {
-          console.log("payload: ", payload);
           if (payload){
-            const invitedUsers = payload.eventChanged.invited.filter(player=>!player.guest).map(player=>player.username)
-            return invitedUsers.contains(userId)
+            const invitedUsers = payload[EVENT_CHANGED].event.invited.filter(player=>!player.guest).map(player=>player.username)
+
+            return invitedUsers.includes(userId)
           }
           return false
         }
