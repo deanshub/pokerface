@@ -4,6 +4,7 @@ import { observable, action, extendObservable } from 'mobx'
 import utils from '../containers/SpotPlayer/utils'
 import initialSpot from '../containers/SpotPlayer/initialSpot'
 import logger from '../utils/logger'
+import {makeMove} from '../utils/game/actions'
 
 export class SpotPlayerStore{
   @observable speed
@@ -48,7 +49,7 @@ export class SpotPlayerStore{
 
   @action
   nextStep(post){
-    const newSpotPlayerState = utils.getNextStep(post.spot, post.spotPlayerState)
+    const newSpotPlayerState = makeMove(post.spot, post.spotPlayerState)
     extendObservable(post, {spotPlayerState: newSpotPlayerState})
     return newSpotPlayerState.nextMoveIndex<post.spot.moves.length
   }
@@ -56,7 +57,7 @@ export class SpotPlayerStore{
   @action
   previousStep(post){
     const newSpotPlayerState = utils.getPreviousStep(post.spot, post.spotPlayerState)
-    post.spotPlayerState = newSpotPlayerState
+    extendObservable(post, {spotPlayerState: newSpotPlayerState})
     return newSpotPlayerState.nextMoveIndex>0
   }
 

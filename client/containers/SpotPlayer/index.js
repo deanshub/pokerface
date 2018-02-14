@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import Spot from '../../components/Spot'
 import StepsPlayer from '../../components/StepsPlayer'
-import MOVES from './constants'
+import MOVES from '../../utils/game/constants'
 
 import classnames from 'classnames'
 import cssStyle from './style.css'
