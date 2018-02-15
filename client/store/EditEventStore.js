@@ -121,7 +121,7 @@ export class EditEventStore {
 
   removePlayer(username, status){
     const index = this.currentEvent.get('invited').findIndex(p => p.username === username)
-    if (index > 0){
+    if (index > -1){
       this.currentEvent.get('invited').splice(index, 1)
     }
 

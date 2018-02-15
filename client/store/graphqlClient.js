@@ -21,6 +21,9 @@ const SOCKET_ID_ADDING_OPERATION = [
   'updateRound',
   'updateTimerRounds',
   'setResetClientResponse',
+  'addEvent',
+  'updateEvent',
+  'deleteEvent',
 ]
 
 const socketIdAddingMiddleware = {
