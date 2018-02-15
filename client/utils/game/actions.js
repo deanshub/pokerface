@@ -210,12 +210,20 @@ export function getNextStep(spot, currentSpotPlayerState, ereaseDescription=true
   }
 }
 
-export function getPreviousStep(spot, currentSpotPlayerState, ereaseDescription=true){
+export function getNextSteps(spot, currentSpotPlayerState, stepsForward=1){
+  let currentState = currentSpotPlayerState
+  while(currentState.nextMoveIndex<currentSpotPlayerState.nextMoveIndex+stepsForward){
+    currentState = getNextStep(spot, currentState)
+  }
+  return currentState
+}
+
+export function getPreviousStep(spot, currentSpotPlayerState, stepsBack=1){
   let currentState = utils.generateInitialState(spot)
   let previousState = currentState
-  while(currentState.nextMoveIndex<currentSpotPlayerState.nextMoveIndex-1){
+  while(currentState.nextMoveIndex<currentSpotPlayerState.nextMoveIndex-stepsBack){
     previousState = currentState
-    currentState = getNextStep(spot, currentState, ereaseDescription)
+    currentState = getNextStep(spot, currentState)
   }
   if (currentState.nextMoveIndex<currentSpotPlayerState.nextMoveIndex){
     return currentState

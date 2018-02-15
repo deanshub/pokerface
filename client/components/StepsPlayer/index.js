@@ -83,6 +83,19 @@ export default class StepsPlayer extends Component {
     onReset()
   }
 
+  timelineClicked(step){
+    const {
+      onNextStep,
+      onPreviousStep,
+      currentStepIndex,
+    } = this.props
+    if (step.index<currentStepIndex){
+      onPreviousStep(currentStepIndex-step.index)
+    }else if (step.index>currentStepIndex){
+      onNextStep(step.index-currentStepIndex)
+    }
+  }
+
   render() {
     const {
       onNextStep,
@@ -155,7 +168,7 @@ export default class StepsPlayer extends Component {
           <button
               className={classnames(style.button,{[style.disable]:!hasPreviousStep})}
               name="back"
-              onClick={onPreviousStep}
+              onClick={()=>onPreviousStep(1)}
           >
             <img
                 aria-hidden
@@ -165,7 +178,7 @@ export default class StepsPlayer extends Component {
           <button
               className={classnames(style.button,{[style.disable]:!hasNextStep})}
               name="forward"
-              onClick={onNextStep}
+              onClick={()=>onNextStep(1)}
           >
             <img
                 aria-hidden
@@ -177,7 +190,7 @@ export default class StepsPlayer extends Component {
           <EventsTimeline
               currentIndex={currentStepIndex}
               events={steps}
-              onClick={val => console.log(val)}
+              onClick={::this.timelineClicked}
           />
         </div>
       </div>

@@ -13,7 +13,7 @@ import cssStyle from './style.css'
 export default class SpotPlayer extends Component {
   render() {
     const {spotPlayer, style, standalone, post} = this.props
-    const steps = post.spot.moves.map(move=>{
+    const steps = post.spot.moves.map((move,index)=>{
       let title
       if (move.action===MOVES.DEALER_ACTIONS.FLOP){
         title='Flop'
@@ -23,6 +23,7 @@ export default class SpotPlayer extends Component {
         title='River'
       }
       return {
+        index,
         title,
       }
     })
@@ -37,8 +38,8 @@ export default class SpotPlayer extends Component {
               currentStepIndex={post.spotPlayerState.nextMoveIndex-1}
               hasNextStep={post.spotPlayerState.nextMoveIndex<post.spot.moves.length}
               hasPreviousStep={post.spotPlayerState.nextMoveIndex>0}
-              onNextStep={()=>spotPlayer.nextStep(post)}
-              onPreviousStep={()=>spotPlayer.previousStep(post)}
+              onNextStep={(stepsForward)=>spotPlayer.nextStep(post, stepsForward)}
+              onPreviousStep={(stepsBack)=>spotPlayer.previousStep(post, stepsBack)}
               onReset={()=>spotPlayer.reset(post)}
               steps={steps}
           />
