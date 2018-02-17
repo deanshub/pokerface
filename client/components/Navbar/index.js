@@ -60,32 +60,39 @@ export default class Navbar extends Component {
           <div className={classnames(style.navbarSection)}>
             Tools
           </div>
-            <NavLink
-                activeClassName={classnames(style.navbarRouteItemActive)}
-                className={classnames(style.navbarRouteItem)}
-                to="/smart"
-            >
-              Pre-Flop Chart
-            </NavLink>
-            <NavLink
-                activeClassName={classnames(style.navbarRouteItemActive)}
-                className={classnames(style.navbarRouteItem)}
-                to="/timer"
-            >
-              Blind Timer
-            </NavLink>
-            <NavLink
-                activeClassName={classnames(style.navbarRouteItemActive)}
-                className={classnames(style.navbarRouteItem)}
-                to="/spotnote"
-            >
-              Spot Note
-            </NavLink>
-            <div className={classnames(style.navbarSection)}>
-              Search
-            </div>
-            <SearchBar/>
+          <NavLink
+              activeClassName={classnames(style.navbarRouteItemActive)}
+              className={classnames(style.navbarRouteItem)}
+              to="/tools/pre-flop"
+          >
+            Pre-Flop Chart
+          </NavLink>
+          <NavLink
+              activeClassName={classnames(style.navbarRouteItemActive)}
+              className={classnames(style.navbarRouteItem)}
+              to="/tools/shove-fold"
+          >
+            Shove\ Fold Chart
+          </NavLink>
+          <NavLink
+              activeClassName={classnames(style.navbarRouteItemActive)}
+              className={classnames(style.navbarRouteItem)}
+              to="/tools/timer"
+          >
+            Blind Timer
+          </NavLink>
+          <NavLink
+              activeClassName={classnames(style.navbarRouteItemActive)}
+              className={classnames(style.navbarRouteItem)}
+              to="/tools/spotnote"
+          >
+            Spot Note
+          </NavLink>
+          <div className={classnames(style.navbarSection)}>
+            Search
           </div>
+          <SearchBar/>
+        </div>
     )
   }
 }

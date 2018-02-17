@@ -74,7 +74,7 @@ export default class Navigation extends Component {
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               onClick={::this.onClose}
-              to="/smart"
+              to="/tools/pre-flop"
           >
             <div className={classnames(style.chart)}/>
             Pre-Flop Chart
@@ -83,7 +83,16 @@ export default class Navigation extends Component {
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               onClick={::this.onClose}
-              to="/timer"
+              to="/tools/shove-fold"
+          >
+            <div className={classnames(style.chart)}/>
+            Shove\ Fold Chart
+          </NavLink>
+          <NavLink
+              activeClassName={classnames(style.navbarRouteItemActive)}
+              className={classnames(style.navbarRouteItem)}
+              onClick={::this.onClose}
+              to="/tools/timer"
           >
             <div className={classnames(style.blindsTimer)}/>
             Blind Timer

@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import CardsTable from '../CardsTable'
 import {openRaiseSets} from './openRaiseSets'
 
-export default class Lern extends Component {
+export default class PreFlop extends Component {
   render() {
     return (
       <div>
