@@ -1,3 +1,6 @@
+.container{
+  position: relative;
+}
 .cardBlock{
   font-size: 1.1em;
   cursor: pointer;
