@@ -40,7 +40,7 @@ export const schema =  [`
       username: String,
       offset: Int
     ): [Post]
-    newRelatedPosts: Int
+    newRelatedPosts: [Post]
   }
 
   type Mutation{
@@ -146,7 +146,7 @@ export const resolvers = {
             {'content.spot.players.username': username},
             {relatedUsers: username},
           ],
-        }).count()
+        })
       })
 
     },
@@ -222,14 +222,11 @@ export const resolvers = {
       subscribe: withFilter(
         () => pubSub.asyncIterator(POST_CHANGED),
         (payload, _, context) => {
-          const {userId, clientSocketId} = context
+          const {clientSocketId} = context
 
           if (payload){
             const {clientSocketId:socketIdPublisher} = payload
-            const {post} = payload[POST_CHANGED]
-            const ownerId = post.owner._id || post.owner // owner populated or not
-
-            return (userId === ownerId && clientSocketId !== socketIdPublisher)
+            return (clientSocketId !== socketIdPublisher)
           }
 
           return false
