@@ -7,8 +7,8 @@ import Loader from '../../components/basic/Loader'
 import Feed from '../Feed'
 import RebrandedBlindsTimer from '../RebrandedBlindsTimer'
 
-const LoadableLearn = Loadable({
-  loader: () => import('../../components/Learn'),
+const LoadablePreFlop = Loadable({
+  loader: () => import('../../components/PreFlop'),
   loading: Loader,
 })
 const LoadableNoMatch = Loadable({
@@ -67,17 +67,22 @@ export default class Navigation extends Component {
           <Route
               component={RebrandedBlindsTimer}
               exact
-              path="/timer"
+              path="/tools/timer"
           />
           <Route
-              component={LoadableLearn}
+              component={LoadablePreFlop}
               exact
-              path="/smart"
+              path="/tools/pre-flop"
+          />
+          <Route
+              component={LoadablePreFlop}
+              exact
+              path="/tools/shove-fold"
           />
           <Route
               component={LoadableSpotNote}
               exact
-              path="/spotnote"
+              path="/tools/spotnote"
           />
           <Route component={LoadableNoMatch}/>
         </Switch>

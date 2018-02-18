@@ -16,6 +16,7 @@ export default class StepsPlayer extends Component {
   static propTypes = {
     currentStepIndex: PropTypes.number.isRequired,
     hasNextStep: PropTypes.bool,
+    hasPreviousStep: PropTypes.bool,
     onNextStep: PropTypes.func.isRequired,
     onPreviousStep: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
@@ -82,11 +83,25 @@ export default class StepsPlayer extends Component {
     onReset()
   }
 
+  timelineClicked(step){
+    const {
+      onNextStep,
+      onPreviousStep,
+      currentStepIndex,
+    } = this.props
+    if (step.index<currentStepIndex){
+      onPreviousStep(currentStepIndex-step.index)
+    }else if (step.index>currentStepIndex){
+      onNextStep(step.index-currentStepIndex)
+    }
+  }
+
   render() {
     const {
       onNextStep,
       onPreviousStep,
       hasNextStep,
+      hasPreviousStep,
       steps,
       currentStepIndex,
     } = this.props
@@ -151,9 +166,9 @@ export default class StepsPlayer extends Component {
           </button>
           <div className={classnames(style.divider)}/>
           <button
-              className={classnames(style.button,{[style.disable]:true})}
+              className={classnames(style.button,{[style.disable]:!hasPreviousStep})}
               name="back"
-              onClick={onPreviousStep}
+              onClick={()=>onPreviousStep(1)}
           >
             <img
                 aria-hidden
@@ -163,7 +178,7 @@ export default class StepsPlayer extends Component {
           <button
               className={classnames(style.button,{[style.disable]:!hasNextStep})}
               name="forward"
-              onClick={onNextStep}
+              onClick={()=>onNextStep(1)}
           >
             <img
                 aria-hidden
@@ -175,7 +190,7 @@ export default class StepsPlayer extends Component {
           <EventsTimeline
               currentIndex={currentStepIndex}
               events={steps}
-              onClick={val => console.log(val)}
+              onClick={::this.timelineClicked}
           />
         </div>
       </div>

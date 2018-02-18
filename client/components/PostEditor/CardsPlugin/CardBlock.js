@@ -36,7 +36,7 @@ export default class CardBlock extends Component {
 
     const cardsText = children[0].props.text
     return(
-      <span>
+      <span className={classnames(style.container)}>
         <span className={classnames(style.cardBlock)}>
           {children}
         </span>
