@@ -19,8 +19,12 @@ import style from './style.css'
 import image from '../../assets/landing logo.png'
 import logo from '../../assets/mobile/logo-mobile.png'
 
-const LoadableLearn = Loadable({
-  loader: () => import('../../components/Learn'),
+const LoadablePreFlop = Loadable({
+  loader: () => import('../../components/PreFlop'),
+  loading: Loader,
+})
+const LoadableShoveFold = Loadable({
+  loader: () => import('../../components/ShoveFold'),
   loading: Loader,
 })
 const LoadableNoMatch = Loadable({
@@ -140,17 +144,22 @@ export default class Navigation extends Component {
                 <Route
                     component={RebrandedBlindsTimer}
                     exact
-                    path="/timer"
+                    path="/tools/timer"
                 />
                 <Route
-                    component={LoadableLearn}
+                    component={LoadablePreFlop}
                     exact
-                    path="/smart"
+                    path="/tools/pre-flop"
+                />
+                <Route
+                    component={LoadableShoveFold}
+                    exact
+                    path="/tools/shove-fold"
                 />
                 <Route
                     component={LoadableSpotNote}
                     exact
-                    path="/spotnote"
+                    path="/tools/spotnote"
                 />
                 <Route component={LoadableNoMatch}/>
               </Switch>

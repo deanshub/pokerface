@@ -1,0 +1,8 @@
+@import "../../constants/styles";
+
+.options{
+  display: flex;
+}
+.options>div{
+  flex: 1;
+}

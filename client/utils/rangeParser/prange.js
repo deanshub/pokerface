@@ -3,8 +3,8 @@
 const { codeRanks, rankCodes, byCodeRankDescending } = require('./lib/core')
 
 const dashRangeRx = /[A,K,Q,J,T,2-9]{2}[o,s]?-[A,K,Q,J,T,2-9]{2}[o,s]?$/
-const plusRangeRx = /[A,K,Q,J,T,2-9]{2}[o,s]?\+$/
-const oneComboRx = /[A,K,Q,J,T,2-9]{2}[o,s]?$/
+const plusRangeRx = /[A,K,Q,J,T,2-9,X]{2}[o,s]?\+$/
+const oneComboRx = /[A,K,Q,J,T,2-9,X]{2}[o,s]?$/
 
 function minToMaxPairs(a, b) {
   const codea = rankCodes[a]
@@ -103,6 +103,14 @@ function minToMax(a, b) {
 }
 
 function plus([ a, b, suit ]) {
+  if (a==='X'&&b==='X'){
+    let allCards = []
+    for (let index = 1; index < 13; index++) {
+      allCards = allCards.concat(plus(['2',codeRanks[index],null]))
+    }
+    return minToMaxPairs('2','A').concat(allCards)
+  }
+
   if (a === b) return minToMaxPairs(a, 'A')
 
   // K9+ gets filled as K9-KQ, i.e. the `9` part is filled up to `Q`
@@ -114,6 +122,16 @@ function plus([ a, b, suit ]) {
   const max = Math.max(codea, codeb)
   const min = Math.min(codea, codeb)
   const suitString = suit == null ? '' : suit
+
+  if (a==='X'||b==='X') {
+    let code = codea||codeb||1
+    let results=[]
+    while (code<13){
+      results = results.concat(plus(['2',codeRanks[code],suit]))
+      code++
+    }
+    return results
+  }
 
   const maxHand = codeRanks[max] + codeRanks[max - 1] + suitString
   const minHand = codeRanks[max] + codeRanks[min] + suitString
@@ -130,6 +148,12 @@ function subrange(s) {
   }
   if (oneComboRx.test(s)) {
     const [ r1, r2, suit ] = s.trim()
+    if (r1 === 'X' && r2 === 'X') return plus([r1,r2])
+    if (r1==='X' || r2==='X'){
+      // if (r1==='2'||r1==='2') return plus([3,2,suit])
+      if (r1==='X') return plus([r2,2,suit])
+      if (r2==='X') return plus([r1,2,suit])
+    }
     if (r1 === r2 || suit != null) return [ s ]
     return [ s + 'o', s + 's' ]
   }
@@ -171,6 +195,7 @@ function prange(s) {
     .replace(/j/g,'J')
     .replace(/10/g,'T')
     .replace(/t/g,'T')
+    .replace(/x/g,'X')
     .replace(/O/g,'o')
     .replace(/S/g,'s')
      // correct things like AJs -A9s to AJs-A9s
@@ -180,7 +205,7 @@ function prange(s) {
     )
     // correct AK + to AK+
     .replace(
-      /([A,K,Q,J,T,2-9]{2}[o,s]?)\s\+/g
+      /([A,K,Q,J,T,2-9,X]{2}[o,s]?)\s\+/g
       , '$1+'
     )
     // split at any white space or comma (any errornous space was removed via replace)
