@@ -1,5 +1,9 @@
-import path from 'path'
+import {withFilter} from 'graphql-subscriptions'
+import pubSub from './pubSub'
 import DB from '../../db'
+import path from 'path'
+
+const POST_CHANGED = 'postChanged'
 
 export const schema =  [`
   type File {
@@ -18,6 +22,17 @@ export const schema =  [`
     event: Event
   }
 
+  enum PostChangeType {
+    ADD
+    UPDATE
+    DELETE
+  }
+
+  type SubscribedPost {
+    post: Post
+    changeType: PostChangeType
+  }
+
   type Query {
     posts(
       id: String,
@@ -25,16 +40,19 @@ export const schema =  [`
       username: String,
       offset: Int
     ): [Post]
+    newRelatedPosts: Int
   }
 
   type Mutation{
     createPost(
       eventId: String,
       content: String!,
-      photos: [Upload]
+      photos: [Upload],
+      clientSocketId: String!
     ): Post
     deletePost(
-      postId: String!
+      postId: String!,
+      clientSocketId: String!
     ): Post
     setPostLike(
       content: Boolean!,
@@ -44,6 +62,10 @@ export const schema =  [`
       post: String!,
       option: Int!
     ): Post
+  }
+
+  type Subscription {
+    ${POST_CHANGED}: SubscribedPost
   }
 `]
 
@@ -114,10 +136,24 @@ export const resolvers = {
         .skip(offset||0)
         .sort('-created')
     },
+    newRelatedPosts: (_, args, context)=>{
+      const {_id:username} = context.user
+      return DB.models.User.findById(username).then(user => {
+
+        return DB.models.Post.find({
+          updated: {$gt: user.lastPulseCheck},
+          $or:[
+            {'content.spot.players.username': username},
+            {relatedUsers: username},
+          ],
+        }).count()
+      })
+
+    },
   },
 
   Mutation: {
-    createPost: (_, {content, photos, eventId}, context)=>{
+    createPost: (_, {content, photos, eventId, clientSocketId}, context)=>{
       const files = (photos||[]).map(photo=>{
         const filename = path.parse(photo.path).base
         if (photo.type.includes('image')||photo.type.includes('video')){
@@ -134,11 +170,15 @@ export const resolvers = {
         photos: files,
         game: eventId,
         relatedUsers: prepareRelatedUsers(parsedContent),
-      }).save()
+      }).save().then(post => {
+        pubSub.publish(POST_CHANGED, {[POST_CHANGED]:{post, changeType:'ADD'}, clientSocketId})
+        return post
+      })
     },
-    deletePost:(_, {postId}, context)=>{
+    deletePost:(_, {postId, clientSocketId}, context)=>{
       return DB.models.Post.findById(postId).then(post=>{
         if (post.owner===context.user._id){
+          pubSub.publish(POST_CHANGED, {[POST_CHANGED]:{post, changeType:'DELETE'}, clientSocketId})
           return post.remove()
         }else{
           throw new Error('Can\'t delete post of another user')
@@ -175,6 +215,26 @@ export const resolvers = {
           const pushQuery = {[`content.poll.answers.${option}.votes`]:username}
           return DB.models.Post.findOneAndUpdate({_id: post}, { $pull: pullQuery, $push: pushQuery })
         })
+    },
+  },
+  Subscription:{
+    [POST_CHANGED]:{
+      subscribe: withFilter(
+        () => pubSub.asyncIterator(POST_CHANGED),
+        (payload, _, context) => {
+          const {userId, clientSocketId} = context
+
+          if (payload){
+            const {clientSocketId:socketIdPublisher} = payload
+            const {post} = payload[POST_CHANGED]
+            const ownerId = post.owner._id || post.owner // owner populated or not
+
+            return (userId === ownerId && clientSocketId !== socketIdPublisher)
+          }
+
+          return false
+        },
+      ),
     },
   },
 }

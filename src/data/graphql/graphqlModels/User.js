@@ -80,6 +80,9 @@ export const schema =  [`
       cover: Upload,
       avatar: Upload
     ): User
+    updateLastProfileVisit(
+      date: String!
+    ): User
   }
 `, Upload]
 
@@ -193,6 +196,9 @@ export const resolvers = {
 
         return user.save()
       })
+    },
+    updateLastProfileVisit:(_, {date}, context)=>{
+      return DB.modelsUser.update({_id:context.user._id},{lastPulseCheck:new Date(date)})
     },
   },
 }

@@ -408,8 +408,9 @@ export const resolvers = {
 
             const isUserInvited = event.invited.findIndex(player=>!player.guest && player.username === userId) > -1
             const isDeletedInvited = deletedUsers && deletedUsers.includes(userId)
+            const ownerId = event.owner._id || event.owner // owner populated or not
 
-            return (isUserInvited  || userId === event.owner._id || isDeletedInvited) &&
+            return (isUserInvited  || userId === ownerId  || isDeletedInvited) &&
                    (clientSocketId !== socketIdPublisher)
           }
 
