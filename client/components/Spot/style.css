@@ -10,6 +10,7 @@
   flex: 9;
   display: flex;
   justify-content: space-around;
+  -webkit-justify-content: space-around;
   margin-bottom: -25px;
   z-index: 1;
 }
@@ -29,6 +30,7 @@
   flex-direction: column;
   position: relative;
   transition: all 300ms ease-in;
+  z-index: 1;
 }
 
 .avatar{

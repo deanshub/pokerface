@@ -34,7 +34,7 @@
     "flow-bin": "^0.57.3",
     "mobx-react-devtools": "^4.2.15",
     "postcss-flexbugs-fixes": "^3.3.0",
-    "postcss-loader": "^1.2.2",
+    "postcss-loader": "^2.1.0",
     "postcss-smart-import": "^0.6.7",
     "precss": "^1.4.0",
     "prop-types": "^15.6.0",
