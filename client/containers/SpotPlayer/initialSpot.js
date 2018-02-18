@@ -1,4 +1,4 @@
-import MOVES from './constants'
+import MOVES from '../../utils/game/constants'
 
 const spot = {
   currency: MOVES.CURRENCIES.DOLLAR,

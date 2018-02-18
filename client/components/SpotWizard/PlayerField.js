@@ -115,7 +115,7 @@ export default class PlayerField extends Component {
         />
         <Input
             label="Bank"
-            onChange={(e,{value})=>user.bank=parseInt(value)}
+            onChange={(e,{value})=>user.bank=parseFloat(value)}
             placeholder="100"
             type="number"
             value={user.bank}

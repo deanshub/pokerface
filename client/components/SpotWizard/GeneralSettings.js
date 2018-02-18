@@ -55,19 +55,37 @@ export default class GeneralSettings extends Component {
     }
   }
 
-  smallBlindChange(e, {value}){
-    const {settings} = this.props
-    const sb = parseInt(value)||0
-    settings.sb = sb
-    settings.bb = 2*sb
-  }
-
   anteChange(e, {value}){
     const {settings} = this.props
-    const ante = parseInt(value)||0
+    const ante = parseFloat(value)||0
     settings.ante = ante
     settings.sb = ante
     settings.bb = 2*settings.sb
+  }
+
+  smallBlindChange(e, {value}){
+    const {settings} = this.props
+    const sb = parseFloat(value)||0
+    settings.sb = sb
+    settings.bb = 2*sb
+    this.changeAllBanks(settings.bb*100)
+  }
+
+  bigBlindChange(e, {value}){
+    const {settings} = this.props
+    settings.bb=parseFloat(value)||0
+    this.changeAllBanks(settings.bb*100)
+  }
+
+  changeAllBanks(amount){
+    const {players} = this.props
+    let parsedAmount=100
+    if(amount&& !isNaN(amount)){
+      parsedAmount=amount
+    }
+    players.currentPlayers.forEach(player=>{
+      player.bank=parsedAmount
+    })
   }
 
   render(){
@@ -114,7 +132,7 @@ export default class GeneralSettings extends Component {
               containerStyle={{minWidth:'12em'}}
               id="form-input-control-big-blind"
               label="Big Blind"
-              onChange={(e,{value})=>settings.bb=parseInt(value)||0}
+              onChange={::this.bigBlindChange}
               placeholder="2"
               type="number"
               value={settings.bb}
