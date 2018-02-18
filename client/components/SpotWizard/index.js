@@ -159,7 +159,7 @@ export default class SpotWizard extends Component {
       spotPlayer.newSpot.step++
     }else if(spotPlayer.newSpot.step===1){
       this.save()
-      spotPlayer.newSpot.step=0
+      spotPlayer.reset(spotPlayer.newSpot)
     }
   }
 
