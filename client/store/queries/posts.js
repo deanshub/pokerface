@@ -11,6 +11,8 @@ export const postsQuery = gql`
 `
 export const newRelatedPostsQuery = gql`
   query _{
-    newRelatedPosts
+    newRelatedPosts{
+      id
+    }
   }
 `
