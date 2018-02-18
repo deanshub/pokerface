@@ -1,16 +1,26 @@
 import gql from 'graphql-tag'
 import {postFields} from '../fragments/posts'
 
-export const postCreate = gql`mutation createPost($eventId: String, $post: String!, $photos: [Upload]){
-  createPost(eventId:$eventId, content:$post, photos:$photos){
+export const postCreate = gql`mutation createPost(
+  $eventId: String,
+  $post: String!,
+  $photos: [Upload],
+  $clientSocketId: String!,
+){
+  createPost(
+    eventId:$eventId,
+    content:$post,
+    photos:$photos,
+    clientSocketId:$clientSocketId
+  ){
     ...PostFields
   }
 }
 ${postFields}
 `
 
-export const postDelete = gql`mutation deletePost($postId: String!){
-  deletePost(postId: $postId){
+export const postDelete = gql`mutation deletePost($postId: String!, $clientSocketId: String!){
+  deletePost(postId: $postId, clientSocketId:$clientSocketId){
     id
   }
 }

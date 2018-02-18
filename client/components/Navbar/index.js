@@ -11,8 +11,7 @@ import SearchBar from '../../containers/SearchBar'
 
 @inject('auth')
 @inject('events')
-@inject('feed')
-@inject('timer')
+@inject('profile')
 @observer
 export default class Navbar extends Component {
 
@@ -23,6 +22,7 @@ export default class Navbar extends Component {
   componentDidMount(){
     this.props.events.fetchMyGames()
     this.props.events.startSubscription()
+    //this.props.profile
   }
 
   // TODO: Consult with Dean

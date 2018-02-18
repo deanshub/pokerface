@@ -32,7 +32,7 @@ export class EventStore {
         query:eventChanged,
       }).subscribe({
         next:({eventChanged})=>{
-          console.log(eventChanged);
+
           if (eventChanged.changeType === 'DELETE') {
             this.events.delete(eventChanged.event.id)
           }else{

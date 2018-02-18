@@ -7,6 +7,7 @@ import graphqlClient from './graphqlClient'
 import {postsQuery} from './queries/posts'
 import {postCreate, setPostLike, postDelete, updatePollAnswer} from './mutations/posts'
 import {commentCreate, setCommentLike, commentDelete} from './mutations/comments'
+import { postChanged } from './subscriptions/posts'
 import utils from '../containers/SpotPlayer/utils'
 import logger from '../utils/logger'
 import moment from 'moment'
@@ -80,6 +81,61 @@ export class FeedStore {
     this.uploadedMedia=observable.map({})
     this.currentUploadedFiles=0
     this.currentFetchFilter={}
+  }
+
+  @action
+  startSubscription(username){
+    if (!this.subscribed){
+      graphqlClient.subscribe({
+        query:postChanged,
+      }).subscribe({
+        next:({postChanged})=>{
+
+          const {post:changedPost, changeType} = postChanged
+
+          // is the user profile is the current feed
+          const isFeedUserProfile =  JSON.stringify({username}) === JSON.stringify(this.currentFetchFilter)
+
+          if (isFeedUserProfile){
+            if (changeType === 'DELETE'){
+              this.posts.delete(changedPost.id)
+            }else{
+              this.posts.set(changedPost.id, changedPost)
+            }
+          }
+
+          this.updateGraphqlStore(changedPost, changeType, username)
+        },
+      })
+    }
+  }
+
+  updateGraphqlStore(changedPost, changeType, username){
+    // read from graphql store
+    const {posts} = graphqlClient.readQuery({query:postsQuery, variables:{username}})
+
+    if (posts){
+      const index = posts.findIndex(post => post.id === changedPost.id)
+
+      let updatedData
+
+      if (index === -1 && changeType !== 'DELETE'){
+        updatedData = [changedPost, ...posts]
+      } else if (index > -1){
+        updatedData = posts.filter(post => post.id !== index)
+
+        if (changeType !== 'DELETE'){
+          updatedData.unshift(changedPost)
+        }
+      }
+
+      // write to graphql store
+      graphqlClient.writeQuery({
+        query:postsQuery,
+        data:updatedData,
+        variables:{username},
+      })
+    }
   }
 
   parsePost(post){

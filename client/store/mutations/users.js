@@ -8,3 +8,7 @@ export const updatePersonalInfoMutation = gql`mutation updatePersonalInfo($first
     coverImage
   }
 }`
+
+export const updateLastProfileVisitMutation = gql`mutation updateLastProfileVisit($date: String!){
+  updateLastProfileVisit(date: $date)
+}`
