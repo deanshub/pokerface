@@ -118,7 +118,7 @@ export const resolvers = {
     organization: (user) => !!user.organization,
     posts: getPosts,
     comments: getComments,
-    rebrandingDetails: (user)=>prepareRebrandingDetails(user.permissions, user.rebrandingDetails),
+    rebrandingDetails: (user)=>prepareRebrandingDetails(user.permissions, user.rebrandingDetails, user.avatar, user.fullname),
   },
   Organization:{
     players: (organization) => organization.players,
@@ -127,7 +127,7 @@ export const resolvers = {
     organization: (user) => user.organization,
     posts: getPosts,
     comments: getComments,
-    rebrandingDetails: (organization)=>prepareRebrandingDetails(organization.permissions, organization.rebrandingDetails),
+    rebrandingDetails: (organization)=>prepareRebrandingDetails(organization.permissions, organization.rebrandingDetails, organization.avatar, organization.fullname),
   },
   RebrandingDetails:{
     logo: (details) => details.logo,
