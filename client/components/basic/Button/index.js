@@ -66,14 +66,15 @@ export default class Button extends Component {
 
 export class ButtonGroup extends Component {
   render(){
-    const {horizontal, children, noEqual, reversed, ...restProps} = this.props
+    const {horizontal, children, center, noEqual, reversed, ...restProps} = this.props
     return(
       <div
           className={classnames(
             style.buttonGroup,
             {[style.horizontal]:horizontal},
             {[style.noEqual]:noEqual},
-            {[style.reversed]:reversed}
+            {[style.reversed]:reversed},
+            {[style.center]:center}
           )}
           {...restProps}
       >
