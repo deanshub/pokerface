@@ -53,7 +53,6 @@
 .navbar {
   display: flex;
   flex: 1;
-  align-items: center;
   justify-content: flex-start;
   align-content: center;
   flex-wrap: wrap;;
@@ -117,6 +116,10 @@
 
   .home {
     background-image:url('../../../assets/mobile/navbar/home-selected.png');
+
+    .notification{
+      display: none;
+    }
   }
 
   .events {
@@ -125,6 +128,10 @@
 
   .profile {
     background-image:url('../../../assets/mobile/navbar/profile-selected.png');
+
+    .notification{
+      display: none;
+    }
   }
 
   .chart {
@@ -155,4 +162,8 @@
 
 .footerItem:hover {
   color: #41c86a;
+}
+
+.notification{
+  padding: 0.17em 0.5em;
 }

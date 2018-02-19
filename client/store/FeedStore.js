@@ -62,6 +62,9 @@ export class FeedStore {
   noMorePosts: boolean
   @observable uploadedMedia: Object
   @observable currentUploadedFiles: Number
+  @observable newReceivedPosts: Object
+  @observable newPostsCount: Number
+  @observable newRelatedPostsCount: Number
 
   constructor(){
     this.posts = observable.map({})
@@ -81,6 +84,9 @@ export class FeedStore {
     this.uploadedMedia=observable.map({})
     this.currentUploadedFiles=0
     this.currentFetchFilter={}
+    this.newReceivedPosts = observable.map({})
+    this.newPostsCount = 0
+    this.newRelatedPostsCount = 0
   }
 
   @action
@@ -91,30 +97,49 @@ export class FeedStore {
       }).subscribe({
         next:({postChanged})=>{
 
+          console.log('received post');
           const {post:changedPost, changeType} = postChanged
 
-          // is the user profile is the current feed
-          const isFeedUserProfile =  JSON.stringify({username}) === JSON.stringify(this.currentFetchFilter)
+          const parsedPost = this.parsePost(changedPost)
+          //this.posts.set(parsedPost.id, parsedPost)
 
-          if (isFeedUserProfile){
-            if (changeType === 'DELETE'){
-              this.posts.delete(changedPost.id)
-            }else{
-              this.posts.set(changedPost.id, changedPost)
+          // is the user profile is the current feed
+          const isInUserProfile =  JSON.stringify({username}) === JSON.stringify(this.currentFetchFilter)
+
+          // Increase the counters
+          this.newPostsCount++
+          if (isInUserProfile){
+            this.newRelatedPostsCount++
+          }
+
+          // For the option of pushing the new posts
+          if (!isInUserProfile || (isInUserProfile && this.isUserRelatedToPost(username, parsedPost))){
+            if (changeType !== 'DELETE'){
+              this.newReceivedPosts.set(parsedPost.id, parsedPost)
             }
           }
 
+          this.updateGraphqlStore(changedPost, changeType)
           this.updateGraphqlStore(changedPost, changeType, username)
         },
       })
     }
   }
 
-  updateGraphqlStore(changedPost, changeType, username){
-    // read from graphql store
-    const {posts} = graphqlClient.readQuery({query:postsQuery, variables:{username}})
+  isUserRelatedToPost(username, post){
+    const {owner, spot} = post
 
-    if (posts){
+    // TODO add mentions
+    return owner.username === username ||
+      (spot && (spot.players.findIndex(p => p.usernmae===username && !p.guest) > -1))
+  }
+
+  updateGraphqlStore(changedPost, changeType, username){
+
+    try {
+      // read from graphql store
+      const {posts} = graphqlClient.readQuery({query:postsQuery, variables:{username}})
+
       const index = posts.findIndex(post => post.id === changedPost.id)
 
       let updatedData
@@ -136,6 +161,22 @@ export class FeedStore {
         variables:{username},
       })
     }
+    catch(error){
+      console.error(error);
+    }
+  }
+
+  @action
+  pushNewReceivedPost(){
+    this.newReceivedPosts.forEach((post, id) =>{
+      this.posts.set(id, post)
+    })
+    this.clearNewReceivedPost()
+  }
+
+  @action
+  clearNewReceivedPost(){
+    this.newReceivedPosts.clear()
   }
 
   parsePost(post){

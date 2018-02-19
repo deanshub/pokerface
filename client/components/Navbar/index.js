@@ -6,12 +6,12 @@ import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
 import { NavLink } from 'react-router-dom'
-import Notification from './Notification'
+import Notification from '../Notification'
 import SearchBar from '../../containers/SearchBar'
 
 @inject('auth')
 @inject('events')
-@inject('profile')
+@inject('feed')
 @observer
 export default class Navbar extends Component {
 
@@ -20,9 +20,10 @@ export default class Navbar extends Component {
   }
 
   componentDidMount(){
-    this.props.events.fetchMyGames()
-    this.props.events.startSubscription()
-    //this.props.profile
+    const {auth, events, feed} = this.props
+    events.fetchMyGames()
+    events.startSubscription()
+    feed.startSubscription(auth.user.username)
   }
 
   // TODO: Consult with Dean
@@ -30,9 +31,24 @@ export default class Navbar extends Component {
     return true
   }
 
+  onHomeClick(){
+    const {feed} = this.props
+    feed.newPostsCount = 0
+    feed.newRelatedPostsCount = 0
+    feed.clearNewReceivedPost()
+  }
+
+  onProfileClick(){
+    const {feed} = this.props
+    feed.newPostsCount = Math.max(feed.newPostsCount - feed.newRelatedPostsCount, 0)
+    feed.newRelatedPostsCount = 0
+    feed.clearNewReceivedPost()
+  }
+
   render() {
-    const {auth, events} = this.props
+    const {auth, events, feed} = this.props
     const {username} = auth.user
+    const { newPostsCount, newRelatedPostsCount } = feed
 
     return (
       <div className={classnames(style.container)}>
@@ -40,16 +56,20 @@ export default class Navbar extends Component {
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               exact
+              onClick={::this.onHomeClick}
               to="/"
           >
             Home
+            <Notification className={style.notification} number={newPostsCount}/>
           </NavLink>
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
+              onClick={::this.onProfileClick}
               to={`/profile/${username}`}
           >
             Profile
+            <Notification className={style.notification} number={newRelatedPostsCount}/>
           </NavLink>
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}

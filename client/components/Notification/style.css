@@ -1,0 +1,11 @@
+.notification {
+  background-color: #a0a0b5;
+  color: white;
+  border-radius: 1em;
+  text-align: center;
+  margin-left: .7em;
+}
+
+.clickable{
+  cursor: pointer;
+}

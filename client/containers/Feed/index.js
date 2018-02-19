@@ -5,6 +5,7 @@ import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import AddPlay from '../../components/AddPlay'
 import IsUserLoggedIn from '../../components/IsUserLoggedIn'
+import Notification from '../../components/Notification'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 import classnames from 'classnames'
 import style from './style.css'
@@ -39,16 +40,28 @@ export default class FeedContainer extends Component {
     }
   }
 
+  pushNewReceivedPost(){
+    this.props.feed.pushNewReceivedPost()
+  }
+
   render() {
     const { feed } = this.props
-
+    const { newReceivedPostsCount } = feed
     return (
       <ResponsiveContainer
           desktopClassName={classnames(style.container)}
           mobileClassName={classnames(style.mobileContainer)}
       >
         <IsUserLoggedIn>
-          <AddPlay />
+          <React.Fragment>
+            <Notification
+                className={style.notification}
+                label="New Posts"
+                number={newReceivedPostsCount}
+                onClick={::this.pushNewReceivedPost}
+            />
+            <AddPlay />
+          </React.Fragment>
         </IsUserLoggedIn>
         <div>
             {feed.parsedPosts.map(post=><Post key={post.id} post={post}/>)}

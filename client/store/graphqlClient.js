@@ -24,6 +24,8 @@ const SOCKET_ID_ADDING_OPERATION = [
   'addEvent',
   'updateEvent',
   'deleteEvent',
+  'createPost',
+  'deletePost',
 ]
 
 const socketIdAddingMiddleware = {

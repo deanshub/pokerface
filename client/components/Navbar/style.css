@@ -21,17 +21,13 @@
 
 .navbarRouteItem:hover {
   color:$activeButton;
-
-  .notification {
-    color:white;
-  }
 }
 
 .navbarRouteItemActive {
   color:$activeButton;
 
   .notification{
-    color:white;
+    display: none;
   }
 }
 
@@ -42,12 +38,6 @@
   margin-top: 2em;
 }
 
-.notification {
-  background-color: #a0a0b5;
-  color: white;
+.notification{
   padding: 0.17em 0.5em;
-  border-radius: 1em;
-  text-align: center;
-  margin-left: .7em;
 }
-
