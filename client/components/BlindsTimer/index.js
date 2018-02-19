@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import Dimmer from '../basic/Dimmer'
 import Button, {ButtonGroup} from '../basic/Button'
 import Image from '../basic/Image'
-
+import ResponsiveText from '../basic/ResponsiveText'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -95,7 +95,7 @@ export default class BlindsTimer extends Component {
     if (currentRound.ante){
       anteElement=(
         <div>
-          <div>
+          <div className={classnames(style.blindLabel)}>
             Ante
           </div>
           <div className={classnames(style.blindContent)}>
@@ -108,7 +108,7 @@ export default class BlindsTimer extends Component {
     if (currentRound.smallBlind){
       sbElement=(
         <div>
-          <div>
+          <div className={classnames(style.blindLabel)}>
             Small Blind
           </div>
           <div className={classnames(style.blindContent)}>
@@ -121,7 +121,7 @@ export default class BlindsTimer extends Component {
     if (currentRound.bigBlind){
       bbElement=(
         <div>
-          <div>
+          <div className={classnames(style.blindLabel)}>
             Big Blind
           </div>
           <div className={classnames(style.blindContent)}>
@@ -175,7 +175,7 @@ export default class BlindsTimer extends Component {
               center
               horizontal
               noEqual
-              style={{width:'100%', marginBottom: '2em'}}
+              style={{width:'100%'}}
           >
             <Button
                 name="reset"
@@ -243,10 +243,14 @@ export default class BlindsTimer extends Component {
             </Button>
           </ButtonGroup>
           <div className={style.round}>
-            Round {timer.round}
+            <ResponsiveText>
+                Round {timer.round}
+            </ResponsiveText>
           </div>
           <div className={style.time}>
-            {timer.timeLeft}
+            <ResponsiveText>
+              {timer.timeLeft}
+            </ResponsiveText>
           </div>
 
           <div className={style.progress} style={{width: `${timer.precentageComplete}%`}}/>
@@ -263,16 +267,20 @@ export default class BlindsTimer extends Component {
 
           <div className={style.blindsContainer}>
             <div className={style.currentBlinds}>
-              {
-                timer.currentRound.type==='break'
-                ?
-                'Break'
-                :
-                this.buildBlindsElement(timer.currentRound)
-              }
+              <ResponsiveText scale={0.5}>
+                {
+                  timer.currentRound.type==='break'
+                  ?
+                  'Break'
+                  :
+                  this.buildBlindsElement(timer.currentRound)
+                }
+              </ResponsiveText>
             </div>
             <div className={style.nextBlinds}>
-              {timer.nextBlinds}
+              <ResponsiveText>
+                {timer.nextBlinds}
+              </ResponsiveText>
             </div>
           </div>
         </Dimmer>
