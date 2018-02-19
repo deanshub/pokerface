@@ -20,12 +20,12 @@ export default class RebrandedBlindsTimer extends Component {
     let image
     let title
 
-    if (user.rebranding){
+    if (user.rebrandingDetails){
       image = user.avatar
       title = user.fullname
     }
     return (
-      <Slider style={{height:'89vh', backgroundColor:'black'}}>
+      <Slider style={{height:'89vh', backgroundColor:'black', boxShadow:'0 0 10px 0 black'}}>
         <BlindsTimer image={image} title={title}/>
         <WidthGetter render={this.renderYoutube}/>
       </Slider>

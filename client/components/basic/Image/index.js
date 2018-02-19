@@ -36,7 +36,6 @@ export default class Image extends Component {
             {[style.link]:(href&&href!=='')||onClick},
             className,
           )}
-
           onClick={onClick||::this.reRoute}
           src={src}
           {...restProps}

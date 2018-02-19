@@ -201,7 +201,7 @@ export class TimerStore {
         currentTime:this.mutationTime.toString(),
         round:this.round,
         paused:this.paused,
-        endTime: this.endTime.getTime().toString(),
+        endTime: this.paused?null:this.endTime.getTime().toString(),
       },
     })
     .then(::this.checkMutationSuccess)
@@ -444,16 +444,6 @@ export class TimerStore {
     }
   }
 
-  @computed
-  get blinds(){
-    const currentRound = this.getCurrentRound()
-
-    if (currentRound.type==='break'){
-      return 'Break'
-    }
-    const currentBlinds = `${currentRound.smallBlind}/${currentRound.bigBlind}`
-    return currentBlinds
-  }
 
   @computed
   get nextBlinds(){
@@ -462,7 +452,13 @@ export class TimerStore {
       if (nextRound.type==='break'){
         return 'Break'
       }
-      return `Next ${nextRound.smallBlind}/${nextRound.bigBlind}`
+      if (nextRound.ante&&nextRound.smallBlind&&nextRound.bigBlind){
+        return `Next ${nextRound.ante}/${nextRound.smallBlind}/${nextRound.bigBlind}`
+      }else if(nextRound.ante&&nextRound.smallBlind||nextRound.ante&&nextRound.bigBlind||nextRound.smallBlind&&nextRound.bigBlind){
+        return `Next ${nextRound.ante||nextRound.smallBlind}/${nextRound.smallBlind||nextRound.bigBlind}`
+      }else if(nextRound.ante||nextRound.bigBlind||nextRound.bigBlind){
+        return `Next ${nextRound.ante||nextRound.smallBlind||nextRound.bigBlind}`
+      }
     }
   }
 
@@ -474,6 +470,7 @@ export class TimerStore {
       return this.DEFAULT_INITIAL_ROUND
   }
 
+
   getCurrentRound(){
     let currentRound
     if (this.rounds.length>this.round-1){
@@ -483,6 +480,11 @@ export class TimerStore {
     }
 
     return currentRound
+  }
+
+  @computed
+  get currentRound(){
+    return this.getCurrentRound()
   }
 
   getRounds(rounds){

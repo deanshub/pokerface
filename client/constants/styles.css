@@ -55,6 +55,9 @@ $disabled: #24222e;
 @value darkBackgroundFocusedColor: #403e50;
 @value darkBackgroundFontColor: #f0f0f0;
 
+/* blinds timer */
+@value blindsTimerBackground: #2c2a38;
+
 /* mobile */
 @value mobileMaxWidth: 800;
 $mobileMaxWidth: 800px;

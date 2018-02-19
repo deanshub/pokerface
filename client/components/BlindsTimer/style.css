@@ -4,6 +4,10 @@
   width: 100%;
   height: 100%;
   display: flex;
+  background-color: blindsTimerBackground;
+  flex-direction: column;
+  color: white;
+  line-height: normal;
 }
 .fullScreen:-webkit-full-screen {
   width: 100%;
@@ -20,4 +24,82 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
   display: flex;
   flex-wrap: wrap;
+}
+
+.round{
+  font-size: 3em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.time{
+  font-size: 20em;
+  font-weight: bold;
+  margin-top: -0.1em;
+  margin-bottom: 0.1em;
+}
+
+.progress{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1em;
+  background-color: hoverDeleteColor;
+  transition: width 200ms ease-in;
+}
+
+.brandLine{
+  height: 0em;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.brand{
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: black;
+  min-height: 5em;
+  min-width: 15%;
+  border-radius: 10px;
+  padding: 0.5em;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.brandImage{
+  margin-right: unset;
+  max-width: 4em;
+  max-height: 4em;
+  height: auto;
+  width: auto;
+}
+
+.blindsContainer{
+  flex: 1;
+  color: textColor;
+  font-size: 3em;
+  background-color: qrBottomBorderColor;
+  padding-top: 2em;
+}
+.currentBlinds{
+  /* text-transform: uppercase; */
+}
+.blinds{
+  display: flex;
+  justify-content: center;
+  /* display: table-caption; */
+}
+.slash{
+  display: flex;
+  align-items: flex-end;
+}
+.blindContent{
+  font-size: 3em;
+}
+.nextBlinds{
+  text-transform: uppercase;
+  font-size: 1.5em;
 }
