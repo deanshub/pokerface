@@ -105,11 +105,12 @@ export default class ShoveFold extends Component {
         </div>
 
         <CardsTable
+            defaultSet={{color:'#ff5a5a',label:'Fold'}}
             inFeed
             sets={[{
               cards: range,
               color: '#67d388',
-              label: 'Shove All-In',
+              label: 'All-In',
             }]}
             subtitle={`${bbData.percent}% - ${bbData.range}`}
             title={`Shove\\ Fold on ${stack}BB ${ante?`with ${ante}% ante`:''} in ${positionLabel} position`}

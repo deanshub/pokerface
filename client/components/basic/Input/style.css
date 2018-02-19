@@ -18,6 +18,7 @@
   display: flex;
   border: 1px solid borderColor;
   border-radius: 8px;
+  display: flex;
 }
 .inputContainer.range{
   border: none;

@@ -35,6 +35,7 @@ export default class CardsTable extends Component {
   }
 
   getHandElement(rank1,rank2, sets){
+    const {defaultSet} = this.props
     let textValue
     if (rank1===rank2){
       textValue = rank1+rank2
@@ -52,6 +53,8 @@ export default class CardsTable extends Component {
     if (relevantSet&&!relevantSet.disabled){
       setStyle.backgroundColor = relevantSet.color
       setStyle.color = 'black'
+    }else if (defaultSet){
+      setStyle.backgroundColor = defaultSet.color
     }
 
     return (
@@ -100,7 +103,7 @@ export default class CardsTable extends Component {
   }
 
   render() {
-    const {title, subtitle, inFeed, textColor} = this.props
+    const {title, subtitle, inFeed, textColor, defaultSet} = this.props
     const {sets} = this.state
     const normalizedSets = sets.map(set=>{
       if (!Array.isArray(set.cards)){
@@ -147,6 +150,14 @@ export default class CardsTable extends Component {
           normalizedSets.length>1?
           <div className={classnames(style.legend)}>
             {normalizedSets.map(this.getLegend.bind(this))}
+          </div>
+          :null
+        }
+        {
+          normalizedSets.length===1&&defaultSet&&defaultSet.label?
+          <div className={classnames(style.legend)}>
+            {normalizedSets.map(this.getLegend.bind(this))}
+            {this.getLegend(defaultSet)}
           </div>
           :null
         }
