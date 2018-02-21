@@ -198,7 +198,7 @@ export const resolvers = {
       })
     },
     updateLastProfileVisit:(_, {date}, context)=>{
-      return DB.modelsUser.update({_id:context.user._id},{lastPulseCheck:new Date(date)})
+      return DB.models.User.findOneAndUpdate({_id:context.user._id},{lastPulseCheck:new Date(date)})
     },
   },
 }

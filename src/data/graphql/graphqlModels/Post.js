@@ -117,14 +117,14 @@ export const resolvers = {
               {relatedUsers: username},
             ],
           })
-          .limit(20)
           .skip(offset||0)
+          .limit(10)
           .sort('-created')
         })
       }else if(eventId!==undefined){
         return DB.models.Post.find({ game: eventId })
-        .limit(20)
         .skip(offset||0)
+        .limit(10)
         .sort('-created')
       }else{
         // TODO: limit the number of posts
@@ -132,9 +132,9 @@ export const resolvers = {
       }
 
       return query
-        .limit(20)
-        .skip(offset||0)
+        .limit(10)
         .sort('-created')
+        .skip(offset||0)
     },
     newRelatedPosts: (_, args, context)=>{
       const {_id:username} = context.user
