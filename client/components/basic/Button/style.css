@@ -280,6 +280,9 @@
 .horizontal.reversed{
   flex-direction: row-reverse;
 }
+.center{
+  justify-content: center;
+}
 .buttonGroup>*{
   flex: 1;
 }
