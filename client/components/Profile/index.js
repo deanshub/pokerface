@@ -26,6 +26,10 @@ export default class Profile extends Component {
     const {params:{username}} = match
     profile.setCurrentUser(username||auth.user)
     document.body.scrollTop = 0
+
+    if (username === auth.user.username){
+      profile.updateLastProfileVisit()
+    }
   }
 
   componentWillReceiveProps(props){
@@ -35,13 +39,14 @@ export default class Profile extends Component {
   }
 
   render() {
-    const { profile } = this.props
+    const { profile, match } = this.props
     const user = profile.currentUser
+    const {username} = match.params
 
     return (
       <div className={classnames(style.container)}>
         <Cover details={user}/>
-        <Feed by={{username:user.username}}/>
+        <Feed by={{username}}/>
       </div>
     )
   }

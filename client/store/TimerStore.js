@@ -64,8 +64,9 @@ export class TimerStore {
       })
 
       this.subscriptionObserver.subscribe({
-        next:({timerChanged})=>{
-          // console.log('receive timer:', timerChanged)
+        next:({data})=>{
+          const {timerChanged} = data
+
           if (timerChanged.currentTime !== null){
             this.setTimer(timerChanged)
           }

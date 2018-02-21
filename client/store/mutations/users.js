@@ -10,5 +10,7 @@ export const updatePersonalInfoMutation = gql`mutation updatePersonalInfo($first
 }`
 
 export const updateLastProfileVisitMutation = gql`mutation updateLastProfileVisit($date: String!){
-  updateLastProfileVisit(date: $date)
+  updateLastProfileVisit(date: $date){
+    username
+  }
 }`

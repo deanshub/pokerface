@@ -28,16 +28,18 @@ export default class Navigation extends Component {
     this.props.onClose()
   }
 
-  onRouteItemCLick(){
-    const {feed, onClose} = this.props
-    feed.clearNewReceivedPost()
-    onClose()
+  onHomeClick(){
+    this.feed.pushNewReceivedPost()
+  }
+
+  onProfileClick(){
+    this.feed.pushNewReceivedPost(true)
   }
 
   render() {
     const {auth, events, feed, open} = this.props
     const {username} = auth.user
-    const { newReceivedPostsCount } = feed
+    const { newPostsCount, newRelatedPostsCount } = feed
 
     return (
       <div className={classnames(style.container, {[style.closed]:!open})}>
@@ -52,11 +54,11 @@ export default class Navigation extends Component {
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               exact
-              onClick={::this.onRouteItemCLick}
+              onClick={::this.onHomeClick}
               to="/"
           >
             <div className={classnames(style.home)}>
-              <Notification className={style.notification} number={newReceivedPostsCount}/>
+              <Notification className={style.notification} number={newPostsCount}/>
             </div>
             Home
           </NavLink>
@@ -74,11 +76,11 @@ export default class Navigation extends Component {
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
-              onClick={::this.onRouteItemCLick}
+              onClick={::this.onProfileClick}
               to={`/profile/${username}`}
           >
             <div className={classnames(style.profile)}>
-              <Notification className={style.notification} number={newReceivedPostsCount}/>
+              <Notification className={style.notification} number={newRelatedPostsCount}/>
             </div>
             Profile
           </NavLink>

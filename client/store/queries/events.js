@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 import {eventFields} from '../fragments/events'
 
 export const eventsQuery = gql`
-  query _{
+  query events{
     events{
       ...EventFields
     }
@@ -11,7 +11,7 @@ export const eventsQuery = gql`
 `
 
 export const eventQuery = gql`
-  query _($eventId: String!) {
+  query event($eventId: String!) {
     event(eventId: $eventId) {
       ...EventFields
     }
@@ -20,7 +20,7 @@ export const eventQuery = gql`
 `
 
 export const searchEventsQuery = gql`
-  query _($title: String!){
+  query searchEvents($title: String!){
     search(title: $title){
       id
       title

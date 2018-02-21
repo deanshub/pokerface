@@ -65,6 +65,7 @@ export class FeedStore {
   @observable newReceivedPosts: Object
   @observable newPostsCount: Number
   @observable newRelatedPostsCount: Number
+  postsWatchQuery: Object
 
   constructor(){
     this.posts = observable.map({})
@@ -83,10 +84,11 @@ export class FeedStore {
     })
     this.uploadedMedia=observable.map({})
     this.currentUploadedFiles=0
-    this.currentFetchFilter={}
+    this.currentFetchFilter=undefined
     this.newReceivedPosts = observable.map({})
     this.newPostsCount = 0
     this.newRelatedPostsCount = 0
+    this.postsWatchQuery = graphqlClient.watchQuery({query: postsQuery})
   }
 
   @action
@@ -95,11 +97,9 @@ export class FeedStore {
       graphqlClient.subscribe({
         query:postChanged,
       }).subscribe({
-        next:({postChanged})=>{
+        next:({data})=>{
 
-          console.log('received post');
-          const {post:changedPost, changeType} = postChanged
-
+          const {postChanged:{post:changedPost, changeType}} = data
           const parsedPost = this.parsePost(changedPost)
           //this.posts.set(parsedPost.id, parsedPost)
 
@@ -108,7 +108,7 @@ export class FeedStore {
 
           // Increase the counters
           this.newPostsCount++
-          if (isInUserProfile){
+          if (this.isUserRelatedToPost(username, parsedPost)){
             this.newRelatedPostsCount++
           }
 
@@ -123,6 +123,8 @@ export class FeedStore {
           this.updateGraphqlStore(changedPost, changeType, username)
         },
       })
+
+      this.subscribed = true
     }
   }
 
@@ -157,7 +159,7 @@ export class FeedStore {
       // write to graphql store
       graphqlClient.writeQuery({
         query:postsQuery,
-        data:updatedData,
+        data:{posts:updatedData},
         variables:{username},
       })
     }
@@ -167,10 +169,18 @@ export class FeedStore {
   }
 
   @action
-  pushNewReceivedPost(){
+  pushNewReceivedPost(isProfile){
     this.newReceivedPosts.forEach((post, id) =>{
       this.posts.set(id, post)
     })
+
+    if (isProfile){
+      this.newPostsCount = Math.max(this.newPostsCount - this.newRelatedPostsCount, 0)
+    }else{
+      this.newPostsCount = 0
+    }
+
+    this.newRelatedPostsCount = 0
     this.clearNewReceivedPost()
   }
 
@@ -405,37 +415,56 @@ export class FeedStore {
     if (currentByString===newByString && (this.noMorePosts || this.loading)) return undefined
 
     this.loading = true
+
     if (currentByString!==newByString){
-      this.posts = observable.map({})
+      this.posts.clear()
       this.currentFetchFilter = by
       this.noMorePosts = false
+
+      if (this.resultPromise && this.resultPromise.state==='pending'){
+        this.resultPromise.cancel()
+      }
+
+      // for the first query
+      if (!this.wasWatchQueryInit){
+        // subscribe because the apollo problem
+        this.postsWatchQuery.subscribe({next :()=>{}})
+        this.resultPromise = this.postsWatchQuery.result()
+        this.wasWatchQueryInit= true
+      }else{
+        this.resultPromise = this.postsWatchQuery.refetch({...by})
+      }
+    }else{
+      this.resultPromise = this.postsWatchQuery.fetchMore({
+        variables:{
+          ...by, offset:this.posts.size,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return previousResult
+          if (!previousResult.posts) return fetchMoreResult
+
+          return Object.assign({}, previousResult, {
+            // Append the new feed results to the old one
+            posts: [...previousResult.posts, ...fetchMoreResult.posts],
+          })
+        },
+      })
     }
 
-    graphqlClient.watchQuery({
-      query: postsQuery,
-      variables:{
-        ...by, offset:this.posts.size,
-      },
-      // pollInterval: 10000, //ms
-    }).subscribe({
-      next :(result)=>{
-        const newPosts = result.data.posts.filter(post=>!this.posts.has(post.id))
-        if (newPosts.length===0){
-          this.noMorePosts = true
-        }else{
-          newPosts.forEach((post)=>{
-            const parsedPost = this.parsePost(post)
-            this.posts.set(parsedPost.id, parsedPost)
-          })
-        }
-        setTimeout(()=>{
-          this.loading = false
-        },1000)
-      },
-      error: console.error,
-      complete:()=>{
+    this.resultPromise.then((result)=>{
+      const newPosts = result.data.posts.filter(post=>!this.posts.has(post.id))
+      if (newPosts.length===0){
+        this.noMorePosts = true
+      }else{
+        newPosts.forEach((post)=>{
+          const parsedPost = this.parsePost(post)
+          this.posts.set(parsedPost.id, parsedPost)
+        })
+      }
+
+      setTimeout(()=>{
         this.loading = false
-      },
+      },1000)
     })
   }
 

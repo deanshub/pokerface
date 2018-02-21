@@ -31,12 +31,12 @@ export class EventStore {
       graphqlClient.subscribe({
         query:eventChanged,
       }).subscribe({
-        next:({eventChanged})=>{
-
-          if (eventChanged.changeType === 'DELETE') {
-            this.events.delete(eventChanged.event.id)
+        next:({data})=>{
+          const {eventChanged:{event, changeType}} = data
+          if (changeType === 'DELETE') {
+            this.events.delete(event.id)
           }else{
-            this.setEvent(eventChanged.event)
+            this.setEvent(event)
           }
         },
       })

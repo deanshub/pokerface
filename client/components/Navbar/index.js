@@ -32,17 +32,11 @@ export default class Navbar extends Component {
   }
 
   onHomeClick(){
-    const {feed} = this.props
-    feed.newPostsCount = 0
-    feed.newRelatedPostsCount = 0
-    feed.clearNewReceivedPost()
+    this.props.feed.pushNewReceivedPost()
   }
 
   onProfileClick(){
-    const {feed} = this.props
-    feed.newPostsCount = Math.max(feed.newPostsCount - feed.newRelatedPostsCount, 0)
-    feed.newRelatedPostsCount = 0
-    feed.clearNewReceivedPost()
+    this.props.feed.pushNewReceivedPost(true)
   }
 
   render() {

@@ -12,7 +12,7 @@ export const usersQuery = gql`
   }
 `
 export const optionalUsersSwitchQuery = gql`
-  query {
+  query optionalUsersSwitch{
     optionalUsersSwitch {
       username
       fullname
@@ -23,7 +23,7 @@ export const optionalUsersSwitchQuery = gql`
 `
 
 export const optionalUsersLoginQuery = gql`
-  query {
+  query optionalUsersLogin{
     optionalUsersLogin {
       username
       fullname

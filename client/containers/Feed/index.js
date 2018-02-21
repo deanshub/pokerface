@@ -46,7 +46,7 @@ export default class FeedContainer extends Component {
 
   render() {
     const { feed } = this.props
-    const { newReceivedPostsCount } = feed
+    const { newReceivedPosts } = feed
     return (
       <ResponsiveContainer
           desktopClassName={classnames(style.container)}
@@ -57,7 +57,7 @@ export default class FeedContainer extends Component {
             <Notification
                 className={style.notification}
                 label="New Posts"
-                number={newReceivedPostsCount}
+                number={newReceivedPosts.size}
                 onClick={::this.pushNewReceivedPost}
             />
             <AddPlay />
