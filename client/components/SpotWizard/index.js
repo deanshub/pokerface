@@ -97,7 +97,7 @@ export default class SpotWizard extends Component {
               checkDisabled={dealerTurn || hasRaise}
               raiseClick={::this.raise}
               raiseDisabled={dealerTurn}
-              minimumRaise={minimumRaise}
+              minimumRaise={Math.min(minimumRaise,currentPlayerBank)}
               maximumRaise={currentPlayerBank}
               showCardsClick={::this.showCards}
               showCardsDisabled={showCardsDisabled}
@@ -206,6 +206,7 @@ export default class SpotWizard extends Component {
     newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
     spotPlayer.newSpot.spotPlayerState.totalRaise = spotPlayer.newSpot.generalSettings.sb
+    spotPlayer.newSpot.spotPlayerState.raiseDiff = spotPlayer.newSpot.generalSettings.bb||spotPlayer.newSpot.generalSettings.sb
   }
   bigBlind(){
     const {spotPlayer} = this.props
@@ -218,6 +219,7 @@ export default class SpotWizard extends Component {
     newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
     spotPlayer.newSpot.spotPlayerState.totalRaise = spotPlayer.newSpot.generalSettings.bb
+    spotPlayer.newSpot.spotPlayerState.raiseDiff = spotPlayer.newSpot.generalSettings.bb
   }
   call(){
     const {spotPlayer} = this.props
@@ -257,6 +259,7 @@ export default class SpotWizard extends Component {
   raise(value){
     const {spotPlayer} = this.props
     const player = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+    const raiseDiff = value - spotPlayer.newSpot.spotPlayerState.totalRaise
     spotPlayer.newSpot.spot.moves.push({
       player,
       action:MOVES.PLAYER_ACTIONS.RAISE,
@@ -265,7 +268,8 @@ export default class SpotWizard extends Component {
     let newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
-    spotPlayer.newSpot.spotPlayerState.totalRaise = value
+    spotPlayer.newSpot.spotPlayerState.totalRaise = Math.max(value, spotPlayer.newSpot.spotPlayerState.totalRaise)
+    spotPlayer.newSpot.spotPlayerState.raiseDiff = Math.max(raiseDiff,spotPlayer.newSpot.spotPlayerState.raiseDiff)
   }
   dealer(cards){
     const {spotPlayer} = this.props
@@ -297,6 +301,7 @@ export default class SpotWizard extends Component {
     let newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+    spotPlayer.newSpot.spotPlayerState.raiseDiff = 0
     spotPlayer.newSpot.spotPlayerState.totalRaise = 0
   }
 
@@ -379,7 +384,7 @@ export default class SpotWizard extends Component {
   getMinimumRaise(){
     const {spotPlayer} = this.props
     if (spotPlayer.newSpot.spotPlayerState){
-      return (spotPlayer.newSpot.spotPlayerState.totalRaise||0)+(spotPlayer.newSpot.generalSettings.bb||0)
+      return (spotPlayer.newSpot.spotPlayerState.totalRaise||0)+(Math.max(spotPlayer.newSpot.spotPlayerState.raiseDiff,spotPlayer.newSpot.generalSettings.bb)||0)
     }
     return 0
   }
