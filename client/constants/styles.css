@@ -54,6 +54,7 @@ $disabled: #24222e;
 @value darkBackgroundColor: #0d0d0f;
 @value darkBackgroundFocusedColor: #403e50;
 @value darkBackgroundFontColor: #f0f0f0;
+@value nameLabelColor: #24222e;
 
 /* blinds timer */
 @value blindsTimerBackground: #2c2a38;

@@ -178,13 +178,14 @@ export default class SpotWizard extends Component {
     const {
       showCardsClick,
       showCardsDisabled,
+      toggleStepsMenu,
     } = this.props
 
     return (
       <div className={classnames(style.actionBar)}>
         <div className={classnames(style.actionBarLeftPane)}>
           <Button
-              disable
+              onClick={toggleStepsMenu}
               leftIcon="menu"
           />
         </div>

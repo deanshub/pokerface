@@ -16,6 +16,7 @@ import style from './style.css'
 import {getNextStep} from '../../utils/game/actions'
 import {getNextPlayer} from '../../utils/game/players'
 import {getUnimportantCard} from '../../components/Deck/consts'
+import StepsMenu from './StepsMenu'
 const unimportantCard = getUnimportantCard()
 
 @inject('spotPlayer')
@@ -106,6 +107,7 @@ export default class SpotWizard extends Component {
               dealerClick={::this.dealer}
               dealerNextState={dealerNextState}
               gameEnded={gameEnded}
+              toggleStepsMenu={::this.toggleStepsMenu}
           />
           <Spot
               currency={spotPlayer.newSpot.spotPlayerState.currency}
@@ -114,6 +116,7 @@ export default class SpotWizard extends Component {
               players={spotPlayer.newSpot.spotPlayerState.players}
               tableBranding={auth.user.rebrandingDetails}
           />
+          <StepsMenu/>
         </div>
       )
     }
@@ -379,6 +382,11 @@ export default class SpotWizard extends Component {
       return (spotPlayer.newSpot.spotPlayerState.totalRaise||0)+(spotPlayer.newSpot.generalSettings.bb||0)
     }
     return 0
+  }
+
+  toggleStepsMenu(){
+    const {spotPlayer} = this.props
+    spotPlayer.stepsMenueOpen=!spotPlayer.stepsMenueOpen
   }
 
   render(){

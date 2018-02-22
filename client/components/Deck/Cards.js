@@ -24,7 +24,7 @@ export default class Cards extends PureComponent {
   }
 
   render() {
-    const {cards, inline, rotate, covered, noHoverEffect, clickable, dealer} = this.props
+    const {cards, inline, rotate, covered, noHoverEffect, clickable, dealer, ...otherProps} = this.props
 
     return (
       <ul
@@ -35,6 +35,7 @@ export default class Cards extends PureComponent {
             {[style.rotate]: rotate},
             {[style.dealer]: dealer}
           )}
+          {...otherProps}
       >
         {cards.map((card, index)=>{
           let key = `${card.suit}.${card.rank}`
