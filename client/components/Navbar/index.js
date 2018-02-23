@@ -23,7 +23,9 @@ export default class Navbar extends Component {
     const {auth, events, feed} = this.props
     events.fetchMyGames()
     events.startSubscription()
-    feed.startSubscription(auth.user.username)
+    feed.fetchNewRelatedPosts().then(() => {
+      feed.startSubscription(auth.user.username)
+    })
   }
 
   // TODO: Consult with Dean

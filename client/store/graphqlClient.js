@@ -13,7 +13,7 @@ const hasSubscriptionOperation = ({ query: { definitions } }) => {
 const hybridLink = ApolloLink.split(
   hasSubscriptionOperation,
   wsLink,
-  queryOrMutationLink
+  queryOrMutationLink,
 )
 
 const graphqlClient = new ApolloClient({

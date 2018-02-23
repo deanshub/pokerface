@@ -25,7 +25,7 @@ export default class Profile extends Component {
     const {auth, profile, match} = this.props
     const {params:{username}} = match
     profile.setCurrentUser(username||auth.user)
-    document.body.scrollTop = 0
+    window.scrollTo(0, 0)
 
     if (username === auth.user.username){
       profile.updateLastProfileVisit()
