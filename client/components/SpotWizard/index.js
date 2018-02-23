@@ -375,7 +375,7 @@ export default class SpotWizard extends Component {
       const currentPlayerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
       const player = spotPlayer.newSpot.spotPlayerState.players[currentPlayerIndex]
       if (player){
-        return player.bank
+        return player.bank + player.bet
       }
     }
     return 0
