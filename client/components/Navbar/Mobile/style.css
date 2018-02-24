@@ -116,10 +116,6 @@
 
   .home {
     background-image:url('../../../assets/mobile/navbar/home-selected.png');
-
-    .notification{
-      display: none;
-    }
   }
 
   .events {
@@ -128,10 +124,6 @@
 
   .profile {
     background-image:url('../../../assets/mobile/navbar/profile-selected.png');
-
-    .notification{
-      display: none;
-    }
   }
 
   .chart {
@@ -142,6 +134,12 @@
     background-image:url('../../../assets/mobile/navbar/timer-selected.png');
   }
 
+}
+
+.navbarRouteItemActive{
+  .notification{
+    display: none;
+  }
 }
 
 .divider {

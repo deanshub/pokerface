@@ -152,7 +152,10 @@ export class FeedStore {
           const isUserRelated = this.isUserRelatedToPost(username, jsonPost)
 
           // Increase the counters
-          this.newPostsCount++
+          if (changeType !== 'DELETE'){
+            this.newPostsCount++
+          }
+
           if (isUserRelated && !this.newRelatedPosts.has(parsedPost.id)){
             this.newRelatedPosts.set(parsedPost.id, {id: parsedPost.id})
           }

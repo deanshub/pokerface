@@ -45,11 +45,12 @@ export default class FeedContainer extends Component {
 
   pushNewReceivedPost(){
     this.props.feed.pushNewReceivedPost()
+    window.scrollTo(0, 0)
   }
 
   render() {
     const { feed } = this.props
-    const { newRelatedPostsCount } = feed
+    const { newReceivedPosts } = feed
 
     const StickyNotification = () => (
       <Sticky topOffset={-80}>
@@ -58,16 +59,17 @@ export default class FeedContainer extends Component {
           return (
             <IsMobile
                 render={(isMobile) => {
-                  const top = isMobile?paddingTop:paddingTopMobile
+                  const top = isMobile?paddingTopMobile:paddingTop
+                  const notificationClass = isMobile?style.notificationMobile:style.notification
                   return (
                     <header
                         className={classnames(style.sticky)}
                         style={{...localStyle, width:'inherit', top}}
                     >
                       <Notification
-                          className={classnames(style.notification)}
+                          className={classnames(notificationClass)}
                           label="New Posts"
-                          number={newRelatedPostsCount}
+                          number={newReceivedPosts.size}
                           onClick={::this.pushNewReceivedPost}
                       />
                     </header>

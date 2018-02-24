@@ -14,7 +14,12 @@ import style from './style.css'
 export default class Navigation extends Component {
 
   componentDidMount(){
-    this.props.events.fetchMyGames()
+    const {auth, events, feed} = this.props
+    events.fetchMyGames()
+    events.startSubscription()
+    feed.fetchNewRelatedPosts().then(() => {
+      feed.startSubscription(auth.user.username)
+    })
   }
 
   handleLogout(){
@@ -69,7 +74,7 @@ export default class Navigation extends Component {
               to="/events"
           >
             <div className={classnames(style.events)}>
-              <Notification number={events.events.size}/>
+              <Notification className={style.notification} number={events.events.size}/>
             </div>
             Events
           </NavLink>
