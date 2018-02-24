@@ -6,6 +6,10 @@ $white: #ffffff;
 /* App */
 @value appBackgroundColor: #24222e;
 
+/* Navigation */
+@value paddingTop: 5.3em;
+@value paddingTopMobile: 72px;
+
 /* spot player */
 $activeButton: #41c86a;
 $divider: #e4e4e4;

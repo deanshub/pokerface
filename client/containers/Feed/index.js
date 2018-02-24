@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
+import { Sticky } from 'react-sticky'
 import Loader from '../../components/basic/Loader'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
@@ -7,6 +8,8 @@ import AddPlay from '../../components/AddPlay'
 import IsUserLoggedIn from '../../components/IsUserLoggedIn'
 import Notification from '../../components/Notification'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
+import IsMobile from '../../components/IsMobile'
+import { paddingTop, paddingTopMobile } from '../../constants/styles.css'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -46,20 +49,46 @@ export default class FeedContainer extends Component {
 
   render() {
     const { feed } = this.props
-    const { newReceivedPosts } = feed
+    const { newRelatedPostsCount } = feed
+
+    const StickyNotification = () => (
+      <Sticky topOffset={-80}>
+      {
+        ({style:localStyle}) => {
+          return (
+            <IsMobile
+                render={(isMobile) => {
+                  const top = isMobile?paddingTop:paddingTopMobile
+                  return (
+                    <header
+                        className={classnames(style.sticky)}
+                        style={{...localStyle, width:'inherit', top}}
+                    >
+                      <Notification
+                          className={classnames(style.notification)}
+                          label="New Posts"
+                          number={newRelatedPostsCount}
+                          onClick={::this.pushNewReceivedPost}
+                      />
+                    </header>
+                  )
+                }}
+            />
+          )
+        }
+      }
+      </Sticky>
+    )
+
     return (
       <ResponsiveContainer
           desktopClassName={classnames(style.container)}
           mobileClassName={classnames(style.mobileContainer)}
+          sticky
       >
+        <StickyNotification/>
         <IsUserLoggedIn>
           <React.Fragment>
-            <Notification
-                className={style.notification}
-                label="New Posts"
-                number={newReceivedPosts.size}
-                onClick={::this.pushNewReceivedPost}
-            />
             <AddPlay />
           </React.Fragment>
         </IsUserLoggedIn>

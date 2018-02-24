@@ -4,6 +4,7 @@
   border-radius: 1em;
   text-align: center;
   margin-left: .7em;
+  white-space: nowrap;
 }
 
 .clickable{
