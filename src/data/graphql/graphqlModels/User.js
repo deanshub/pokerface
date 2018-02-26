@@ -1,6 +1,5 @@
 import path from 'path'
 import DB from '../../db'
-import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
 import {
   prepareAvatar,
@@ -84,7 +83,7 @@ export const schema =  [`
       date: String!
     ): User
   }
-`, Upload]
+`]
 
 
 const getPosts = (user) => DB.models.Post.find({user: user.id})

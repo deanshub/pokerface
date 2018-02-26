@@ -29,7 +29,7 @@
     "express-session": "^1.15.1",
     "formidable": "^1.1.1",
     "gql-merge": "^0.0.6",
-    "graphql": "^0.11.7",
+    "graphql": "^0.13.1",
     "graphql-subscriptions": "^0.5.7",
     "graphql-tools": "^2.11.0",
     "ical-toolkit": "^1.0.9",
