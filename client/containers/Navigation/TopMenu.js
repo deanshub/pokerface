@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import Tooltip from '../../components/basic/Tooltip'
 import SelectUserModal from '../SelectUserModal'
-import EditInfoModal from '../../components/Cover/EditInfoModal'
+import EditProfileModal from '../EditProfile'
 import Image from '../../components/basic/Image'
 import classnames from 'classnames'
 import style from './style.css'
@@ -106,7 +106,7 @@ export default class TopMenu extends Component {
              redirectUrl="/"
          />
        }
-       <EditInfoModal
+       <EditProfileModal
            open={editingPersonalInfo}
            toggle={::this.toggleEditPersonalInfo}
        />

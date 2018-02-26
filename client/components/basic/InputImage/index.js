@@ -18,9 +18,10 @@ export default class InputImage extends Component {
 
   render(){
     const {
+      avatar,
       label,
-      src,
       loading,
+      src,
     } = this.props
 
     const backgroundImage = src?{backgroundImage:`url(${src})`}:null
@@ -37,7 +38,7 @@ export default class InputImage extends Component {
             type="file"
         />
         <div
-            className={classnames(style.imageContainer)}
+            className={classnames(style.imageContainer, {[style.avatar]:avatar})}
             onClick={::this.selectImage}
             style={backgroundImage}
         >

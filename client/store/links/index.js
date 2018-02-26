@@ -4,6 +4,7 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { onError } from 'apollo-link-error'
 import {SubscriptionClient} from 'subscriptions-transport-ws'
 import { setContext } from 'apollo-link-context'
+import { createUploadLink } from 'apollo-upload-client'
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -37,6 +38,7 @@ const addSocketIdVariable = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 
+// Add authorization jwt and socket id in the required operations
 const setAuthorizationLink = setContext((_, { headers }) => {
   return {
     headers: {
@@ -46,14 +48,28 @@ const setAuthorizationLink = setContext((_, { headers }) => {
   }
 })
 
-// Add authorization jwt and socket id in the required operations
+const hasUploadVariable = ({ query: { definitions } }) => {
+  return definitions.some(
+    ({ kind, operation, variableDefinitions}) =>
+      kind === 'OperationDefinition' && operation === 'mutation' &&
+      variableDefinitions.some(varDef => {
+        const {name} = varDef.type
+        return name && name.value === 'Upload'
+      })
+  )
+}
+
+const linkOptions = {
+  uri: '/graphql',
+  credentials: 'same-origin',
+}
+
 export const queryOrMutationLink = setAuthorizationLink.concat(
   addSocketIdVariable,
-).concat(
-  new BatchHttpLink({
-    uri: '/graphql',
-    credentials: 'same-origin',
-  }),
+).split(
+  hasUploadVariable,
+  new createUploadLink(linkOptions),
+  new BatchHttpLink(linkOptions),
 )
 
 // TODO create socket id using guid
