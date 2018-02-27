@@ -3,15 +3,15 @@ import MOVES from './constants'
 export function getNextPlayer(moves, currentSpotPlayerState){
   const {nextMoveIndex, players} = currentSpotPlayerState
 
-  let nextPlayerMoveIndex = nextMoveIndex+1
-  let playerFound = false
-  while(!playerFound && moves.length>nextPlayerMoveIndex){
-    playerFound = moves[nextPlayerMoveIndex].player!==MOVES.DEALER
-    nextPlayerMoveIndex++
-  }
-  if (playerFound){
-    return moves[nextPlayerMoveIndex-1].player
-  }
+  // let nextPlayerMoveIndex = nextMoveIndex
+  // let playerFound = false
+  // while(!playerFound && moves.length>nextPlayerMoveIndex){
+  //   playerFound = moves[nextPlayerMoveIndex].player!==MOVES.DEALER
+  //   nextPlayerMoveIndex++
+  // }
+  // if (playerFound){
+  //   return moves[nextPlayerMoveIndex-1].player
+  // }
 
   // if there are no future moves
   const playerDealerMove = moves.find(move=>move.action===MOVES.PLAYER_META_ACTIONS.DEALER)
@@ -36,7 +36,7 @@ export function getNextPlayer(moves, currentSpotPlayerState){
   let moveIndex = 0
   let lastPlayerPlayedIndex
   let move
-  while (moveIndex<=nextMoveIndex && moves[moveIndex]){
+  while (moveIndex<nextMoveIndex && moves[moveIndex]){
     move = moves[moveIndex]
 
     if (move.action!==MOVES.PLAYER_META_ACTIONS.SHOWS&&
@@ -85,6 +85,8 @@ export function getNextPlayer(moves, currentSpotPlayerState){
   }else{
     if (lastPlayerPlayedIndex===undefined||lastPlayerPlayedIndex+1>=playersKeys.length||move.player===MOVES.DEALER){
       return playersKeys[0]
+    }else if (move.action===MOVES.PLAYER_META_ACTIONS.SHOWS){
+      return move.player
     }else{
       return playersKeys[lastPlayerPlayedIndex+1]
     }

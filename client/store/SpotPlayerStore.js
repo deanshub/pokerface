@@ -10,6 +10,7 @@ export class SpotPlayerStore{
   @observable speed
   @observable spotWizardOpen
   @observable newSpot
+  @observable stepsMenueOpen
 
   constructor(){
     this.speed = 1
@@ -18,6 +19,7 @@ export class SpotPlayerStore{
   }
 
   initNewPost(owner){
+    this.stepsMenueOpen=false
     return observable({
       spot:initialSpot,
       step: 0,
