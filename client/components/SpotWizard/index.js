@@ -353,7 +353,7 @@ export default class SpotWizard extends Component {
       const playerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
       const player = spotPlayer.newSpot.spotPlayerState.players[playerIndex]
       if (player && player.cards && player.cards[0].rank!==unimportantCard.rank){
-        const playersShowMoves = spotPlayer.newSpot.spot.moves.find((move)=>{
+        const playersShowMoves = spotPlayer.newSpot.spot.moves.slice(0, spotPlayer.newSpot.spotPlayerState.nextMoveIndex-1).find((move)=>{
           return move.action===MOVES.PLAYER_META_ACTIONS.SHOWS &&
                 move.player===playerIndex
         })

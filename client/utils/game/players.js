@@ -85,6 +85,8 @@ export function getNextPlayer(moves, currentSpotPlayerState){
   }else{
     if (lastPlayerPlayedIndex===undefined||lastPlayerPlayedIndex+1>=playersKeys.length||move.player===MOVES.DEALER){
       return playersKeys[0]
+    }else if (move.action===MOVES.PLAYER_META_ACTIONS.SHOWS){
+      return move.player
     }else{
       return playersKeys[lastPlayerPlayedIndex+1]
     }
