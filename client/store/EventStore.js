@@ -26,10 +26,10 @@ export class EventStore {
   setEvent(game){
     const newGame = {
       ...toJS(game),
-      startDate : moment(game.from),
-      endDate : moment(game.to),
-      createdAt : moment(game.createdAt),
-      updatedAt : moment(game.updatedAt),
+      startDate : moment(new Date(game.from)),
+      endDate : moment(new Date(game.to)),
+      createdAt : moment(new Date(game.createdAt)),
+      updatedAt : moment(new Date(game.updatedAt)),
     }
     this.events.set(newGame.id, newGame)
   }

@@ -5,14 +5,10 @@ let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 
 let devtool
 let hotloaderEntries=[]
-let babelHotloader=[]
 let plugins = [
   new webpack.DefinePlugin({
     'process.env': { NODE_ENV },
   }),
-  // new webpack.optimize.CommonsChunkPlugin({
-  //   name: 'vendor',
-  // }),
 ]
 
 if (NODE_ENV==='"development"'){
@@ -20,11 +16,9 @@ if (NODE_ENV==='"development"'){
   plugins.push(new webpack.HotModuleReplacementPlugin())
   devtool = 'eval-source-map'
   hotloaderEntries = [
-    'react-hot-loader/patch',
     'webpack-hot-middleware/client',
   ]
   plugins.push(new webpack.NoEmitOnErrorsPlugin())
-  babelHotloader = ['react-hot-loader/webpack']
 }else{
   plugins.push(new webpack.optimize.DedupePlugin())
   plugins.push(new webpack.optimize.UglifyJsPlugin({
@@ -110,8 +104,6 @@ const config = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: [
-          // 'react-hot-loader',
-          ...babelHotloader,
           'babel-loader?cacheDirectory=true',
         ],
       },
