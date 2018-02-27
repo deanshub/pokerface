@@ -38,7 +38,6 @@ if (NODE_ENV==='"development"'){
   // plugins.push(new webpack.NoEmitOnErrorsPlugin())
   babelHotloader = ['react-hot-loader/webpack']
 }else{
-  // plugins.push(new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}))
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compressor: {
       warnings: false,
