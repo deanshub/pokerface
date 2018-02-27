@@ -52,7 +52,7 @@ export default class FeedContainer extends Component {
     const { feed } = this.props
     const { newReceivedPosts } = feed
 
-    const StickyNotification = () => (
+    const StickyNotification = ({postsCount}) => (
       <Sticky topOffset={-80}>
       {
         ({style:localStyle}) => {
@@ -60,16 +60,16 @@ export default class FeedContainer extends Component {
             <IsMobile
                 render={(isMobile) => {
                   const top = isMobile?paddingTopMobile:paddingTop
-                  const notificationClass = isMobile?style.notificationMobile:style.notification
+
                   return (
                     <header
                         className={classnames(style.sticky)}
-                        style={{...localStyle, width:'inherit', top}}
+                        style={{...localStyle, top}}
                     >
                       <Notification
-                          className={classnames(notificationClass)}
+                          className={classnames(style.notification)}
                           label="New Posts"
-                          number={newReceivedPosts.size}
+                          number={postsCount}
                           onClick={::this.pushNewReceivedPost}
                       />
                     </header>
@@ -88,7 +88,7 @@ export default class FeedContainer extends Component {
           mobileClassName={classnames(style.mobileContainer)}
           sticky
       >
-        <StickyNotification/>
+        <StickyNotification postsCount={newReceivedPosts.size}/>
         <IsUserLoggedIn>
           <React.Fragment>
             <AddPlay />

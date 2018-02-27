@@ -1,6 +1,6 @@
 import ApolloClient from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory'
 import { errorLink, queryOrMutationLink, wsLink, closeWs } from './links'
 
 const hasSubscriptionOperation = ({ query: { definitions } }) => {
@@ -18,7 +18,16 @@ const hybridLink = ApolloLink.split(
 
 const graphqlClient = new ApolloClient({
   link: ApolloLink.from([errorLink, hybridLink]),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    dataIdFromObject: object => {
+      const {__typename} = object
+      if (__typename === 'Player' || __typename === 'Organization') {
+        return object.username
+      } else {
+        return defaultDataIdFromObject(object)
+      }
+    },
+  }),
 })
 
 export const close = () => {
