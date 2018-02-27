@@ -410,7 +410,7 @@ export const resolvers = {
             const isDeletedInvited = deletedUsers && deletedUsers.includes(userId)
             const ownerId = event.owner._id || event.owner // owner populated or not
 
-            return (isUserInvited  || userId === ownerId  || isDeletedInvited) &&
+            return (event.isPublic || isUserInvited  || userId === ownerId  || isDeletedInvited) &&
                    (clientSocketId !== socketIdPublisher)
           }
 
