@@ -188,6 +188,7 @@ export default class SpotWizard extends Component {
 
   showCards(){
     const {spotPlayer} = this.props
+    spotPlayer.newSpot.spot.moves.splice(spotPlayer.newSpot.spotPlayerState.nextMoveIndex)
     spotPlayer.newSpot.spot.moves.push({
       player: utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState),
       action: MOVES.PLAYER_META_ACTIONS.SHOWS,
