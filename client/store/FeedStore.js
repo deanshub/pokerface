@@ -614,8 +614,8 @@ export class FeedStore {
     const {entityMap, spot} = content
 
     return owner.username === username ||
-      (spot && (spot.players.findIndex(p => p.usernmae===username && !p.guest) > -1)) ||
-      Object.values(entityMap).findIndex(e => e.type === 'mention' && e.data.mention.username === username) > -1
+      (spot && (spot.players.some(p => p.username===username && !p.guest))) ||
+      Object.values(entityMap).some(e => e.type === 'mention' && e.data.mention.username === username)
   }
 
   updateGraphqlStore(changedPost, changeType, username){

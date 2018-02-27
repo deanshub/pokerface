@@ -25,10 +25,6 @@
 
 .navbarRouteItemActive {
   color:$activeButton;
-
-  .notification{
-    display: none;
-  }
 }
 
 .navbarSection {
