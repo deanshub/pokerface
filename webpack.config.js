@@ -10,9 +10,9 @@ let plugins = [
   new webpack.DefinePlugin({
     'process.env': { NODE_ENV },
   }),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-  }),
+  // new webpack.optimize.CommonsChunkPlugin({
+  //   name: 'vendor',
+  // }),
 ]
 
 if (NODE_ENV==='"development"'){
@@ -37,6 +37,7 @@ if (NODE_ENV==='"development"'){
 }
 
 const config = {
+  mode: NODE_ENV==='"development"'?'development':'production',
   context: path.resolve(__dirname, './client'),
   entry: {
     bundle: [
