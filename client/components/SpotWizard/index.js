@@ -50,7 +50,7 @@ export default class SpotWizard extends Component {
         />
       )
     }else if (step===1) {
-      const dealerMoves = spotPlayer.newSpot.spot.moves.filter((move)=>move.player===MOVES.DEALER)
+      const dealerMoves = spotPlayer.newSpot.spot.moves.slice(0, spotPlayer.newSpot.spotPlayerState.nextMoveIndex-1).filter((move)=>move.player===MOVES.DEALER)
       const flop = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.FLOP)!==undefined
       const turn = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.TURN)!==undefined
       const river = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.RIVER)!==undefined
@@ -197,86 +197,80 @@ export default class SpotWizard extends Component {
   }
   smallBlind(){
     const {spotPlayer} = this.props
+    spotPlayer.newSpot.spot.moves.splice(spotPlayer.newSpot.spotPlayerState.nextMoveIndex)
     spotPlayer.newSpot.spot.moves.push({
       player: utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState),
       action: MOVES.PLAYER_ACTIONS.SMALLBLIND,
       value: spotPlayer.newSpot.generalSettings.sb,
     })
-    let newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
-    spotPlayer.newSpot.spotPlayerState.totalRaise = spotPlayer.newSpot.generalSettings.sb
-    spotPlayer.newSpot.spotPlayerState.raiseDiff = spotPlayer.newSpot.generalSettings.bb||spotPlayer.newSpot.generalSettings.sb
   }
   bigBlind(){
     const {spotPlayer} = this.props
+    spotPlayer.newSpot.spot.moves.splice(spotPlayer.newSpot.spotPlayerState.nextMoveIndex)
     spotPlayer.newSpot.spot.moves.push({
       player: utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState),
       action: MOVES.PLAYER_ACTIONS.BIGBLIND,
       value: spotPlayer.newSpot.generalSettings.bb,
     })
-    let newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
-    spotPlayer.newSpot.spotPlayerState.totalRaise = spotPlayer.newSpot.generalSettings.bb
-    spotPlayer.newSpot.spotPlayerState.raiseDiff = spotPlayer.newSpot.generalSettings.bb
   }
   call(){
     const {spotPlayer} = this.props
     const player = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+    spotPlayer.newSpot.spot.moves.splice(spotPlayer.newSpot.spotPlayerState.nextMoveIndex)
     spotPlayer.newSpot.spot.moves.push({
       player,
       action:MOVES.PLAYER_ACTIONS.CALL,
       value: spotPlayer.newSpot.spotPlayerState.totalRaise - spotPlayer.newSpot.spotPlayerState.players[player].bet,
     })
-    let newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
   }
   fold(){
     const {spotPlayer} = this.props
     const player = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+    spotPlayer.newSpot.spot.moves.splice(spotPlayer.newSpot.spotPlayerState.nextMoveIndex)
     spotPlayer.newSpot.spot.moves.push({
       player,
       action:MOVES.PLAYER_ACTIONS.FOLD,
     })
 
-    let newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
   }
   check(){
     const {spotPlayer} = this.props
     const player = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
+    spotPlayer.newSpot.spot.moves.splice(spotPlayer.newSpot.spotPlayerState.nextMoveIndex)
     spotPlayer.newSpot.spot.moves.push({
       player,
       action:MOVES.PLAYER_ACTIONS.CHECK,
     })
-    let newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
   }
   raise(value){
     const {spotPlayer} = this.props
     const player = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
-    const raiseDiff = value - spotPlayer.newSpot.spotPlayerState.totalRaise
+    spotPlayer.newSpot.spot.moves.splice(spotPlayer.newSpot.spotPlayerState.nextMoveIndex)
     spotPlayer.newSpot.spot.moves.push({
       player,
       action:MOVES.PLAYER_ACTIONS.RAISE,
       value: value - spotPlayer.newSpot.spotPlayerState.players[player].bet,
     })
-    let newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
-    spotPlayer.newSpot.spotPlayerState.totalRaise = Math.max(value, spotPlayer.newSpot.spotPlayerState.totalRaise)
-    spotPlayer.newSpot.spotPlayerState.raiseDiff = Math.max(raiseDiff,spotPlayer.newSpot.spotPlayerState.raiseDiff)
   }
   dealer(cards){
     const {spotPlayer} = this.props
-    const dealerMoves = spotPlayer.newSpot.spot.moves.filter((move)=>move.player===MOVES.DEALER)
+    const dealerMoves = spotPlayer.newSpot.spot.moves.slice(0,spotPlayer.newSpot.spotPlayerState.nextMoveIndex-1).filter((move)=>move.player===MOVES.DEALER)
     const flop = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.FLOP)!==undefined
     const turn = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.TURN)!==undefined
     const river = dealerMoves.find(move=>move.action===MOVES.DEALER_ACTIONS.RIVER)!==undefined
+    spotPlayer.newSpot.spot.moves.splice(spotPlayer.newSpot.spotPlayerState.nextMoveIndex)
     if (!flop){
       spotPlayer.newSpot.spot.moves.push({
         player: MOVES.DEALER,
@@ -298,11 +292,8 @@ export default class SpotWizard extends Component {
     }else{
       return undefined
     }
-    let newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, newSpotPlayerState)
+    const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
     extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
-    spotPlayer.newSpot.spotPlayerState.raiseDiff = 0
-    spotPlayer.newSpot.spotPlayerState.totalRaise = 0
   }
 
   isSmallBlindDisabled(){
@@ -335,6 +326,7 @@ export default class SpotWizard extends Component {
 
   hasRaise(){
     const {spotPlayer} = this.props
+    const preFlop = spotPlayer.newSpot.spot.moves.slice(0, spotPlayer.newSpot.spotPlayerState.nextMoveIndex-1).find(move=>move.action===MOVES.DEALER_ACTIONS.FLOP)===undefined
 
     if (spotPlayer.newSpot.spotPlayerState && spotPlayer.newSpot.spotPlayerState.totalRaise>0){
       const playerIndex = utils.getCurrentTurnPlayerIndex(spotPlayer.newSpot.spotPlayerState)
@@ -343,8 +335,10 @@ export default class SpotWizard extends Component {
         return false
       }
 
-      if (player.bet === spotPlayer.newSpot.generalSettings.bb&&
-          spotPlayer.newSpot.spotPlayerState.totalRaise===spotPlayer.newSpot.generalSettings.bb){
+      // if the total raise is smaller then big blind and it's pre flop
+      if (preFlop&&
+          spotPlayer.newSpot.spotPlayerState.totalRaise===spotPlayer.newSpot.generalSettings.bb&&
+          player.bet===spotPlayer.newSpot.spotPlayerState.totalRaise){
         return false
       }
       return true

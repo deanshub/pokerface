@@ -29,6 +29,14 @@
   border-bottom: 1px solid darkBackgroundFontColor;
   flex-shrink: 0;
 }
+.hoverableStep:hover{
+  cursor: pointer;
+  background-color: rgba(0,0,0,0.1);
+}
+
+.futureStep{
+  opacity: 0.3;
+}
 
 .image{
   max-width: 4em;

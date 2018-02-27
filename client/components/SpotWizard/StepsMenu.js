@@ -120,6 +120,7 @@ export default class StepsMenu extends Component {
 
   buildStep(step, stepIndex){
     const {spotPlayer} = this.props
+    const futureStep = step.stepIndex>=spotPlayer.newSpot.spotPlayerState.nextMoveIndex
     const player = spotPlayer.newSpot.spot.players[step.player]
     if (step.section){
       return (
@@ -129,7 +130,11 @@ export default class StepsMenu extends Component {
       )
     }else{
       return (
-        <div className={classnames(style.step)} key={stepIndex}>
+        <div
+            className={classnames(style.step, style.hoverableStep, {[style.futureStep]:futureStep})}
+            key={stepIndex}
+            onClick={()=>this.stepClicked(step)}
+        >
           {this.generateImage(player,step)}
           <div className={classnames(style.labels)}>
             {this.generateLabel(player,step)}
@@ -166,9 +171,24 @@ export default class StepsMenu extends Component {
     return labeledMoves
   }
 
+  stepClicked(step){
+    const {spotPlayer} = this.props
+    const diffSteps = step.stepIndex - spotPlayer.newSpot.spotPlayerState.nextMoveIndex
+    if (diffSteps>0){
+      spotPlayer.nextStep(spotPlayer.newSpot, diffSteps)
+    }else if (diffSteps<0) {
+      spotPlayer.previousStep(spotPlayer.newSpot, Math.abs(diffSteps))
+    }
+  }
+
   render(){
     const {spotPlayer} = this.props
-    const moves = spotPlayer.newSpot.spot.moves.filter(move=>move.action!==MOVES.PLAYER_META_ACTIONS.DEALER&&
+    const moves = spotPlayer.newSpot.spot.moves.map((move,index)=>{
+      return {
+        ...move,
+        stepIndex: index,
+      }
+    }).filter(move=>move.action!==MOVES.PLAYER_META_ACTIONS.DEALER&&
       move.action!==MOVES.PLAYER_ACTIONS.ANTE&&
       move.action!==MOVES.PLAYER_ACTIONS.SMALLBLIND&&
       move.action!==MOVES.PLAYER_ACTIONS.BIGBLIND

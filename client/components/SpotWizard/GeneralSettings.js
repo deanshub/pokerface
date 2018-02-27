@@ -31,9 +31,9 @@ export default class GeneralSettings extends Component {
     const newAmount = parseInt(value)
     if (players.currentPlayers.length<newAmount){
       const amountOfPlayerToAdd = newAmount - players.currentPlayers.length
-      const anonymosPlayers = players.currentPlayers.filter((player)=>/^Player (\d)+$/.test(player.fullname))
+      const anonymosPlayers = players.currentPlayers.filter((player)=>/^Villain (\d)+$/.test(player.fullname))
       const lastIndex = anonymosPlayers.reduce((res,player)=>{
-        const curNumber = parseInt(player.fullname.substring('Player '.length))
+        const curNumber = parseInt(player.fullname.substring('Villain '.length))
         if (res>curNumber){
           return res
         }else {
@@ -41,7 +41,7 @@ export default class GeneralSettings extends Component {
         }
       },0)
       for (let index = 0; index<amountOfPlayerToAdd; index++) {
-        players.addGuest(`Player ${lastIndex + index+1}`)
+        players.addGuest(`Villain ${lastIndex + index+1}`)
       }
       setTimeout(()=>{
         this.playersElement.scrollTop=this.playersElement.scrollHeight
