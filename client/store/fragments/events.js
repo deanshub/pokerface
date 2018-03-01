@@ -14,6 +14,7 @@ export const eventFields = gql`fragment EventFields on Event {
   location
   from
   to
+  isPublic
   invited{
     username
     fullname

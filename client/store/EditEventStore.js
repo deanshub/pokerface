@@ -214,6 +214,7 @@ export class EditEventStore {
       startDate,
       endDate,
       coverImage,
+      isPublic,
     } = toJS(this.currentEvent)
 
     return {
@@ -226,6 +227,7 @@ export class EditEventStore {
       startDate:moment(startDate),
       endDate:moment(endDate),
       coverImage,
+      isPublic,
     }
   }
 }

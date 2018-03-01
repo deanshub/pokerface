@@ -180,14 +180,14 @@ export default class EditEvent extends Component {
             auth.publicEventPermission &&
             <Checkbox
                 checkboxLabel="pubilc"
-                id="public"
+                id="isPublic"
                 label="global event?"
                 onChange={(e, {checked})=>{
                   editEvent.publicChangeHandler(checked)
-                  this.handleFieldChange('public',checked)
+                  this.handleFieldChange('isPublic',checked)
                 }}
                 type="checkbox"
-                value={this.state.public}
+                value={this.state.isPublic}
             />
           }
         </div>
