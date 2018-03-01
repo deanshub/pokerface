@@ -106,6 +106,14 @@ const authCondition = (context) => {
   }]}
 }
 
+const ownerFromContext = (context) => {
+  return {...context.user, password:undefined}
+}
+
+const isEventPublic = (event) => {
+  return event.permissions && event.permissions.includes(PUBLIC)
+}
+
 export const resolvers = {
   Event:{
     id: (game)=>game._id,
@@ -116,7 +124,7 @@ export const resolvers = {
     location: (game)=>game.location,
     from: (game)=>game.startDate,
     to: (game)=>game.endDate,
-    isPublic: (game)=>game.permissions && game.permissions.includes(PUBLIC),
+    isPublic : isEventPublic,
     invited: (game)=>{
       const invitedUsers = game.invited.filter(player=>!player.guest).map(player=>player.username)
       const invitedGuests = game.invited.filter(player=>player.guest)
@@ -278,8 +286,8 @@ export const resolvers = {
         permissions: isPublic?[PUBLIC]:undefined,
       }).save()
       .then(event=>{
-        //const eventRaw = event.toJSON()
-        mailer.sendEventInvite(event, event.invited)
+        const owner = ownerFromContext(context)
+        mailer.sendEventInvite({...event.toJSON(), owner}, event.invited)
         pubSub.publish(EVENT_CHANGED, {[EVENT_CHANGED]:{event, changeType:'ADD'}, clientSocketId})
         return event
       })
@@ -333,10 +341,12 @@ export const resolvers = {
         return event.save()
       }).then(updatedEvent =>{
 
+        const populatedEvent = {...updatedEvent.toJSON(), owner: ownerFromContext(context)}
         if (isPublic){
 
           // TODO may to send also to the inviteds who is not declined
-          mailer.sendEventUpadte(updatedEvent, updatedEvent.accepted)
+          mailer.sendEventUpadte(populatedEvent, updatedEvent.accepted)
+          pubSub.publish(EVENT_CHANGED, {[EVENT_CHANGED]:{event:updatedEvent, changeType:'UPDATE'}, clientSocketId})
         }else{
 
           const {
@@ -345,11 +355,12 @@ export const resolvers = {
             deletedInviteds,
           } = getInvitedsEventChange(oldEvent, updatedEvent)
 
-          mailer.sendEventInvite(updatedEvent, newInviteds)
-          mailer.sendEventCancelled(updatedEvent, deletedInviteds)
-          mailer.sendEventUpadte(updatedEvent, updatedInviteds)
+          mailer.sendEventInvite(populatedEvent, newInviteds)
+          mailer.sendEventCancelled(populatedEvent, deletedInviteds)
+          mailer.sendEventUpadte(populatedEvent, updatedInviteds)
 
           const deletedUsers = deletedInviteds.filter(player=>!player.guest).map(player=>player.username)
+          const wasPublic = isEventPublic(oldEvent)
 
           pubSub.publish(EVENT_CHANGED, {
             [EVENT_CHANGED]:{
@@ -358,13 +369,14 @@ export const resolvers = {
             },
             deletedUsers,
             clientSocketId,
+            wasPublic,
           })
         }
         return updatedEvent
       })
     },
     deleteEvent: (_, {eventId, clientSocketId}, context)=>{
-      return DB.models.Game.findById(eventId).then(event=>{
+      return DB.models.Game.findById(eventId).populate('owner').then(event=>{
         if (event.owner===context.user._id ){
           if (event.endDate.getTime() > Date.now()){
             mailer.sendEventCancelled(event, [...event.invited, ...event.accepted])
@@ -388,14 +400,22 @@ export const resolvers = {
     [EVENT_CHANGED]: {
       resolve: (payload, args, context) => {
         // Manipulate and return the new value
-        const {deletedUsers} = payload
-        const {userId} = context
-        // // Incase of event update we want to send DELETE
-        if (deletedUsers && deletedUsers.includes(userId)){
-          payload[EVENT_CHANGED].changeType = 'DELETE'
+        const subscribedEvent = payload[EVENT_CHANGED]
+
+        if (subscribedEvent.changeType === 'UPDATE'){
+          const {deletedUsers, wasPublic} = payload
+          const {userId} = context
+
+          const isUserInvited = subscribedEvent.event.invited.some(player=>!player.guest && player.username === userId)
+          const isDeletedInvited = (deletedUsers && deletedUsers.includes(userId)) || (wasPublic && !isUserInvited)
+
+          // Incase of event update we want to send DELETE
+          if (isDeletedInvited){
+            subscribedEvent.changeType = 'DELETE'
+          }
         }
 
-        return payload[EVENT_CHANGED]
+        return subscribedEvent
       },
       subscribe: withFilter(
         () => pubSub.asyncIterator(EVENT_CHANGED),
@@ -403,14 +423,14 @@ export const resolvers = {
           const {userId, clientSocketId} = context
 
           if (payload){
-            const {clientSocketId:socketIdPublisher, deletedUsers} = payload
+            const {clientSocketId:socketIdPublisher, deletedUsers, wasPublic} = payload
             const {event} = payload[EVENT_CHANGED]
 
-            const isUserInvited = event.invited.findIndex(player=>!player.guest && player.username === userId) > -1
-            const isDeletedInvited = deletedUsers && deletedUsers.includes(userId)
+            const isUserInvited = event.invited.some(player=>!player.guest && player.username === userId)
+            const isDeletedInvited = (deletedUsers && deletedUsers.includes(userId)) || (wasPublic && !isUserInvited)
             const ownerId = event.owner._id || event.owner // owner populated or not
 
-            return (event.isPublic || isUserInvited  || userId === ownerId  || isDeletedInvited) &&
+            return (isEventPublic(event) || isUserInvited  || userId === ownerId  || isDeletedInvited) &&
                    (clientSocketId !== socketIdPublisher)
           }
 
