@@ -1,5 +1,31 @@
+@import "../../../constants/styles";
+
 .roundNumber{
-  display: inline-flex !important;
-  justify-content: center;
-  align-items: center;
+  color: #74728c;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  border: 1px solid borderColor;
+  padding: 0.5em 1em 0.5em 0.8em;
+  margin: 10px 0;
+}
+
+.blindRow{
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid $divider;
+  flex-wrap: wrap;
+  padding: 0.6em 0 0.4em 0;
+}
+
+.breakRow{
+  display: flex;
+  justify-content:  center;
+  align-items:  center;
+  color: #a0a0b5;
+  border-bottom: 1px solid $divider;
+  padding: 0.6em 0 0.4em 0;
+}
+
+.editRoundButton{
+  margin-right: 2em;
 }

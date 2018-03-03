@@ -11,10 +11,11 @@ export default class Checkbox extends Component {
       checkboxLabel,
       onChange,
       value,
+      centered,
     } = this.props
 
     return(
-      <div className={classnames(style.field)}>
+      <div className={classnames(style.field, {[style.centered]:centered})}>
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
         <div className={classnames(style.checkboxContainer)}>
           <input

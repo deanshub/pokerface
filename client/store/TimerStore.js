@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx'
+import { observable, action, computed, toJS } from 'mobx'
 import graphqlClient from './graphqlClient'
 import { timerQuery } from './queries/timers'
 import {
@@ -14,8 +14,9 @@ import debounce from '../utils/debounce'
 import logger from '../utils/logger'
 
 export class TimerStore {
-  @observable rounds
 
+  @observable rounds
+  @observable editedRounds
   @observable currentTime
   @observable endTime
   @observable offset
@@ -23,8 +24,6 @@ export class TimerStore {
   @observable paused
   @observable settingsModalOpen
   @observable inverted
-  @observable settingsModalMountNode
-  @observable resetModalMountNode
   @observable recovered
   @observable loading
   @observable autoUpdateBlinds
@@ -42,19 +41,16 @@ export class TimerStore {
   constructor(){
     this.settingsModalOpen = false
     this.inverted = false
-    this.settingsModalMountNode = undefined
-    this.resetModalMountNode = undefined
     this.loading = true
     this.blindsSound = new Audio(require('../assets/10.mp3'))
     this.autoUpdateBlinds = true
-    this.rounds = [this.DEFAULT_INITIAL_ROUND]
+    this.rounds = [{...this.DEFAULT_INITIAL_ROUND}]
+    this.editedRounds = [{...this.DEFAULT_INITIAL_ROUND}]
     this.paused = true
     this.offset = 0
 
     // The subscription is lazy.
     this.subscribed = false
-
-    this.debouncedMutateRounds  = debounce(this.mutateRounds, 300)
   }
 
   @action startSubscription(){
@@ -219,52 +215,15 @@ export class TimerStore {
   }
 
   @action addRound(){
-    this.rounds.push(Object.assign({},this.getLastRound()))
-    this.mutationTime = Date.now()
-
-    graphqlClient.mutate({
-      mutation: timerRoundsUpdate,
-      variables: {
-        currentTime:this.mutationTime.toString(),
-        rounds:{rounds:this.rounds}},
-    })
-    .then(::this.checkMutationSuccess)
-    .catch(err=>{
-      console.error('addRound()' , err)
-    })
+    this.editedRounds.push(toJS(this.getLastRound(this.editedRounds)))
   }
 
   @action removeRound(index){
-    this.rounds.splice(index,1)
-    this.mutationTime = Date.now()
-
-    graphqlClient.mutate({
-      mutation: timerRoundsUpdate,
-      variables: {
-        currentTime:this.mutationTime.toString(),
-        rounds:{rounds:this.rounds}},
-    })
-    .then(::this.checkMutationSuccess)
-    .catch(err=>{
-      console.error('removeRound()' ,err)
-    })
+    this.editedRounds.splice(index,1)
   }
 
   @action addBreak(){
-    this.rounds.push({type:'break', time:10})
-    this.mutationTime = Date.now()
-
-    graphqlClient.mutate({
-      mutation: timerRoundsUpdate,
-      variables: {
-        currentTime:this.mutationTime.toString(),
-        rounds:{rounds:this.rounds}},
-    })
-    .then(::this.checkMutationSuccess)
-    .catch(err=>{
-      console.error("in addBreak()", err)
-      this.fetchTimer()
-    })
+    this.editedRounds.push({type:'break', time:10})
   }
 
   @action updateRound(round, propName, value){
@@ -273,31 +232,29 @@ export class TimerStore {
     }
 
     round[propName] = value
-    const changedRoundIndex = this.rounds.indexOf(round)
+    const changedRoundIndex = this.editedRounds.indexOf(round)
 
     if (this.autoUpdateBlinds){
       if (propName==='smallBlind'){
         round['bigBlind'] = value*2
-        const oldSmallBlinds = this.rounds.slice(0, changedRoundIndex+1).map((round)=>round.smallBlind)
-        const newSmallBlinds = fillBlinds(oldSmallBlinds, this.rounds.length)
+        const oldSmallBlinds = this.editedRounds.slice(0, changedRoundIndex+1).map((round)=>round.smallBlind)
+        const newSmallBlinds = fillBlinds(oldSmallBlinds, this.editedRounds.length)
         for(let index=changedRoundIndex+1; index<newSmallBlinds.length; index++){
-          this.rounds[index].smallBlind = newSmallBlinds[index]
-          this.rounds[index].bigBlind = this.rounds[index].smallBlind*2
+          this.editedRounds[index].smallBlind = newSmallBlinds[index]
+          this.editedRounds[index].bigBlind = this.editedRounds[index].smallBlind*2
         }
       }else if(propName==='ante'){
-        const oldAntes = this.rounds.slice(0, changedRoundIndex+1).map((round)=>round.ante)
-        const newAntes = fillBlinds(oldAntes, this.rounds.length)
+        const oldAntes = this.editedRounds.slice(0, changedRoundIndex+1).map((round)=>round.ante)
+        const newAntes = fillBlinds(oldAntes, this.editedRounds.length)
         for(let index=changedRoundIndex+1; index<newAntes.length; index++){
-          this.rounds[index].ante = newAntes[index]
+          this.editedRounds[index].ante = newAntes[index]
         }
       }else if(propName==='time'){
-        for(let index=changedRoundIndex+1; index<this.rounds.length; index++){
-          this.rounds[index].time = value
+        for(let index=changedRoundIndex+1; index<this.editedRounds.length; index++){
+          this.editedRounds[index].time = value
         }
       }
     }
-
-    this.debouncedMutateRounds()
   }
 
   @action setTimer(timer){
@@ -311,7 +268,11 @@ export class TimerStore {
       this.recovered = timer.recovered
 
       if (timer.rounds){
-        this.rounds = this.getRounds(timer.rounds)
+        this.rounds = this.parseGqlRounds(timer.rounds)
+        this.resetEditedRounds()
+
+        // TODO write message to the client if rounds is currently edited
+        // if (settingsModalOpen === true)
       }
 
       // Can be undefined or null
@@ -389,6 +350,35 @@ export class TimerStore {
     this.loading = false
   }
 
+  @action
+  resetEditedRounds(){
+    this.editedRounds = toJS(this.rounds)
+  }
+
+  @action
+  saveRoundsUpdate(){
+    this.mutationTime = Date.now()
+
+    graphqlClient.mutate({
+      mutation: timerRoundsUpdate,
+      variables: {
+        currentTime:this.mutationTime.toString(),
+        rounds:{rounds:this.rounds}},
+    })
+    .then(::this.checkMutationSuccess)
+    .catch(err=>{
+      console.error("in addBreak()", err)
+      this.fetchTimer()
+    })
+
+    this.rounds = this.editedRounds
+
+    const roundTime = this.getCurrentRound().time
+    if (this.paused){
+      this.offset = roundTime * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET
+    }
+  }
+
   @computed
   get timeLeft(){
 
@@ -445,7 +435,6 @@ export class TimerStore {
     }
   }
 
-
   @computed
   get nextBlinds(){
     if (this.round<this.rounds.length){
@@ -463,14 +452,18 @@ export class TimerStore {
     }
   }
 
-  getLastRound(){
-    const rounds = this.rounds.filter(round=>round.type!=='break')
-    if (rounds.length>0)
-      return rounds[rounds.length-1]
+  @computed
+  get currentRound(){
+    return this.getCurrentRound()
+  }
+
+  getLastRound(rounds = this.rounds){
+    const roundsWithoutBreak = rounds.filter(round=>round.type!=='break')
+    if (roundsWithoutBreak.length>0)
+      return roundsWithoutBreak[roundsWithoutBreak.length-1]
     else
       return this.DEFAULT_INITIAL_ROUND
   }
-
 
   getCurrentRound(){
     let currentRound
@@ -483,12 +476,7 @@ export class TimerStore {
     return currentRound
   }
 
-  @computed
-  get currentRound(){
-    return this.getCurrentRound()
-  }
-
-  getRounds(rounds){
+  parseGqlRounds(rounds){
     return rounds.map(({
       ante,
       smallBlind,
