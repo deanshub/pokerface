@@ -7,18 +7,25 @@ export const createUser = (user) => {
     lastname,
   } = user
 
-  const where = {firstname: {$regex: firstname, $options: 'i'}}
-  let fullname
+  let regexUsername   //{firstname: {$regex: firstname, $options: 'i'}}
 
   if (!lastname){
-    fullname = firstname
+    regexUsername = firstname.trim().toLowerCase().replace(/ /g,'.')
   }else{
-    where.lastname = {$regex: lastname, $options: 'i'}
-    fullname = `${firstname}.${lastname}`
+    regexUsername = `${firstname.trim()} ${lastname.trim()}`.toLowerCase().replace(/ /g,'.')
   }
 
-  return DB.models.User.find(where).count().then((count) => {
-    const username = `${fullname}.${count+1}`.toLowerCase().replace(/ /g,'.')
+  return DB.models.User.find({_id: {$regex: regexUsername}}).then(users => {
+
+    //find the max index
+    const seqNumbers = users.map(user => {
+      const splitted = user.username.split('.')
+      const seqNumber = splitted[splitted.length-1]
+      return isNaN(seqNumber)?1:parseInt(seqNumber)
+    })
+
+    const nextSeq = Math.max(...seqNumbers, seqNumbers.length)+1
+    const username = `${regexUsername}.${nextSeq}`
 
     const newUser = {
       _id: username,
