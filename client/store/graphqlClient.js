@@ -1,74 +1,37 @@
 import ApolloClient from 'apollo-client'
-import { createBatchingNetworkInterface  } from 'apollo-upload-client'
-import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws'
+import { ApolloLink } from 'apollo-link'
+import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory'
+import { errorLink, queryOrMutationLink, wsLink, closeWs } from './links'
 
-
-const networkInterface = createBatchingNetworkInterface ({
-  uri: '/graphql',
-  batchInterval: 10,  // in milliseconds
-  batchMax: 10,
-  opts: {
-    credentials: 'same-origin',
-  },
-})
-
-// TODO create socket id using guid
-const clientSocketId = Math.random().toString()
-
-const SOCKET_ID_ADDING_OPERATION = [
-  'pauseTimer',
-  'resumeTimer',
-  'updateRound',
-  'updateTimerRounds',
-  'setResetClientResponse',
-]
-
-const socketIdAddingMiddleware = {
-  applyBatchMiddleware(req, next) {
-    req.requests.forEach(operation => {
-      if (SOCKET_ID_ADDING_OPERATION.includes(operation.operationName)){
-        operation.variables.clientSocketId = clientSocketId
-      }
-    })
-
-    req.options.headers['authorization'] = localStorage.getItem('jwt')
-    next()
-  },
+const hasSubscriptionOperation = ({ query: { definitions } }) => {
+  return definitions.some(
+    ({ kind, operation }) =>
+      kind === 'OperationDefinition' && operation === 'subscription',
+  )
 }
 
-const authMiddleware = {
-  applyBatchMiddleware(req, next) {
-    if (!req.options.headers) {
-      req.options.headers = {}
-    }
-    req.options.headers['authorization'] = localStorage.getItem('jwt')
-    next()
-  },
-}
-
-networkInterface.use([authMiddleware, socketIdAddingMiddleware])
-
-
-const wsClient = new SubscriptionClient(`ws://${document.location.host}/subscriptions`, {
-  reconnect: true,
-  lazy: true,
-  connectionParams: ()=> {
-    return {
-      jwt: localStorage.getItem('jwt'),
-      clientSocketId,
-    }
-  },
-})
+const hybridLink = ApolloLink.split(
+  hasSubscriptionOperation,
+  wsLink,
+  queryOrMutationLink,
+)
 
 const graphqlClient = new ApolloClient({
-  networkInterface: addGraphQLSubscriptions(
-    networkInterface,
-    wsClient,
-  ),
+  link: ApolloLink.from([errorLink, hybridLink]),
+  cache: new InMemoryCache({
+    dataIdFromObject: object => {
+      const {__typename} = object
+      if (__typename === 'Player' || __typename === 'Organization') {
+        return object.username
+      } else {
+        return defaultDataIdFromObject(object)
+      }
+    },
+  }),
 })
 
 export const close = () => {
-  wsClient.close()
+  closeWs()
 }
 
 export default graphqlClient

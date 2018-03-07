@@ -4,33 +4,16 @@ import { observable, computed, action, toJS, extendObservable } from 'mobx'
 // import { fromResource } from 'mobx-utils'
 import { EditorState, convertToRaw, Modifier, convertFromRaw } from 'draft-js'
 import graphqlClient from './graphqlClient'
-import {postsQuery} from './queries/posts'
+import {newRelatedPostsQuery, postsQuery} from './queries/posts'
 import {postCreate, setPostLike, postDelete, updatePollAnswer} from './mutations/posts'
 import {commentCreate, setCommentLike, commentDelete} from './mutations/comments'
+import { postChanged } from './subscriptions/posts'
 import utils from '../containers/SpotPlayer/utils'
 import logger from '../utils/logger'
 import moment from 'moment'
 import request from 'superagent'
 
 const boomPlayerRegex = /www\.boomplayer\.com\/([^\s]+)/gi
-
-// const queryToObservable = (q, callbacks = {}) => {
-//   let subscription
-//
-//   return fromResource(
-//     sink =>
-//       (subscription = q.subscribe({
-//         next: ({ data }) => {
-//           sink(observable(data))
-//           if (callbacks.onUpdate) callbacks.onUpdate(data)
-//         },
-//         error: error => {
-//           if (callbacks.onError) callbacks.onError(error)
-//         },
-//       })),
-//     () => subscription.unsubscribe()
-//   )
-// }
 
 const parseOwner = (owner)=>{
   let rebrandingDetails
@@ -61,6 +44,10 @@ export class FeedStore {
   noMorePosts: boolean
   @observable uploadedMedia: Object
   @observable currentUploadedFiles: Number
+  @observable newReceivedPosts: Object
+  @observable newPostsCount: Number
+  @observable newRelatedPosts: Object
+  postsWatchQuery: Object
 
   constructor(){
     this.posts = observable.map({})
@@ -79,11 +66,142 @@ export class FeedStore {
     })
     this.uploadedMedia=observable.map({})
     this.currentUploadedFiles=0
-    this.currentFetchFilter={}
+    this.currentFetchFilter=undefined
+    this.newReceivedPosts = observable.map({})
+    this.newRelatedPosts = observable.map({})
+    this.newPostsCount = 0
+    this.postsWatchQuery = undefined
+  }
+
+  @action
+  fetchPosts(by = {}): void{
+    const newByString = JSON.stringify(by)
+    const currentByString = JSON.stringify(this.currentFetchFilter)
+
+    if (currentByString===newByString && (this.noMorePosts || this.loading)) return undefined
+
+    this.loading = true
+
+    if (currentByString!==newByString){
+      this.posts.clear()
+      this.currentFetchFilter = by
+      this.noMorePosts = false
+
+      if (this.resultPromise && this.resultPromise.state==='pending'){
+        this.resultPromise.cancel()
+      }
+
+      // for the first query
+      if (!this.postsWatchQuery){
+        // subscribe because the apollo problem
+        this.postsWatchQuery = graphqlClient.watchQuery({query: postsQuery, fetchResults:false, variables:by})
+        this.postsWatchQuery.subscribe({next :()=>{}})
+        this.resultPromise = this.postsWatchQuery.result()
+      }else{
+        this.resultPromise = this.postsWatchQuery.setVariables(this.getRefetchQueryVariables(by))
+      }
+    }else{
+      this.resultPromise = this.postsWatchQuery.fetchMore({
+        variables:{
+          ...by, offset:this.posts.size,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return previousResult
+          if (!previousResult.posts) return fetchMoreResult
+
+          return Object.assign({}, previousResult, {
+            // Append the new feed results to the old one
+            posts: [...previousResult.posts, ...fetchMoreResult.posts],
+          })
+        },
+      })
+    }
+
+    this.resultPromise.then((result)=>{
+      const newPosts = result.data.posts.filter(post=>!this.posts.has(post.id))
+      if (newPosts.length===0){
+        this.noMorePosts = true
+      }else{
+        newPosts.forEach((post)=>{
+          const jsonPost = this.jsonParsePost(post)
+          const parsedPost = this.parsePost(jsonPost)
+          this.posts.set(parsedPost.id, parsedPost)
+        })
+      }
+
+      setTimeout(()=>{
+        this.loading = false
+      },1000)
+    })
+  }
+
+  @action
+  startSubscription(username){
+    if (!this.subscribed){
+      graphqlClient.subscribe({
+        query:postChanged,
+      }).subscribe({
+        next:({data})=>{
+
+          const {postChanged:{post:changedPost, changeType}} = data
+          const jsonPost = this.jsonParsePost(changedPost)
+          const parsedPost = this.parsePost(jsonPost)
+
+          // is the user profile is the current feed
+          const isInUserProfile =  JSON.stringify({username}) === JSON.stringify(this.currentFetchFilter)
+          const isUserRelated = this.isUserRelatedToPost(username, jsonPost)
+
+          // Increase the counters
+          if (changeType !== 'DELETE'){
+            this.newPostsCount++
+          }
+
+          if (isUserRelated && !this.newRelatedPosts.has(parsedPost.id)){
+            this.newRelatedPosts.set(parsedPost.id, {id: parsedPost.id})
+          }
+
+          // For the option of pushing the new posts
+          if (!isInUserProfile || (isInUserProfile && isUserRelated)){
+            if (changeType !== 'DELETE'){
+              this.newReceivedPosts.set(parsedPost.id, parsedPost)
+            }
+          }
+
+          this.updateGraphqlStore(changedPost, changeType)
+          this.updateGraphqlStore(changedPost, changeType, username)
+        },
+      })
+
+      this.subscribed = true
+    }
+  }
+
+  @action
+  pushNewReceivedPost(isProfile){
+    this.newReceivedPosts.forEach((post, id) =>{
+      this.posts.set(id, post)
+    })
+
+    if (isProfile){
+      this.newRelatedPosts.clear()
+    }else{
+      this.newPostsCount = 0
+    }
+
+    this.newReceivedPosts.clear()
+  }
+
+  @computed
+  get newRelatedPostsCount(){
+    return this.newRelatedPosts.size
+  }
+  jsonParsePost(post){
+    return {...post, content:JSON.parse(post.content)}
   }
 
   parsePost(post){
-    let content = JSON.parse(post.content)
+    //let content = JSON.parse(post.content)
+    const {content} = post
     if (!content.entityMap){
       content.entityMap={}
     }
@@ -172,7 +290,8 @@ export class FeedStore {
       // if post mutation succeded add id
       .then(result=>{
         this.posts.delete(newPostTempId)
-        const newPost = this.parsePost(result.data.createPost)
+        const jsonPost = this.jsonParsePost(result.data.createPost)
+        const newPost = this.parsePost(jsonPost)
         this.posts.set(newPost.id, newPost)
       })
       // if post mutation failed remove it
@@ -226,7 +345,8 @@ export class FeedStore {
       graphqlClient.mutate({mutation: commentCreate, variables: {comment:JSON.stringify(rawComment), post:postId}})
       // if post mutation succeded add id
       .then(result=>{
-        const parsedPost = this.parsePost(result.data.addComment)
+        const jsonPost = this.jsonParsePost(result.data.addComment)
+        const parsedPost = this.parsePost(jsonPost)
         this.posts.set(parsedPost.id, parsedPost)
       })
       // if post mutation failed remove it
@@ -301,53 +421,12 @@ export class FeedStore {
   }
 
   @action
-  fetchPosts(by = {}): void{
-    const newByString = JSON.stringify(by)
-    const currentByString = JSON.stringify(this.currentFetchFilter)
-
-    if (currentByString===newByString && (this.noMorePosts || this.loading)) return undefined
-
-    this.loading = true
-    if (currentByString!==newByString){
-      this.posts = observable.map({})
-      this.currentFetchFilter = by
-      this.noMorePosts = false
-    }
-
-    graphqlClient.watchQuery({
-      query: postsQuery,
-      variables:{
-        ...by, offset:this.posts.size,
-      },
-      // pollInterval: 10000, //ms
-    }).subscribe({
-      next :(result)=>{
-        const newPosts = result.data.posts.filter(post=>!this.posts.has(post.id))
-        if (newPosts.length===0){
-          this.noMorePosts = true
-        }else{
-          newPosts.forEach((post)=>{
-            const parsedPost = this.parsePost(post)
-            this.posts.set(parsedPost.id, parsedPost)
-          })
-        }
-        setTimeout(()=>{
-          this.loading = false
-        },1000)
-      },
-      error: console.error,
-      complete:()=>{
-        this.loading = false
-      },
-    })
-  }
-
-  @action
   setPostLike(postId, like, user){
     logger.logEvent({category:'Post',action:'Like',value:like?1:0})
     graphqlClient.mutate({mutation: setPostLike, variables: {post:postId, like}})
     .then(result=>{
-      const newPost = this.parsePost(result.data.setPostLike)
+      const jsonPost = this.jsonParsePost(result.data.setPostLike)
+      const newPost = this.parsePost(jsonPost)
       this.posts.set(postId, newPost)
     })
     .catch(err=>{
@@ -373,7 +452,8 @@ export class FeedStore {
     logger.logEvent({category:'Comment',action:'Like',value:like?1:0})
     graphqlClient.mutate({mutation: setCommentLike, variables: {comment:commentId, like}})
     .then(result=>{
-      const newPost = this.parsePost(result.data.setCommentLike.post)
+      const jsonPost = this.jsonParsePost(result.data.setCommentLike.post)
+      const newPost = this.parsePost(jsonPost)
       this.posts.set(result.data.setCommentLike.post.id, newPost)
     })
     .catch(err=>{
@@ -499,6 +579,17 @@ export class FeedStore {
   }
 
   @action
+  fetchNewRelatedPosts(){
+    return graphqlClient.query({query:newRelatedPostsQuery}).then(({data}) => {
+      const {newRelatedPosts} = data
+      newRelatedPosts.forEach(post => {
+        this.newRelatedPosts.set(post.id, post)
+      })
+      return newRelatedPostsQuery
+    })
+  }
+
+  @action
   refresh(){
     this.fetchPosts()
   }
@@ -511,6 +602,54 @@ export class FeedStore {
     .catch(err=>{
       console.error(err)
     })
+  }
+
+  getRefetchQueryVariables(variables){
+    const {id, username, eventId, offset} = variables
+    return {id, username, eventId, offset}
+  }
+
+  isUserRelatedToPost(username, post){
+    const {owner, content} = post
+    const {entityMap, spot} = content
+
+    return owner.username === username ||
+      (spot && (spot.players.some(p => p.username===username && !p.guest))) ||
+      Object.values(entityMap).some(e => e.type === 'mention' && e.data.mention.username === username)
+  }
+
+  updateGraphqlStore(changedPost, changeType, username){
+    try {
+      // read from graphql store
+      const {posts} = graphqlClient.readQuery({query:postsQuery, variables:{username}})
+
+      const index = posts.findIndex(post => post.id === changedPost.id)
+
+      let updatedData
+
+      if (index === -1 && changeType !== 'DELETE'){
+        updatedData = [changedPost, ...posts]
+      } else if (index > -1){
+        updatedData = posts.filter(post => post.id !== index)
+
+        if (changeType !== 'DELETE'){
+          updatedData.unshift(changedPost)
+        }
+      }
+
+      // write to graphql store
+      graphqlClient.writeQuery({
+        query:postsQuery,
+        data:{posts:updatedData},
+        variables:{username},
+      })
+    }
+    catch(error){
+      // It OK if the query is not exist
+      if (!error.message.startsWith("Can't find field")){
+        console.error(error);
+      }
+    }
   }
 
   @computed

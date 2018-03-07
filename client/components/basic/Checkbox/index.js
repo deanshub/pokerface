@@ -19,10 +19,10 @@ export default class Checkbox extends Component {
         <div className={classnames(style.checkboxContainer)}>
           <input
               className={classnames(style.box)}
+              defaultChecked={value}
               id={id}
               onChange={(e)=>onChange(e,e.target)}
               type="checkbox"
-              value={value}
           />
           <label className={classnames(style.checkboxLabel)} htmlFor={id}>{checkboxLabel}</label>
         </div>

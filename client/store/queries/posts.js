@@ -1,53 +1,18 @@
 import gql from 'graphql-tag'
+import {postFields} from '../fragments/posts'
 
 export const postsQuery = gql`
-  query _($username: String, $eventId: String, $offset: Int, $id: String) {
-    posts(username: $username, eventId: $eventId, offset: $offset, id: $id) {
+  query posts($username: String, $eventId: String, $offset: Int, $id: String) {
+    posts(username: $username, eventId: $eventId, offset: $offset, id: $id) @connection(key: "posts", filter: ["username","eventId","id"]) {
+      ...PostFields
+    }
+  }
+  ${postFields}
+`
+export const newRelatedPostsQuery = gql`
+  query newRelatedPosts{
+    newRelatedPosts{
       id
-      createdAt
-      content
-      photos{
-        path
-        type
-      }
-      likes{
-        username
-        fullname
-        avatar
-      }
-      comments{
-        id
-        likes{
-          username
-          fullname
-          avatar
-        }
-        content
-        owner{
-          username
-          fullname
-          avatar
-        }
-        post{
-          id
-        }
-      }
-      owner{
-        username
-        fullname
-        avatar
-        rebrandingDetails {
-          logo
-          title
-          primaryColor
-          secondaryColor
-          tertiaryColor
-        }
-      }
-      event{
-        id
-        location
-      }
     }
   }
 `

@@ -6,13 +6,12 @@ import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
 import { NavLink } from 'react-router-dom'
-import Notification from './Notification'
+import Notification from '../Notification'
 import SearchBar from '../../containers/SearchBar'
 
 @inject('auth')
 @inject('events')
 @inject('feed')
-@inject('timer')
 @observer
 export default class Navbar extends Component {
 
@@ -21,7 +20,12 @@ export default class Navbar extends Component {
   }
 
   componentDidMount(){
-    this.props.events.fetchMyGames()
+    const {auth, events, feed} = this.props
+    events.fetchMyGames()
+    events.startSubscription()
+    feed.fetchNewRelatedPosts().then(() => {
+      feed.startSubscription(auth.user.username)
+    })
   }
 
   // TODO: Consult with Dean
@@ -29,9 +33,18 @@ export default class Navbar extends Component {
     return true
   }
 
+  onHomeClick(){
+    this.props.feed.pushNewReceivedPost()
+  }
+
+  onProfileClick(){
+    this.props.feed.pushNewReceivedPost(true)
+  }
+
   render() {
-    const {auth, events} = this.props
+    const {auth, events, feed} = this.props
     const {username} = auth.user
+    const { newPostsCount, newRelatedPostsCount } = feed
 
     return (
       <div className={classnames(style.container)}>
@@ -39,23 +52,27 @@ export default class Navbar extends Component {
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               exact
+              onClick={::this.onHomeClick}
               to="/"
           >
             Home
+            <Notification className={style.notification} number={newPostsCount}/>
           </NavLink>
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
+              onClick={::this.onProfileClick}
               to={`/profile/${username}`}
           >
             Profile
+            <Notification className={style.notification} number={newRelatedPostsCount}/>
           </NavLink>
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               to="/events"
           >
-            Events <Notification number={events.events.size}/>
+            Events <Notification className={style.notification} number={events.events.size}/>
           </NavLink>
           <div className={classnames(style.navbarSection)}>
             Tools

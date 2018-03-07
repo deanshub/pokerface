@@ -1,0 +1,50 @@
+import gql from 'graphql-tag'
+
+export const postFields = gql`fragment PostFields on Post {
+  id
+  createdAt
+  content
+  photos{
+    path
+    type
+  }
+  likes{
+    username
+    fullname
+    avatar
+  }
+  comments{
+    id
+    likes{
+      username
+      fullname
+      avatar
+    }
+    content
+    owner{
+      username
+      fullname
+      avatar
+    }
+    post{
+      id
+    }
+  }
+  owner{
+    username
+    fullname
+    avatar
+    rebrandingDetails {
+      logo
+      title
+      primaryColor
+      secondaryColor
+      tertiaryColor
+    }
+  }
+  event{
+    id
+    location
+  }
+}
+`

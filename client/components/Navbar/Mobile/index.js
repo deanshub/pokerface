@@ -2,18 +2,24 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { NavLink } from 'react-router-dom'
-import Notification from '../Notification'
+import Notification from '../../Notification'
 import classnames from 'classnames'
 import style from './style.css'
 
 @inject('auth')
 @inject('routing')
 @inject('events')
+@inject('feed')
 @observer
 export default class Navigation extends Component {
 
   componentDidMount(){
-    this.props.events.fetchMyGames()
+    const {auth, events, feed} = this.props
+    events.fetchMyGames()
+    events.startSubscription()
+    feed.fetchNewRelatedPosts().then(() => {
+      feed.startSubscription(auth.user.username)
+    })
   }
 
   handleLogout(){
@@ -27,9 +33,18 @@ export default class Navigation extends Component {
     this.props.onClose()
   }
 
+  onHomeClick(){
+    this.feed.pushNewReceivedPost()
+  }
+
+  onProfileClick(){
+    this.feed.pushNewReceivedPost(true)
+  }
+
   render() {
-    const {auth, events, open} = this.props
+    const {auth, events, feed, open} = this.props
     const {username} = auth.user
+    const { newPostsCount, newRelatedPostsCount } = feed
 
     return (
       <div className={classnames(style.container, {[style.closed]:!open})}>
@@ -44,10 +59,12 @@ export default class Navigation extends Component {
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
               exact
-              onClick={::this.onClose}
+              onClick={::this.onHomeClick}
               to="/"
           >
-            <div className={classnames(style.home)}/>
+            <div className={classnames(style.home)}>
+              <Notification className={style.notification} number={newPostsCount}/>
+            </div>
             Home
           </NavLink>
           <NavLink
@@ -57,17 +74,19 @@ export default class Navigation extends Component {
               to="/events"
           >
             <div className={classnames(style.events)}>
-              <Notification number={events.events.size}/>
+              <Notification className={style.notification} number={events.events.size}/>
             </div>
             Events
           </NavLink>
           <NavLink
               activeClassName={classnames(style.navbarRouteItemActive)}
               className={classnames(style.navbarRouteItem)}
-              onClick={::this.onClose}
+              onClick={::this.onProfileClick}
               to={`/profile/${username}`}
           >
-            <div className={classnames(style.profile)}/>
+            <div className={classnames(style.profile)}>
+              <Notification className={style.notification} number={newRelatedPostsCount}/>
+            </div>
             Profile
           </NavLink>
           <NavLink

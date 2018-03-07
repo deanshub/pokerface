@@ -121,7 +121,7 @@ export class EditEventStore {
 
   removePlayer(username, status){
     const index = this.currentEvent.get('invited').findIndex(p => p.username === username)
-    if (index > 0){
+    if (index > -1){
       this.currentEvent.get('invited').splice(index, 1)
     }
 
@@ -214,6 +214,7 @@ export class EditEventStore {
       startDate,
       endDate,
       coverImage,
+      isPublic,
     } = toJS(this.currentEvent)
 
     return {
@@ -226,6 +227,7 @@ export class EditEventStore {
       startDate:moment(startDate),
       endDate:moment(endDate),
       coverImage,
+      isPublic,
     }
   }
 }

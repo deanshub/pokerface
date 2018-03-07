@@ -1,13 +1,33 @@
 @import '../../constants/styles.css';
 
 .container{
+  position: relative;
   margin: auto;
   width: 75%;
   min-width: 600px;
 }
 
 .mobileContainer {
+  position: relative;
   width: 100%;
+}
+
+/* sticky component*/
+.container > div:first-child, .mobileContainer > div:first-child{
+  width: 100%;
+  height: 0px;
+}
+
+.notification{
+  position: absolute;
+  left: calc(50% - 6em);
+  top: 0.7em;
+  padding: 0.3em 2.5em;
+  box-shadow: 0 0 10px 0 #000000;
+}
+
+.sticky{
+   z-index: 1;
 }
 
 .clickable{

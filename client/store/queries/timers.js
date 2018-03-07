@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const timerQuery = gql`
-  query _{
+  query timer{
     timer{
       paused
       round

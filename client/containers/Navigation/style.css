@@ -98,11 +98,11 @@
 .container {
   display: flex;
   padding: 1.43em;
-  padding-top: 5.3em;
+  padding-top: paddingTop;
 }
 
 .mobileContainer {
-  padding-top: 72px;
+  padding-top: paddingTopMobile;
 }
 
 .navbar {

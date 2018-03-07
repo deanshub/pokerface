@@ -35,7 +35,6 @@ export default class Cover extends Component {
   constructor(props){
     super(props)
     this.state= {
-      editingPersonalInfo: false,
       qrOpen: false,
       expanded: false,
     }
