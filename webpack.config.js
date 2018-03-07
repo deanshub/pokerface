@@ -14,20 +14,18 @@ let plugins = [
 if (NODE_ENV==='"development"'){
   plugins.push(new webpack.NamedModulesPlugin())
   plugins.push(new webpack.HotModuleReplacementPlugin())
+  plugins.push(new webpack.LoaderOptionsPlugin({
+    debug: true,
+  }))
   devtool = 'eval-source-map'
   hotloaderEntries = [
     'webpack-hot-middleware/client',
   ]
-  plugins.push(new webpack.NoEmitOnErrorsPlugin())
 }else{
-  plugins.push(new webpack.optimize.DedupePlugin())
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
-    compressor: {
-      warnings: false,
-    },
-    sourceMap: false,
-  }))
   plugins.push(new webpack.optimize.AggressiveMergingPlugin())
+  plugins.push(new webpack.LoaderOptionsPlugin({
+    minimize: true,
+  }))
 }
 
 const config = {
