@@ -1,6 +1,5 @@
 import path from 'path'
 import DB from '../../db'
-import {schema as Upload} from './UploadedFile'
 import authUtils from '../../../utils/authUtils'
 import {
   prepareAvatar,
@@ -80,8 +79,11 @@ export const schema =  [`
       cover: Upload,
       avatar: Upload
     ): User
+    updateLastProfileVisit(
+      date: String!
+    ): User
   }
-`, Upload]
+`]
 
 
 const getPosts = (user) => DB.models.Post.find({user: user.id})
@@ -193,6 +195,9 @@ export const resolvers = {
 
         return user.save()
       })
+    },
+    updateLastProfileVisit:(_, {date}, context)=>{
+      return DB.models.User.findOneAndUpdate({_id:context.user._id},{lastPulseCheck:new Date(date)})
     },
   },
 }

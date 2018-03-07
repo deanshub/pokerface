@@ -25,6 +25,13 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Game',
   },
+  relatedUsers:{
+    type:[{
+      type: String,
+      ref: 'User',
+    }],
+    default: undefined,
+  },
   updated: { type: Date, default: Date.now },
   created: { type: Date, default: Date.now },
 })

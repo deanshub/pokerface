@@ -1,6 +1,4 @@
 import DB from '../../db'
-import {schema as User} from './User'
-import {schema as Post} from './Post'
 
 export const schema =  [`
   type Comment {
@@ -33,7 +31,7 @@ export const schema =  [`
       comment: String!
     ): Comment
   }
-`, ...User, ...Post]
+`]
 
 export const resolvers = {
   Comment:{

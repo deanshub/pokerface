@@ -1,9 +1,14 @@
+import {withFilter} from 'graphql-subscriptions'
+import pubSub from './pubSub'
 import DB from '../../db'
 import path from 'path'
 import mailer from '../../../utils/mailer'
 import {CREATE_PUBLIC_EVENT, PUBLIC} from '../../../utils/permissions'
 import { prepareCoverImage } from '../../helping/user'
 import { getInvitedsEventChange, equalInvitedPlayers } from '../../helping/event'
+
+const EVENT_CHANGED = 'eventChanged'
+
 export const schema =  [`
   type Event {
     id: String!
@@ -14,6 +19,7 @@ export const schema =  [`
     location: String
     from: String
     to: String
+    isPublic: Boolean
     invited: [Player]
     accepted: [Player]
     declined: [Player]
@@ -23,6 +29,17 @@ export const schema =  [`
     creator: User
     coverImage: String
     posts: [Post]
+  }
+
+  enum EventChangeType {
+    ADD
+    UPDATE
+    DELETE
+  }
+
+  type SubscribedEvent {
+    event: Event
+    changeType: EventChangeType
   }
 
   type Query {
@@ -50,7 +67,8 @@ export const schema =  [`
       to: String,
       invited: String,
       isPublic: Boolean,
-      coverImage: Upload
+      coverImage: Upload,
+      clientSocketId: String!
     ): Event
     updateEvent(
       id: String!,
@@ -63,24 +81,38 @@ export const schema =  [`
       to: String,
       invited: String,
       isPublic: Boolean
-      coverImage: Upload
+      coverImage: Upload,
+      clientSocketId: String!
     ): Event
     deleteEvent(
-      eventId: String!
+      eventId: String!,
+      clientSocketId: String!
     ): Event
+  }
+
+  type Subscription {
+    ${EVENT_CHANGED}: SubscribedEvent
   }
 `]
 
 const authCondition = (context) => {
+  const {_id:username} = context.user
   return {$or: [{
     permissions: PUBLIC,
   },{
-    owner: context.user._id,
+    owner: username,
   },{
-    invited: context.user._id,
+    invited: {$elemMatch:{username, guest:{$ne:true}}},
   }]}
 }
 
+const ownerFromContext = (context) => {
+  return {...context.user, password:undefined}
+}
+
+const isEventPublic = (event) => {
+  return event.permissions && event.permissions.includes(PUBLIC)
+}
 
 export const resolvers = {
   Event:{
@@ -92,6 +124,7 @@ export const resolvers = {
     location: (game)=>game.location,
     from: (game)=>game.startDate,
     to: (game)=>game.endDate,
+    isPublic : isEventPublic,
     invited: (game)=>{
       const invitedUsers = game.invited.filter(player=>!player.guest).map(player=>player.username)
       const invitedGuests = game.invited.filter(player=>player.guest)
@@ -216,7 +249,21 @@ export const resolvers = {
         return game
       })
     },
-    addEvent: (_, {title, description, type, subtype, location, from, to, invited, isPublic, coverImage}, context)=>{
+    addEvent: (_, args , context)=>{
+      const {
+        title,
+        description,
+        type,
+        subtype,
+        location,
+        from,
+        to,
+        invited,
+        isPublic,
+        coverImage,
+        clientSocketId,
+      } = args
+
       const {user} = context
       if (isPublic && (!user.permissions || !user.permissions.includes(CREATE_PUBLIC_EVENT))){
         throw new Error('Not authorized to create public events')
@@ -226,7 +273,7 @@ export const resolvers = {
       }
 
       return new DB.models.Game({
-        owner: context.user._id,
+        owner: user._id,
         title,
         description,
         type,
@@ -239,11 +286,27 @@ export const resolvers = {
         permissions: isPublic?[PUBLIC]:undefined,
       }).save()
       .then(event=>{
-        mailer.sendEventInvite(event, event.invited)
+        const owner = ownerFromContext(context)
+        mailer.sendEventInvite({...event.toJSON(), owner}, event.invited)
+        pubSub.publish(EVENT_CHANGED, {[EVENT_CHANGED]:{event, changeType:'ADD'}, clientSocketId})
         return event
       })
     },
-    updateEvent: (_, {id, title, description, type, subtype, location, from, to, invited, isPublic, coverImage}, context) => {
+    updateEvent: (_, args, context) => {
+      const {
+        id,
+        title,
+        description,
+        type,
+        subtype,
+        location,
+        from,
+        to,
+        invited,
+        isPublic,
+        coverImage,
+        clientSocketId,
+      } = args
       const {user} = context
       if (isPublic && (!user.permissions || !user.permissions.includes(CREATE_PUBLIC_EVENT))){
         throw new Error('Not authorized to create public events')
@@ -278,10 +341,12 @@ export const resolvers = {
         return event.save()
       }).then(updatedEvent =>{
 
+        const populatedEvent = {...updatedEvent.toJSON(), owner: ownerFromContext(context)}
         if (isPublic){
 
           // TODO may to send also to the inviteds who is not declined
-          mailer.sendEventUpadte(updatedEvent, updatedEvent.accepted)
+          mailer.sendEventUpadte(populatedEvent, updatedEvent.accepted)
+          pubSub.publish(EVENT_CHANGED, {[EVENT_CHANGED]:{event:updatedEvent, changeType:'UPDATE'}, clientSocketId})
         }else{
 
           const {
@@ -290,18 +355,38 @@ export const resolvers = {
             deletedInviteds,
           } = getInvitedsEventChange(oldEvent, updatedEvent)
 
-          mailer.sendEventInvite(updatedEvent, newInviteds)
-          mailer.sendEventCancelled(updatedEvent, deletedInviteds)
-          mailer.sendEventUpadte(updatedEvent, updatedInviteds)
+          mailer.sendEventInvite(populatedEvent, newInviteds)
+          mailer.sendEventCancelled(populatedEvent, deletedInviteds)
+          mailer.sendEventUpadte(populatedEvent, updatedInviteds)
+
+          const deletedUsers = deletedInviteds.filter(player=>!player.guest).map(player=>player.username)
+          const wasPublic = isEventPublic(oldEvent)
+
+          pubSub.publish(EVENT_CHANGED, {
+            [EVENT_CHANGED]:{
+              event:updatedEvent,
+              changeType:'UPDATE',
+            },
+            deletedUsers,
+            clientSocketId,
+            wasPublic,
+          })
         }
         return updatedEvent
       })
     },
-    deleteEvent: (_, {eventId}, context)=>{
-      return DB.models.Game.findById(eventId).then(event=>{
+    deleteEvent: (_, {eventId, clientSocketId}, context)=>{
+      return DB.models.Game.findById(eventId).populate('owner').then(event=>{
         if (event.owner===context.user._id ){
           if (event.endDate.getTime() > Date.now()){
             mailer.sendEventCancelled(event, [...event.invited, ...event.accepted])
+            pubSub.publish(EVENT_CHANGED, {
+              [EVENT_CHANGED]:{
+                event,
+                changeType:'DELETE',
+              },
+              clientSocketId,
+            })
           }
 
           return event.remove()
@@ -309,6 +394,49 @@ export const resolvers = {
           throw new Error('Can\'t delete event of another user')
         }
       })
+    },
+  },
+  Subscription: {
+    [EVENT_CHANGED]: {
+      resolve: (payload, args, context) => {
+        // Manipulate and return the new value
+        const subscribedEvent = payload[EVENT_CHANGED]
+
+        if (subscribedEvent.changeType === 'UPDATE'){
+          const {deletedUsers, wasPublic} = payload
+          const {userId} = context
+
+          const isUserInvited = subscribedEvent.event.invited.some(player=>!player.guest && player.username === userId)
+          const isDeletedInvited = (deletedUsers && deletedUsers.includes(userId)) || (wasPublic && !isUserInvited)
+
+          // Incase of event update we want to send DELETE
+          if (isDeletedInvited){
+            subscribedEvent.changeType = 'DELETE'
+          }
+        }
+
+        return subscribedEvent
+      },
+      subscribe: withFilter(
+        () => pubSub.asyncIterator(EVENT_CHANGED),
+        (payload, _, context) => {
+          const {userId, clientSocketId} = context
+
+          if (payload){
+            const {clientSocketId:socketIdPublisher, deletedUsers, wasPublic} = payload
+            const {event} = payload[EVENT_CHANGED]
+
+            const isUserInvited = event.invited.some(player=>!player.guest && player.username === userId)
+            const isDeletedInvited = (deletedUsers && deletedUsers.includes(userId)) || (wasPublic && !isUserInvited)
+            const ownerId = event.owner._id || event.owner // owner populated or not
+
+            return (isEventPublic(event) || isUserInvited  || userId === ownerId  || isDeletedInvited) &&
+                   (clientSocketId !== socketIdPublisher)
+          }
+
+          return false
+        }
+      ),
     },
   },
 }
