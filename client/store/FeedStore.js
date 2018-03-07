@@ -98,7 +98,7 @@ export class FeedStore {
         this.postsWatchQuery.subscribe({next :()=>{}})
         this.resultPromise = this.postsWatchQuery.result()
       }else{
-        this.resultPromise = this.postsWatchQuery.refetch(this.getRefetchQueryVariables(by))
+        this.resultPromise = this.postsWatchQuery.setVariables(this.getRefetchQueryVariables(by))
       }
     }else{
       this.resultPromise = this.postsWatchQuery.fetchMore({

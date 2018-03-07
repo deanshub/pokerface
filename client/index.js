@@ -1,29 +1,9 @@
 import 'intl'
 import 'intl/locale-data/jsonp/en'
-
-import ReactDOM from 'react-dom'
-import React from 'react'
-import { AppContainer } from 'react-hot-loader'
 import './general.css'
 
-import App from './containers/App'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
 
-const render = Component => {
-  ReactDOM.render(
-    <AppContainer>
-      <Component/>
-    </AppContainer>,
-    document.getElementById('root')
-  )
-}
-
-
-render(App)
-
-if (module.hot) {
-  module.hot.accept()
-  // module.hot.accept('./containers/App', () => {
-  //   const App = require('./containers/App').default
-  //   render(App)
-  // })
-}
+ReactDOM.render(<App />, document.getElementById('root'))
