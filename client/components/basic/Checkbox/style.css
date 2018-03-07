@@ -15,3 +15,7 @@
   align-items: center;
   border: 0px;
 }
+
+.centered {
+  align-self: center;
+}

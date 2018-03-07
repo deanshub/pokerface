@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Button, Header } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
+import Modal, {ModalHeader, ModalContent, ModalFooter} from '../../basic/Modal'
+import Button, {ButtonGroup} from '../../basic/Button'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('timer')
 @observer
@@ -25,25 +28,26 @@ export default class BlindTimerResetModal extends Component {
 
     return (
       <Modal
-          dimmer={false}
-          mountNode={timer.resetModalMountNode}
+          compact
           open={timer.recovered}
-          size="tiny"
       >
-        <Header
-            content="The timer is active"
-            icon="repeat"
-            size="large"
-            subheader="Would you like to reset the timer?"
-        />
-        <Modal.Actions>
-          <Button onClick={::this.notReset}>
-            No
-          </Button>
-          <Button onClick={::this.reset}>
-            Yes
-          </Button>
-        </Modal.Actions>
+        <ModalHeader>The timer is active</ModalHeader>
+        <ModalContent>
+          <div className={classnames(style.message)}>
+            Would you like to reset the timer?
+          </div>
+        </ModalContent>
+        <ModalFooter>
+          <ButtonGroup
+              horizontal
+              noEqual
+              reversed
+              uppercase
+          >
+            <Button className={classnames(style.yes)} onClick={::this.reset}>Yes</Button>
+            <Button className={classnames(style.no)} onClick={::this.notReset}>No</Button>
+          </ButtonGroup>
+        </ModalFooter>
       </Modal>
     )
   }

@@ -1,42 +1,14 @@
 import gql from 'graphql-tag'
+import {postFields} from '../fragments/posts'
+//import {commentFields} from '../fragments/comments'
+
 export const commentCreate = gql`mutation addComment($post: String!, $comment: String!){
   addComment(post: $post, content:$comment){
-    id
-    createdAt
-    content
-    photos{
-      path
-      type
-    }
-    likes{
-      username
-      fullname
-      avatar
-    }
-    comments{
-      id
-      post{
-        id
-      }
-      likes{
-        username
-        fullname
-        avatar
-      }
-      content
-      owner{
-        username
-        fullname
-        avatar
-      }
-    }
-    owner{
-      username
-      fullname
-      avatar
-    }
+    ...PostFields
   }
-}`
+}
+${postFields}
+`
 
 export const commentDelete = gql`mutation deleteComment($commentId: String!){
   deleteComment(commentId: $commentId){
@@ -48,40 +20,9 @@ export const setCommentLike = gql`mutation setCommentLike($comment: String!, $li
   setCommentLike(content:$like, comment:$comment){
     id
     post{
-      id
-      createdAt
-      content
-      photos{
-        path
-        type
-      }
-      likes{
-        username
-        fullname
-        avatar
-      }
-      comments{
-        id
-        post{
-          id
-        }
-        likes{
-          username
-          fullname
-          avatar
-        }
-        content
-        owner{
-          username
-          fullname
-          avatar
-        }
-      }
-      owner{
-        username
-        fullname
-        avatar
-      }
+      ...PostFields
     }
   }
-}`
+}
+${postFields}
+`
