@@ -137,13 +137,17 @@ export default class SpotWizard extends Component {
       spotPlayer.newSpot.spot.ante=spotPlayer.newSpot.generalSettings.ante||0
       // TODO:normalize spotPlayer.newSpot.generalSettings.currency
       spotPlayer.newSpot.spot.currency=MOVES.CURRENCIES.DOLLAR
-      spotPlayer.newSpot.spot.moves = players.currentPlayers.filter(player=>player.showCards&&player.cards)
+      spotPlayer.newSpot.spot.moves = players.currentPlayers
         .map((player, playerIndex)=>{
-          return {
-            player: playerIndex,
-            action:MOVES.PLAYER_META_ACTIONS.SHOWS,
+          if (player.showCards&&player.cards){
+            return {
+              player: playerIndex,
+              action:MOVES.PLAYER_META_ACTIONS.SHOWS,
+            }
+          }else{
+            return undefined
           }
-        })
+        }).filter(move=>move!==undefined)
       spotPlayer.newSpot.spot.moves.push({
         player:spotPlayer.newSpot.generalSettings.dealer,
         action:MOVES.PLAYER_META_ACTIONS.DEALER,

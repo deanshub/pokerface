@@ -4,7 +4,7 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { onError } from 'apollo-link-error'
 import {SubscriptionClient} from 'subscriptions-transport-ws'
 import { setContext } from 'apollo-link-context'
-import { createUploadLink } from 'apollo-upload-client'
+import {createUploadLink} from 'apollo-upload-client/lib/index'
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)

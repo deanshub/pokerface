@@ -46,7 +46,7 @@ export default class PlayerField extends Component {
   onSuggestionSelected(e, {suggestion}){
     const {players, user, playerIndex} = this.props
 
-    players.setPlayer(playerIndex, {...suggestion, cards: user.cards})
+    players.setPlayer(playerIndex, {...suggestion, cards: user.cards, bank: user.bank})
   }
 
   searchInputChange(e,{newValue, method}){
@@ -71,6 +71,12 @@ export default class PlayerField extends Component {
   movePlyaerDown(){
     const {players, playerIndex} = this.props
     players.movePlyaerDown(playerIndex)
+  }
+
+  componentWillReceiveProps(props){
+    if (props.user.fullname!==this.state.inputValue){
+      this.setState({inputValue:props.user.fullname})
+    }
   }
 
   render(){

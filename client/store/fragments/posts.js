@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import {commentFields} from './comments'
 
 export const postFields = gql`fragment PostFields on Post {
   id
@@ -14,21 +15,7 @@ export const postFields = gql`fragment PostFields on Post {
     avatar
   }
   comments{
-    id
-    likes{
-      username
-      fullname
-      avatar
-    }
-    content
-    owner{
-      username
-      fullname
-      avatar
-    }
-    post{
-      id
-    }
+    ...CommentFields
   }
   owner{
     username
@@ -47,4 +34,5 @@ export const postFields = gql`fragment PostFields on Post {
     location
   }
 }
+${commentFields}
 `

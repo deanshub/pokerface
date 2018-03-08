@@ -31,7 +31,7 @@ export default class Events extends Component {
     const {events, editEvent} = this.props
     const eventRows = events.events.values()
     .sort((a,b)=>{
-      return moment.utc(a.from).diff(moment.utc(b.from))
+      return moment.utc(new Date(a.from)).diff(moment.utc(new Date(b.from)))
     })
     .map(game=>{
       const isExpanded = game.id === events.expendedGameId
