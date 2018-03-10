@@ -47,6 +47,8 @@ export default class Input extends Component {
       cardSelection,
       rightButton,
       amount,
+      padded,
+      focus,
       ...otherProps
     } = this.props
 
@@ -63,6 +65,7 @@ export default class Input extends Component {
           <input
               className={classnames(
                 style.input,
+                {[style.padded]: padded},
                 {[style.error]: error},
                 {[style.warning]: warning},
                 {[style.noRightBorder]: cardSelection||rightButton},
@@ -74,6 +77,7 @@ export default class Input extends Component {
               ref={el=>this.input=el}
               type={type}
               value={value}
+              focus={focus&&'true'}
               {...otherProps}
           />
           {

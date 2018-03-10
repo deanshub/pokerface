@@ -10,7 +10,6 @@ import {Helmet} from 'react-helmet'
 import Loadable from 'react-loadable'
 import Loader from '../../components/basic/Loader'
 import logger from '../../utils/logger'
-import 'semantic-ui-css/semantic.min.css'
 import PrivateRoute from './PrivateRoute'
 
 const LoadableLogin = Loadable({
@@ -46,7 +45,7 @@ export default class App extends Component {
   render(){
     return(
         <Provider {...stores}>
-          <div>
+          <React.Fragment>
             <Helmet>
               <meta charSet="utf-8" />
               <link href="http://pokerface.io" rel="canonical" />
@@ -99,7 +98,7 @@ export default class App extends Component {
                 </Switch>
               </div>
             </Router>
-          </div>
+          </React.Fragment>
       </Provider>
     )
   }

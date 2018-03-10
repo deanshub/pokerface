@@ -2,6 +2,8 @@ $gray: #dfdfdf;
 $titleColor: #fff;
 $lightGreen50: #F1F8E9;
 $white: #ffffff;
+$titleFont: 'Title Font';
+$contentFont: 'Content Font';
 
 /* App */
 @value appBackgroundColor: #24222e;

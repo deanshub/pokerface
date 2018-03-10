@@ -35,7 +35,7 @@ export default class PostImage extends Component {
   }
 
   render() {
-    const {className, onClick} = this.props
+    const {onClick} = this.props
     const {imageFile} = this.state
 
     if (!imageFile){
@@ -49,13 +49,13 @@ export default class PostImage extends Component {
         {
           type.startsWith('video')?
           <Video
-              className={classnames(style.mediaItem, className)}
+              className={classnames(style.mediaItem)}
               src={src}
               type={type}
           />
           :
           <img
-              className={classnames(style.mediaItem, className)}
+              className={classnames(style.mediaItem)}
               draggable={false}
               src={src}
           />

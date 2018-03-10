@@ -485,7 +485,8 @@ export class FeedStore {
       const post = result.data.posts[0]
       if (post){
         this.standalonePost.loading = false
-        this.standalonePost.post = this.parsePost(post)
+        const jsonPost = this.jsonParsePost(post)
+        this.standalonePost.post = this.parsePost(jsonPost)
       }else{
         this.standalonePost.loading = false
         throw new Error('Post doesn\'t exists anymore')

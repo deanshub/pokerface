@@ -39,7 +39,7 @@ export default class Reply extends Component {
   }
 
   render() {
-    const { feed, post, standalone } = this.props
+    const { feed, post } = this.props
     const {avatarImage} = this.state
 
     if(!post){

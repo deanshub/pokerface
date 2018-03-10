@@ -7,6 +7,7 @@ import NoMatch from '../../components/NoMatch'
 import Logo from '../../components/Logo'
 import Button from '../../components/basic/Button'
 import Loader from '../../components/basic/Loader'
+import ResponsiveContainer from '../../components/ResponsiveContainer'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import classnames from 'classnames'
@@ -33,7 +34,10 @@ export default class StandalonePost extends Component {
     const {loading, post} = feed.standalonePost
 
     return (
-      <div>
+      <ResponsiveContainer
+          desktopClassName={classnames(style.standaloneContainer)}
+          mobileClassName={classnames(style.mobileStandaloneContainer)}
+      >
         <PhotoGallery/>
         <div>
           <a href="/" onClick={::this.goHome}>
@@ -64,7 +68,7 @@ export default class StandalonePost extends Component {
             </Button>
           </div>
         }
-      </div>
+      </ResponsiveContainer>
     )
   }
 }

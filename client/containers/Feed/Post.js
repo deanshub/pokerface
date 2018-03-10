@@ -196,7 +196,7 @@ export default class Post extends Component {
           className={classnames(style.postContainer)}
           label="Downloading gif"
       >
-        <div className={classnames({[style.post]: true, [style.standalone]: standalone })}>
+        <div className={classnames(style.post)}>
         <div className={classnames(style.postHeader)}>
           <div className={classnames(style.leftPane)}>
             <BasicImage
@@ -327,7 +327,6 @@ export default class Post extends Component {
             <div className={classnames(style.photosContainer)}>
               {post.photos.map((photo, index)=>
                 <PostImage
-                    className={classnames({[style.standaloneImage]: standalone})}
                     key={index}
                     onClick={()=>this.openModal(index)}
                     photo={photo}
@@ -341,7 +340,6 @@ export default class Post extends Component {
           <div className={classnames(style.postComments)}>
             <Comments
                 comments={post.comments}
-                standalone={standalone}
             />
             {auth.isLoggedIn?
               <Reply

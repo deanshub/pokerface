@@ -99,44 +99,67 @@ export default class LoginForm extends Component{
       email,
     } = this.state
 
+    const {isMobile} = this.props
+
     return (
       <div className={classnames(style.login)}>
-          <form className={classnames(style.loginForm)} onSubmit={::this.handleLogin}>
+          <form
+              className={classnames(style.loginForm ,{[style.mobileLoginForm]:isMobile})}
+              onSubmit={::this.handleLogin}
+          >
+            {isMobile && <div className={classnames(
+              style.formDescription,
+              style.uppercase,
+              {[style.mobileDesc]:isMobile},
+            )}
+            >
+              Enter Email And Password
+            </div>}
             <Input
                 name="email"
                 onChange={::this.handleInputChange}
+                padded
                 placeholder="Email"
                 value={email}
             />
             <Input
                 name="password"
                 onChange={::this.handleInputChange}
+                padded
                 placeholder="Password"
                 type="password"
             />
             <Button
-                className={style.loginButton}
+                className={style.signupButton}
                 loading={loggingInPorgress}
+                stretch={isMobile}
                 primary
                 type="submit"
             >
               Login
             </Button>
             {
-              loggingInFail&&
+              loggingInFail && !isMobile &&
               <Message
                   className={style.loginMessage}
                   error
                   message={loginFailMessage}
               />
             }
+            <a
+                className={classnames(style.forgotPassword)}
+                onClick={() => this.setState({forgotPasswordModalOpen:true})}
+            >
+              Forgot password?
+            </a>
           </form>
-          <a
-              className={classnames(style.forgotPassword)}
-              onClick={() => this.setState({forgotPasswordModalOpen:true})}
-          >
-            Forgot password?
-          </a>
+          {
+            loggingInFail && isMobile &&
+            <Message
+                error
+                message={loginFailMessage}
+            />
+          }
           {
             selectUserModalOpen &&
             <SelectUserModal

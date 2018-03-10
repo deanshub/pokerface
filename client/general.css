@@ -1,9 +1,32 @@
 @import "./constants/styles";
 
+@font-face {
+    font-family: $titleFont;
+    src: url('./assets/fonts/Roboto/Roboto-Bold.ttf');
+}
+
+@font-face {
+    font-family: $titleFont;
+    src: url('./assets/fonts/Roboto/Roboto-Black.ttf');
+    font-weight: bold;
+}
+
+
+@font-face {
+    font-family: $contentFont;
+    src: url('./assets/fonts/OpenSans/OpenSans-Regular.ttf');
+}
+
+
 body{
   background:url('./assets/pattern-black.png') !important;
   background-color: appBackgroundColor !important;
   background-attachment: fixed !important;
   min-height: 100vh;
   margin: 0px;
+  font-family: 'Content Font';
+
+  a {
+    text-decoration: none;
+  }
 }

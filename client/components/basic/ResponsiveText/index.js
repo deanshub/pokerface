@@ -38,11 +38,15 @@ export default class ResponsiveText extends Component {
   }
 
   render(){
-    const {children} = this.props
+    const {children, className} = this.props
     const {style} = this.state
 
     return (
-      <div ref={el=>this.el = el} style={style}>
+      <div
+          className={className}
+          ref={el=>this.el = el}
+          style={style}
+      >
         {children}
       </div>
     )

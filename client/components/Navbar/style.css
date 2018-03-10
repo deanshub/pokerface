@@ -8,8 +8,8 @@
 
 .navbarItem {
   display: block;
-  font-weight: 900;
   text-transform: uppercase;
+  font-family: $titleFont;
 }
 
 .navbarRouteItem {

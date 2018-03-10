@@ -2,17 +2,18 @@ import React from 'react'
 import landingLogo from '../../assets/standalone logo.png'
 import classnames from 'classnames'
 import style from './style.css'
+import ResponsiveText from '../basic/ResponsiveText'
 
 export default () => (
   <div className={classnames(style.header)}>
     <div className={classnames(style.firstRow)}>
       <img src={landingLogo}/>
-      <div  className={classnames(style.title)}>
+      <ResponsiveText className={classnames(style.title)} scale={0.55}>
         Pokerface.io
-      </div>
+      </ResponsiveText>
     </div>
-    <div className={classnames(style.secondRow)}>
-      The Poker Cmmunity
-    </div>
+    <ResponsiveText className={classnames(style.secondRow)} scale={0.277}>
+      The Poker Community
+    </ResponsiveText>
   </div>
 )

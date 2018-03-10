@@ -12,6 +12,7 @@ import Message from '../../components/basic/Message'
 import IsMobile from '../../components/IsMobile'
 import Logo from '../../components/Logo'
 import LoginForm from './LoginForm'
+import PublicPageFooter from '../PublicPageFooter'
 import landingLogo from '../../assets/landing logo.png'
 import classnames from 'classnames'
 import style from './style.css'
@@ -26,6 +27,7 @@ export default class Login extends Component {
       signingupSuccess: false,
       signingupInFail: false,
       signingupFailMessage: null,
+      loginForm:false, // for mobile
     }
   }
 
@@ -77,10 +79,7 @@ export default class Login extends Component {
     } = this.state
 
     return (
-      <form
-          className={classnames(style.rightMain)}
-          onSubmit={::this.handleSignup}
-      >
+      <form className={classnames(style.signupForm)} onSubmit={::this.handleSignup}>
         <div className={classnames(
           style.formDescription,
           style.uppercase,
@@ -93,17 +92,20 @@ export default class Login extends Component {
           <Input
               name="firstName"
               onChange={::this.handleInputChange}
+              padded
               placeholder="First Name"
           />
           <Input
               name="lastName"
               onChange={::this.handleInputChange}
+              padded
               placeholder="Last Name"
           />
         </ButtonGroup>
         <Input
             name="email"
             onChange={::this.handleInputChange}
+            padded
             placeholder="Email"
         />
         <Button
@@ -117,40 +119,12 @@ export default class Login extends Component {
         </Button>
         {
           signingupSuccess&&
-          <Message message="Account created successfully. Check your email." success/>
+          <Message message="Account created successfully. Check your email" success/>
         }
         {
           signingupInFail&&
           <Message error message={signingupFailMessage}/>
         }
-
-        <div className={classnames(
-          style.formDescription,
-          style.uppercase,
-          {[style.mobileDesc]:isMobile},
-        )}
-        >
-          Or Sign Up Using
-        </div>
-        <ButtonGroup horizontal>
-          <a
-              className={classnames(style.link)}
-              href="/login/facebook"
-              style={{background:'linear-gradient(106deg, #6482b3, #3c5896)'}}
-          >
-            Facebook
-          </a>
-          <a
-              className={classnames(style.link)}
-              href="/login/googleplus"
-              style={{background:'linear-gradient(106deg, #dc7869, #dc4e40)'}}
-          >
-            Google
-          </a>
-        </ButtonGroup>
-        <div className={classnames(style.terms)}>
-          By signing up, I agree to Pokerface.io's <span style={{color:'#25aae1'}}>Terms of Service</span> and <span style={{color:'#25aae1'}}>Privacy Policy</span>.
-        </div>
       </form>
     )
   }
@@ -183,40 +157,82 @@ export default class Login extends Component {
     )
   }
 
+  toggleLoginForm(){
+    const {loginForm} = this.state
+    this.setState({loginForm:!loginForm})
+  }
+
   render(){
+    const {loginForm} = this.state
 
     return(
-      <div className={classnames(style.landing)}>
-        <div className={classnames(style.sectionOne)}>
-          <div className={classnames(style.header)}>
-            <div className={classnames(style.title)}>
-                Pokerface.io
-            </div>
-            <IsMobile
-                render={(isMobile) => {
-                  return (
-                    isMobile?
-                      <Button className={style.mobileShowLoginButton}>
-                        Login
-                      </Button>
-                    :
-                      <LoginForm/>
-                  )
-                }}
-            />
-          </div>
-          <IsMobile render={(isMobile) => {
+      <IsMobile
+          render={(isMobile) => {
             return (
-              <div className={classnames(style.mainContent,{[style.mobileMainContent]:isMobile})}>
-                {this.getDescription(isMobile)}
-                {this.getSignupForm(isMobile)}
+              <div className={classnames(style.landing)}>
+                <div className={classnames(style.sectionOne, {[style.mobile]:isMobile})}>
+                  <div className={classnames(style.header)}>
+                    <div className={classnames(style.title)}>
+                        Pokerface.io
+                    </div>
+                    {
+                      isMobile?
+                        <Button className={style.mobileShowLoginButton} onClick={::this.toggleLoginForm}>
+                          {
+                            loginForm?
+                              "Sign up"
+                            :
+                              "Login"
+                          }
+                        </Button>
+                      :
+                        <LoginForm/>
+                      }
+                  </div>
+                  <div className={classnames(style.mainContent,{[style.mobileMainContent]:isMobile})}>
+                    {this.getDescription(isMobile)}
+                    <div className={classnames(style.rightMain)}>
+                      {
+                        (loginForm && isMobile)?
+                          <LoginForm isMobile/>
+                        :
+                          this.getSignupForm(isMobile)
+                      }
+                      <div className={classnames(
+                        style.formDescription,
+                        style.uppercase,
+                        {[style.mobileDesc]:isMobile},
+                      )}
+                      >
+                        Or {(loginForm && isMobile)?'Login With':'Sign Up Using'}
+                      </div>
+                      <ButtonGroup horizontal>
+                        <a
+                            className={classnames(style.link)}
+                            href="/login/facebook"
+                            style={{background:'linear-gradient(106deg, #6482b3, #3c5896)'}}
+                        >
+                          Facebook
+                        </a>
+                        <a
+                            className={classnames(style.link)}
+                            href="/login/googleplus"
+                            style={{background:'linear-gradient(106deg, #dc7869, #dc4e40)'}}
+                        >
+                          Google
+                        </a>
+                      </ButtonGroup>
+                      {!loginForm && <div className={classnames(style.terms, {[style.mobileTerms]:isMobile})}>
+                        By signing up, I agree to Pokerface.io's <span style={{color:'#25aae1'}}>Terms of Service</span> and <span style={{color:'#25aae1'}}>Privacy Policy</span>.
+                      </div>}
+                    </div>
+                  </div>
+                </div>
+                <PublicPageFooter/>
               </div>
             )
           }}
-          />
-        </div>
-
-      </div>
+      />
     )
   }
 }

@@ -7,10 +7,13 @@
   font-size: 2em;
   line-height: 1.5;
   margin: 0 6px;
+  font-family: $titleFont;
 }
 
-.buttonContainer{
-  margin: 12px 0;
+.button{
+  margin-top: 10px;
+  height: 3.18em;
+  padding-top: 0.2em;
 }
 
 .failureContent{

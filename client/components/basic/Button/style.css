@@ -271,7 +271,6 @@
 .buttonGroup{
   display: flex;
   flex-direction: column;
-  height: 4em;
 
   .button{
     text-transform: uppercase;

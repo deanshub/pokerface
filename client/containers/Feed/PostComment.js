@@ -18,7 +18,6 @@ TimeAgo.locale(timeAgoEnLocale)
 export default class PostComment extends Component {
   static propTypes = {
     comment: PropTypes.object,
-    standalone: PropTypes.bool,
   }
 
   constructor(props){
@@ -56,7 +55,7 @@ export default class PostComment extends Component {
   }
 
   render() {
-    const { comment, auth, standalone, routing } = this.props
+    const { comment, auth, routing } = this.props
     const activeLike = comment.likes.filter((user)=>user.username===auth.user.username).length>0
 
     return (

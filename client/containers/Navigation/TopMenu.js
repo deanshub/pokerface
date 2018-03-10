@@ -56,7 +56,7 @@ export default class TopMenu extends Component {
     )
 
     return (
-      <div>
+      <React.Fragment>
         <Tooltip
             className={style.tooltipClassName}
             oneClick
@@ -110,7 +110,7 @@ export default class TopMenu extends Component {
            open={editingPersonalInfo}
            toggle={::this.toggleEditPersonalInfo}
        />
-     </div>
+     </React.Fragment>
     )
   }
 }
