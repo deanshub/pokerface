@@ -1,5 +1,6 @@
 // @flow
 
+import fs from 'fs'
 import express from 'express'
 import fileUploadMiddleware from './utils/fileUploadMiddleware'
 import authentication from './routes/authentication'
@@ -66,8 +67,19 @@ routes.apiRoutes.then(apiRoutes=>{
 
 })
 
-const wrappedServer = createGraphqlSubscriptionsServer(app, PORT)
+const wrappedServer = createGraphqlSubscriptionsServer(app)
 
 wrappedServer.listen(PORT, () =>
   console.log(`Pokerface server listening on port ${PORT}`)
 )
+
+if (config.NODE_ENV==='development' && config.SSL_KEY_FILE && config.SSL_CERT_FILE){
+  console.log('https')
+  const options = {
+    key: fs.readFileSync(config.SSL_KEY_FILE),
+    cert: fs.readFileSync(config.SSL_CERT_FILE),
+  }
+  createGraphqlSubscriptionsServer(app, options).listen(8443,()=>{
+    console.log('Pokerface server listening on port 8443 (https)')
+  })
+}

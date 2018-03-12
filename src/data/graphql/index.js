@@ -5,7 +5,8 @@ import {execute, subscribe} from 'graphql'
 import {mergeStrings} from 'gql-merge'
 import {merge} from 'lodash'
 import config from 'config'
-import { createServer } from 'http'
+import http from 'http'
+import https from 'https'
 import {getUserByToken}  from '../../utils/authUtils'
 import {eventConnectionListener as timerListener} from '../../utils/blindTimers'
 
@@ -44,8 +45,13 @@ export const graphqlExpressMiddleware = graphqlExpress(req=>{
   }
 })
 
-export const createGraphqlSubscriptionsServer = (app) => {
-  const apolloPubSubServer = createServer(app)
+export const createGraphqlSubscriptionsServer = (app, sslOptions) => {
+  let apolloPubSubServer
+  if (sslOptions){
+    apolloPubSubServer = https.createServer(sslOptions, app)
+  }else{
+    apolloPubSubServer = http.createServer(app)
+  }
 
   // For close
   const socketToUserId = new WeakMap()
