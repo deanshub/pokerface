@@ -12,7 +12,7 @@ import Editor from 'draft-js-plugins-editor'
 import createInlineToolbarPlugin, {Separator}  from 'draft-js-inline-toolbar-plugin'
 import createMentionPlugin from 'draft-js-mention-plugin'
 import PlayerMention from './PlayerMention'
-import createEmojiPlugin from 'draft-js-emoji-plugin'
+// import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createHashtagPlugin from 'draft-js-hashtag-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import createVideoPlugin from 'draft-js-video-plugin'
@@ -82,8 +82,8 @@ export default class PostEditor extends Component {
       ],
     })
     const { InlineToolbar } = inlineToolbarPlugin
-    const emojiPlugin = createEmojiPlugin()
-    const { EmojiSuggestions } = emojiPlugin
+    // const emojiPlugin = createEmojiPlugin()
+    // const { EmojiSuggestions } = emojiPlugin
     const mentionPlugin = createMentionPlugin({
       mentionComponent: PlayerMention,
     })
@@ -99,7 +99,7 @@ export default class PostEditor extends Component {
     this.plugins = [
       // focusPlugin,
       inlineToolbarPlugin,
-      emojiPlugin,
+      // emojiPlugin,
       mentionPlugin,
       hashtagPlugin,
       linkifyPlugin,
@@ -108,7 +108,7 @@ export default class PostEditor extends Component {
       rangePlugin,
     ]
     this.InlineToolbar = InlineToolbar
-    this.EmojiSuggestions =EmojiSuggestions
+    // this.EmojiSuggestions =EmojiSuggestions
     this.MentionSuggestions= MentionSuggestions
 
     if (props.post.content===undefined){
@@ -160,7 +160,11 @@ export default class PostEditor extends Component {
       globalPlayersSearch,
       standalone,
     } = this.props
-    const { InlineToolbar, EmojiSuggestions, MentionSuggestions} = this
+    const {
+      InlineToolbar,
+      // EmojiSuggestions,
+      MentionSuggestions
+    } = this
 
     return (
       <div
@@ -188,7 +192,7 @@ export default class PostEditor extends Component {
             onSearchChange={::this.onSearchChange}
             suggestions={globalPlayersSearch.immutableAvailablePlayers}
         />
-        <EmojiSuggestions/>
+        {/* <EmojiSuggestions/> */}
         {
           post.poll&&
           <Poll

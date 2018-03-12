@@ -75,7 +75,11 @@ export const queryOrMutationLink = setAuthorizationLink.concat(
 // TODO create socket id using guid
 const clientSocketId = Math.random().toString()
 
-const subscriptionClient = new SubscriptionClient(`ws://${document.location.host}/subscriptions`, {
+// check http or https
+const {host, protocol} = document.location
+const prefix = protocol.startsWith('https')?'wss':'ws'
+
+const subscriptionClient = new SubscriptionClient(`${prefix}://${host}/subscriptions`, {
   reconnect: true,
   lazy: true,
   connectionParams: ()=> {
