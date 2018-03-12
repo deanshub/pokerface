@@ -113,21 +113,11 @@ export default class Post extends Component {
   }
 
   downloadGif(){
-    const { post, spotPlayer } = this.props
     logger.logEvent({category:'Post',action:'Download gif'})
     this.setState({
       busy: true,
     })
-    const postElement = ReactDOM.findDOMNode(this.postEditorElement)
-    const svgPostElement = postElement.querySelector('article[class]')
-    let gif = new GIF({
-      workers: 2,
-      quality: 20,
-      width: svgPostElement.offsetWidth,
-      height: svgPostElement.offsetHeight,
-      workerScript,
-    })
-    gif.on('finished', (blob)=> {
+    this.generateGif().then(blob=>{
       const link = document.createElement('a')
       link.style = 'visibility:hidden; display:none; position: fixed; left -10000px;'
       link.href = URL.createObjectURL(blob)
@@ -138,29 +128,52 @@ export default class Post extends Component {
       this.setState({
         busy: false,
       })
-    })
-
-    spotPlayer.reset(post)
-    const takeImage = ()=>setTimeout(()=>{
-      return this.generateImage(svgPostElement).then(img=>{
-        gif.addFrame(img, {delay:1500})
-        if (spotPlayer.nextStep(post)){
-          return takeImage()
-        //done
-        }else{
-          return this.generateImage(svgPostElement).then(img=>{
-            gif.addFrame(img, {delay:2500})
-            gif.render()
-          })
-        }
-      }).catch(err=>{
-        console.error(err)
-        this.setState({
-          busy: false,
-        })
+    }).catch(err=>{
+      console.error(err)
+      this.setState({
+        busy: false,
       })
     })
-    takeImage()
+  }
+  generateGif(){
+    return new Promise((resolve, reject)=>{
+      const { post, spotPlayer } = this.props
+      const postElement = ReactDOM.findDOMNode(this.postEditorElement)
+      const svgPostElement = postElement.querySelector('article[class]')
+      let gif = new GIF({
+        workers: 2,
+        quality: 20,
+        width: svgPostElement.offsetWidth,
+        height: svgPostElement.offsetHeight,
+        workerScript,
+      })
+      gif.on('finished', (blob)=> {
+        resolve(blob)
+      })
+
+      spotPlayer.reset(post)
+      const takeImage = ()=>setTimeout(()=>{
+        return this.generateImage(svgPostElement).then(img=>{
+          gif.addFrame(img, {delay:1500})
+          if (spotPlayer.nextStep(post)){
+            return takeImage()
+            //done
+          }else{
+            return this.generateImage(svgPostElement).then(img=>{
+              gif.addFrame(img, {delay:2500})
+              gif.render()
+            })
+          }
+        })
+        // .catch(err=>{
+        //   console.error(err)
+        //   this.setState({
+        //     busy: false,
+        //   })
+        // })
+      })
+      takeImage()
+    })
   }
   sharePostOnFacebook(){
     const { post } = this.props
@@ -169,11 +182,39 @@ export default class Post extends Component {
     window.open(shareurl,'', 'height=570,width=520')
   }
 
+  shareGif(){
+    const { post } = this.props
+    logger.logEvent({category:'Post',action:'Download gif'})
+    this.setState({
+      busy: true,
+    })
+    this.generateGif().then(blob=>{
+      const title = 'Pokerface.io'
+      const text = `Post by ${post.owner.fullname}`
+
+      const reader = new FileReader()
+      reader.readAsDataURL(blob)
+      reader.onloadend = () => {
+        const base64data = reader.result
+        // console.log(base64data);
+        this.setState({
+          busy: false,
+        })
+        navigator.share({url:base64data, title, text}).catch(console.error)
+      }
+    }).catch(err=>{
+      console.error(err)
+      this.setState({
+        busy: false,
+      })
+    })
+  }
+
   shareMobile(){
     const { post } = this.props
     logger.logEvent({category:'Post',action:'Mobile share'})
-    const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/post/${post.id}`
-    const title='Pokerface.io'
+    const shareurl = `http://pokerface.io/post/${post.id}`
+    const title = 'Pokerface.io'
     const text = `Post by ${post.owner.fullname}`
     navigator.share({url:shareurl, title, text}).catch(console.error)
   }
@@ -248,7 +289,7 @@ export default class Post extends Component {
                       small
                       style={{padding: '0.5em 0'}}
                   >
-                    Share
+                    Share Link...
                   </Button>
                   :
                   <Button
@@ -261,7 +302,7 @@ export default class Post extends Component {
                   </Button>
                 }
                 {
-                  post.spot!==undefined&&
+                  post.spot!==undefined&&!navigator.share&&
                   <Button
                       onClick={::this.downloadGif}
                       simple
