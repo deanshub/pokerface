@@ -189,7 +189,7 @@
 /* comment component */
 .commentContainer{
   display: flex;
-  margin: 2em 0;
+  margin: 1em 0;
 }
 .commentRightPane{
   flex: 1;
