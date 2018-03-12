@@ -130,7 +130,9 @@ export default class SpotWizard extends Component {
       spotPlayer.newSpot.spot.players = players.currentPlayers.map((player, playerIndex)=>{
         spotPlayer.newSpot.spot.cards[playerIndex] = player.cards
         return {
-          bank: 100,
+          bank: ((spotPlayer.newSpot.generalSettings.bb||0)*100)||
+            ((spotPlayer.newSpot.generalSettings.sb||0)*100)||
+            100,
           ...player,
         }
       })
