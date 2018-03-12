@@ -36,19 +36,21 @@ export default class CardBlock extends Component {
 
     const cardsText = children[0].props.text
     return(
-      <span className={classnames(style.container)}>
+      <React.Fragment>
         <span className={classnames(style.cardBlock)}>
           {children}
         </span>
-        <CardsPreview
-            cards={[cardsText]}
-            ref={(el)=>this.cardsPreviewElement = el}
-        />
-        <span
-            className={classnames(style.spaceKeeper)}
-            style={{width:cardsPreviewElementWidth}}
-        />
-      </span>
+        <span className={classnames(style.container)}>
+          <CardsPreview
+              cards={[cardsText]}
+              ref={(el)=>this.cardsPreviewElement = el}
+          />
+          <span
+              className={classnames(style.spaceKeeper)}
+              style={{width:cardsPreviewElementWidth}}
+          />
+        </span>
+      </React.Fragment>
     )
   }
 }
