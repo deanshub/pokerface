@@ -246,7 +246,7 @@ export default class BlindsTimer extends Component {
             </ResponsiveText>
           </div>
           <div className={style.time}>
-            <ResponsiveText>
+            <ResponsiveText className={style.timeText} scale={0.9}>
               {timer.timeLeft}
             </ResponsiveText>
           </div>
@@ -280,6 +280,7 @@ export default class BlindsTimer extends Component {
                 {timer.nextBlinds}
               </ResponsiveText>
             </div>
+            <div style={{height:'2em'}}/>
           </div>
         </Dimmer>
     )

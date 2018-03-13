@@ -1,0 +1,7 @@
+.blindsTimerSlider{
+  height: 89vh;
+}
+
+.blindsTimerSlider:fullscreen{
+  height: 100vh;
+}

@@ -4,6 +4,8 @@ import BlindsTimer from '../../components/BlindsTimer'
 import YouTube from '../../components/YouTube'
 import Slider from '../../components/basic/Slider'
 import WidthGetter from '../../components/basic/WidthGetter'
+import classnames from 'classnames'
+import style from './style.css'
 
 @inject('auth')
 @observer
@@ -25,7 +27,10 @@ export default class RebrandedBlindsTimer extends Component {
       title = user.fullname
     }
     return (
-      <Slider style={{height:'89vh', backgroundColor:'black', boxShadow:'0 0 10px 0 black'}}>
+      <Slider
+          className={classnames(style.blindsTimerSlider)}
+          style={{backgroundColor:'black', boxShadow:'0 0 10px 0 black'}}
+      >
         <BlindsTimer image={image} title={title}/>
         <WidthGetter render={this.renderYoutube}/>
       </Slider>

@@ -141,13 +141,13 @@ export default class Slider extends Component {
   }
 
   render(){
-    const {children, style:customStyle} = this.props
+    const {children, style:customStyle, className:customClassName} = this.props
     const childrenArr = React.Children.toArray(children)
     const moreThenOnePhoto = childrenArr.length && (childrenArr.length > 1)
 
     return (
       <div
-          className={classnames(style.container)}
+          className={classnames(style.container, customClassName)}
           style={customStyle}
       >
         <KeyHandler

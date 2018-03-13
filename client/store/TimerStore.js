@@ -405,7 +405,7 @@ export class TimerStore {
     const timePassed = this.paused ? this.offset : this.endTime - this.currentTime
     const roundTime = totalRoundTime * this.MINUTES_MULTIPLIER + this.MINIMAL_OFFSET
     const percentageComplete = 100 - (timePassed/roundTime*100)
-    return percentageComplete
+    return parseFloat(percentageComplete.toFixed(1))
   }
 
   @computed
