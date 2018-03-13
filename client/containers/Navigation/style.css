@@ -14,8 +14,9 @@
 
 .title {
   color: #b4b4cc;
-  font-size: 2em;
-  padding: 0.5em 0.71em;
+  font-size: 1.2em;
+  padding: 0.9em;
+  font-family: $titleFont;
   font-weight: bold;
   display: flex;
   line-height: 1.1;
@@ -80,9 +81,6 @@
   }
 
   .configPointer {
-    width: 10px;
-    height: 5px;
-
     border-left: solid 5px #535168;
     border-right: solid 5px #535168;
     border-top: solid 5px #a0a0b5;

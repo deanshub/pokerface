@@ -53,13 +53,13 @@ export default class Cover extends Component {
     e.stopPropagation()
     if (details.startDate){
       logger.logEvent({category:'Event',action:'Facebook share'})
-      // const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/events/${details.id}&title=Pokerface.io&description=Event scheduled by ${details.creator.fullname}&picture=http://pokerface.io${details.coverImage}}`
-      const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/events/${details.id}&title=Pokerface.io&description=Event scheduled by ${details.creator.fullname}&picture=http://pokerface.io${require('file-loader!../../assets/logo.png')}`
+      // const shareurl =`https://www.facebook.com/sharer/sharer.php?u=https://pokerface.io/events/${details.id}&title=Pokerface.io&description=Event scheduled by ${details.creator.fullname}&picture=https://pokerface.io${details.coverImage}}`
+      const shareurl =`https://www.facebook.com/sharer/sharer.php?u=https://pokerface.io/events/${details.id}&title=Pokerface.io&description=Event scheduled by ${details.creator.fullname}&picture=https://pokerface.io${require('file-loader!../../assets/logo.png')}`
       window.open(shareurl,'', 'height=570,width=520')
     }else{
       logger.logEvent({category:'Profile',action:'Facebook share'})
-      // const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/events/${details.username}&title=Pokerface.io&description=${details.fullname} Profile&picture=http://pokerface.io${details.coverImage}}`
-      const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/profile/${details.username}&title=Pokerface.io&description=${details.fullname} Profile&picture=http://pokerface.io${require('file-loader!../../assets/logo.png')}`
+      // const shareurl =`https://www.facebook.com/sharer/sharer.php?u=https://pokerface.io/events/${details.username}&title=Pokerface.io&description=${details.fullname} Profile&picture=https://pokerface.io${details.coverImage}}`
+      const shareurl =`https://www.facebook.com/sharer/sharer.php?u=https://pokerface.io/profile/${details.username}&title=Pokerface.io&description=${details.fullname} Profile&picture=https://pokerface.io${require('file-loader!../../assets/logo.png')}`
       window.open(shareurl,'', 'height=570,width=520')
     }
   }

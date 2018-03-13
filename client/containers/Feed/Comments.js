@@ -7,17 +7,16 @@ import PostComment from './PostComment'
 @observer
 export default class Comments extends Component {
   render() {
-    const { comments, standalone } = this.props
+    const { comments } = this.props
     return (
-      <div>
+      <React.Fragment>
         {comments.map(comment=>(
           <PostComment
               comment={comment}
               key={comment.id}
-              standalone={standalone}
           />))
         }
-      </div>
+      </React.Fragment>
     )
   }
 }

@@ -52,85 +52,19 @@
   flex-direction: column;
 }
 
-/* .blackIcons:hover .icon, .standaloneUnselectable:hover{
-  color: black;
-}
-.active .icon{
-  color: #FF2733;
-} */
-
-.standalone {
+.standaloneContainer{
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 75%;
+  min-width: 600px;
+  margin: auto;
+}
+
+.mobileStandaloneContainer{
+  @extend .standaloneContainer;
   width: 100%;
-}
-
-.standalone>.clickable {
-  margin-left: 10px;
-  margin-right: 20px;
-}
-
-.standalone>.clickable>img {
-  max-height: 150px;
-  border-radius: 5rem;
-}
-
-.standaloneContent {
-  flex: 1;
-  vertical-align: top;
-  position: relative;
-}
-
-.standaloneContentMeta {
-  position: absolute;
-  right: 0;
-  top: 0;
-  font-size: .85714286em;
-  margin: 0.3em;
-}
-
-.standaloneSummary {
-  text-align: left;
-  position: absolute;
-}
-
-.standaloneSummaryDate {
-  display: inline-block;
-  float: none;
-  font-weight: 400;
-  font-size: .85714286em;
-  font-style: normal;
-  margin: 0 0 0 .5em;
-  padding: 0;
-  color: rgba(0,0,0,.4);
-}
-
-.standaloneText {
-  padding-top: 40px;
-  width: 100%;
-}
-
-.standaloneUnselectable {
-  opacity: 1;
-  color: rgba(0,0,0,.5);
-  position: relative;
-  margin-left: .75em;
-  cursor: pointer;
-}
-
-.standaloneReply {
-  float: left;
-}
-
-.standaloneComment {
-  text-align: left;
-}
-
-.standaloneCommentText {
-    height: min-content;
-}
-
-.standalonePhotoContainer{
-  height: auto !important;
+  min-width: auto;
 }
 
 /* regular post */
@@ -139,10 +73,8 @@
   width: 100%;
   color: textColor;
   border-bottom: 1px solid $divider;
-  padding-top: 1em;
-  padding-bottom: 0.5em;
-  margin: 0 1.5em;
-  width: 96%;
+  padding: 1em 0.5em 0.5em 0.5em;
+  box-sizing: border-box;
 }
 .leftPane{
   flex: 1;
@@ -201,7 +133,7 @@
 
 .postComments{
   background-color: commentsBackgroundColor;
-  padding: 0.5em 1.5em;
+  padding: 0.5em 1em;
   border-radius: 0 0 10px 10px;
 }
 .noCommentsSection{
@@ -257,7 +189,7 @@
 /* comment component */
 .commentContainer{
   display: flex;
-  margin: 2em 0;
+  margin: 1em 0;
 }
 .commentRightPane{
   flex: 1;

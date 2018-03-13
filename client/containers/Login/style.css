@@ -1,43 +1,52 @@
 @import "../../constants/styles.css";
 
 .landing{
+  min-height: 100vh;
   color: landingTextColor;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   line-height: normal;
+  box-sizing: border-box;
 }
 .sectionOne{
   width: 100%;
-  height: 100%;
-  padding: 2em;
+  padding: 2.5vh 2vw 0 2vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
 }
+.sectionOne.mobile{
+  min-height: 100vh;
+}
 
 .header{
   width: 100%;
   display: flex;
+  align-items: center;
+  user-select: none;
 }
 
 .title{
   flex: 1;
-  font-size: 2em;
+  font-size: 1.2em;
   text-transform: uppercase;
   font-weight: bold;
+  font-family: $titleFont;
 }
 
 .mainContent{
-  /* width: 100%; */
+  width: 100%;
+  max-width: 1300px;
   display: flex;
   justify-content: space-around;
   margin-top: 2em;
-  max-width: 1300px;
 }
 
 .mobileMainContent{
     flex-direction: column;
+    margin-top: 1em;
 }
 
 .leftMain{
@@ -89,27 +98,33 @@
   border-radius: 6px;
   font-weight: bold;
   margin: 0.5em;
+  height: 3em;
 }
 .link:hover{
   color: white;
 }
 
 .formDescription{
-  margin-left: 2em;
-  margin-top: 4em;
+  margin-left: 4em;
+  margin-top: 2em;
   margin-bottom: 1em;
 }
 
 .mobileDesc{
-  margin-top: 1em;
+  margin-top: 0.4em;
   margin-bottom: 0.3em;
 }
+
 .terms{
   margin: 0.5em 2em;
 }
+.mobileTerms{
+  font-size: 0.6em;
+  margin: 0.5em 0em;
+  text-align: center;
+}
 
 .login{
-  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -121,12 +136,18 @@
 }
 .signupButton{
   margin-top: 10px;
+  height: 3.18em;
+  padding-top: 0.2em;
 }
 
 .loginForm{
+  position: relative;
   display: flex;
   justify-content: center;
-  align-items: baseline;
+}
+.mobileLoginForm{
+  flex-direction: column;
+  margin-bottom: 2em;
 }
 
 .loginMessage{
@@ -134,11 +155,22 @@
   right: -6px;
   top: 80%;
 }
+
 .forgotPassword{
-  margin: 0 6px;
+  margin: 0 12px;
   color: #25aae1;
   text-transform: none;
   cursor: pointer;
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  font-size: 0.8em;
+}
+
+.mobileLoginForm{
+  .forgotPassword{
+    top: calc(100% + 0.5em);
+  }
 }
 
 .divider{
@@ -147,5 +179,15 @@
 }
 
 .uppercase{
+  text-transform: uppercase;
+}
+
+.mobileShowLoginButton {
+  height: auto;
+  width: auto;
+  color: #bcbccb;
+  border: 1px solid #bcbccb;
+  padding: 1em 2em;
+  border-radius: 6px;
   text-transform: uppercase;
 }

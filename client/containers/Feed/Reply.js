@@ -39,7 +39,7 @@ export default class Reply extends Component {
   }
 
   render() {
-    const { feed, post, standalone } = this.props
+    const { feed, post } = this.props
     const {avatarImage} = this.state
 
     if(!post){
@@ -64,6 +64,7 @@ export default class Reply extends Component {
               {
                 feed.commentDrafts.get(post.id)?
                 <PostEditor
+                    autoFocus
                     placeholder="Write a comment..."
                     post={feed.commentDrafts.get(post.id)}
                 />

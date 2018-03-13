@@ -99,7 +99,7 @@ export default class Navigation extends Component {
 
     return (
       <DocumentTitle title="Pokerface.io">
-        <div>
+        <React.Fragment>
           {
             process.env.NODE_ENV==='development'?<DevTools/>:null
           }
@@ -187,7 +187,7 @@ export default class Navigation extends Component {
               }}
           />
 
-        </div>
+        </React.Fragment>
       </DocumentTitle>
     )
   }

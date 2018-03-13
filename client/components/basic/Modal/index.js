@@ -31,8 +31,15 @@ export default class Modal extends Component {
       return(
         <div className={classnames(style.overlay, {[style.inverted]: inverted})} {...overlayProps}>
           <ResponsiveContainer
-              desktopClassName={classnames(style.modalContainer, {[style.modalBackground]: !simple, [style.compact]: compact})}
-              mobileClassName={classnames(style.mobileModalContainer, {[style.inverted]: inverted})}
+              desktopClassName={classnames(
+                  style.modalContainer,
+                  {[style.modalBackground]: !simple, [style.compact]: compact},
+              )}
+              mobileClassName={classnames(
+                  style.mobileModalContainer,
+                  style.modalBackground,
+                  {[style.compact]: compact, [style.inverted]: inverted},
+              )}
               {...containerProps}
           >
             {showCloseButton&&
@@ -55,7 +62,7 @@ export class ModalHeader extends Component {
   render(){
     const {children} = this.props
     return (
-      <div className={classnames(style.modalHeader)}>
+      <div className={classnames(style.modalHeader)} >
         {children}
       </div>
     )

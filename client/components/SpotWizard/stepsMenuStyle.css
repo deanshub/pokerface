@@ -3,8 +3,8 @@
 .stepsMenu{
   transition: width 200ms ease-in;
   position: absolute;
-  top: calc(4em + 1px);
-  height: calc(100% - 4em + 0.6em);
+  top: calc(3.3em + 1px);
+  height: calc(100% - 3.3em + 0.6em);
   width: 276px;
   background-color: white;
   z-index: 2;
@@ -75,4 +75,9 @@
   flex: 1;
   justify-content: center;
   align-items: center;
+}
+
+.stepMenuClosed {
+  width: 0;
+  overflow-y: hidden;
 }

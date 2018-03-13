@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: stretch;
   position: relative;
+  box-sizing: border-box;
 }
 .inline>li{
   box-shadow: none;
@@ -36,7 +37,7 @@
 }
 
 .covered{
-  padding: 11px 0px;
+  padding: 0.4em 0px;
 }
 
 .card {

@@ -80,9 +80,9 @@ export default class SettingPassword extends Component {
     let errorMessage
 
     if (password !== confirmPassword){
-      errorMessage = 'Passwords are not equal.'
+      errorMessage = 'Passwords are not equal'
     }else if (password.length < 6){
-      errorMessage = 'Your password must be at least 6 characters long.'
+      errorMessage = 'Your password must be at least 6 characters long'
     }
 
     if (errorMessage){
@@ -129,25 +129,26 @@ export default class SettingPassword extends Component {
                   focus
                   name="password"
                   onChange={::this.handleInputChange}
+                  padded
                   placeholder="password"
                   type="password"
               />
               <Input
                   name="confirmPassword"
                   onChange={::this.handleInputChange}
+                  padded
                   placeholder="confirm password"
                   type="password"
               />
-              <div className={classnames(style.buttonContainer)}>
-                <Button
-                    loading={settingChecking}
-                    primary
-                    stretch
-                    type="submit"
-                >
-                    Set password
-                </Button>
-              </div>
+              <Button
+                  className={style.button}
+                  loading={settingChecking}
+                  primary
+                  stretch
+                  type="submit"
+              >
+                  Set password
+              </Button>
               <Message
                   displayNone={!clientError}
                   error

@@ -47,6 +47,8 @@ export default class Input extends Component {
       cardSelection,
       rightButton,
       amount,
+      padded,
+      focus,
       ...otherProps
     } = this.props
 
@@ -61,8 +63,10 @@ export default class Input extends Component {
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
         <div className={classnames(style.inputContainer, {[style.range]:type==='range'})} style={{borderColor}}>
           <input
+              autoFocus={focus}
               className={classnames(
                 style.input,
+                {[style.padded]: padded},
                 {[style.error]: error},
                 {[style.warning]: warning},
                 {[style.noRightBorder]: cardSelection||rightButton},

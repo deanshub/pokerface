@@ -47,13 +47,13 @@ export default class LoginForm extends Component {
     })
   }
 
-
   onClose(e){
     e.preventDefault()
     this.setState({success:false,error:false,loading:false})
     const {onClose} = this.props
     onClose()
   }
+
   render(){
     const {open} = this.props
     const {
@@ -63,31 +63,24 @@ export default class LoginForm extends Component {
       errorMessage,
     } = this.state
 
+    const onSubmit = success?::this.onClose:(::this.handleSending)
+
     return (
-      <Modal
-          compact
-          onClose={::this.onClose}
-          open={open}
-      >
-        <ModalHeader>
-          Reseting Password
-        </ModalHeader>
-        <ModalContent>
-          {
-            success?
-              <form onSubmit={::this.onClose}>
-                Please check your email for further details
-                <ButtonGroup
-                    horizontal
-                    noEqual
-                    reversed
-                >
-                  <Button primary type="submit">OK</Button>
-                </ButtonGroup>
-              </form>
-            :
-              <form onSubmit={::this.handleSending}>
-                <div className={classnames(style.forgotPasswordContent)}>
+      <form onSubmit={onSubmit}>
+        <Modal
+            compact
+            onClose={::this.onClose}
+            open={open}
+        >
+          <ModalHeader>
+            Reseting Password
+          </ModalHeader>
+          <ModalContent>
+            {
+              success?
+                "Please check your email for further details"
+              :
+                <React.Fragment>
                   <Input
                       focus
                       label="Email"
@@ -101,12 +94,20 @@ export default class LoginForm extends Component {
                       hidden={!error}
                       message={errorMessage}
                   />
-                </div>
-                <ButtonGroup
-                    horizontal
-                    noEqual
-                    reversed
-                >
+                </React.Fragment>
+            }
+          </ModalContent>
+          <ModalFooter>
+            <ButtonGroup
+                horizontal
+                noEqual
+                reversed
+            >
+            {
+              success?
+                <Button primary type="submit">OK</Button>
+            :
+              <React.Fragment>
                 <Button
                     loading={loading}
                     primary
@@ -115,11 +116,12 @@ export default class LoginForm extends Component {
                   Send
                 </Button>
                 <Button onClick={::this.onClose}>Close</Button>
-              </ButtonGroup>
-            </form>
-          }
-        </ModalContent>
-
-      </Modal>)
+              </React.Fragment>
+            }
+            </ButtonGroup>
+          </ModalFooter>
+        </Modal>
+      </form>
+    )
   }
 }

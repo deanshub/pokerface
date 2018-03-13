@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import { NavLink } from 'react-router-dom'
 import Notification from '../../Notification'
+import EditProfileModal from '../../../containers/EditProfile'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -12,6 +13,11 @@ import style from './style.css'
 @inject('feed')
 @observer
 export default class Navigation extends Component {
+  constructor(props){
+    super(props)
+
+    this.state = {editingPersonalInfo:false}
+  }
 
   componentDidMount(){
     const {auth, events, feed} = this.props
@@ -41,8 +47,15 @@ export default class Navigation extends Component {
     this.feed.pushNewReceivedPost(true)
   }
 
+  toggleEditPersonalInfo(){
+    this.setState({
+      editingPersonalInfo: !this.state.editingPersonalInfo,
+    })
+  }
+
   render() {
     const {auth, events, feed, open} = this.props
+    const {editingPersonalInfo} = this.state
     const {username} = auth.user
     const { newPostsCount, newRelatedPostsCount } = feed
 
@@ -122,7 +135,14 @@ export default class Navigation extends Component {
           <div className={classnames(style.footerItem)} onClick={::this.handleLogout}>
               Logout
           </div>
+          <div className={classnames(style.footerItem)} onClick={::this.toggleEditPersonalInfo}>
+              Edit Details
+          </div>
         </div>
+        <EditProfileModal
+            open={editingPersonalInfo}
+            toggle={::this.toggleEditPersonalInfo}
+        />
       </div>
     )
   }

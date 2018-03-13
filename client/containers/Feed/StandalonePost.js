@@ -7,6 +7,8 @@ import NoMatch from '../../components/NoMatch'
 import Logo from '../../components/Logo'
 import Button from '../../components/basic/Button'
 import Loader from '../../components/basic/Loader'
+import ResponsiveContainer from '../../components/ResponsiveContainer'
+import IsUserLoggedIn from '../../components/IsUserLoggedIn'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
 import classnames from 'classnames'
@@ -33,7 +35,10 @@ export default class StandalonePost extends Component {
     const {loading, post} = feed.standalonePost
 
     return (
-      <div>
+      <ResponsiveContainer
+          desktopClassName={classnames(style.standaloneContainer)}
+          mobileClassName={classnames(style.mobileStandaloneContainer)}
+      >
         <PhotoGallery/>
         <div>
           <a href="/" onClick={::this.goHome}>
@@ -52,8 +57,7 @@ export default class StandalonePost extends Component {
             :
             <NoMatch/>
         }
-        {
-          !loading&&
+        <IsUserLoggedIn opposite>
           <div className={classnames(style.signupContainer)}>
             <Button
                 href={post?`/login?url=/post/${post.id}`:'/login'}
@@ -63,8 +67,17 @@ export default class StandalonePost extends Component {
               Join The Pokerface Community - Sign Up
             </Button>
           </div>
-        }
-      </div>
+        </IsUserLoggedIn>
+        <IsUserLoggedIn>
+          <div className={classnames(style.signupContainer)}>
+            <Button
+                href="/"
+            >
+              Back to the feed
+            </Button>
+          </div>
+        </IsUserLoggedIn>
+      </ResponsiveContainer>
     )
   }
 }

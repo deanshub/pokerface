@@ -31,13 +31,13 @@ export default class EventRow extends Component {
     e.stopPropagation()
     if (game.startDate){
       logger.logEvent({category:'Event',action:'Facebook share'})
-      // const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/events/${game.id}&title=Pokerface.io&description=Event scheduled by ${game.creator.fullname}&picture=http://pokerface.io${game.coverImage}}`
-      const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/events/${game.id}&title=Pokerface.io&description=Event scheduled by ${game.creator.fullname}&picture=http://pokerface.io${require('file-loader!../../assets/logo.png')}`
+      // const shareurl =`https://www.facebook.com/sharer/sharer.php?u=https://pokerface.io/events/${game.id}&title=Pokerface.io&description=Event scheduled by ${game.creator.fullname}&picture=https://pokerface.io${game.coverImage}}`
+      const shareurl =`https://www.facebook.com/sharer/sharer.php?u=https://pokerface.io/events/${game.id}&title=Pokerface.io&description=Event scheduled by ${game.creator.fullname}&picture=https://pokerface.io${require('file-loader!../../assets/logo.png')}`
       window.open(shareurl,'', 'height=570,width=520')
     }else{
       logger.logEvent({category:'Profile',action:'Facebook share'})
-      // const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/events/${game.username}&title=Pokerface.io&description=${game.fullname} Profile&picture=http://pokerface.io${game.coverImage}}`
-      const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/profile/${game.username}&title=Pokerface.io&description=${game.fullname} Profile&picture=http://pokerface.io${require('file-loader!../../assets/logo.png')}`
+      // const shareurl =`https://www.facebook.com/sharer/sharer.php?u=https://pokerface.io/events/${game.username}&title=Pokerface.io&description=${game.fullname} Profile&picture=https://pokerface.io${game.coverImage}}`
+      const shareurl =`https://www.facebook.com/sharer/sharer.php?u=https://pokerface.io/profile/${game.username}&title=Pokerface.io&description=${game.fullname} Profile&picture=https://pokerface.io${require('file-loader!../../assets/logo.png')}`
       window.open(shareurl,'', 'height=570,width=520')
     }
   }

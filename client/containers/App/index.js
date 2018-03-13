@@ -10,7 +10,6 @@ import {Helmet} from 'react-helmet'
 import Loadable from 'react-loadable'
 import Loader from '../../components/basic/Loader'
 import logger from '../../utils/logger'
-import 'semantic-ui-css/semantic.min.css'
 import PrivateRoute from './PrivateRoute'
 
 const LoadableLogin = Loadable({
@@ -46,12 +45,12 @@ export default class App extends Component {
   render(){
     return(
         <Provider {...stores}>
-          <div>
+          <React.Fragment>
             <Helmet>
               <meta charSet="utf-8" />
-              <link href="http://pokerface.io" rel="canonical" />
+              <link href="https://pokerface.io" rel="canonical" />
               <meta content="Social platform for poker players" name="description" />
-              <meta content={`http://pokerface.io${require('../../assets/logo.png')}`} property="og:image" />
+              <meta content={`https://pokerface.io${require('../../assets/logo.png')}`} property="og:image" />
               <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
               <link href={require('../../assets/logo.png')} rel="image_src"/>
               <link
@@ -99,7 +98,7 @@ export default class App extends Component {
                 </Switch>
               </div>
             </Router>
-          </div>
+          </React.Fragment>
       </Provider>
     )
   }

@@ -39,6 +39,7 @@ const config = {
     html: './index.html',
     vendor: [
       'babel-polyfill',
+      'whatwg-fetch',
       ...hotloaderEntries,
       'react',
       'react-dom',
@@ -64,7 +65,6 @@ const config = {
       'react-document-title',
       'react-router-dom',
       'recharts',
-      'semantic-ui-react',
       'superagent',
     ],
   },
