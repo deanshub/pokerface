@@ -151,6 +151,16 @@ export default class PostEditor extends Component {
     feed.updatePollAnswer(post.id, option)
   }
 
+  refEditor(element){
+    const {autoFocus} = this.props
+    if (element && !this.editor){
+      this.editor = element
+      if (autoFocus){
+        this.editor.focus()
+      }
+    }
+  }
+
   render(){
     const {
       post,
@@ -180,10 +190,7 @@ export default class PostEditor extends Component {
             placeholder={placeholder}
             plugins={this.plugins}
             readOnly={readOnly}
-            ref={(element) => {
-              if (element && !this.editor)
-                this.editor = element
-            }}
+            ref={::this.refEditor}
         />
         <InlineToolbar/>
         <MentionSuggestions

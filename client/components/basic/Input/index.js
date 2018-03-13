@@ -63,6 +63,7 @@ export default class Input extends Component {
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
         <div className={classnames(style.inputContainer, {[style.range]:type==='range'})} style={{borderColor}}>
           <input
+              autoFocus={focus}
               className={classnames(
                 style.input,
                 {[style.padded]: padded},
@@ -77,7 +78,6 @@ export default class Input extends Component {
               ref={el=>this.input=el}
               type={type}
               value={value}
-              focus={focus&&'true'}
               {...otherProps}
           />
           {

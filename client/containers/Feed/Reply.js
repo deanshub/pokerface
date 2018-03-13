@@ -64,6 +64,7 @@ export default class Reply extends Component {
               {
                 feed.commentDrafts.get(post.id)?
                 <PostEditor
+                    autoFocus
                     placeholder="Write a comment..."
                     post={feed.commentDrafts.get(post.id)}
                 />
