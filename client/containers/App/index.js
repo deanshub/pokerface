@@ -48,9 +48,9 @@ export default class App extends Component {
           <React.Fragment>
             <Helmet>
               <meta charSet="utf-8" />
-              <link href="http://pokerface.io" rel="canonical" />
+              <link href="https://pokerface.io" rel="canonical" />
               <meta content="Social platform for poker players" name="description" />
-              <meta content={`http://pokerface.io${require('../../assets/logo.png')}`} property="og:image" />
+              <meta content={`https://pokerface.io${require('../../assets/logo.png')}`} property="og:image" />
               <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
               <link href={require('../../assets/logo.png')} rel="image_src"/>
               <link

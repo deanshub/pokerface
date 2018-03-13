@@ -178,7 +178,7 @@ export default class Post extends Component {
   sharePostOnFacebook(){
     const { post } = this.props
     logger.logEvent({category:'Post',action:'Facebook share'})
-    const shareurl =`https://www.facebook.com/sharer/sharer.php?u=http://pokerface.io/post/${post.id}&title=Pokerface.io&description=Post by ${post.owner.fullname}&picture=http://pokerface.io${require('file-loader!../../assets/logo.png')}`
+    const shareurl =`https://www.facebook.com/sharer/sharer.php?u=https://pokerface.io/post/${post.id}&title=Pokerface.io&description=Post by ${post.owner.fullname}&picture=https://pokerface.io${require('file-loader!../../assets/logo.png')}`
     window.open(shareurl,'', 'height=570,width=520')
   }
 
@@ -213,7 +213,7 @@ export default class Post extends Component {
   shareMobile(){
     const { post } = this.props
     logger.logEvent({category:'Post',action:'Mobile share'})
-    const shareurl = `http://pokerface.io/post/${post.id}`
+    const shareurl = `https://pokerface.io/post/${post.id}`
     const title = 'Pokerface.io'
     const text = `Post by ${post.owner.fullname}`
     navigator.share({url:shareurl, title, text}).catch(console.error)
