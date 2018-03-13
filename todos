@@ -1,40 +1,25 @@
 FOR GA ONLY!!!
 --------------
 
-make bundles smaller!
-
 dont ask to reset when it's already reset (first round & 15 minutes ...)
 
 allow unsubscribe email for players (not including signup)
 
 error message (store), an error occurred please refresh or try again later
-change the script name to include hash (so when a new version comes it won't be cached)
-use cloud front as cdn?
-upgrade node version on server and on dev
+use amazon cloudfront as cdn?
 
 -------------------------------------------------------------------------------
 change organzition details (send to zur)
 compare ranges send to zur (?)
 cache bug (nginx cache check)
 
-bug editor on mobile deletes the last line when blur
-
-
-
+make standalone post act just like standalone event
 
 
 
 
 events
-  posts within feed by design                           - amit
-  posts within event page (should no have the header)   - amit
   standalone event page (how to get to it)              - dean
-  events page (QR)                                      - dean
-
-poker table                                             - dean
-video within gallery (amit)                             - amit
-responsiveness                                          - dean
-search for events                                       - amit
 
 
 how to guide for sunday
