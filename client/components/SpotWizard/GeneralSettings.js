@@ -27,7 +27,7 @@ export default class GeneralSettings extends Component {
   }
 
   playersAmountChange(e, {value}){
-    const {players} = this.props
+    const {players, settings} = this.props
     const newAmount = parseInt(value)
     if (players.currentPlayers.length<newAmount){
       const amountOfPlayerToAdd = newAmount - players.currentPlayers.length
@@ -41,7 +41,10 @@ export default class GeneralSettings extends Component {
         }
       },0)
       for (let index = 0; index<amountOfPlayerToAdd; index++) {
-        players.addGuest(`Villain ${lastIndex + index+1}`)
+        players.addGuest({
+          fullname:`Villain ${lastIndex + index+1}`,
+          bank: ((settings.bb||0)*100) || ((settings.sb||0)*100) || 100,
+        })
       }
       setTimeout(()=>{
         this.playersElement.scrollTop=this.playersElement.scrollHeight

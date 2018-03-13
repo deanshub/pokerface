@@ -92,12 +92,12 @@ export class PlayersStore {
   }
 
   @action
-  addGuest(name){
+  addGuest(guestDetails){
     const guestKey = `guest${Math.random().toString()}`
     const guest = this.extendPlayer({
+      ...guestDetails,
       guest: true,
       username:guestKey,
-      fullname:name,
       avatar: avatarImage,
     })
 

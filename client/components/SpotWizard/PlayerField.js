@@ -46,7 +46,7 @@ export default class PlayerField extends Component {
   onSuggestionSelected(e, {suggestion}){
     const {players, user, playerIndex} = this.props
 
-    players.setPlayer(playerIndex, {...suggestion, cards: user.cards, bank: user.bank})
+    players.setPlayer(playerIndex, {...suggestion, cards: user.cards, bank: user.bank, showCards: user.showCards})
   }
 
   searchInputChange(e,{newValue, method}){
