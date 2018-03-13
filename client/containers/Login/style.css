@@ -37,11 +37,11 @@
 }
 
 .mainContent{
-  /* width: 100%; */
+  width: 100%;
+  max-width: 1300px;
   display: flex;
   justify-content: space-around;
   margin-top: 2em;
-  max-width: 1300px;
 }
 
 .mobileMainContent{

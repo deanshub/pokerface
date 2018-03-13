@@ -86,11 +86,11 @@ export default class SpotWizard extends Component {
       if (checkDisabled){
         actions.push(
           <Button
+              className={style.action}
               key="call"
               leftIcon="call"
               onClick={callClick}
               simple
-              style={{flex:1}}
           >
             Call
           </Button>
@@ -98,11 +98,11 @@ export default class SpotWizard extends Component {
       }else{
         actions.push(
           <Button
+              className={style.action}
               key="check"
               leftIcon="check"
               onClick={checkClick}
               simple
-              style={{flex:1}}
           >
             Check
           </Button>
@@ -111,17 +111,19 @@ export default class SpotWizard extends Component {
       actions.push(<div className={classnames(style.divider)} key="d2"/>)
       actions.push(
         <Tooltip
+            className={style.action}
             key="raise"
             onOpen={()=>this.raiseInput&&this.raiseInput.focus()}
             open={raiseOpen}
+            style={{padding:'0 6px'}}
             trigger={
               <Button
                   key="raise"
                   leftIcon="raise"
                   simple
-                  style={{flex:1}}
+                  style={{width:'100%'}}
               >
-                <span>Raise</span>
+                Raise
               </Button>
             }
         >

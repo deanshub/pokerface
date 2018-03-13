@@ -85,6 +85,11 @@
   border-bottom: 1px solid $divider;
 }
 
+.action{
+    flex: 1;
+    padding: 1px 6px;
+}
+
 .actionBarLeftPane{
   flex: 1;
   display: flex;

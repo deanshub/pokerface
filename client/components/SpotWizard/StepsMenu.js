@@ -194,7 +194,7 @@ export default class StepsMenu extends Component {
       move.action!==MOVES.PLAYER_ACTIONS.BIGBLIND
     )
     return (
-      <div className={classnames(style.stepsMenu)} style={{width:spotPlayer.stepsMenueOpen?undefined:0}}>
+      <div className={classnames(style.stepsMenu, {[style.stepMenuClosed]:!spotPlayer.stepsMenueOpen})}>
         {
           moves.length>0?
           this.addLabels(moves).map(::this.buildStep)
