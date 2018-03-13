@@ -73,6 +73,7 @@ export default class SpotWizard extends Component {
     if(!gameEnded && dealerDisabled){
       actions.push(
         <Button
+            className={style.action}
             key="fold"
             leftIcon="fold"
             onClick={foldClick}
