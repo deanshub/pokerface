@@ -42,7 +42,6 @@ export default class BlindTimerResetModal extends Component {
               horizontal
               noEqual
               reversed
-              uppercase
           >
             <Button className={classnames(style.yes)} onClick={::this.reset}>Yes</Button>
             <Button className={classnames(style.no)} onClick={::this.notReset}>No</Button>
