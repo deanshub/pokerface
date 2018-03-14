@@ -167,9 +167,10 @@
 .shareMenu{
   width: 9em;
   padding: 1em;
-}
-.shareMenuItem{
 
+  button{
+    display: block;
+  }
 }
 
 .eventSection{
