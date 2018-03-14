@@ -133,7 +133,7 @@ export default class CardsTable extends Component {
               {
                 ranks.map((rank1, index)=>{
                   return (
-                    <tr>
+                    <tr key={index}>
                       {
                         ranks.map((rank2)=>{
                           return this.getHandElement(rank1,rank2, normalizedSets)
