@@ -29,10 +29,14 @@ export default class SpotWizard extends Component {
   changeRaise(e, {value}){
     e.stopPropagation()
     const raiseValue = parseFloat(value)
-    if (raiseValue){
+    if (!isNaN(raiseValue)){
       this.setState({
         raiseValue,
         raiseOpen: true,
+      })
+    }else{
+      this.setState({
+        raiseValue: 0,
       })
     }
   }
@@ -53,12 +57,19 @@ export default class SpotWizard extends Component {
   }
 
   localRaise(){
-    const {raiseClick} = this.props
+    const {raiseClick, minimumRaise} = this.props
     const {raiseValue} = this.state
-    raiseClick(raiseValue)
-    this.setState({
-      raiseOpen: false,
-    })
+    if (raiseValue>=minimumRaise){
+      raiseClick(raiseValue)
+      this.setState({
+        raiseOpen: false,
+      })
+    }else{
+      this.setState({
+        raiseValue: minimumRaise,
+        raiseOpen: true,
+      })
+    }
   }
 
   getMiddleActions(){
@@ -133,6 +144,7 @@ export default class SpotWizard extends Component {
                 max={maximumRaise}
                 min={minimumRaise}
                 onChange={::this.changeRaise}
+                step={0.01}
                 type="range"
                 value={raiseValue}
             />
@@ -148,6 +160,7 @@ export default class SpotWizard extends Component {
                     Raise
                   </Button>
                 }
+                type="number"
                 value={raiseValue}
             />
           </div>

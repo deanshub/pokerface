@@ -80,7 +80,6 @@ export default class BlindsTimer extends Component {
               horizontal
               noEqual
               reversed
-              uppercase
           >
             <Button onClick={::this.saveSetting} primary>Save</Button>
             <Button onClick={::this.closeModal}> Cancel </Button>
