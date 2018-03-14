@@ -42,7 +42,6 @@
   text-align: center;
   cursor: pointer;
   background-color: #f2f2f2;
-  max-width: 8vw;
 }
 .hand:hover{
   font-weight: bold;
