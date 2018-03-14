@@ -11,10 +11,15 @@
   min-width: 4em;
   color: placeholderColor;
   font-weight: bold;
+}
+
+.content{
   display: flex;
   justify-content: center;
   align-items: center;
+  color: inherit;
 }
+
 .simple{
   font-weight: normal;
   color: $disabled;
@@ -38,7 +43,7 @@
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
   border-radius: 6px;
   width: 8em;
-  margin-left: 25px;
+  margin-left: 1em;
   height: 3em;
   margin-top: 0.5em;
   text-transform: uppercase;
@@ -60,8 +65,14 @@
   display: inline-block;
   background-repeat: no-repeat;
   background-position: center;
+  height: 34px;
+  width: 34px;
+}
+
+.leftIcon.smallIcon{
   height: 2em;
   width: 2em;
+  background-size: contain;
 }
 
 .stretch{
@@ -77,194 +88,194 @@
 .leftIcon.menu{
   background-image: url('../../../assets/spotplayer/play-menu.png');
 }
-.button:not(.disable):hover>.leftIcon.menu{
+.button:not(.disable):hover>.content>.leftIcon.menu{
   background-image: url('../../../assets/spotplayer/play-menu-hover-open.png');
 }
-.active>.leftIcon.menu{
+.active>.content>.leftIcon.menu{
   background-image: url('../../../assets/spotplayer/play-menu-hover-open.png');
 }
 
 .leftIcon.fold{
   background-image: url('../../../assets/spotplayer/fold.png');
 }
-.button:not(.disable):hover>.leftIcon.fold{
+.button:not(.disable):hover>.content>.leftIcon.fold{
   background-image: url('../../../assets/spotplayer/fold-hover.png');
 }
-.active>.leftIcon.fold{
+.active>.content>.leftIcon.fold{
   background-image: url('../../../assets/spotplayer/fold-hover.png');
 }
 
 .leftIcon.check{
   background-image: url('../../../assets/spotplayer/check.png');
 }
-.button:not(.disable):hover>.leftIcon.check{
+.button:not(.disable):hover>.content>.leftIcon.check{
   background-image: url('../../../assets/spotplayer/check-hover.png');
 }
-.active>.leftIcon.check{
+.active>.content>.leftIcon.check{
   background-image: url('../../../assets/spotplayer/check-hover.png');
 }
 
 .leftIcon.call{
   background-image: url('../../../assets/spotplayer/call.png');
 }
-.button:not(.disable):hover>.leftIcon.call{
+.button:not(.disable):hover>.content>.leftIcon.call{
   background-image: url('../../../assets/spotplayer/call-hover.png');
 }
-.active>.leftIcon.call{
+.active>.content>.leftIcon.call{
   background-image: url('../../../assets/spotplayer/call-hover.png');
 }
 
 .leftIcon.show{
   background-image: url('../../../assets/spotplayer/show.png');
 }
-.button:not(.disable):hover>.leftIcon.show{
+.button:not(.disable):hover>.content>.leftIcon.show{
   background-image: url('../../../assets/spotplayer/show-hover-selected.png');
 }
-.active>.leftIcon.show{
+.active>.content>.leftIcon.show{
   background-image: url('../../../assets/spotplayer/show-hover.png');
 }
 
 .leftIcon.raise{
   background-image: url('../../../assets/spotplayer/raise.png');
 }
-.button:not(.disable):hover>.leftIcon.raise{
+.button:not(.disable):hover>.content>.leftIcon.raise{
   background-image: url('../../../assets/spotplayer/raise-hover.png');
 }
-.active>.leftIcon.raise{
+.active>.content>.leftIcon.raise{
   background-image: url('../../../assets/spotplayer/raise-hover.png');
 }
 
 .leftIcon.dealer{
   background-image: url('../../../assets/spotplayer/dealer.png');
 }
-.button:not(.disable):hover>.leftIcon.dealer{
+.button:not(.disable):hover>.content>.leftIcon.dealer{
   background-image: url('../../../assets/spotplayer/dealer-hover.png');
 }
-.active>.leftIcon.dealer{
+.active>.content>.leftIcon.dealer{
   background-image: url('../../../assets/spotplayer/dealer-selected.png');
 }
 
 .leftIcon.remove{
   background-image: url('../../../assets/actions/delete.png');
 }
-.button:not(.disable):hover>.leftIcon.remove{
+.button:not(.disable):hover>.content>.leftIcon.remove{
   background-image: url('../../../assets/actions/delete-hover.png');
 }
-.active>.leftIcon.remove{
+.active>.content>.leftIcon.remove{
   background-image: url('../../../assets/actions/delete-hover.png');
 }
 
 .leftIcon.up{
   background-image: url('../../../assets/spotplayer/up.png');
 }
-.button:not(.disable):hover>.leftIcon.up{
+.button:not(.disable):hover>.content>.leftIcon.up{
   background-image: url('../../../assets/spotplayer/up-hover.png');
 }
 
 .leftIcon.down{
   background-image: url('../../../assets/spotplayer/down.png');
 }
-.button:not(.disable):hover>.leftIcon.down{
+.button:not(.disable):hover>.content>.leftIcon.down{
   background-image: url('../../../assets/spotplayer/down-hover.png');
 }
 
 .leftIcon.spot{
   background-image: url('../../../assets/addpost/spot.png');
 }
-.button:not(.disable):hover>.leftIcon.spot{
+.button:not(.disable):hover>.content>.leftIcon.spot{
   background-image: url('../../../assets/addpost/spot-hover.png');
 }
-.active>.leftIcon.spot{
+.active>.content>.leftIcon.spot{
   background-image: url('../../../assets/addpost/spot-hover.png');
 }
 
 .leftIcon.photo{
   background-image: url('../../../assets/addpost/photo.png');
 }
-.button:not(.disable):hover>.leftIcon.photo{
+.button:not(.disable):hover>.content>.leftIcon.photo{
   background-image: url('../../../assets/addpost/photo-hover.png');
 }
-.active>.leftIcon.photo{
+.active>.content>.leftIcon.photo{
   background-image: url('../../../assets/addpost/photo-hover.png');
 }
 
 .leftIcon.emoji{
   background-image: url('../../../assets/addpost/emoji.png');
 }
-.button:not(.disable):hover>.leftIcon.emoji{
+.button:not(.disable):hover>.content>.leftIcon.emoji{
   background-image: url('../../../assets/addpost/emoji-hover.png');
 }
-.active>.leftIcon.emoji{
+.active>.content>.leftIcon.emoji{
   background-image: url('../../../assets/addpost/emoji-hover.png');
 }
 
 .leftIcon.card{
   background-image: url('../../../assets/addpost/card.png');
 }
-.button:not(.disable):hover>.leftIcon.card{
+.button:not(.disable):hover>.content>.leftIcon.card{
   background-image: url('../../../assets/addpost/card-hover.png');
 }
-.active>.leftIcon.card{
+.active>.content>.leftIcon.card{
   background-image: url('../../../assets/addpost/card-hover.png');
 }
 
 .leftIcon.next{
   background-image: url('../../../assets/actions/next.png');
 }
-.button:not(.disable):hover>.leftIcon.next{
+.button:not(.disable):hover>.content>.leftIcon.next{
   background-image: url('../../../assets/actions/next-hover.png');
 }
-.active>.leftIcon.next{
+.active>.content>.leftIcon.next{
   background-image: url('../../../assets/actions/next-hover.png');
 }
 
 .leftIcon.like{
   background-image: url('../../../assets/post/like.png');
 }
-.button:not(.disable):hover>.leftIcon.like{
+.button:not(.disable):hover>.content>.leftIcon.like{
   background-image: url('../../../assets/post/like-hover.png');
 }
-.active>.leftIcon.like{
+.active>.content>.leftIcon.like{
   background-image: url('../../../assets/post/like-hover.png');
 }
 
 .leftIcon.share{
   background-image: url('../../../assets/post/share.png');
 }
-.button:not(.disable):hover>.leftIcon.share{
+.button:not(.disable):hover>.content>.leftIcon.share{
   background-image: url('../../../assets/post/share-hover-open.png');
 }
-.active>.leftIcon.share{
+.active>.content>.leftIcon.share{
   background-image: url('../../../assets/post/share-hover-open.png');
 }
 
 .leftIcon.visit{
   background-image: url('../../../assets/post/visit.png');
 }
-.button:not(.disable):hover>.leftIcon.visit{
+.button:not(.disable):hover>.content>.leftIcon.visit{
   background-image: url('../../../assets/post/visit-hover.png');
 }
-.active>.leftIcon.visit{
+.active>.content>.leftIcon.visit{
   background-image: url('../../../assets/post/visit-hover.png');
 }
 
 .leftIcon.actionMenu{
   background-image: url('../../../assets/post/action-menu.png');
 }
-.button:not(.disable):hover>.leftIcon.actionMenu{
+.button:not(.disable):hover>.content>.leftIcon.actionMenu{
   background-image: url('../../../assets/post/action-menu-hover-open.png');
 }
-.active>.leftIcon.actionMenu{
+.active>.content>.leftIcon.actionMenu{
   background-image: url('../../../assets/post/action-menu-hover-open.png');
 }
 
 .leftIcon.previous{
   background-image: url('../../../assets/actions/previous.png');
 }
-.button:not(.disable):hover>.leftIcon.previous{
+.button:not(.disable):hover>.content>.leftIcon.previous{
   background-image: url('../../../assets/actions/previous-hover.png');
 }
-.active>.leftIcon.previous{
+.active>.content>.leftIcon.previous{
   background-image: url('../../../assets/actions/previous-hover.png');
 }
 

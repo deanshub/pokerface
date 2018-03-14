@@ -138,6 +138,7 @@ export default class PlayerField extends Component {
                   leftIcon="show"
                   onClick={()=>user.showCards = !user.showCards}
                   small
+                  smallIcon
                   style={{width: '4.5em', minWidth: 'auto'}}
               />
             }

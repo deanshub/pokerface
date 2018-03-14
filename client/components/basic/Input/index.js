@@ -61,14 +61,20 @@ export default class Input extends Component {
           style={containerStyle}
       >
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
-        <div className={classnames(style.inputContainer, {[style.range]:type==='range'})} style={{borderColor}}>
+        <div
+            className={classnames(
+                style.inputContainer,
+                {[style.error]: error},
+                {[style.warning]: warning},
+                {[style.range]:type==='range'}
+            )}
+            style={{borderColor}}
+        >
           <input
               autoFocus={focus}
               className={classnames(
                 style.input,
                 {[style.padded]: padded},
-                {[style.error]: error},
-                {[style.warning]: warning},
                 {[style.noRightBorder]: cardSelection||rightButton},
               )}
               id={id}
@@ -91,6 +97,7 @@ export default class Input extends Component {
                         style.cardSelectionButton,
                         {[style.rightBorder]: !rightButton},
                       )}
+                      smallIcon
                   />
                 }
             >

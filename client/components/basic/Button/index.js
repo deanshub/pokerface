@@ -20,6 +20,7 @@ export default class Button extends Component {
       leftIcon,
       disable,
       small,
+      smallIcon,
       stretch,
       loading,
       className,
@@ -46,19 +47,22 @@ export default class Button extends Component {
           onClick={(e)=>onClick(e, e.target)}
           {...restProps}
       >
-        {leftIcon&&
-          <div
-              className={classnames(
-                style.leftIcon,
-                style[leftIcon],
-              )}
-          />
-        }
-        {loading?
-          <Loader bright={primary} small/>
-        :
-          children
-        }
+        <span className={classnames(style.content)}>
+          {leftIcon&&
+            <div
+                className={classnames(
+                  style.leftIcon,
+                  {[style.smallIcon]:smallIcon},
+                  style[leftIcon],
+                )}
+            />
+          }
+          {loading?
+            <Loader bright={primary} small/>
+          :
+            children
+          }
+        </span>
       </ContainerElement>
     )
   }

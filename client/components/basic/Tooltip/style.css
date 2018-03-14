@@ -1,12 +1,12 @@
 
 .manager {
   position: relative;
-  display: inline-block;
+  display: flex;
 }
 
 .triggerContainer{
   display: flex;
-  height: 100%;
+  width: 100%;
 }
 
 .popperContainer{
