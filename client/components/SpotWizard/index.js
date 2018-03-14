@@ -423,17 +423,17 @@ export default class SpotWizard extends Component {
             <ButtonGroup
                 horizontal
                 noEqual
-                style={{justifyContent:'flex-end'}}
+                reversed
             >
-              <Button onClick={::this.cancel}>
-                Cancel
-              </Button>
               <Button
                   disable={this.nextStepDisabled()}
                   onClick={::this.nextStep}
                   primary
               >
                 {step===1?'Create':'Next'}
+              </Button>
+              <Button onClick={::this.cancel}>
+                Cancel
               </Button>
             </ButtonGroup>
           </ButtonGroup>

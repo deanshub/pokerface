@@ -273,6 +273,7 @@ export default class Post extends Component {
               }
             </div>
             <Tooltip
+                placement="bottom-end"
                 trigger={
                   <Button
                       leftIcon="share"
@@ -316,7 +317,7 @@ export default class Post extends Component {
                     onClick={::this.getLink}
                     simple
                     small
-                    style={{padding: '0.5em 0'}}
+                    style={{padding: '0.5em 0', minWidth: 'auto'}}
                 >
                   Get Link
                 </Button>
@@ -325,6 +326,7 @@ export default class Post extends Component {
             {
               post.owner.username===auth.user.username&&
               <Tooltip
+                  placement="bottom-end"
                   trigger={
                     <Button
                         leftIcon="actionMenu"

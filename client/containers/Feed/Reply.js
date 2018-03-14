@@ -77,7 +77,6 @@ export default class Reply extends Component {
                   active
                   onClick={::this.addComment}
                   simple
-                  style={{ alignSelf: 'flex-end'}}
               >
                 Post
               </Button>

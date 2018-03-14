@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ReactFitText from 'react-fittext'
+import ResponsiveText from '../basic/ResponsiveText'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -122,17 +122,17 @@ export default class CardsTable extends Component {
         <div className={classnames(style.title, style.subtitle, {[style.inFeed]:inFeed})}>
           {subtitle}
         </div>
-        <table
-            className={classnames({
-              [style.handchartContainer]:true,
-              [style.inFeed]: inFeed,
-            })}
-        >
-          <tbody>
-            {
-              ranks.map((rank1, index)=>{
-                return (
-                  <ReactFitText compressor={2.8} key={index}>
+        <ResponsiveText scale={0.15}>
+          <table
+              className={classnames({
+                [style.handchartContainer]:true,
+                [style.inFeed]: inFeed,
+              })}
+          >
+            <tbody>
+              {
+                ranks.map((rank1, index)=>{
+                  return (
                     <tr>
                       {
                         ranks.map((rank2)=>{
@@ -140,12 +140,12 @@ export default class CardsTable extends Component {
                         })
                       }
                     </tr>
-                  </ReactFitText>
-                )
-              })
-            }
-          </tbody>
-        </table>
+                  )
+                })
+              }
+            </tbody>
+          </table>
+        </ResponsiveText>
         {
           normalizedSets.length>1?
           <div className={classnames(style.legend)}>

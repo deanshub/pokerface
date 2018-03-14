@@ -19,15 +19,16 @@
   border: 1px solid borderColor;
   border-radius: 8px;
   display: flex;
+  background-color: white;
 }
 .inputContainer.range{
   border: none;
 }
-.input.error{
+.inputContainer.error{
   border: 1px solid errorColor;
   background: errorColorOpacitated;
 }
-.input.warning{
+.inputContainer.warning{
   border: 1px solid warningColor;
   background: warningColorOpacitated;
 }
@@ -43,6 +44,7 @@
   width: 100%;
   border-radius: 6px;
   padding: 0.5em 0 0.5em 1em;
+  background-color: inherit;
 }
 .input.padded{
   padding: 0.7em 0 0.7em 1em;
