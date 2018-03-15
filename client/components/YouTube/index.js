@@ -122,6 +122,7 @@ export default class YouTube extends Component {
               borderColor="#545454"
               className={classnames(style.search)}
               dir="auto"
+              hideRightButtonDivider
               onChange={::this.seachChange}
               padded
               placeholder="YouTube link \ Search..."

@@ -50,6 +50,7 @@ export default class Input extends Component {
       padded,
       focus,
       transparent,
+      hideRightButtonDivider,
       ...otherProps
     } = this.props
 
@@ -108,6 +109,10 @@ export default class Input extends Component {
                   onCardSelected={::this.cardSelectChange}
               />
             </Tooltip>
+          }
+          {
+            rightButton&&!hideRightButtonDivider&&
+            <div className={classnames(style.divider)}/>
           }
           {rightButton}
         </div>
