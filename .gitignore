@@ -5,3 +5,4 @@ static
 *.log*
 dist
 .pass
+config
