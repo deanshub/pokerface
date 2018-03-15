@@ -164,7 +164,7 @@ export default class BlindsTimer extends Component {
     return (
       <Dimmer
           busy={timer.loading}
-          className={classnames(style.fullScreen)}
+          className={classnames(style.fullScreen, {[style.inverted]:timer.inverted})}
           label="Loading"
       >
           <BlindTimerResetModal/>
@@ -263,7 +263,7 @@ export default class BlindsTimer extends Component {
             </div>
           </div>
 
-          <div className={style.blindsContainer}>
+          <div className={classnames(style.blindsContainer,{[style.inverted]:timer.inverted})}>
             <div className={style.currentBlinds}>
               <ResponsiveText scale={0.5}>
                 {
