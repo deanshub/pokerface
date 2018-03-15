@@ -7,13 +7,26 @@ import Button from '../basic/Button'
 import classnames from 'classnames'
 import style from './style.css'
 
+const playlists = [
+  'https://www.youtube.com/watch?v=hTWKbfoikeg&list=PLA1D6023F6FF2684B',
+  'https://www.youtube.com/watch?v=yyDUC1LUXSU&list=PLh6vppUwmWEMdp04u-tYABoDmgn9AX12n',
+  'https://www.youtube.com/watch?v=pRpeEdMmmQ0&list=PLMC9KNkIncKvYin_USF1qoJQnIyMAfRxl',
+  'https://www.youtube.com/watch?v=EPhWR4d3FJQ&list=PLI_TwOrHUsI8MQNW0BvBAwwHYKgyiiiDB',
+  'https://www.youtube.com/watch?v=fJ9rUzIMcZQ&list=PLB5Ac5TbLc2OHUC5uaAuFdbxMXQK3ZaAF',
+  'https://www.youtube.com/watch?v=RgKAFK5djSk&list=PLw-VjHDlEOguc6rlu0mscXn-018yJwlgS',
+  'https://www.youtube.com/watch?v=n4RjJKxsamQ&list=PLxXmNu3e7u8L2QwXe_YnIB37hkjjEZkCc',
+  'https://www.youtube.com/watch?v=rYEDA3JcQqw&list=PL6H6TfFpYvpersEdHECeWkocaPueTqieF',
+  'https://www.youtube.com/watch?v=OPf0YbXqDm0&list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj',
+  'https://www.youtube.com/watch?v=1w7OgIMMRc4&list=PLCD0445C57F2B7F41',
+]
+
 export default class YouTube extends Component {
   static propTypes = {
     phrase: PropTypes.string,
   }
 
   static defaultProps = {
-    phrase: 'https://www.youtube.com/watch?v=hTWKbfoikeg&list=PLA1D6023F6FF2684B',
+    phrase: playlists[Math.floor(Math.random()*playlists.length)] ,
     // phrase: 'https://www.youtube.com/watch?v=G_e707496Fg',
     // phrase: 'נמסטה',
   }

@@ -54,6 +54,7 @@ import Poll from '../Poll'
 @observer
 export default class PostEditor extends Component {
   static propTypes = {
+    autoFocus: PropTypes.bool,
     onChange: PropTypes.func,
     placeholder: PropTypes.string,
     post: PropTypes.shape().isRequired,
@@ -63,6 +64,7 @@ export default class PostEditor extends Component {
   }
 
   static defaultProps = {
+    autoFocus: false,
     postEditor: false,
     readOnly: false,
     standalone: false,
@@ -116,6 +118,15 @@ export default class PostEditor extends Component {
     }
   }
 
+  componentDidMount(){
+    const {autoFocus} = this.props
+    if (autoFocus){
+      setTimeout(()=>{
+        this.focus()
+      })
+    }
+  }
+
   focus() {
     const { readOnly } = this.props
     if (this.editor && !readOnly){
@@ -152,12 +163,8 @@ export default class PostEditor extends Component {
   }
 
   refEditor(element){
-    const {autoFocus} = this.props
     if (element && !this.editor){
       this.editor = element
-      if (autoFocus){
-        this.editor.focus()
-      }
     }
   }
 
@@ -171,6 +178,7 @@ export default class PostEditor extends Component {
       standalone,
     } = this.props
     const {
+      plugins,
       InlineToolbar,
       // EmojiSuggestions,
       MentionSuggestions
@@ -188,7 +196,7 @@ export default class PostEditor extends Component {
             editorState={post.content}
             onChange={::this.postContentChange}
             placeholder={placeholder}
-            plugins={this.plugins}
+            plugins={plugins}
             readOnly={readOnly}
             ref={::this.refEditor}
         />

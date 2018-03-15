@@ -200,7 +200,6 @@ export class FeedStore {
   }
 
   parsePost(post){
-    //let content = JSON.parse(post.content)
     const {content} = post
     if (!content.entityMap){
       content.entityMap={}

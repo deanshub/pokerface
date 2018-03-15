@@ -26,10 +26,6 @@ export default class Reply extends Component {
       feed.addComment(post.id, auth.user)
     }
   }
-  // removeReply(){
-  //   const { feed, post } = this.props
-  //   feed.removeDraft(post)
-  // }
 
   createDraft(){
     const { feed, post } = this.props
