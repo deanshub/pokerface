@@ -24,7 +24,7 @@ body{
   background-attachment: fixed !important;
   min-height: 100vh;
   margin: 0px;
-  font-family: 'Content Font';
+  font-family: $contentFont;
   scrollbar-face-color: rgba(0, 0, 0, 0.25);
   scrollbar-track-color: rgba(0, 0, 0, 0.1);
 
@@ -33,6 +33,9 @@ body{
   }
 }
 
+input, textarea, select, button{
+    font-family: $contentFont;
+}
 ::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 10px;
