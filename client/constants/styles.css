@@ -64,6 +64,9 @@ $disabled: #24222e;
 
 /* blinds timer */
 @value blindsTimerBackground: #2c2a38;
+@value blindsTimerBackgroundInverted: #f0f0f0;
+@value qrBottomBorderColorInverted: #d3d3d9;
+@value textColorInverted: #74728c;
 
 /* mobile */
 @value mobileMaxWidth: 800;
