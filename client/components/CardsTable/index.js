@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ResponsiveText from '../basic/ResponsiveText'
+import ResponsiveContainer from '../ResponsiveContainer'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -115,7 +116,11 @@ export default class CardsTable extends Component {
       return set
     })
     return (
-      <div className={classnames(style.container, {[style.inFeed]:inFeed})} style={{color:textColor}}>
+      <ResponsiveContainer
+          desktopClassName={classnames(style.container, {[style.inFeed]:inFeed})}
+          mobileClassName={classnames(style.container, style.mobile, {[style.inFeed]:inFeed})}
+          style={{color:textColor}}
+      >
         <div className={classnames(style.title, style.maintitle, {[style.inFeed]:inFeed})}>
           {title}
         </div>
@@ -161,7 +166,7 @@ export default class CardsTable extends Component {
           </div>
           :null
         }
-      </div>
+      </ResponsiveContainer>
     )
   }
 }

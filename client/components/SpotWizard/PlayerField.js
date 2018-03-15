@@ -139,7 +139,7 @@ export default class PlayerField extends Component {
                   onClick={()=>user.showCards = !user.showCards}
                   small
                   smallIcon
-                  style={{width: '4.5em', minWidth: 'auto'}}
+                  style={{minWidth: '2.5em'}}
               />
             }
             value={user.cards}

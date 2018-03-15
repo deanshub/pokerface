@@ -10,11 +10,14 @@
   user-select: none;
   align-items: center;
   line-height: normal;
-  width: 90vmin;
+  width: 60vmin;
   max-width: 60em;
 }
 .inFeed.container{
-  max-width: 18em;
+  max-width: 30em;
+}
+.mobile.container{
+  width: 90vmin;
 }
 
 .title{
