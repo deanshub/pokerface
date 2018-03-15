@@ -123,6 +123,7 @@
   font-size: 0.5em;
 }
 .blindContent{
+  font-size: 110%;
 }
 .nextBlinds{
   flex: 1;
