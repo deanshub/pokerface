@@ -21,6 +21,11 @@
   width: 70vmin;
 }
 
+.inFeed.container.mobile{
+  width: 92vmin;
+}
+
+
 .title{
   font-weight: bold;
   text-align: center;
