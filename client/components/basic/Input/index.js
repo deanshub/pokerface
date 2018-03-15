@@ -49,6 +49,7 @@ export default class Input extends Component {
       amount,
       padded,
       focus,
+      transparent,
       ...otherProps
     } = this.props
 
@@ -64,6 +65,7 @@ export default class Input extends Component {
         <div
             className={classnames(
                 style.inputContainer,
+                {[style.transparent]: transparent},
                 {[style.error]: error},
                 {[style.warning]: warning},
                 {[style.range]:type==='range'}
@@ -106,10 +108,6 @@ export default class Input extends Component {
                   onCardSelected={::this.cardSelectChange}
               />
             </Tooltip>
-          }
-          {
-            rightButton&&
-            <div className={classnames(style.divider)}/>
           }
           {rightButton}
         </div>

@@ -19,6 +19,8 @@
   border: 1px solid borderColor;
   border-radius: 8px;
   display: flex;
+}
+.inputContainer:not(.transparent){
   background-color: white;
 }
 .inputContainer.range{

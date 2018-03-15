@@ -123,15 +123,17 @@ export default class YouTube extends Component {
               className={classnames(style.search)}
               dir="auto"
               onChange={::this.seachChange}
+              padded
               placeholder="YouTube link \ Search..."
               rightButton={
                 <Button
                     small
                     type="submit"
                 >
-                  Serach
+                  GO
                 </Button>
               }
+              transparent
           />
         </div>
         <YouTubeComp
