@@ -65,7 +65,17 @@
   color: subtitleColor;
 }
 .labelColor{
-  height:15px;
-  width:15px;
-  margin-right:5px;
+  height: 100%;
+  width: 15px;
+  margin-right: 5px;
+}
+.labelColor:after{
+  content: '🗸';
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.disabled>.labelColor:after{
+  content: '';
 }
