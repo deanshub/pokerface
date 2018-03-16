@@ -21,20 +21,28 @@ export default class ResponsiveText extends Component {
   }
 
   resizeHandler() {
-    const {scale} = this.props
     setTimeout(()=>{
-      const parent = getComputedStyle(this.el.parentElement)
+      if (this.el){
+        const {scale} = this.props
+        const parent = getComputedStyle(this.el.parentElement)
 
-      this.el.style.fontSize=''
-      const fontSize = Math.min(parseFloat(parent.width)/4, parseFloat(parent.height)) * scale
-      if ((!this.state.style)||(this.state.style&&this.state.style.fontSize&&this.state.style.fontSize!==fontSize)){
-        this.setState({
-          style:{fontSize},
-        })
-      }else{
-        this.el.style.fontSize=`${fontSize}px`
+        this.el.style.fontSize=''
+        const fontSize = Math.min(parseFloat(parent.width)/4, parseFloat(parent.height)) * scale
+        if ((!this.state.style)||(this.state.style&&this.state.style.fontSize&&this.state.style.fontSize!==fontSize)){
+          this.setState({
+            style:{fontSize},
+          })
+        }else{
+          this.el.style.fontSize=`${fontSize}px`
+        }
       }
     })
+  }
+
+  ref(el){
+    if (el && !this.el){
+      this.el = el
+    }
   }
 
   render(){
@@ -44,7 +52,7 @@ export default class ResponsiveText extends Component {
     return (
       <div
           className={className}
-          ref={el=>this.el = el}
+          ref={::this.ref}
           style={style}
       >
         {children}

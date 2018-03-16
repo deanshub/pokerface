@@ -29,3 +29,52 @@
 .editRoundButton{
   margin-right: 2em;
 }
+
+.header {
+    display: flex;
+    align-items: center;
+
+    .title {
+      flex:1;
+    }
+}
+
+
+.tab {
+  height: 34px;
+  width: 34px;
+  padding: 0 0.7em;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.blindsTab {
+  @extend .tab;
+  background-image: url('../../../assets/actions/edit.png');
+}
+.blindsTab:hover {
+  background-image: url('../../../assets/actions/edit-hover.png');
+}
+.blindsTab.active {
+  background-image: url('../../../assets/actions/edit-hover.png');
+}
+
+.slideshowTab {
+  @extend .tab;
+  background-image: url('../../../assets/spotplayer/show.png');
+}
+.slideshowTab:hover {
+  background-image: url('../../../assets/spotplayer/show-hover.png');
+}
+.slideshowTab.active {
+  background-image: url('../../../assets/spotplayer/show-hover-selected.png');
+}
+
+.autoSlidesContainer{
+  display: flex;
+}
+
+.hidden{
+  display: none;
+}

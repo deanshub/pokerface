@@ -27,6 +27,7 @@ export class TimerStore {
   @observable recovered
   @observable loading
   @observable autoUpdateBlinds
+  @observable autoSlides
 
   MINIMAL_OFFSET = 10
   MINUTES_MULTIPLIER = 60 * 1000
@@ -48,6 +49,11 @@ export class TimerStore {
     this.editedRounds = [{...this.DEFAULT_INITIAL_ROUND}]
     this.paused = true
     this.offset = 0
+    this.autoSlides = {
+      on: false,
+      times: [20, 20],
+      currentSlide: 0,
+    }
 
     // The subscription is lazy.
     this.subscribed = false

@@ -8,6 +8,7 @@ import classnames from 'classnames'
 import style from './style.css'
 
 @inject('auth')
+@inject('timer')
 @observer
 export default class RebrandedBlindsTimer extends Component {
   renderYoutube(width, height){
@@ -17,7 +18,8 @@ export default class RebrandedBlindsTimer extends Component {
   }
 
   render(){
-    const {user} = this.props.auth
+    const {auth, timer} = this.props
+    const {user} = auth
 
     let image
     let title
@@ -28,7 +30,9 @@ export default class RebrandedBlindsTimer extends Component {
     }
     return (
       <Slider
+          autoplay={timer.autoSlides.on}
           className={classnames(style.blindsTimerSlider)}
+          displayItemsDuration={timer.autoSlides.times.toJS()}
           style={{backgroundColor:'black', boxShadow:'0 0 10px 0 black'}}
       >
         <BlindsTimer image={image} title={title}/>
