@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import 'react-select/dist/react-select.min.css'
 import classnames from 'classnames'
 import style from './style.css'
 import Input from '../Input'
