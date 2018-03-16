@@ -113,6 +113,7 @@ export default class EditEvent extends Component {
           />
           <Select
               error={wrongFields.error.type}
+              id="Game"
               label="Game"
               onChange={(value)=>{
                 this.handleFieldChange('type', value)
@@ -124,6 +125,7 @@ export default class EditEvent extends Component {
           />
           <Select
               error={wrongFields.error.subtype}
+              id="Type"
               label="Type"
               onChange={(value)=>{
                 this.handleFieldChange('subtype', value)

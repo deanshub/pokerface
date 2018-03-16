@@ -25,7 +25,7 @@
   border-left: solid 4px transparent;
   border-right: solid 4px transparent;
   border-top: solid 5px #bfbfbf;
-  margin: auto 7px;
+  margin: auto 0.7em;
 
   transition: transform 300ms ease;
 }
