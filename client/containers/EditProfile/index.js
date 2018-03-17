@@ -102,6 +102,7 @@ export default class EditProfile extends Component {
                       label="First name"
                       name="firstname"
                       onChange={::this.handleChange}
+                      padded
                       placeholder="First name"
                       value={firstname}
                   />
@@ -110,6 +111,7 @@ export default class EditProfile extends Component {
                       label="Last name"
                       name="lastname"
                       onChange={::this.handleChange}
+                      padded
                       placeholder="Last name"
                       value={lastname}
                   />

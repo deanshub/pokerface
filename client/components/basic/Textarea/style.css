@@ -3,7 +3,6 @@
 
 .textareaInput {
   @extend .input;
-  line-height: 1.15;
   resize: vertical;
   max-height: 4em;
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Tooltip from '../Tooltip'
 import CardSelection from '../../AddPlay/CardSelection'
-
+import Button from '../Button'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -94,13 +94,13 @@ export default class Input extends Component {
             <Tooltip
                 open={open}
                 trigger={
-                  <button
+                  <Button
                       className={classnames(
                         style.button,
                         style.cardSelectionButton,
                         {[style.rightBorder]: !rightButton},
                       )}
-                      smallIcon
+                      small
                   />
                 }
             >

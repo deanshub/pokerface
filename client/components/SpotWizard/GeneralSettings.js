@@ -96,7 +96,7 @@ export default class GeneralSettings extends Component {
 
     return (
       <div className={classnames(style.generalSettingsContainer)}>
-        <div className={classnames(style.blinds)}>
+        <div className={classnames(style.globalSettings)}>
           <Input
               error={players.currentPlayers.length>10||players.currentPlayers.length<2}
               id="form-input-control-number-players"
@@ -122,24 +122,24 @@ export default class GeneralSettings extends Component {
               type="number"
               value={settings.ante}
           />
-          <Input
-              containerStyle={{minWidth:'12em'}}
-              id="form-input-control-small-blind"
-              label="Small Blind"
-              onChange={::this.smallBlindChange}
-              placeholder="1"
-              type="number"
-              value={settings.sb}
-          />
-          <Input
-              containerStyle={{minWidth:'12em'}}
-              id="form-input-control-big-blind"
-              label="Big Blind"
-              onChange={::this.bigBlindChange}
-              placeholder="2"
-              type="number"
-              value={settings.bb}
-          />
+          <div className={classnames(style.blinds)}>
+            <Input
+                id="form-input-control-small-blind"
+                label="Small Blind"
+                onChange={::this.smallBlindChange}
+                placeholder="1"
+                type="number"
+                value={settings.sb}
+            />
+            <Input
+                id="form-input-control-big-blind"
+                label="Big Blind"
+                onChange={::this.bigBlindChange}
+                placeholder="2"
+                type="number"
+                value={settings.bb}
+            />
+          </div>
         </div>
 
         <div className={classnames(style.players)} ref={el=>this.playersElement=el}>

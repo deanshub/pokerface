@@ -86,85 +86,91 @@ export default class PlayerField extends Component {
 
     return (
       <div className={classnames(style.playerRow)}>
-        <Image
-            avatar
-            href={href}
-            onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
-            src={user.avatar}
-            target="_blank"
-        />
-        <Autosuggest
-            getSuggestionValue={player=>player.fullname}
-            highlightFirstSuggestion
-            id={`${playerIndex}`}
-            inputProps={{
-              placeholder: 'Player',
-              value:inputValue,
-              onChange: ::this.searchInputChange,
-            }}
-            onSuggestionSelected={::this.onSuggestionSelected}
-            onSuggestionsClearRequested={()=>players.searchPlayers.clear()}
-            onSuggestionsFetchRequested={::this.searchChange}
-            renderInputComponent={(props)=>(
-              <Input {...props}/>
-            )}
-            renderSuggestion={this.renderSuggestion}
-            suggestions={players.immutableAvailablePlayers.concat([{guest:true, fullname:inputValue, username:`guest-${Math.random().toString()}`}])}
-            theme={{
-              container: classnames(style.autosuggest),
-              suggestionsList: classnames(style.suggestionsList),
-              suggestion: classnames(style.suggestion),
-              suggestionHighlighted: classnames(style.suggestionHighlighted),
-              suggestionsContainer: classnames(style.suggestionsContainer),
-              suggestionsContainerOpen: classnames(style.suggestionsContainerOpen),
-            }}
-        />
-        <Input
-            label="Bank"
-            onChange={(e,{value})=>user.bank=parseFloat(value)}
-            placeholder="100"
-            type="number"
-            value={user.bank}
-        />
-        <Input
-            amount={2}
-            cardSelection
-            label="Cards"
-            onChange={(e,{value})=>user.cards=value}
-            rightButton={
-              <Button
-                  active={user.showCards}
-                  disable={user.cards===''||!user.cards}
-                  leftIcon="show"
-                  onClick={()=>user.showCards = !user.showCards}
-                  small
-                  smallIcon
-                  style={{minWidth: '2.5em'}}
-              />
-            }
-            value={user.cards}
-        />
-        <Button
-            active={isDealer}
-            leftIcon="dealer"
-            onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
-        />
-        <Button
-            leftIcon="remove"
-            onClick={::this.removePlayer}
-        />
-        <ButtonGroup>
-          <Button
-              hidden={playerIndex===0}
-              leftIcon="up"
-              onClick={::this.movePlyaerUp}
+        <div className={classnames(style.subPlayerRow)}>
+          <Image
+              avatar
+              href={href}
+              onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
+              src={user.avatar}
+              target="_blank"
+          />
+          <Autosuggest
+              getSuggestionValue={player=>player.fullname}
+              highlightFirstSuggestion
+              id={`${playerIndex}`}
+              inputProps={{
+                placeholder: 'Player',
+                value:inputValue,
+                onChange: ::this.searchInputChange,
+              }}
+              onSuggestionSelected={::this.onSuggestionSelected}
+              onSuggestionsClearRequested={()=>players.searchPlayers.clear()}
+              onSuggestionsFetchRequested={::this.searchChange}
+              renderInputComponent={(props)=>(
+                <Input containerStyle={{margin:'0'}} {...props}/>
+              )}
+              renderSuggestion={this.renderSuggestion}
+              suggestions={players.immutableAvailablePlayers.concat([{guest:true, fullname:inputValue, username:`guest-${Math.random().toString()}`}])}
+              theme={{
+                container: classnames(style.autosuggest),
+                suggestionsList: classnames(style.suggestionsList),
+                suggestion: classnames(style.suggestion),
+                suggestionHighlighted: classnames(style.suggestionHighlighted),
+                suggestionsContainer: classnames(style.suggestionsContainer),
+                suggestionsContainerOpen: classnames(style.suggestionsContainerOpen),
+              }}
+          />
+          <Input
+              label="Bank"
+              onChange={(e,{value})=>user.bank=parseFloat(value)}
+              placeholder="100"
+              type="number"
+              value={user.bank}
+          />
+        </div>
+        <div className={classnames(style.subPlayerRow)}>
+          <Input
+              amount={2}
+              cardSelection
+              label="Cards"
+              onChange={(e,{value})=>user.cards=value}
+              rightButton={
+                <Button
+                    active={user.showCards}
+                    disable={user.cards===''||!user.cards}
+                    leftIcon="show"
+                    onClick={()=>user.showCards = !user.showCards}
+                    small
+                    smallIcon
+                    style={{minWidth: '2.5em'}}
+                />
+              }
+              value={user.cards}
           />
           <Button
-              hidden={playerIndex===players.currentPlayers.length-1}
-              leftIcon="down"
-              onClick={::this.movePlyaerDown}
+              active={isDealer}
+              leftIcon="dealer"
+              onClick={(e)=>{handleAvatarClick(e, href, playerIndex)}}
           />
-        </ButtonGroup>
+          <Button
+              leftIcon="remove"
+              onClick={::this.removePlayer}
+          />
+          <ButtonGroup>
+            <Button
+                hidden={playerIndex===0}
+                leftIcon="up"
+                onClick={::this.movePlyaerUp}
+                small
+            />
+            <Button
+                hidden={playerIndex===players.currentPlayers.length-1}
+                leftIcon="down"
+                onClick={::this.movePlyaerDown}
+                small
+            />
+          </ButtonGroup>
+        </div>
       </div>
     )
   }
