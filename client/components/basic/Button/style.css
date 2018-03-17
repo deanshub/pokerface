@@ -280,6 +280,16 @@
   background-image: url('../../../assets/actions/previous-hover.png');
 }
 
+.leftIcon.cardSmallFrame{
+  background-image: url('../../../assets/spotplayer/card-small-frame.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.cardSmallFrame{
+  background-image: url('../../../assets/spotplayer/card-small-frame-hover-open.png');
+}
+.active>.content>.leftIcon.cardSmallFrame{
+  background-image: url('../../../assets/spotplayer/card-small-frame-hover-open.png');
+}
+
 .buttonGroup{
   display: flex;
   flex-direction: column;

@@ -92,15 +92,13 @@ export default class Input extends Component {
           {
             cardSelection&&
             <Tooltip
-                open={open}
+                className={classnames(style.cardSelectionButton)}
+                open={open}    
                 trigger={
                   <Button
-                      className={classnames(
-                        style.button,
-                        style.cardSelectionButton,
-                        {[style.rightBorder]: !rightButton},
-                      )}
+                      leftIcon="cardSmallFrame"
                       small
+                      smallIcon
                   />
                 }
             >
