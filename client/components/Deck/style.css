@@ -108,6 +108,7 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  padding: 25%;
   margin: 25%;
   flex: 1;
   filter: brightness(2000%) opacity(0.6);

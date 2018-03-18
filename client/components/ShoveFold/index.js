@@ -106,7 +106,6 @@ export default class ShoveFold extends Component {
 
         <CardsTable
             defaultSet={{color:'#ff5a5a',label:'Fold'}}
-            inFeed
             sets={[{
               cards: range,
               color: '#67d388',

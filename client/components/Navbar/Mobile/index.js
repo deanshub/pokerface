@@ -40,11 +40,13 @@ export default class Navigation extends Component {
   }
 
   onHomeClick(){
-    this.feed.pushNewReceivedPost()
+    const {feed} = this.props
+    feed.pushNewReceivedPost()
   }
 
   onProfileClick(){
-    this.feed.pushNewReceivedPost(true)
+    const {feed} = this.props
+    feed.pushNewReceivedPost(true)
   }
 
   toggleEditPersonalInfo(){

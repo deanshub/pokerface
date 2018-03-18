@@ -1,29 +1,37 @@
 @import '../../../constants/styles.css';
+@import "../../../constants/autosuggestStyle";
 @import '../Input/style.css';
 
-.inputContainer div {
-    height: auto !important;
-    border: 0px;
+.selectContainer{
+  position: relative;
+  flex: 1;
+  margin: 0 6px;
 }
 
-.inputContainer > div {
-    border-radius: 6px;
-    border: none !important;
-    box-shadow: none !important;
+.suggestionsContainerOpen{
+  margin-top: -11px;
 }
 
-.inputContainer input {
-  padding: 0.5em 0 0.5em 1em !important;
+.suggestionItem{
+    padding: 0.5em 0 0.5em 1em;
 }
 
-.selectInput{
-  @extend .input;
-  margin: 0px;
-  height: auto;
-  padding: 0px;
+
+.selectedItem{
+  background-color: #41c86a80
 }
 
-.selectError > div:first-child {
-  border: 1px solid errorColor;
-  background: errorColorOpacitated;
+.arrow{
+  border-left: solid 4px transparent;
+  border-right: solid 4px transparent;
+  border-top: solid 5px #bfbfbf;
+  margin: auto 0.7em;
+
+  transition: transform 300ms ease;
+}
+
+.containerOpen{
+  .arrow{
+    transform: rotate( 180deg );
+  }
 }

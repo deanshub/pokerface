@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Tooltip from '../Tooltip'
 import CardSelection from '../../AddPlay/CardSelection'
-
+import Button from '../Button'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -51,6 +51,8 @@ export default class Input extends Component {
       amount,
       padded,
       focus,
+      transparent,
+      hideRightButtonDivider,
       ...otherProps
     } = this.props
 
@@ -66,6 +68,7 @@ export default class Input extends Component {
         <div
             className={classnames(
                 style.inputContainer,
+                {[style.transparent]: transparent},
                 {[style.error]: error},
                 {[style.warning]: warning},
                 {[style.disable]: disable},
@@ -93,14 +96,12 @@ export default class Input extends Component {
           {
             cardSelection&&
             <Tooltip
-                open={open}
+                className={classnames(style.cardSelectionButton)}
+                open={open}    
                 trigger={
-                  <button
-                      className={classnames(
-                        style.button,
-                        style.cardSelectionButton,
-                        {[style.rightBorder]: !rightButton},
-                      )}
+                  <Button
+                      leftIcon="cardSmallFrame"
+                      small
                       smallIcon
                   />
                 }
@@ -112,7 +113,7 @@ export default class Input extends Component {
             </Tooltip>
           }
           {
-            rightButton&&
+            rightButton&&!hideRightButtonDivider&&
             <div className={classnames(style.divider)}/>
           }
           {rightButton}

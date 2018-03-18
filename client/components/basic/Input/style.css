@@ -19,6 +19,8 @@
   border: 1px solid borderColor;
   border-radius: 8px;
   display: flex;
+}
+.inputContainer:not(.transparent){
   background-color: white;
 }
 .inputContainer.range{
@@ -78,14 +80,10 @@
 }
 
 .cardSelectionButton{
-  background-image: url('../../../assets/spotplayer/card-small-frame.png');
+  display: flex;
+  flex-direction: column;
 }
-.cardSelectionButton.active{
-  background-image: url('../../../assets/spotplayer/card-small-frame-hover-open.png');
-}
-.cardSelectionButton:hover{
-  background-image: url('../../../assets/spotplayer/card-small-frame-hover-open.png');
-}
+
 
 /* range input */
 .inputContainer.range>input[type="range"]{
