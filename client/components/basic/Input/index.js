@@ -8,6 +8,7 @@ import style from './style.css'
 export default class Input extends Component {
   static defaultProps = {
     amount: 1,
+    disable: false,
   }
 
   constructor(props){
@@ -36,6 +37,7 @@ export default class Input extends Component {
       id,
       borderColor,
       containerStyle,
+      disable,
       label,
       onChange,
       placeholder,
@@ -69,6 +71,7 @@ export default class Input extends Component {
                 {[style.transparent]: transparent},
                 {[style.error]: error},
                 {[style.warning]: warning},
+                {[style.disable]: disable},
                 {[style.range]:type==='range'}
             )}
             style={{borderColor}}
@@ -80,6 +83,7 @@ export default class Input extends Component {
                 {[style.padded]: padded},
                 {[style.noRightBorder]: cardSelection||rightButton},
               )}
+              disabled={disable}
               id={id}
               onChange={(e)=>onChange(e,e.target)}
               onClick={onClick}

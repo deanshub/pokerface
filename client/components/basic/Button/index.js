@@ -70,7 +70,7 @@ export default class Button extends Component {
 
 export class ButtonGroup extends Component {
   render(){
-    const {horizontal, children, center, noEqual, reversed, ...restProps} = this.props
+    const {horizontal, children, center, noEqual, reversed, wrapReverse, ...restProps} = this.props
     return(
       <div
           className={classnames(
@@ -78,7 +78,8 @@ export class ButtonGroup extends Component {
             {[style.horizontal]:horizontal},
             {[style.noEqual]:noEqual},
             {[style.reversed]:reversed},
-            {[style.center]:center}
+            {[style.center]:center},
+            {[style.wrapReverse]: wrapReverse},
           )}
           {...restProps}
       >

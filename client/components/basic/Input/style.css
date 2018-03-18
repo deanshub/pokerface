@@ -28,11 +28,14 @@
 }
 .inputContainer.error{
   border: 1px solid errorColor;
-  background: errorColorOpacitated;
+  background-color: errorColorOpacitated;
 }
 .inputContainer.warning{
   border: 1px solid warningColor;
-  background: warningColorOpacitated;
+  background-color: warningColorOpacitated;
+}
+.inputContainer.disable{
+  background-color: disabledInputColor;
 }
 .input:focus{
   border-color: focusColor;

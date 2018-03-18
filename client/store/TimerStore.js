@@ -27,6 +27,8 @@ export class TimerStore {
   @observable recovered
   @observable loading
   @observable autoUpdateBlinds
+  @observable autoSlides
+  @observable tournamentManager
 
   MINIMAL_OFFSET = 10
   MINUTES_MULTIPLIER = 60 * 1000
@@ -48,6 +50,22 @@ export class TimerStore {
     this.editedRounds = [{...this.DEFAULT_INITIAL_ROUND}]
     this.paused = true
     this.offset = 0
+    this.autoSlides = {
+      on: false,
+      enableYoutube: false,
+      times: [20, 20],
+      currentSlide: 0,
+    }
+    this.tournamentManager = {
+      visible: true,
+      on: false,
+      entries: 9,
+      totalPlayers: 9,
+      playersLeft: 9,
+      chipsPerPlayer: 100,
+      totalChips: 900,
+      text: '',
+    }
 
     // The subscription is lazy.
     this.subscribed = false

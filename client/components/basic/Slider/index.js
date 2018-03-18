@@ -12,13 +12,13 @@ export default class Slider extends Component {
     autoplay:false,
     displayItemsDuration:[],
     permanentItems:[],
-    defaultDisplayDuration: 3000
+    defaultDisplayDuration: 20
   }
 
   constructor(props){
     super(props)
-    const {autoplay, displayItemIndex} = props
-    this.state = {autoplay, displayItemIndex}
+    const {autoplay, displayItemIndex, displayItemsDuration} = props
+    this.state = {autoplay, displayItemIndex, displayItemsDuration}
   }
 
   componentDidMount(){
@@ -30,6 +30,18 @@ export default class Slider extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    const {autoplay, displayItemsDuration} = nextProps
+    this.setState({autoplay, displayItemsDuration})
+
+    if (autoplay){
+      clearTimeout(this.timeout)
+      this.setAutoplayTimeout()
+    }else{
+      clearTimeout(this.timeout)
+    }
+  }
+
   componentWillUnmount(){
     clearTimeout(this.timeout)
   }
@@ -37,25 +49,20 @@ export default class Slider extends Component {
   setAutoplayTimeout(){
     const {displayItemIndex} = this.state
 
-    const timeoutCallback = () => {
-      const nextDisplayItem = this.nextIndex()
-
-      this.setState({displayItemIndex:nextDisplayItem})
-      this.timeout = setTimeout(timeoutCallback, this.displayItemTime(nextDisplayItem))
-    }
-
-    this.timeout = setTimeout(timeoutCallback, this.displayItemTime(displayItemIndex))
+    this.timeout = setTimeout(()=>this.nextItem(), this.displayItemTime(displayItemIndex))
   }
 
   updateItem(newIndex, lastAction){
     const {autoplay} = this.props
 
-    if (autoplay){
-      clearTimeout(this.timeout)
-      this.setAutoplayTimeout()
-    }
+    this.setState({displayItemIndex:newIndex, lastAction},()=>{
+      if (autoplay){
+        clearTimeout(this.timeout)
+        this.setAutoplayTimeout()
+      }
+    })
 
-    this.setState({displayItemIndex:newIndex, lastAction})
+    return newIndex
   }
 
   nextIndex(){
@@ -67,7 +74,7 @@ export default class Slider extends Component {
   }
 
   nextItem(){
-    this.updateItem(this.nextIndex(), NAV_NEXT)
+    return this.updateItem(this.nextIndex(), NAV_NEXT)
   }
 
   previousIndex(){
@@ -78,14 +85,15 @@ export default class Slider extends Component {
   }
 
   previousItem(){
-    this.updateItem(this.previousIndex(), NAV_PREVIOUS)
+    return this.updateItem(this.previousIndex(), NAV_PREVIOUS)
   }
 
   displayItemTime(index){
-    const {defaultDisplayDuration, displayItemsDuration} = this.props
+    const {defaultDisplayDuration} = this.props
+    const {displayItemsDuration} = this.state
     const duration = displayItemsDuration[index]
 
-    return (duration && duration > 0)?duration:defaultDisplayDuration
+    return (!isNaN(duration) && duration > 0)?duration*1000:defaultDisplayDuration*1000
   }
 
   getItemsToRender(){
@@ -169,14 +177,14 @@ export default class Slider extends Component {
           moreThenOnePhoto&&
           <div
               className={classnames(style.previous, {[style.disabledNavButton]:!moreThenOnePhoto})}
-              onClick={moreThenOnePhoto? ::this.previousItem : undefined}
+              onClick={moreThenOnePhoto? ()=>this.moveSlide('left') : undefined}
           />
         }
         {
           moreThenOnePhoto&&
           <div
               className={classnames(style.next, {[style.disabledNavButton]:!moreThenOnePhoto})}
-              onClick={moreThenOnePhoto? ::this.nextItem : undefined}
+              onClick={moreThenOnePhoto? ()=>this.moveSlide('right') : undefined}
           />
         }
         {/* <div className={classnames(style.autoplay)}>
