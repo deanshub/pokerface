@@ -37,6 +37,8 @@ $disabled: #24222e;
 @value labelColor: #8c8aa1;
 @value placeholderColor: #a0a0b5;
 @value hoverSelectItemColor: rgba(65, 200, 106,0.5);
+@value disabledInputColor: #dfdfdf;
+
 
 /* login */
 @value landingTextColor: #bdbdce;

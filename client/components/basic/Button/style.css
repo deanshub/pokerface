@@ -313,3 +313,6 @@
 .buttonGroup.noEqual>*{
   flex: none;
 }
+.wrapReverse{
+  flex-flow: wrap-reverse;
+}
