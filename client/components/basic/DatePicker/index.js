@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import 'react-select/dist/react-select.min.css'
 import classnames from 'classnames'
 import style from './style.css'
 import Input from '../Input'
@@ -16,7 +15,7 @@ export default class InputSelect extends Component{
         {label&&<label className={classnames(style.label)}>{label}</label>}
         <Datetime
             className={classnames(style.datePickerContainer)}
-            inputProps={{className:classnames(style.input)}}
+            inputProps={{className:classnames(style.datePickerInput)}}
             onChange={onChange}
             value={value}
         />

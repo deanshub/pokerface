@@ -7,17 +7,16 @@
 
 .searchContainer{
   width: 30%;
-  min-width: 70vw;
+  min-width: 20em;
   margin: 0 auto;
 }
 .search{
-  background-color: darkBackgroundColor;
+  background-color: inherit;
   width: 100%;
   border: none;
   border-radius: 8px;
   margin: 0.3em 0.8em;
   outline: none;
-  color: placeholderColor;
 }
 .search:focus{
   color: darkBackgroundFontColor;

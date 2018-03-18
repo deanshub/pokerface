@@ -4,8 +4,15 @@ import classnames from 'classnames'
 import style from './style.css'
 
 export default class Textarea extends Component {
-  static defaultProps = {
-    rows: 1,
+  componentDidMount(){
+    this.input.addEventListener('keydown', ::this.autosize);
+  }
+
+  autosize(){
+    setTimeout(() => {
+      this.input.style.cssText = 'height:auto; padding:0';
+      this.input.style.cssText = 'height:' + this.input.scrollHeight + 'px';
+    },0);
   }
 
   focus(){
@@ -46,6 +53,7 @@ export default class Textarea extends Component {
               type={type}
               value={value}
               {...otherProps}
+              rows={1}
           />
         </div>
       </div>

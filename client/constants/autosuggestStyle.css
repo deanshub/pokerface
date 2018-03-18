@@ -39,6 +39,8 @@
   margin-top: 1px;
   z-index: 1;
   border: 1px solid $divider;
+  font-size: 0.8em;
+  box-sizing: border-box;
 }
 .suggestionsContainerOpen{
   display: block;
