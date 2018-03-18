@@ -325,9 +325,12 @@ export const resolvers = {
         event.location = location
         event.startDate = from
         event.endDate = to
-        event.coverImage = coverImage?path.parse(coverImage.path).base:undefined
         event.permissions = isPublic?[PUBLIC]:undefined
         event.invited = clientInvited
+
+        if (coverImage){
+          event.coverImage = path.parse(coverImage.path).base
+        }
 
         if (!isPublic){
           event.accepted = oldEvent.accepted.filter(player => {
