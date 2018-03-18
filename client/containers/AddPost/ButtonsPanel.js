@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
-import CardSelection from './CardSelection'
-import Button from '../basic/Button'
-import Tooltip from '../basic/Tooltip'
-import IsMobile from '../IsMobile'
+import CardSelectionTooltip from '../../components/CardSelection/CardSelectionTooltip'
+import Button from '../../components/basic/Button'
+import Tooltip from '../../components/basic/Tooltip'
+import IsMobile from '../../components/IsMobile'
 import { observer, inject } from 'mobx-react'
 import classnames from 'classnames'
 import style from './style.css'
@@ -51,9 +51,6 @@ export default class ButtonsPanel extends Component {
   insertCard(card){
     const {feed} = this.props
     feed.addCard(card)
-    this.setState({
-      cardSelectionOpen:false,
-    })
   }
 
   render(){
@@ -73,20 +70,15 @@ export default class ButtonsPanel extends Component {
               >
                 {!isMobile?'Spot Wizard':''}
               </Button>
-              <Tooltip
-                  open={cardSelectionOpen}
+              <CardSelectionTooltip
+                  amount={1}
+                  onCardSelected={::this.insertCard}
                   trigger={
                     <Button leftIcon="card">
                       {!isMobile?'Card':''}
                     </Button>
                   }
-              >
-                <CardSelection
-                    amount={1}
-                    onCardSelected={::this.insertCard}
-                />
-              </Tooltip>
-
+              />
               <input
                   multiple
                   onChange={::this.photosChanged}

@@ -96,10 +96,10 @@ export default class CardSelection extends Component {
   }
 
   render(){
-    const {amount} = this.props
+    const {amount, isMobile} = this.props
     const arr = Array.from(Array(amount))
     return (
-      <div className={classnames(style.multiCardsContainer)}>
+      <div className={classnames(style.multiCardsContainer, {[style.mobile]:isMobile})}>
         {arr.map((_,valueIndex)=>{
           let comps = []
           if (valueIndex>0){

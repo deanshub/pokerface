@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Tooltip from '../Tooltip'
-import CardSelection from '../../AddPlay/CardSelection'
+import CardSelectionTooltip from '../../CardSelection/CardSelectionTooltip'
 import Button from '../Button'
 import classnames from 'classnames'
 import style from './style.css'
@@ -8,13 +8,6 @@ import style from './style.css'
 export default class Input extends Component {
   static defaultProps = {
     amount: 1,
-  }
-
-  constructor(props){
-    super(props)
-    this.state = {
-      open: false,
-    }
   }
 
   focus(){
@@ -26,9 +19,6 @@ export default class Input extends Component {
   cardSelectChange(cards){
     const {onChange} = this.props
     onChange(null,{value: cards})
-    this.setState({
-      open: false,
-    })
   }
 
   render(){
@@ -53,8 +43,6 @@ export default class Input extends Component {
       hideRightButtonDivider,
       ...otherProps
     } = this.props
-
-    const {open} = this.state
 
     return(
       <div
@@ -91,22 +79,18 @@ export default class Input extends Component {
           />
           {
             cardSelection&&
-            <Tooltip
-                className={classnames(style.cardSelectionButton)}
-                open={open}    
+            <CardSelectionTooltip
+                amount={amount}
+                className={style.cardSelectionButton}
+                onCardSelected={::this.cardSelectChange}
                 trigger={
                   <Button
-                      leftIcon="cardSmallFrame"
-                      small
-                      smallIcon
+                    leftIcon="cardSmallFrame"
+                    small
+                    smallIcon
                   />
                 }
-            >
-              <CardSelection
-                  amount={amount}
-                  onCardSelected={::this.cardSelectChange}
-              />
-            </Tooltip>
+            />
           }
           {
             rightButton&&!hideRightButtonDivider&&

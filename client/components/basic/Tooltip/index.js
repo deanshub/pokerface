@@ -74,32 +74,45 @@ export default class Tooltip extends Component {
         <Target className={classnames(style.triggerContainer)}>
           {trigger}
         </Target>
-        {renderPopup && <Popper className={classnames(style.popperContainer)} placement={placement}>
-            <OnBlur open={open}>
-              {
-                (openByBlur)=>{
-                  return (
-                    <div
-                        className={classnames(
-                          style.popper,
-                          {[style.popperOpen]: openByBlur || openByHover},
-                        )}
-                        onClick={::this.handleClick}
-                    >
-                      {children}
-                      <Arrow>
-                        {({ arrowProps }) => (
-                          <span
-                              className={classnames(style.popper__arrow)}
-                              {...arrowProps}
-                          />
-                        )}
-                      </Arrow>
-                    </div>
-                  )
+        {
+          renderPopup &&
+          <Popper
+              className={classnames(style.popperContainer)}
+              modifiers={{
+                preventOverflow:{boundariesElement:'viewport'},
+              }}
+              placement={placement}
+          >
+            {({popperProps, restProps})=>(
+              <OnBlur open={open}>
+                {
+                  (openByBlur)=>{
+                    return (
+                      <div {...popperProps} {...restProps} {...{'data-placement':placement}}>
+                        <div
+                            className={classnames(
+                              style.popper,
+                              {[style.popperOpen]: openByBlur || openByHover},
+                            )}
+                            onClick={::this.handleClick}
+                        >
+                          {children}
+                          <Arrow>
+                            {({ arrowProps }) => (
+                              <span
+                                  className={classnames(style.popper__arrow)}
+                                  {...arrowProps}
+                              />
+                            )}
+                          </Arrow>
+                        </div>
+                      </div>
+                    )
+                  }
                 }
-              }
-            </OnBlur>
+              </OnBlur>
+            )
+            }
         </Popper>}
       </Manager>
     )

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import Loader from '../basic/Loader'
-import Video from '../basic/Video'
+import Loader from '../../components/basic/Loader'
+import Video from '../../components/basic/Video'
 import classnames from 'classnames'
 import style from './style.css'
 
