@@ -3,9 +3,13 @@ import classnames from 'classnames'
 import style from './style.css'
 
 export default class Checkbox extends Component {
+  static defaultProps = {
+    autoWidth: false,
+  }
 
   render(){
     const {
+      autoWidth,
       id,
       label,
       checkboxLabel,
@@ -26,7 +30,7 @@ export default class Checkbox extends Component {
               onChange={(e)=>onChange(e,e.target)}
               type="checkbox"
           />
-          <label className={classnames(style.checkboxLabel)} htmlFor={id}>{checkboxLabel}</label>
+          <label className={classnames(style.checkboxLabel,{[style.autoWidth]:autoWidth})} htmlFor={id}>{checkboxLabel}</label>
         </div>
       </div>
     )

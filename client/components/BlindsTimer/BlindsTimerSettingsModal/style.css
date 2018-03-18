@@ -71,6 +71,17 @@
   background-image: url('../../../assets/spotplayer/show-hover-selected.png');
 }
 
+.tournamentTab {
+  @extend .tab;
+  background-image: url('../../../assets/user-search.png');
+}
+.tournamentTab:hover {
+  background-image: url('../../../assets/user-hover.png');
+}
+.tournamentTab.active {
+  background-image: url('../../../assets/user-hover.png');
+}
+
 .autoSlidesContainer{
   display: flex;
 }

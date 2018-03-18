@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
 import BlindsTimer from '../../components/BlindsTimer'
 import YouTube from '../../components/YouTube'
+import TournementManager from '../../components/TournementManager'
 import Slider from '../../components/basic/Slider'
 import WidthGetter from '../../components/basic/WidthGetter'
 import classnames from 'classnames'
@@ -33,10 +34,19 @@ export default class RebrandedBlindsTimer extends Component {
           autoplay={timer.autoSlides.on}
           className={classnames(style.blindsTimerSlider)}
           displayItemsDuration={timer.autoSlides.times.toJS()}
+          permanentItems={[0,1,2]}
           style={{backgroundColor:'black', boxShadow:'0 0 10px 0 black'}}
       >
         <BlindsTimer image={image} title={title}/>
-        <WidthGetter render={this.renderYoutube}/>
+        {
+          timer.autoSlides.enableYoutube&&
+          <WidthGetter render={this.renderYoutube}/>
+        }
+        {
+          timer.tournamentManager.on&&(
+            <TournementManager/>
+          )
+        }
       </Slider>
     )
   }

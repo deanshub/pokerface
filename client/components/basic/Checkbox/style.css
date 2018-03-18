@@ -16,6 +16,10 @@
   border: 0px;
 }
 
+.autoWidth{
+  width: auto;
+}
+
 .centered {
   align-self: center;
 }
