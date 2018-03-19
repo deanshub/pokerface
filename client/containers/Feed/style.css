@@ -79,6 +79,7 @@
 .leftPane{
   flex: 1;
   display: flex;
+  align-items: center;
 }
 .rightPane{
   display: flex;
@@ -190,6 +191,7 @@
 /* comment component */
 .commentContainer{
   display: flex;
+  font-size: 0.8em;
   margin: 1em 0;
 }
 .commentRightPane{
@@ -199,7 +201,6 @@
 .commentDescription{
   color: textColor;
   display: flex;
-  font-size: 0.8em;
 }
 
 .commentContent{
