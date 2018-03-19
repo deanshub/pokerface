@@ -28,6 +28,7 @@ export default class TooltipCardSelection extends Component {
           render={(isMobile) => {
             return (
                 <Tooltip
+                  className={className}
                   modalStyle={isMobile&&amount>1}
                   open={open}
                   trigger={trigger}
