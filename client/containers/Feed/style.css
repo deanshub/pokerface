@@ -166,8 +166,6 @@
 }
 
 .shareMenu{
-  width: 5em;
-  padding: 0.7em 1em;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

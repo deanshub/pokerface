@@ -19,6 +19,7 @@
   align-items: center;
   color: inherit;
   height: 100%;
+  white-space: nowrap;
 }
 
 .simple{
