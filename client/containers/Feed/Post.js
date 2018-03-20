@@ -273,7 +273,7 @@ export default class Post extends Component {
               }
             </div>
             <Tooltip
-                //placement="bottom-end"
+                placement="bottom-end"
                 trigger={
                   <Button
                       leftIcon="share"
@@ -326,7 +326,7 @@ export default class Post extends Component {
             {
               post.owner.username===auth.user.username&&
               <Tooltip
-                  //placement="bottom-end"
+                  placement="bottom-end"
                   trigger={
                     <Button
                         leftIcon="actionMenu"

@@ -86,7 +86,7 @@ export default class Tooltip extends Component {
           renderPopup &&
           <Popper
               modifiers={{
-                preventOverflow:{boundariesElement:'viewport'},
+                //preventOverflow:{boundariesElement:'viewport'},
               }}
               placement={placement}
           >
