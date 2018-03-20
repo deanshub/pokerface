@@ -1,8 +1,23 @@
 const chipSizes = {
+  1000000:{
+    value:1000000,
+    primaryColor:'#000000',
+    seconderyColor:'gray',
+  },
+  100000:{
+    value:100000,
+    primaryColor:'#000000',
+    seconderyColor:'brown',
+  },
+  10000:{
+    value:10000,
+    primaryColor:'#000000',
+    seconderyColor:'#7e57c2',
+  },
   1000:{
     value:1000,
-    primaryColor:'brown',
-    seconderyColor:'gray',
+    primaryColor:'#000000',
+    seconderyColor:'#009688',
   },
   100:{
     value:100,
