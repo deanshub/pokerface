@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 import DevTools from 'mobx-react-devtools'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, NavLink } from 'react-router-dom'
 import Loadable from 'react-loadable'
 import Loader from '../../components/basic/Loader'
 import Feed from '../Feed'
@@ -84,12 +84,16 @@ export default class Navigation extends Component {
       </div>
     :
     <div className={classnames(style.header)}>
-      <div className={classnames(style.title)}>
+      <NavLink
+          className={classnames(style.title)}
+          exact
+          to="/"
+      >
         <img className={classnames(style.titleImg)} src={image}/>
         <div>
           Pokerface.io
         </div>
-      </div>
+      </NavLink>
       <TopMenu/>
     </div>
   }

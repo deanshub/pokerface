@@ -50,7 +50,15 @@ export default class Tooltip extends Component {
   }
 
   render(){
-    const {children, trigger, onOpen, event, className, placement} = this.props
+    const {
+      className,
+      children,
+      event,
+      modalStyle,
+      onOpen,
+      placement,
+      trigger,
+    } = this.props
     const {open, openByHover, opened} = this.state
 
     if(open && onOpen){
@@ -74,33 +82,63 @@ export default class Tooltip extends Component {
         <Target className={classnames(style.triggerContainer)}>
           {trigger}
         </Target>
-        {renderPopup && <Popper className={classnames(style.popperContainer)} placement={placement}>
-            <OnBlur open={open}>
-              {
-                (openByBlur)=>{
-                  return (
-                    <div
-                        className={classnames(
-                          style.popper,
-                          {[style.popperOpen]: openByBlur || openByHover},
-                        )}
-                        onClick={::this.handleClick}
-                    >
-                      {children}
-                      <Arrow>
-                        {({ arrowProps }) => (
-                          <span
-                              className={classnames(style.popper__arrow)}
-                              {...arrowProps}
-                          />
-                        )}
-                      </Arrow>
-                    </div>
-                  )
-                }
+        {
+          renderPopup &&
+          <Popper
+              modifiers={{
+                //preventOverflow:{boundariesElement:'viewport'},
+              }}
+              placement={placement}
+          >
+            {({popperProps, restProps})=>{
+              if (modalStyle){
+                popperProps.style = undefined
               }
-            </OnBlur>
-        </Popper>}
+
+              return (
+                <OnBlur open={open}>
+                  {
+                    (openByBlur)=>{
+                      return (
+                        <div
+                          {...popperProps}
+                          {...restProps}
+                          className={classnames(style.popperContainer, {[style.overlay]:modalStyle, [style.open]:open})}
+                        >
+                          <div
+                              className={classnames(
+                                style.popper,
+                                {[style.open]: openByBlur || openByHover},
+                              )}
+                              onClick={::this.handleClick}
+                          >
+                            <div className={classnames(style.viewport)}>
+                              {children}
+                            </div>
+                            <Arrow>
+                              {({ arrowProps }) => {
+                                if (modalStyle){
+                                  arrowProps.style = {
+                                    left: 'calc(50% - 0.4em)',
+                                    bottom: '-0.2em'
+                                  }
+                                }
+                                return (<span
+                                    className={classnames(style.popper__arrow)}
+                                    {...arrowProps}
+                                />)
+                              }}
+                            </Arrow>
+                          </div>
+                        </div>
+                      )
+                    }
+                  }
+                </OnBlur>
+              )
+            }}
+          </Popper>
+        }
       </Manager>
     )
   }

@@ -73,9 +73,10 @@
 
 .card:before {
   content: attr(data-letter);
-  left: 10%;
+  left: 3%;
   top: 5%;
   text-align: left;
+  letter-spacing: -0.2em;
 }
 
 .card:after {
@@ -83,6 +84,7 @@
   right: 10%;
   bottom: 5%;
   text-align: right;
+  letter-spacing: -0.2em;
 }
 
 .red {

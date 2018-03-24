@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react'
 import Loader from '../../components/basic/Loader'
 import Post from './Post'
 import PhotoGallery from './PhotoGallery'
-import AddPlay from '../../components/AddPlay'
+import AddPost from '../AddPost'
 import IsUserLoggedIn from '../../components/IsUserLoggedIn'
 import ResponsiveContainer from '../../components/ResponsiveContainer'
 import StickyNotification from './StickyNotification'
@@ -59,7 +59,7 @@ export default class FeedContainer extends Component {
         <IsUserLoggedIn>
           <React.Fragment>
             <StickyNotification onClick={::this.pushNewReceivedPost} postsCount={newReceivedPosts.size}/>
-            <AddPlay />
+            <AddPost />
           </React.Fragment>
         </IsUserLoggedIn>
         <div>
