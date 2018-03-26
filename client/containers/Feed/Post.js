@@ -227,173 +227,173 @@ export default class Post extends Component {
   }
 
   render() {
-    const { post, auth, standalone, routing } = this.props
+    const { post, auth, standalone, routing, theme } = this.props
     const {busy} = this.state
     const activeLike = post.likes.filter(user=>user.username===auth.user.username).length>0
 
     return (
       <Dimmer
           busy={busy}
-          className={classnames(style.postContainer)}
+          className={classnames(style.postContainer, style[theme])}
           label="Downloading gif"
       >
         <div className={classnames(style.post)}>
-        <div className={classnames(style.postHeader)}>
-          <div className={classnames(style.leftPane)}>
-            <BasicImage
-                avatar
-                href={`/profile/${post.owner.username}`}
-                src={this.getUserImageUrl()}
-            />
-            <div className={classnames(style.headerTextContainer)}>
-              <div
-                  className={classnames(style.headerTextTitle)}
-                  onClick={()=>routing.push(`/profile/${post.owner.username}`)}
-              >
-                {this.getUserFullName()}
-              </div>
-              <div className={classnames(style.headerTextTime)}>
-                {this.timeAgo.format(new Date(post.createdAt))}
-              </div>
-            </div>
-          </div>
-          <div className={classnames(style.rightPane)}>
-            <div className={classnames(style.likeContainer)}>
-              <Button
-                  active={activeLike}
-                  leftIcon="like"
-                  onClick={::this.setLike}
-                  small
+          <div className={classnames(style.postHeader)}>
+            <div className={classnames(style.leftPane)}>
+              <BasicImage
+                  avatar
+                  href={`/profile/${post.owner.username}`}
+                  src={this.getUserImageUrl()}
               />
-              {
-                post.likes&&post.likes.length>0&&
-                <div>
-                  {`(${post.likes.length})`}
-                </div>
-              }
-            </div>
-            <Tooltip
-                placement="bottom-end"
-                trigger={
-                  <Button
-                      leftIcon="share"
-                      small
-                  />
-                }
-            >
-              <div className={classnames(style.shareMenu)}>
-                {
-                  navigator.share?
-                  <Button
-                      onClick={::this.shareMobile}
-                      simple
-                      small
-                      style={{padding: '0.5em 0'}}
-                  >
-                    Share Link...
-                  </Button>
-                  :
-                  <Button
-                      onClick={::this.sharePostOnFacebook}
-                      simple
-                      small
-                      style={{padding: '0.5em 0'}}
-                  >
-                    Facebook
-                  </Button>
-                }
-                {
-                  post.spot!==undefined&&!navigator.share&&
-                  <Button
-                      onClick={::this.downloadGif}
-                      simple
-                      small
-                      style={{padding: '0.5em 0'}}
-                  >
-                      Download Gif
-                  </Button>
-                }
-                <Button
-                    onClick={::this.getLink}
-                    simple
-                    small
-                    style={{padding: '0.5em 0', minWidth: 'auto'}}
+              <div className={classnames(style.headerTextContainer)}>
+                <div
+                    className={classnames(style.headerTextTitle)}
+                    onClick={()=>routing.push(`/profile/${post.owner.username}`)}
                 >
-                  Get Link
-                </Button>
+                  {this.getUserFullName()}
+                </div>
+                <div className={classnames(style.headerTextTime)}>
+                  {this.timeAgo.format(new Date(post.createdAt))}
+                </div>
               </div>
-            </Tooltip>
-            {
-              post.owner.username===auth.user.username&&
+            </div>
+            <div className={classnames(style.rightPane)}>
+              <div className={classnames(style.likeContainer)}>
+                <Button
+                    active={activeLike}
+                    leftIcon="like"
+                    onClick={::this.setLike}
+                    small
+                />
+                {
+                  post.likes&&post.likes.length>0&&
+                  <div>
+                    {`(${post.likes.length})`}
+                  </div>
+                }
+              </div>
               <Tooltip
                   placement="bottom-end"
                   trigger={
                     <Button
-                        leftIcon="actionMenu"
+                        leftIcon="share"
                         small
                     />
                   }
               >
                 <div className={classnames(style.shareMenu)}>
+                  {
+                    navigator.share?
+                      <Button
+                          onClick={::this.shareMobile}
+                          simple
+                          small
+                          style={{padding: '0.5em 0'}}
+                      >
+                        Share Link...
+                      </Button>
+                      :
+                      <Button
+                          onClick={::this.sharePostOnFacebook}
+                          simple
+                          small
+                          style={{padding: '0.5em 0'}}
+                      >
+                        Facebook
+                      </Button>
+                  }
+                  {
+                    post.spot!==undefined&&!navigator.share&&
+                    <Button
+                        onClick={::this.downloadGif}
+                        simple
+                        small
+                        style={{padding: '0.5em 0'}}
+                    >
+                        Download Gif
+                    </Button>
+                  }
                   <Button
-                      onClick={::this.deletePost}
+                      onClick={::this.getLink}
                       simple
                       small
-                      style={{padding: '0.5em 0'}}
+                      style={{padding: '0.5em 0', minWidth: 'auto'}}
                   >
-                      Delete Post
+                    Get Link
                   </Button>
                 </div>
               </Tooltip>
+              {
+                post.owner.username===auth.user.username&&
+                <Tooltip
+                    placement="bottom-end"
+                    trigger={
+                      <Button
+                          leftIcon="actionMenu"
+                          small
+                      />
+                    }
+                >
+                  <div className={classnames(style.shareMenu)}>
+                    <Button
+                        onClick={::this.deletePost}
+                        simple
+                        small
+                        style={{padding: '0.5em 0'}}
+                    >
+                        Delete Post
+                    </Button>
+                  </div>
+                </Tooltip>
+              }
+            </div>
+          </div>
+          {post.event&&!routing.location.pathname.startsWith('/events/')&&
+            <NavLink
+                className={classnames(style.eventSection)}
+                exact
+                to={`/events/${post.event.id}`}
+            >
+              <img src={eventIcon} style={{marginRight:'0.5em'}}/> at
+              <div className={classnames(style.eventLocation)}>{post.event.location}</div>
+            </NavLink>
+          }
+          <div className={classnames(style.postContent,{[style.noCommentsSection]:(!post.comments.length>0&&!auth.user.username)})}>
+            <PostEditor
+                post={post}
+                readOnly
+                ref={(el)=>this.postEditorElement = el}
+                standalone={standalone}
+            />
+            {
+              post.photos.length>0&&
+              <div className={classnames(style.photosContainer)}>
+                {post.photos.map((photo, index)=>
+                  <PostImage
+                      key={index}
+                      onClick={()=>this.openModal(index)}
+                      photo={photo}
+                  />
+                )}
+              </div>
             }
           </div>
-        </div>
-        {post.event&&!routing.location.pathname.startsWith('/events/')&&
-          <NavLink
-              className={classnames(style.eventSection)}
-              exact
-              to={`/events/${post.event.id}`}
-          >
-            <img src={eventIcon} style={{marginRight:'0.5em'}}/> at
-            <div className={classnames(style.eventLocation)}>{post.event.location}</div>
-          </NavLink>
-        }
-        <div className={classnames(style.postContent,{[style.noCommentsSection]:(!post.comments.length>0&&!auth.user.username)})}>
-          <PostEditor
-              post={post}
-              readOnly
-              ref={(el)=>this.postEditorElement = el}
-              standalone={standalone}
-          />
           {
-            post.photos.length>0&&
-            <div className={classnames(style.photosContainer)}>
-              {post.photos.map((photo, index)=>
-                <PostImage
-                    key={index}
-                    onClick={()=>this.openModal(index)}
-                    photo={photo}
+            (post.comments.length>0||auth.user.username!==undefined)&&
+            <div className={classnames(style.postComments)}>
+              <Comments
+                  comments={post.comments}
+              />
+              {auth.isLoggedIn?
+                <Reply
+                    post={post}
+                    removeReply={::this.removeReply}
+                    standalone={standalone}
                 />
-              )}
+                :null
+            }
             </div>
           }
-        </div>
-        {
-          (post.comments.length>0||auth.user.username!==undefined)&&
-          <div className={classnames(style.postComments)}>
-            <Comments
-                comments={post.comments}
-            />
-            {auth.isLoggedIn?
-              <Reply
-                  post={post}
-                  removeReply={::this.removeReply}
-                  standalone={standalone}
-              />
-              :null
-          }
-          </div>
-        }
         </div>
       </Dimmer>
     )

@@ -41,12 +41,18 @@
 .postContainer{
   border-radius: 10px;
   margin:10px 0px;
-  border: 1px solid #dfdfdf;
   background-color: white;
 }
 
+.postContainer.day{
+  box-shadow: $dayBoxShadow;
+}
+
+.postContainer.night{
+  box-shadow: $nightBoxShadow;
+}
+
 .post{
-  box-shadow: 0 0 10px 0 black;
   border-radius: inherit;
   display: flex;
   flex-direction: column;

@@ -16,7 +16,6 @@
 }
 
 .autosuggestInput{
-  background-color: darkBackgroundColor;
   background-image: url("../../assets/user-search.png");
   background-repeat: no-repeat;
   padding-left: 60px;
@@ -24,7 +23,20 @@
   min-width: 10em;
 }
 
-.autosuggestInput:focus{
+.autosuggestInput.day{
+  background-color: #d1d1dc;
+}
+
+.autosuggestInput.night{
+  background-color: darkBackgroundColor;
+}
+
+.autosuggestInput.day:focus{
+  background-color: #a0a0b5;
+  color: white;
+}
+
+.autosuggestInput.night:focus{
   background-color:darkBackgroundFocusedColor;
   color: darkBackgroundFontColor;
 }

@@ -92,7 +92,7 @@ export default class SearchBar extends Component {
   }
 
   render(){
-    const {events, globalPlayersSearch} = this.props
+    const {events, globalPlayersSearch, theme} = this.props
     const {searchValue} = this.state
     const {immutableAvailablePlayers} = globalPlayersSearch
 
@@ -147,7 +147,7 @@ export default class SearchBar extends Component {
               renderSuggestion={::this.renderSuggestion}
               suggestions={sections}
               theme={{
-                input: classnames(isMobile?style.autosuggestInputMobile:style.autosuggestInput),
+                input: classnames(isMobile?style.autosuggestInputMobile:style.autosuggestInput, style[theme]),
                 container: classnames(isMobile?style.autosuggestMobile:style.autosuggest),
                 sectionContainer: classnames(style.sectionContainer),
                 sectionContainerFirst: classnames(style.sectionContainerFirst),
