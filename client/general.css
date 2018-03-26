@@ -19,9 +19,7 @@
 
 
 body{
-  /* background:url('./assets/pattern-black.png');
-  background-color: appBackgroundColor;
-  background-attachment: fixed; */
+  background-attachment: fixed;
   min-height: 100vh;
   margin: 0px;
   font-family: $contentFont;
