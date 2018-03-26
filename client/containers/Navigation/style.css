@@ -88,8 +88,8 @@
   }
 
   .configPointer {
-    border-left: solid 5px #535168;
-    border-right: solid 5px #535168;
+    border-left: solid 5px transparent;
+    border-right: solid 5px transparent;
     border-top: solid 5px #a0a0b5;
   }
 }

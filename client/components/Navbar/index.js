@@ -43,11 +43,11 @@ export default class Navbar extends Component {
 
   render() {
     const {auth, events, feed} = this.props
-    const {username} = auth.user
+    const {user:{username}, theme} = auth
     const { newPostsCount, newRelatedPostsCount } = feed
 
     return (
-      <div className={classnames(style.container, style[auth.theme])}>
+      <div className={classnames(style.container, style[theme])}>
         <NavLink
             activeClassName={classnames(style.navbarRouteItemActive)}
             className={classnames(style.navbarRouteItem)}
@@ -108,7 +108,7 @@ export default class Navbar extends Component {
         <div className={classnames(style.navbarSection)}>
           Search
         </div>
-        <SearchBar/>
+        <SearchBar theme={theme}/>
       </div>
     )
   }

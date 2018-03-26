@@ -1,2 +1,2 @@
-export const THEMES = ['Day', 'night']
-export const DEFAULT_THEME = 'Day'
+export const THEMES = ['Day', 'Night']
+export const DEFAULT_THEME = 'Night'

@@ -8,6 +8,18 @@
   font-family: $titleFont;
 }
 
+.container.day{
+  .navbarRouteItem {
+    color: #535168;
+  }
+}
+
+.container.night{
+  .navbarRouteItem {
+    color: #f0f0f0;
+  }
+}
+
 .container {
   position: fixed;
   width: 20%;
@@ -34,17 +46,5 @@
 
   .notification{
     padding: 0.17em 0.5em;
-  }
-}
-
-.container.day{
-  .navbarRouteItem {
-    color: #535168;
-  }
-}
-
-.container.night{
-  .navbarRouteItem {
-    color: #f0f0f0;
   }
 }
