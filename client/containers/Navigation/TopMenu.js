@@ -44,15 +44,15 @@ export default class TopMenu extends Component {
     const {user} = auth
     const {editingPersonalInfo, selectUserModalOpen} = this.state
     const trigger = (
-        <div className={classnames(style.triggerContainer)}>
-          <Image
-              avatar
-              className={classnames(style.avatar)}
-              small
-              src={user.avatar}
-          />
-          <div className={classnames(style.configPointer)}/>
-        </div>
+      <div className={classnames(style.triggerContainer)}>
+        <Image
+            avatar
+            className={classnames(style.avatar)}
+            small
+            src={user.avatar}
+        />
+        <div className={classnames(style.configPointer)}/>
+      </div>
     )
 
     return (
@@ -72,45 +72,44 @@ export default class TopMenu extends Component {
                 <div className={classnames(style.name)}>{user.fullname}</div>
                 <div className={classnames(style.email)}>{user.email}</div>
               </div>
-           </div>
-           <div className={classnames(style.divider)}/>
-           <div
-               className={classnames(style.topMenuItem, style.topMenuClickableItem)}
-               onClick={::this.toggleEditPersonalInfo}
-           >
-             Edit
-           </div>
-           {
-             showSwitchUser &&
-             <div
-                 className={classnames(style.topMenuItem, style.topMenuClickableItem)}
-                 onClick={() => this.setState({selectUserModalOpen:true})}
-             >
-               Switch user
-             </div>
-           }
-
-           <div
-               className={classnames(style.topMenuItem, style.topMenuClickableItem)}
-               onClick={::this.handleLogout}
-           >
-             Logout
-           </div>
-         </div>
+            </div>
+            <div className={classnames(style.divider)}/>
+            <div
+                className={classnames(style.topMenuItem, style.topMenuClickableItem)}
+                onClick={::this.toggleEditPersonalInfo}
+            >
+              Edit
+            </div>
+            {
+              showSwitchUser &&
+              <div
+                  className={classnames(style.topMenuItem, style.topMenuClickableItem)}
+                  onClick={() => this.setState({selectUserModalOpen:true})}
+              >
+                Switch user
+              </div>
+            }
+            <div
+                className={classnames(style.topMenuItem, style.topMenuClickableItem)}
+                onClick={::this.handleLogout}
+            >
+              Logout
+            </div>
+          </div>
         </Tooltip>
-       {
-         selectUserModalOpen &&
-         <SelectUserModal
-             onClose={() => this.setState({selectUserModalOpen:false})}
-             open={selectUserModalOpen}
-             redirectUrl="/"
-         />
-       }
-       <EditProfileModal
-           open={editingPersonalInfo}
-           toggle={::this.toggleEditPersonalInfo}
-       />
-     </React.Fragment>
+        {
+          selectUserModalOpen &&
+          <SelectUserModal
+              onClose={() => this.setState({selectUserModalOpen:false})}
+              open={selectUserModalOpen}
+              redirectUrl="/"
+          />
+        }
+        <EditProfileModal
+            open={editingPersonalInfo}
+            toggle={::this.toggleEditPersonalInfo}
+        />
+      </React.Fragment>
     )
   }
 }

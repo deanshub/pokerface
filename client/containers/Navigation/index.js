@@ -104,6 +104,7 @@ export default class Navigation extends Component {
   }
 
   render() {
+    const {theme} = this.props
     const {navbarOpen, searchBarOpen} = this.state
 
     return (
@@ -156,14 +157,18 @@ export default class Navigation extends Component {
                     path="/tools/timer"
                 />
                 <Route
-                    component={LoadablePreFlop}
                     exact
                     path="/tools/pre-flop"
+                    render={props => (
+                      <LoadablePreFlop {...props} theme={theme}/>
+                    )}
                 />
                 <Route
-                    component={LoadableShoveFold}
                     exact
                     path="/tools/shove-fold"
+                    render={props => (
+                      <LoadableShoveFold {...props} theme={theme}/>
+                    )}
                 />
                 <Route
                     component={LoadableSpotNote}
@@ -178,20 +183,20 @@ export default class Navigation extends Component {
               render={(isMobile) => {
                 return (
                   isMobile?
-                  <React.Fragment>
-                    <MobileNavbar
-                        key="navbar"
-                        onClose={::this.onCloseMobileNavbar}
-                        open={navbarOpen}
-                    />
-                    <MobileSearchBar
-                        key="searchBar"
-                        onClose={::this.onCloseMobileSearchBar}
-                        open={searchBarOpen}
-                    />
-                  </React.Fragment>
-                  :
-                    null
+                    <React.Fragment>
+                      <MobileNavbar
+                          key="navbar"
+                          onClose={::this.onCloseMobileNavbar}
+                          open={navbarOpen}
+                      />
+                      <MobileSearchBar
+                          key="searchBar"
+                          onClose={::this.onCloseMobileSearchBar}
+                          open={searchBarOpen}
+                      />
+                    </React.Fragment>
+                    :
+                      null
                 )
               }}
           />

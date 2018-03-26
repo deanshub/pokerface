@@ -7,6 +7,8 @@ import Modal, {ModalHeader,ModalContent,ModalFooter}  from '../../components/bas
 import Button, {ButtonGroup} from '../../components/basic/Button'
 import Input from '../../components/basic/Input'
 import InputImage from '../../components/basic/InputImage'
+import Select from '../../components/basic/Select'
+import {THEMES} from '../../constants/userSettings'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -36,6 +38,11 @@ export default class EditProfile extends Component {
       this.setState({loadingAvatar:false})
     }
     reader.readAsDataURL(imageFile)
+  }
+
+  onSelectTheme(theme){
+    const {auth} = this.props
+    auth.setTheme(theme)
   }
 
   coverImageChangeHandler(imageFile){
@@ -78,66 +85,69 @@ export default class EditProfile extends Component {
   render() {
     const {open, toggle} = this.props
     const {firstname, lastname, loadingCoverImage, loadingAvatar} = this.state
-
+    const themeOptions = THEMES.map(theme => ({value:theme, text:theme}))
     return (
-        <Modal compact open={open}>
-          <ModalHeader>
-            Account Setting
-          </ModalHeader>
-          <ModalContent>
-            <div>
-              <div className={classnames(style.fieldsGroup)}>
-                <InputImage
-                    avatar
-                    label="Profile Picture"
-                    loading={loadingAvatar}
-                    onSelect={(image) => {
-                      this.avatarChangeHandler(image)
-                    }}
-                    src={this.avatarSrc}
-                />
-                <div className={classnames(style.name)}>
-                  <Input
-                      containerStyle={{justifyContent:'baseline'}}
-                      label="First name"
-                      name="firstname"
-                      onChange={::this.handleChange}
-                      padded
-                      placeholder="First name"
-                      value={firstname}
-                  />
-                  <div/>
-                  <Input
-                      label="Last name"
-                      name="lastname"
-                      onChange={::this.handleChange}
-                      padded
-                      placeholder="Last name"
-                      value={lastname}
-                  />
-                </div>
-              </div>
-              <InputImage
-                  label="Cover Photo"
-                  loading={loadingCoverImage}
-                  onSelect={(image) => {
-                    this.coverImageChangeHandler(image)
-                  }}
-                  src={this.coverSrc}
+      <Modal compact open={open}>
+        <ModalHeader>
+          Account Setting
+        </ModalHeader>
+        <ModalContent>
+          <div className={classnames(style.fieldsGroup)}>
+            <InputImage
+                avatar
+                label="Profile Picture"
+                loading={loadingAvatar}
+                onSelect={(image) => {
+                  this.avatarChangeHandler(image)
+                }}
+                src={this.avatarSrc}
+            />
+            <div className={classnames(style.name)}>
+              <Input
+                  containerStyle={{justifyContent:'baseline'}}
+                  label="First name"
+                  name="firstname"
+                  onChange={::this.handleChange}
+                  padded
+                  placeholder="First name"
+                  value={firstname}
+              />
+              <div/>
+              <Input
+                  label="Last name"
+                  name="lastname"
+                  onChange={::this.handleChange}
+                  padded
+                  placeholder="Last name"
+                  value={lastname}
               />
             </div>
-          </ModalContent>
-          <ModalFooter>
-            <ButtonGroup
-                horizontal
-                noEqual
-                reversed
-            >
-              <Button onClick={::this.update} primary>Save</Button>
-              <Button onClick={toggle}> Cancel </Button>
-            </ButtonGroup>
-          </ModalFooter>
-        </Modal>
+          </div>
+          <InputImage
+              label="Cover Photo"
+              loading={loadingCoverImage}
+              onSelect={(image) => {
+                this.coverImageChangeHandler(image)
+              }}
+              src={this.coverSrc}
+          />
+          <Select
+              label="Theme"
+              onChange={::this.onSelectTheme}
+              options={themeOptions}
+          />
+        </ModalContent>
+        <ModalFooter>
+          <ButtonGroup
+              horizontal
+              noEqual
+              reversed
+          >
+            <Button onClick={::this.update} primary>Save</Button>
+            <Button onClick={toggle}> Cancel </Button>
+          </ButtonGroup>
+        </ModalFooter>
+      </Modal>
     )
   }
 }

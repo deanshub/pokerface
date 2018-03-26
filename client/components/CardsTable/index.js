@@ -22,6 +22,7 @@ export default class CardsTable extends Component {
   }
   static propTypes = {
     inFeed: PropTypes.bool,
+    theme: PropTypes.string,
   }
 
   constructor(props){
@@ -104,7 +105,7 @@ export default class CardsTable extends Component {
   }
 
   render() {
-    const {title, subtitle, inFeed, textColor, defaultSet} = this.props
+    const {title, subtitle, inFeed, textColor, defaultSet, theme} = this.props
     const {sets} = this.state
     const normalizedSets = sets.map(set=>{
       if (!Array.isArray(set.cards)){
@@ -121,10 +122,10 @@ export default class CardsTable extends Component {
           mobileClassName={classnames(style.container, style.mobile, {[style.inFeed]:inFeed})}
           style={{color:textColor}}
       >
-        <div className={classnames(style.title, style.maintitle, {[style.inFeed]:inFeed})}>
+        <div className={classnames(style.title, style.maintitle, style[theme], {[style.inFeed]:inFeed})}>
           {title}
         </div>
-        <div className={classnames(style.title, style.subtitle, {[style.inFeed]:inFeed})}>
+        <div className={classnames(style.title, style.subtitle, style[theme], {[style.inFeed]:inFeed})}>
           {subtitle}
         </div>
         <ResponsiveText scale={0.15}>
@@ -153,14 +154,14 @@ export default class CardsTable extends Component {
         </ResponsiveText>
         {
           normalizedSets.length>1?
-          <div className={classnames(style.legend)}>
+          <div className={classnames(style.legend, style[theme])}>
             {normalizedSets.map(this.getLegend.bind(this))}
           </div>
           :null
         }
         {
           normalizedSets.length===1&&defaultSet&&defaultSet.label?
-          <div className={classnames(style.legend)}>
+          <div className={classnames(style.legend, style[theme])}>
             {normalizedSets.map(this.getLegend.bind(this))}
             {this.getLegend(defaultSet)}
           </div>
