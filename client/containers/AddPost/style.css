@@ -14,6 +14,13 @@
   background-color: white;
 }
 
+.addPostContent.day{
+  box-shadow: $dayBoxShadow;
+}
+.addPostContent.night{
+  box-shadow: $nightBoxShadow;
+}
+
 .panelInEditPost{
   display: flex;
   align-items: center;

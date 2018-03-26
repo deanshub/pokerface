@@ -12,6 +12,7 @@ import style from './style.css'
 
 
 @inject('feed')
+@inject('auth')
 @observer
 export default class FeedContainer extends Component {
   constructor(props: Object){
@@ -47,7 +48,7 @@ export default class FeedContainer extends Component {
   }
 
   render() {
-    const { feed } = this.props
+    const { auth, feed } = this.props
     const { newReceivedPosts } = feed
 
     return (
@@ -59,16 +60,22 @@ export default class FeedContainer extends Component {
         <IsUserLoggedIn>
           <React.Fragment>
             <StickyNotification onClick={::this.pushNewReceivedPost} postsCount={newReceivedPosts.size}/>
-            <AddPost />
+            <AddPost theme={auth.theme}/>
           </React.Fragment>
         </IsUserLoggedIn>
         <div>
-            {feed.parsedPosts.map(post=><Post key={post.id} post={post}/>)}
-            {feed.loading?
-              <Loader compact/>
-            :
-              null
-            }
+          {feed.parsedPosts.map(post=>(
+            <Post
+                key={post.id}
+                post={post}
+                theme={auth.theme}
+            />
+          ))}
+          {feed.loading?
+            <Loader compact/>
+          :
+            null
+          }
           <PhotoGallery/>
         </div>
       </ResponsiveContainer>

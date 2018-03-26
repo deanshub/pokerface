@@ -1,4 +1,17 @@
 @import "../../constants/styles";
 
 .app {
+  /* background:url('../../assets/pattern-black.png');
+  background-color: appBackgroundColor; */
+  background-attachment: fixed;
+}
+
+.app.day {
+  background:url('../../assets/pattern-white.png');
+  background-color: white;
+}
+
+.app.night {
+  background:url('../../assets/pattern-black.png');
+  background-color: appBackgroundColor;
 }

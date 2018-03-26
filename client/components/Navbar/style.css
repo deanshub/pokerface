@@ -1,10 +1,6 @@
 @import "../../constants/styles";
 @import "../../constants/autosuggestStyle";
 
-.container {
-  position: fixed;
-  width: 20%;
-}
 
 .navbarItem {
   display: block;
@@ -12,28 +8,43 @@
   font-family: $titleFont;
 }
 
-.navbarRouteItem {
-  @extend .navbarItem;
-
-  color: #f0f0f0;
-  margin-top: 1.1em;
+.container.day{
+  .navbarRouteItem {
+    color: #535168;
+  }
 }
 
-.navbarRouteItem:hover {
-  color:$activeButton;
+.container.night{
+  .navbarRouteItem {
+    color: #f0f0f0;
+  }
 }
 
-.navbarRouteItemActive {
-  color:$activeButton;
-}
+.container {
+  position: fixed;
+  width: 20%;
 
-.navbarSection {
-  @extend .navbarItem;
+  .navbarRouteItem {
+    @extend .navbarItem;
+    margin-top: 1.1em;
+  }
 
-  color: #a0a0b5;
-  margin-top: 2em;
-}
+  .navbarRouteItem:hover {
+    color:$activeButton;
+  }
 
-.notification{
-  padding: 0.17em 0.5em;
+  .navbarRouteItemActive {
+    color:$activeButton;
+  }
+
+  .navbarSection {
+    @extend .navbarItem;
+
+    color: #a0a0b5;
+    margin-top: 2em;
+  }
+
+  .notification{
+    padding: 0.17em 0.5em;
+  }
 }

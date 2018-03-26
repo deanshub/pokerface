@@ -41,7 +41,7 @@ export default class AddPlay extends Component {
   }
 
   render() {
-    const {feed, spotPlayer} = this.props
+    const {feed, spotPlayer, theme} = this.props
     const hasSpot = spotPlayer.newSpot.spot.moves.length>0
 
     return (
@@ -49,7 +49,7 @@ export default class AddPlay extends Component {
         <div className={classnames(style.info)}>
           @ - tag friends  [] - insert cards  : - insert emoji
         </div>
-        <div className={classnames(style.addPostContent)}>
+        <div className={classnames(style.addPostContent, style[theme])}>
           {
             hasSpot?(
               <div className={classnames(style.spotWPreview)}>

@@ -21,7 +21,7 @@ export default class PrivateRoute extends Component {
   }
 
   render(){
-    const {component: Component, auth, routing, ...rest} = this.props
+    const {component: Component, auth, routing, theme, ...rest} = this.props
     return (
       <Route
           {...rest}
@@ -32,7 +32,7 @@ export default class PrivateRoute extends Component {
               )
             }else if (auth.user.username){
               return (
-                <Component {...props}/>
+                <Component theme={theme} {...props}/>
               )
             }else if (/\/events\/.+/.test(routing.location.pathname)){
               return (

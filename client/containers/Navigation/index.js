@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 import DevTools from 'mobx-react-devtools'
+import { observer, inject } from 'mobx-react'
 import { Route, Switch, NavLink } from 'react-router-dom'
 import Loadable from 'react-loadable'
 import Loader from '../../components/basic/Loader'
@@ -48,10 +49,12 @@ const LoadableEvents = Loadable({
   loading: Loader,
 })
 
-
+@inject('routing')
+@observer
 export default class Navigation extends Component {
   static propTypes={
     children: PropTypes.element,
+    theme: PropTypes.string,
   }
 
   constructor(props){
@@ -76,26 +79,28 @@ export default class Navigation extends Component {
   }
 
   getHeader(isMobile){
+    const {theme} = this.props
+
     return isMobile?
       <div className={classnames(style.header)}>
         <div className={classnames(style.menu)} onClick={::this.openMobileNavbar}/>
         <img className={classnames(style.logo)} src={logo}/>
         <div className={classnames(style.search)} onClick={::this.openMobileSearchBar}/>
       </div>
-    :
-    <div className={classnames(style.header)}>
-      <NavLink
-          className={classnames(style.title)}
-          exact
-          to="/"
-      >
-        <img className={classnames(style.titleImg)} src={image}/>
-        <div>
-          Pokerface.io
-        </div>
-      </NavLink>
-      <TopMenu/>
-    </div>
+      :
+      <div className={classnames(style.header, style[theme])}>
+        <NavLink
+            className={classnames(style.title)}
+            exact
+            to="/"
+        >
+          <img className={classnames(style.titleImg)} src={image}/>
+          <div>
+            Pokerface.io
+          </div>
+        </NavLink>
+        <TopMenu/>
+      </div>
   }
 
   render() {
