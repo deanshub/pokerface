@@ -104,6 +104,9 @@ export default class Card extends PureComponent {
       inlineImgStyle.right = '10%'
     }
 
+    const redColored = SUITES[normalizedSuit]===SUITES.hearts||SUITES[normalizedSuit]===SUITES.diams
+    const blackColored = SUITES[normalizedSuit]===SUITES.spades||SUITES[normalizedSuit]===SUITES.clubs
+
     return (
       <li
           className={classnames(
@@ -112,8 +115,8 @@ export default class Card extends PureComponent {
             {[style.hover]:!noHoverEffect},
             {[style.active]:active},
             {[style.back]:covered},
-            {[style.red]:SUITES[normalizedSuit]===SUITES.hearts||SUITES[normalizedSuit]===SUITES.diams},
-            {[style.black]:SUITES[normalizedSuit]===SUITES.spades||SUITES[normalizedSuit]===SUITES.clubs}
+            {[style.red]:redColored},
+            {[style.black]:blackColored},
           )}
           onClick={::this.toggleCard}
           ref={(el)=>this.cardElement=el}
@@ -123,16 +126,20 @@ export default class Card extends PureComponent {
             width,
             fontSize,
           }}
-          {...letterAttr}
       >
-          {covered?
-            this.getBackCard()
-            :
-            <img
-                src={SVG_SUITES[normalizedSuit]}
-                style={{width:'50%',height:'50%', ...inlineImgStyle}}
-            />
-          }
+        {this.getBackCard()}
+        <div
+          className={classnames(
+            style.front,
+            {[style.uncover]:!covered},
+          )}
+          {...letterAttr}
+        >
+          <img
+              src={SVG_SUITES[normalizedSuit]}
+              style={{width:'50%',height:'50%', ...inlineImgStyle}}
+          />
+        </div>
       </li>
     )
   }

@@ -1,6 +1,5 @@
 import React from 'react'
-import Cards from '../../Deck/Cards'
-import {randomRank, randomSuit} from '../../Deck/consts'
+
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -24,11 +23,9 @@ export default ({
       <div className={classnames(style.content)}>
         {children}
       </div>
-      <Cards
-          noHoverEffect
-          covered
-          cards={[{suit:randomSuit(), rank:randomRank()}, {suit:randomSuit(), rank:randomRank()}]}
-      />
+      <div className={classnames(style.point)}/>
+      <div className={classnames(style.point)}/>
+      <div className={classnames(style.point)}/>
     </div>
   )
 }
