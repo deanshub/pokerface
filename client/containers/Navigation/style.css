@@ -4,12 +4,19 @@
 .header {
   width: 100%;
   display: flex;
-  background-color: #535168;
   box-shadow: 0 0 10px 0 #000000;
   position: fixed;
   z-index: 4;
   justify-content: space-between;
   align-items: center;
+}
+
+.header.day{
+  background-color: #ebebed;
+}
+
+.header.night{
+  background-color: #535168;
 }
 
 .title {

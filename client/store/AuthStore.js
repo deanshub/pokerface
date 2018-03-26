@@ -8,6 +8,7 @@ import {deleteCookie, getCookieByName} from '../utils/cookies'
 import {CREATE_PUBLIC_EVENT} from '../utils/permissions'
 import {optionalUsersSwitchQuery, optionalUsersLoginQuery} from './queries/users'
 import graphqlClient from './graphqlClient'
+import {DEFAULT_THEME} from '../constants/userSettings'
 
 export class AuthStore {
   @observable token
@@ -17,6 +18,7 @@ export class AuthStore {
   @observable modalModalOpen: boolean
   @observable authenticating: boolean
   @observable fetchOptionalUsers: boolean
+  @observable userSettings
 
   constructor(){
     this.user = {}
@@ -24,6 +26,7 @@ export class AuthStore {
     this.fetchOptionalUsers = true
     this.opensourceModalOpen = false
     this.modalModalOpen = false
+    this.userSettings = observable.map({theme:DEFAULT_THEME})
     this.optionalUsers = observable([])
   }
 
@@ -107,6 +110,11 @@ export class AuthStore {
     })
   }
 
+  @action
+  setTheme(theme){
+    this.userSettings.set('theme', theme)
+  }
+
   @computed
   get publicEventPermission(){
     const {permissions} = this.user
@@ -115,6 +123,11 @@ export class AuthStore {
 
   get isLoggedIn(){
     return !!this.user.username
+  }
+
+  @computed
+  get theme(){
+    return this.userSettings.get('theme').toLowerCase()
   }
 
   // When login from facebook and google plus the jwt is put in the cookies
