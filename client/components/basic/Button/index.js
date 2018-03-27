@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Loader from '../Loader'
+import LoaderDots from '../LoaderDots'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -58,7 +58,7 @@ export default class Button extends Component {
             />
           }
           {loading?
-            <Loader bright={primary} small/>
+            <LoaderDots bright={primary} small/>
           :
             children
           }

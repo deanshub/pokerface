@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router'
 import { observer, inject } from 'mobx-react'
 import Loadable from 'react-loadable'
 import Loader from '../../components/basic/Loader'
+import BodyClassName from '../../components/basic/BodyClassName'
 import PrivateRoute from './PrivateRoute'
 import classnames from 'classnames'
 import style from './style.css'
@@ -35,7 +36,7 @@ export default class RouterContent extends Component {
 
     return (
       <Router history={history}>
-        <div className={classnames(style.app, style[theme])}>
+        <BodyClassName className={classnames(style.app, style[theme])}>
           <Route component={this.logPageView}/>
           <Route
               path="/"
@@ -65,7 +66,7 @@ export default class RouterContent extends Component {
                 theme={theme}
             />
           </Switch>
-        </div>
+        </BodyClassName>
       </Router>
     )
   }

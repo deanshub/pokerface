@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
-import Loader from '../../components/basic/Loader'
+import LoaderDots from '../../components/basic/LoaderDots'
 import Video from '../../components/basic/Video'
 import classnames from 'classnames'
 import style from './style.css'
@@ -49,7 +49,7 @@ export default class AddPlay extends Component {
             )
           })
         }
-        {feed.uploadingMedia && <Loader small/>}
+        {feed.uploadingMedia && <LoaderDots small/>}
       </div>
     )
   }
