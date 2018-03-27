@@ -42,17 +42,33 @@
 
 .card {
   max-width: 10vw;
-  background-color: white;
   border-radius: 10%;
   box-shadow: 0 0 0.3vmin 0 rgba(0,0,0,0.3);
-  display: flex;
   position: relative;
   font-weight: bold;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
   transition: all 80ms ease-in;
   margin: 0 3px;
+  transform-style: preserve-3d;
+}
+.front{
+  border-radius: inherit;
+  background-color: white;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  /* backface-visibility: hidden; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(180deg);
+}
+.uncover{
+  transform: rotateX(0deg);
+  z-index: 2;
 }
 .hover:hover{
   transform: scale(1.5) rotate(0deg) !important;
@@ -60,18 +76,19 @@
 }
 .activeHover{
   transform: scale(1.5) rotate(0deg) !important;
+  z-index: 1;
 }
 .active{
   margin-top: -2vh;
 }
 
-.card:before, .card:after {
+.front:before, .front:after {
   position: absolute;
   word-wrap: break-word;
   line-height: 1;
 }
 
-.card:before {
+.front:before {
   content: attr(data-letter);
   left: 3%;
   top: 5%;
@@ -79,7 +96,7 @@
   letter-spacing: -0.2em;
 }
 
-.card:after {
+.front:after {
   content: attr(data-reverse-letter);
   right: 10%;
   bottom: 5%;
@@ -95,16 +112,23 @@
 }
 
 .back{
+}
+
+.backContainer{
+  border-radius: inherit;
   color: black;
   background-color: #a0a0b5;
-}
-.back:before,.back:after{
-  content: '';
-}
-.backContainer{
   height: 100%;
   flex: 1;
   display: flex;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  transform-style: preserve-3d;
 }
 .backLogo{
   background-size: contain;

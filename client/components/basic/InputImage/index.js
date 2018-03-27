@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Loader from '../Loader'
+import LoaderDots from '../LoaderDots'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -45,7 +45,7 @@ export default class InputImage extends Component {
           <div className={classnames(style.selectPhoto)} >
             {src?'Change':'Select Photo'}
           </div>
-          {loading && <Loader/>}
+          {loading && <LoaderDots/>}
         </div>
       </div>
     )

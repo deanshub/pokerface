@@ -51,7 +51,7 @@ export const normalizeSuite: Function =(originalSuit: string): string=>{
   }else if (lowerSuit==='♣'||lowerSuit==='♧'||lowerSuit==='c'||lowerSuit==='club'||lowerSuit==='clubs'){
     return 'clubs'
   }else if (lowerSuit==='?'||lowerSuit==='joker'||lowerSuit==='☺'||lowerSuit==='☻'){
-    return 'joker'
+    return '?'
   }else{
     return null
   }
@@ -70,7 +70,7 @@ export const normalizeRank: Function =(originalRank: string): string=>{
   }else if (lowerCaseRank==='1'||lowerCaseRank==='a') {
     return 'a'
   }else if (lowerCaseRank==='?'||lowerCaseRank==='joker') {
-    return 'joker'
+    return '?'
   }else{
     return lowerCaseRank
   }

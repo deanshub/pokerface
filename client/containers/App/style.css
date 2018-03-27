@@ -1,16 +1,14 @@
 @import "../../constants/styles";
 
 .app {
-  min-height: 100vh;
-  background-attachment: fixed;
 }
 
-.app.day {
+.day {
   background:url('../../assets/pattern-white.png');
   background-color: white;
 }
 
-.app.night {
+.night {
   background:url('../../assets/pattern-black.png');
   background-color: appBackgroundColor;
 }
