@@ -163,6 +163,10 @@
   font-size: 0.85em;
 }
 
+.content {
+  flex: 4.5;
+}
+
 .mobileSearchBar {
   position: fixed;
   display: flex;

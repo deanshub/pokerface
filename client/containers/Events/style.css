@@ -34,7 +34,7 @@
   color: textColor;
 
   &.day {
-    background-color: white;
+    background-color: blindsTimerBackgroundInverted;
     box-shadow: $dayBoxShadow;
   }
 
@@ -56,7 +56,7 @@
 
   &.day .date{
     color: #535168;
-    background-color: #ebebed;
+    background-color: qrBottomBorderColorInverted;
   }
 
   &.night .date{
