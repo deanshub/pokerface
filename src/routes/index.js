@@ -9,6 +9,9 @@ const routesConfig = [{
 },{
   name:'boomTranslator',
   // disabled: true,
+},{
+  name:'spotGif',
+  // disabled: true,
 }]
 
 const enableModules = routesConfig
