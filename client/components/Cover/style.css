@@ -3,7 +3,13 @@
   background-color: backColor;
   border-radius: 10px;
   margin-bottom: 5vh;
-  box-shadow: 0 0 10px 0 #000000;
+
+}
+.coverContainer.day{
+  box-shadow: $dayBoxShadow;
+}
+.coverContainer.night{
+  box-shadow: $nightBoxShadow;
 }
 
 .imageContainer{
@@ -50,6 +56,17 @@
     box-shadow: none;
   }
 }
+
+.coverContainer.day{
+  .coverImageNotExist{
+    background-color: #f2f2f2;
+
+    .name{
+      color: black;
+    }
+  }
+}
+
 
 .avatar{
   position: absolute;

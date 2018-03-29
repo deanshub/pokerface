@@ -33,7 +33,7 @@
     color:$activeButton;
   }
 
-  .navbarRouteItemActive {
+  .navbarRouteItem.navbarRouteItemActive {
     color:$activeButton;
   }
 

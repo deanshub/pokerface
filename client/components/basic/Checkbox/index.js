@@ -7,27 +7,48 @@ export default class Checkbox extends Component {
     autoWidth: false,
   }
 
+  constructor(props){
+    super(props)
+    const {defaultChecked} = props
+    this.state = {checked:defaultChecked}
+  }
+
+  componentWillReceiveProps(nextProps){
+    const {defaultChecked} = this.props
+    const {defaultChecked:nextChecked} = nextProps
+    const {checked} = this.state
+    if (defaultChecked !== nextChecked && checked !== nextChecked){
+      this.setState({checked:nextChecked})
+    }
+  }
+
+  onToggle(e){
+    const {onChange} = this.props
+    const {checked} = e.target
+    this.setState({checked})
+    onChange(e,e.target)
+  }
+
   render(){
     const {
       autoWidth,
       id,
       label,
       checkboxLabel,
-      onChange,
-      value,
       centered,
       style: customStyle,
+      toggleStyle,
     } = this.props
-
+    const {checked} = this.state
     return(
       <div className={classnames(style.field, {[style.centered]:centered})} style={customStyle}>
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
-        <div className={classnames(style.checkboxContainer)}>
+        <div className={classnames(style.checkboxContainer, {[style.toggle]: toggleStyle})}>
           <input
+              checked={checked}
               className={classnames(style.box)}
-              defaultChecked={value}
               id={id}
-              onChange={(e)=>onChange(e,e.target)}
+              onChange={::this.onToggle}
               type="checkbox"
           />
           <label className={classnames(style.checkboxLabel,{[style.autoWidth]:autoWidth})} htmlFor={id}>{checkboxLabel}</label>

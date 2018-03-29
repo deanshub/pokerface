@@ -39,13 +39,13 @@ export default class Profile extends Component {
   }
 
   render() {
-    const { profile, match } = this.props
+    const { auth, profile, match } = this.props
     const user = profile.currentUser
     const {username} = match.params
-
+    const {theme} = auth
     return (
       <div className={classnames(style.container)}>
-        <Cover details={user}/>
+        <Cover details={user} theme={theme}/>
         <Feed by={{username}}/>
       </div>
     )

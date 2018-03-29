@@ -7,8 +7,6 @@ import Modal, {ModalHeader,ModalContent,ModalFooter}  from '../../components/bas
 import Button, {ButtonGroup} from '../../components/basic/Button'
 import Input from '../../components/basic/Input'
 import InputImage from '../../components/basic/InputImage'
-import Select from '../../components/basic/Select'
-import {THEMES} from '../../constants/userSettings'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -40,11 +38,6 @@ export default class EditProfile extends Component {
     reader.readAsDataURL(imageFile)
   }
 
-  onSelectTheme(theme){
-    const {auth} = this.props
-    auth.setTheme(theme)
-  }
-
   coverImageChangeHandler(imageFile){
     this.setState({loadingCoverImage:true})
     let reader = new FileReader()
@@ -68,7 +61,10 @@ export default class EditProfile extends Component {
     }
     profile.updatePersonalInfo(personalInfo).then((updatedUser)=>{
       auth.updateUserInfo(updatedUser)
-      profile.setCurrentUser(updatedUser)
+
+      if (profile.currentUser.username === auth.user.username){
+        profile.setCurrentUser(updatedUser)
+      }
       toggle()
     }).catch((err)=>{
       console.error(err);
@@ -85,7 +81,7 @@ export default class EditProfile extends Component {
   render() {
     const {open, toggle} = this.props
     const {firstname, lastname, loadingCoverImage, loadingAvatar} = this.state
-    const themeOptions = THEMES.map(theme => ({value:theme, text:theme}))
+
     return (
       <Modal compact open={open}>
         <ModalHeader>
@@ -130,11 +126,6 @@ export default class EditProfile extends Component {
                 this.coverImageChangeHandler(image)
               }}
               src={this.coverSrc}
-          />
-          <Select
-              label="Theme"
-              onChange={::this.onSelectTheme}
-              options={themeOptions}
           />
         </ModalContent>
         <ModalFooter>

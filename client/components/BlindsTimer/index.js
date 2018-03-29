@@ -6,6 +6,7 @@ import Button, {ButtonGroup} from '../basic/Button'
 import Image from '../basic/Image'
 import ResponsiveText from '../basic/ResponsiveText'
 import { observer, inject } from 'mobx-react'
+import DEFAULT_THEME from '../../constants/userSettings'
 import classnames from 'classnames'
 import style from './style.css'
 import './fullscreen-api-polyfill.min'
@@ -24,6 +25,7 @@ import fullscreenSvg from '../../assets/blindstimer/expand.svg'
 import unFullscreenSvg from '../../assets/blindstimer/collapse.svg'
 
 @inject('timer')
+@inject('auth')
 @observer
 export default class BlindsTimer extends Component {
   static propTypes = {
@@ -37,8 +39,9 @@ export default class BlindsTimer extends Component {
   }
 
   componentDidMount(){
-    const {timer} = this.props
+    const {timer, auth} = this.props
     timer.startSubscription()
+    timer.inverted = DEFAULT_THEME !== auth.theme
   }
 
   resetTimer(){
@@ -167,122 +170,122 @@ export default class BlindsTimer extends Component {
           className={classnames(style.fullScreen, {[style.inverted]:timer.inverted})}
           label="Loading"
       >
-          <BlindTimerResetModal/>
-          <BlindsTimerSettingsModal/>
-          <ButtonGroup
-              center
-              horizontal
-              noEqual
-              style={{width:'100%'}}
+        <BlindTimerResetModal/>
+        <BlindsTimerSettingsModal/>
+        <ButtonGroup
+            center
+            horizontal
+            noEqual
+            style={{width:'100%'}}
+        >
+          <Button
+              name="reset"
+              onClick={::this.resetTimer}
           >
-            <Button
-                name="reset"
-                onClick={::this.resetTimer}
-            >
-              <img
-                  aria-hidden
-                  src={resetSvg}
-              />
-            </Button>
-            <Button
-                name="play"
-                onClick={timer.paused ? ::this.resumeTimer : ::this.pauseTimer}
-            >
-              <img
-                  aria-hidden
-                  src={timer.paused ? playSvg : pauseSvg}
-              />
-            </Button>
-            <Button
-                disable={timer.round <= 1}
-                name="back"
-                onClick={::this.previousRound}
-            >
-              <img
-                  aria-hidden
-                  src={backSvg}
-              />
-            </Button>
-            <Button
-                name="back"
-                onClick={::this.nextRound}
-            >
-              <img
-                  aria-hidden
-                  src={forwardSvg}
-              />
-            </Button>
-            <Button
-                name="invert"
-                onClick={::this.toggleInverted}
-            >
-              <img
-                  aria-hidden
-                  src={timer.inverted?invertDarkSvg:invertBrightSvg}
-              />
-            </Button>
-            <Button
-                name="settings"
-                onClick={::this.openSettingsModal}
-            >
-              <img
-                  aria-hidden
-                  src={settingsSvg}
-              />
-            </Button>
-            <Button
-                name="fullscreen"
-                onClick={::this.toggleFullscreen}
-            >
-              <img
-                  aria-hidden
-                  src={document.fullscreenElement?unFullscreenSvg:fullscreenSvg}
-              />
-            </Button>
-          </ButtonGroup>
-          <div className={style.round}>
+            <img
+                aria-hidden
+                src={resetSvg}
+            />
+          </Button>
+          <Button
+              name="play"
+              onClick={timer.paused ? ::this.resumeTimer : ::this.pauseTimer}
+          >
+            <img
+                aria-hidden
+                src={timer.paused ? playSvg : pauseSvg}
+            />
+          </Button>
+          <Button
+              disable={timer.round <= 1}
+              name="back"
+              onClick={::this.previousRound}
+          >
+            <img
+                aria-hidden
+                src={backSvg}
+            />
+          </Button>
+          <Button
+              name="back"
+              onClick={::this.nextRound}
+          >
+            <img
+                aria-hidden
+                src={forwardSvg}
+            />
+          </Button>
+          <Button
+              name="invert"
+              onClick={::this.toggleInverted}
+          >
+            <img
+                aria-hidden
+                src={timer.inverted?invertDarkSvg:invertBrightSvg}
+            />
+          </Button>
+          <Button
+              name="settings"
+              onClick={::this.openSettingsModal}
+          >
+            <img
+                aria-hidden
+                src={settingsSvg}
+            />
+          </Button>
+          <Button
+              name="fullscreen"
+              onClick={::this.toggleFullscreen}
+          >
+            <img
+                aria-hidden
+                src={document.fullscreenElement?unFullscreenSvg:fullscreenSvg}
+            />
+          </Button>
+        </ButtonGroup>
+        <div className={style.round}>
+          <ResponsiveText>
+              Round {timer.round}
+          </ResponsiveText>
+        </div>
+        <div className={style.time}>
+          <ResponsiveText className={style.timeText} scale={0.9}>
+            {timer.timeLeft}
+          </ResponsiveText>
+        </div>
+
+        <div className={style.progress} style={{width: `${timer.precentageComplete}%`}}/>
+        <div className={style.brandLine}>
+          <div className={style.brand}>
+            <Image
+                className={style.brandImage}
+                src={image}
+                style={{marginRight:'none'}}
+            />
+            {title}
+          </div>
+        </div>
+
+        <div className={classnames(style.blindsContainer,{[style.inverted]:timer.inverted})}>
+          <div className={style.currentBlinds}>
+            <ResponsiveText scale={0.5}>
+              {
+                timer.currentRound.type==='break'
+                ?
+                'Break'
+                :
+                this.buildBlindsElement(timer.currentRound)
+              }
+            </ResponsiveText>
+          </div>
+          <div className={style.nextBlinds}>
             <ResponsiveText>
-                Round {timer.round}
+              {timer.nextBlinds}
             </ResponsiveText>
           </div>
-          <div className={style.time}>
-            <ResponsiveText className={style.timeText} scale={0.9}>
-              {timer.timeLeft}
-            </ResponsiveText>
-          </div>
-
-          <div className={style.progress} style={{width: `${timer.precentageComplete}%`}}/>
-          <div className={style.brandLine}>
-            <div className={style.brand}>
-              <Image
-                  className={style.brandImage}
-                  src={image}
-                  style={{marginRight:'none'}}
-              />
-              {title}
-            </div>
-          </div>
-
-          <div className={classnames(style.blindsContainer,{[style.inverted]:timer.inverted})}>
-            <div className={style.currentBlinds}>
-              <ResponsiveText scale={0.5}>
-                {
-                  timer.currentRound.type==='break'
-                  ?
-                  'Break'
-                  :
-                  this.buildBlindsElement(timer.currentRound)
-                }
-              </ResponsiveText>
-            </div>
-            <div className={style.nextBlinds}>
-              <ResponsiveText>
-                {timer.nextBlinds}
-              </ResponsiveText>
-            </div>
-            <div style={{height:'2em'}}/>
-          </div>
-        </Dimmer>
+          <div style={{height:'2em'}}/>
+        </div>
+      </Dimmer>
     )
   }
 }

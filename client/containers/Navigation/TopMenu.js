@@ -5,6 +5,7 @@ import Tooltip from '../../components/basic/Tooltip'
 import SelectUserModal from '../SelectUserModal'
 import EditProfileModal from '../EditProfile'
 import Image from '../../components/basic/Image'
+import Checkbox from '../../components/basic/Checkbox'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -14,7 +15,13 @@ import style from './style.css'
 export default class TopMenu extends Component {
   constructor(props){
     super(props)
-    this.state = {editingPersonalInfo:false, selectUserModalOpen:false}
+
+    // const {theme} = this.props.auth
+    this.state = {
+      // theme,
+      editingPersonalInfo:false,
+      selectUserModalOpen:false
+    }
   }
 
   handleLogout(){
@@ -37,12 +44,22 @@ export default class TopMenu extends Component {
     })
   }
 
+  onChangeTheme(e, {checked}){
+    this.setTheme(checked?'Night':'Day')
+  }
+
+  setTheme(theme){
+    const {auth} = this.props
+    auth.setTheme(theme)
+    // this.setState({theme})
+  }
+
   render(){
     const {auth} = this.props
     const showSwitchUser = auth.optionalUsers.length > 0
 
     const {user} = auth
-    const {editingPersonalInfo, selectUserModalOpen} = this.state
+    const {editingPersonalInfo, selectUserModalOpen, theme} = this.state
     const trigger = (
       <div className={classnames(style.triggerContainer)}>
         <Image
@@ -89,6 +106,27 @@ export default class TopMenu extends Component {
                 Switch user
               </div>
             }
+            <div className={classnames(style.topMenuItem, style.themeSetting)} onClick={(e) => e.stopPropagation()}>
+              <div
+                  className={classnames({[style.active]:auth.theme==='day'})}
+                  onClick={()=>{this.setTheme('Day')}}
+              >
+                Day
+              </div>
+              <Checkbox
+                  defaultChecked={auth.theme!=='day'}
+                  id="themeToggle"
+                  onChange={::this.onChangeTheme}
+                  style={{'flex':0}}
+                  toggleStyle
+              />
+              <div
+                  className={classnames({[style.active]:auth.theme==='night'})}
+                  onClick={()=>{this.setTheme('Night')}}
+              >
+                Night
+              </div>
+            </div>
             <div
                 className={classnames(style.topMenuItem, style.topMenuClickableItem)}
                 onClick={::this.handleLogout}
