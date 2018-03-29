@@ -20,15 +20,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(31,29,40,0.5);
   border-radius: 0.625em;
 }
 
+.coverContainer.day{
+  .imageContainer{
+    background-color: rgba(242,242,242,0.5);
+    color: black;
+  }
+}
+
+.coverContainer.night{
+  .imageContainer{
+    background-color: rgba(31,29,40,0.5);
+    color: white;
+  }
+}
+
+
 .name {
   border-radius: inherit;
-  background-color: rgba(31,29,40,0.5);
   box-shadow: 0 0 20px 0 #000000;
-  color: white;
+  background-color: inherit;
+  color: inherit;
   font-size: 4.75em;
   padding: 0.3em 0.5em;
   font-weight: bolder;
@@ -57,17 +71,6 @@
   }
 }
 
-.coverContainer.day{
-  .coverImageNotExist{
-    background-color: #f2f2f2;
-
-    .name{
-      color: black;
-    }
-  }
-}
-
-
 .avatar{
   position: absolute;
   bottom: -4em;
@@ -86,14 +89,22 @@
 
 .expandablePanel{
   color: textColor;
-  background-color: expandableBackColor;
   padding: 1em 0 1em 3em;
   display: flex;
   border-radius: 0 0 10px 10px;
   align-items: center;
 }
+
+
 .compact .expandablePanel{
   cursor: pointer;
+}
+
+.coverContainer.day{
+  background-color: qrBottomBorderColorInverted;
+}
+.coverContainer.night{
+  background-color: expandableBackColor;
 }
 
 .detailsLeftPane{
