@@ -108,19 +108,19 @@ const config = {
       {
         test: /\.svg(\?.*)?$/,
         include: path.resolve(__dirname, 'client', 'assets'),
-        loader: 'url-loader?limit=1024&name=images/[name].[ext]',
-        // loader: 'svg-url-loader?limit=1024&noquotes&name=images/[name].[ext]',
+        loader: 'url-loader?limit=1024h&outputPat=images&context=/images&name=[name].[ext]',
+        // loader: 'svg-url-loader?limit=1024&noquotes&outputPat=images&context=/images&name=[name].[ext]',
       }, {
         test: /\.png$/,
-        loader: 'url-loader?limit=8192&mimetype=image/png&name=images/[name].[ext]',
+        loader: 'url-loader?limit=8192&mimetype=image/png&outputPat=images&context=/images&name=[name].[ext]',
         // include: path.resolve(__dirname, 'client', 'assets'),
       }, {
         test: /\.gif$/,
-        loader: 'url-loader?limit=8192&mimetype=image/gif&name=images/[name].[ext]',
+        loader: 'url-loader?limit=8192&mimetype=image/gif&outputPat=images&context=/images&name=[name].[ext]',
         include: path.resolve(__dirname, 'client', 'assets'),
       }, {
         test: /\.jpg$/,
-        loader: 'url-loader?limit=8192&mimetype=image/jpg&name=images/[name].[ext]',
+        loader: 'url-loader?limit=8192&mimetype=image/jpg&outputPat=images&context=/images&name=[name].[ext]',
         include: path.resolve(__dirname, 'client', 'assets'),
       },
       {
