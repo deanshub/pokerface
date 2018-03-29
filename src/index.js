@@ -74,7 +74,6 @@ wrappedServer.listen(PORT, () =>
 )
 
 if (config.NODE_ENV==='development' && config.SSL_KEY_FILE && config.SSL_CERT_FILE){
-  console.log('https')
   const options = {
     key: fs.readFileSync(config.SSL_KEY_FILE),
     cert: fs.readFileSync(config.SSL_CERT_FILE),
