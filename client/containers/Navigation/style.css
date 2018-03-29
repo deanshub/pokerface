@@ -11,12 +11,12 @@
 }
 
 .header.day{
-  background-color: #ebebed;
+  background-color: $backgroundHeaderDay;
   box-shadow: $dayBoxShadow;
 }
 
 .header.night{
-  background-color: #535168;
+  background-color: $backgroundHeaderNight;
   box-shadow: $nightBoxShadow;
 }
 
@@ -162,24 +162,6 @@
 .name {
   font-size: 0.85em;
 }
-
-
-.themeSetting{
-  display: flex;
-
-  .active{
-    color: #3cb861;
-  }
-}
-
-.divider {
-  border-top: 1px solid #e4e4e4;
-}
-
-.content {
-  flex: 4.5;
-}
-
 
 .mobileSearchBar {
   position: fixed;

@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import { NavLink } from 'react-router-dom'
 import Notification from '../../Notification'
 import EditProfileModal from '../../../containers/EditProfile'
+import SelectTheme from '../../../containers/SelectTheme'
 import classnames from 'classnames'
 import style from './style.css'
 
@@ -62,7 +63,7 @@ export default class Navigation extends Component {
     const { newPostsCount, newRelatedPostsCount } = feed
 
     return (
-      <div className={classnames(style.container, {[style.closed]:!open})}>
+      <div className={classnames(style.container, style[auth.theme], {[style.closed]:!open})}>
         <div className={classnames(style.header)}>
           <div className={classnames(style.back)} onClick={::this.onClose}/>
           <div className={classnames(style.title)}>
@@ -140,6 +141,7 @@ export default class Navigation extends Component {
           <div className={classnames(style.footerItem)} onClick={::this.toggleEditPersonalInfo}>
               Edit Details
           </div>
+          <SelectTheme className={style.footerItem}/>
         </div>
         <EditProfileModal
             open={editingPersonalInfo}

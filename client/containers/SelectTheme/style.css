@@ -1,0 +1,21 @@
+.themeSetting{
+  display: flex;
+}
+
+.theme{
+  text-transform: none;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.active{
+  color: #3cb861;
+}
+
+.divider {
+  border-top: 1px solid #e4e4e4;
+}
+
+.content {
+  flex: 4.5;
+}

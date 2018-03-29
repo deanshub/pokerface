@@ -82,7 +82,7 @@ export default class Navigation extends Component {
     const {theme} = this.props
 
     return isMobile?
-      <div className={classnames(style.header)}>
+      <div className={classnames(style.header, style[theme])}>
         <div className={classnames(style.menu)} onClick={::this.openMobileNavbar}/>
         <img className={classnames(style.logo)} src={logo}/>
         <div className={classnames(style.search)} onClick={::this.openMobileSearchBar}/>

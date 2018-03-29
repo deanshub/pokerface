@@ -11,6 +11,8 @@ $contentFont: 'Content Font';
 /* Navigation */
 @value paddingTop: 5.3em;
 @value paddingTopMobile: 72px;
+$backgroundHeaderDay: #ebebed;
+$backgroundHeaderNight: #535168;
 
 /* spot player */
 $activeButton: #41c86a;
