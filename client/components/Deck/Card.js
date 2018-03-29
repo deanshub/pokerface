@@ -5,9 +5,6 @@ import style from './style.css'
 import {SUITES, SVG_SUITES, normalizeSuite, normalizeRank} from './consts'
 import logo from '../../assets/logo.png'
 
-//TODO: take care of joker card
-//TODO: take care of clickable cards
-
 export default class Card extends PureComponent {
   static propTypes = {
     active: PropTypes.bool,
@@ -129,16 +126,18 @@ export default class Card extends PureComponent {
       >
         {this.getBackCard()}
         <div
-          className={classnames(
-            style.front,
-            {[style.uncover]:!covered},
-          )}
-          {...letterAttr}
+            className={classnames(
+              style.front,
+              {[style.uncover]:!covered},
+            )}
+            {...letterAttr}
         >
-          <img
-              src={SVG_SUITES[normalizedSuit]}
-              style={{width:'50%',height:'50%', ...inlineImgStyle}}
-          />
+          {normalizedSuit&&SVG_SUITES[normalizedSuit]&&
+            <img
+                src={SVG_SUITES[normalizedSuit]}
+                style={{width:'50%',height:'50%', ...inlineImgStyle}}
+            />
+          }
         </div>
       </li>
     )

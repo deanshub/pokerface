@@ -11,6 +11,7 @@ import timeAgoEnLocale from 'javascript-time-ago/locales/en'
 import ReactDOM from 'react-dom'
 import domtoimage from 'dom-to-image'
 import { NavLink } from 'react-router-dom'
+import request from 'superagent'
 // import imageUtils from './imageUtils'
 import GIF from 'gif.js.optimized'
 import workerScript from 'file-loader!gif.js.optimized/dist/gif.worker'
@@ -96,24 +97,46 @@ export default class Post extends Component {
     return new Promise((resolve, reject)=>{
       setTimeout(()=>{
         return domtoimage.toPng(postElement)
-        .then((dataUrl)=>{
-          const img = new Image()
-          img.onload=()=>{
-            resolve(img)
-          }
-          img.onerror=reject
-          img.src = dataUrl
-        })
-        .catch(err=>{
-          console.error(err)
-          reject(err)
-        })
+          .then((dataUrl)=>{
+            const img = new Image()
+            img.onload=()=>{
+              resolve(img)
+            }
+            img.onerror=reject
+            img.src = dataUrl
+          }).catch(err=>{
+            console.error(err)
+            reject(err)
+          })
       },300)
     })
   }
 
   downloadGif(){
+    const { post } = this.props
     logger.logEvent({category:'Post',action:'Download gif'})
+    this.setState({
+      busy: true,
+    })
+
+    request.get('/api/spotGif').query({id:post.id}).responseType('blob').then((res)=>{
+      const url = window.URL.createObjectURL(res.body)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'pokerface post.gif'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      setTimeout(()=>{
+        this.setState({
+          busy: false,
+        })
+      })
+    })
+  }
+
+  clientDownloadGif(){
+    // logger.logEvent({category:'Post',action:'Client Download gif'})
     this.setState({
       busy: true,
     })
@@ -164,13 +187,12 @@ export default class Post extends Component {
               gif.render()
             })
           }
+        }).catch(err=>{
+          console.error(err)
+          this.setState({
+            busy: false,
+          })
         })
-        // .catch(err=>{
-        //   console.error(err)
-        //   this.setState({
-        //     busy: false,
-        //   })
-        // })
       })
       takeImage()
     })
@@ -313,6 +335,18 @@ export default class Post extends Component {
                         Download Gif
                     </Button>
                   }
+                  {
+                    post.spot!==undefined&&!navigator.share&&location.host.startsWith('localhost')&&
+                    <Button
+                        name="downloadGif"
+                        onClick={::this.clientDownloadGif}
+                        simple
+                        small
+                        style={{padding: '0.5em 0'}}
+                    >
+                        Client Download Gif
+                    </Button>
+                  }
                   <Button
                       onClick={::this.getLink}
                       simple
@@ -368,13 +402,13 @@ export default class Post extends Component {
             {
               post.photos.length>0&&
               <div className={classnames(style.photosContainer)}>
-                {post.photos.map((photo, index)=>
+                {post.photos.map((photo, index)=>(
                   <PostImage
                       key={index}
                       onClick={()=>this.openModal(index)}
                       photo={photo}
                   />
-                )}
+                ))}
               </div>
             }
           </div>
