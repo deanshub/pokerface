@@ -22,7 +22,7 @@ export default class SelectTheme extends Component {
 
   render(){
     const {auth, className} = this.props
-    return (
+    const ResponsiveSelect = ({theme}) => (
       <IsMobile
           render={(isMobile) => {
             return (
@@ -36,13 +36,13 @@ export default class SelectTheme extends Component {
                     }
                 >
                   <div
-                      className={classnames(style.theme, {[style.active]:auth.theme==='day'})}
+                      className={classnames(style.theme, {[style.active]:theme==='day'})}
                       onClick={()=>{this.setTheme('Day')}}
                   >
                     Day
                   </div>
                   <div
-                      className={classnames(style.theme, {[style.active]:auth.theme==='night'})}
+                      className={classnames(style.theme, {[style.active]:theme==='night'})}
                       onClick={()=>{this.setTheme('Night')}}
                   >
                     Night
@@ -51,21 +51,21 @@ export default class SelectTheme extends Component {
               :
                 <div className={classnames(className, style.themeSetting)} onClick={(e) => e.stopPropagation()}>
                   <div
-                      className={classnames(style.theme, {[style.active]:auth.theme==='day'})}
+                      className={classnames(style.theme, {[style.active]:theme==='day'})}
                       onClick={()=>{this.setTheme('Day')}}
                   >
                     Day
                   </div>
                   <Checkbox
                       centered
-                      defaultChecked={auth.theme!=='day'}
+                      defaultChecked={theme!=='day'}
                       id="themeToggle"
                       onChange={::this.onChangeTheme}
                       style={{'flex':0}}
                       toggleStyle
                   />
                   <div
-                      className={classnames(style.theme, {[style.active]:auth.theme==='night'})}
+                      className={classnames(style.theme, {[style.active]:theme==='night'})}
                       onClick={()=>{this.setTheme('Night')}}
                   >
                     Night
@@ -74,7 +74,8 @@ export default class SelectTheme extends Component {
             )
         }}
       />
-
     )
+
+    return <ResponsiveSelect theme={auth.theme}/>
   }
 }

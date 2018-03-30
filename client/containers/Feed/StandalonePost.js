@@ -14,6 +14,7 @@ import PhotoGallery from './PhotoGallery'
 import classnames from 'classnames'
 import style from './style.css'
 
+@inject('auth')
 @inject('routing')
 @inject('feed')
 @observer
@@ -31,9 +32,9 @@ export default class StandalonePost extends Component {
   }
 
   render() {
-    const { feed } = this.props
+    const {auth, feed} = this.props
     const {loading, post} = feed.standalonePost
-
+    const {theme} = auth
     return (
       <ResponsiveContainer
           desktopClassName={classnames(style.standaloneContainer)}
@@ -42,7 +43,7 @@ export default class StandalonePost extends Component {
         <PhotoGallery/>
         <div>
           <a href="/" onClick={::this.goHome}>
-            <Logo/>
+            <Logo theme={theme}/>
           </a>
         </div>
         {

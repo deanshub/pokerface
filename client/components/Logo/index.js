@@ -4,8 +4,8 @@ import classnames from 'classnames'
 import style from './style.css'
 import ResponsiveText from '../basic/ResponsiveText'
 
-export default () => (
-  <div className={classnames(style.header)}>
+export default ({theme}) => (
+  <div className={classnames(style.header, style[theme])}>
     <div className={classnames(style.firstRow)}>
       <img src={landingLogo}/>
       <ResponsiveText className={classnames(style.title)} scale={0.55}>

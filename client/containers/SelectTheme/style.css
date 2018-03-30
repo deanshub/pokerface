@@ -1,5 +1,6 @@
 .themeSetting{
   display: flex;
+  cursor: pointer;
 }
 
 .theme{

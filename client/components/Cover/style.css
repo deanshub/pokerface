@@ -23,24 +23,8 @@
   border-radius: 0.625em;
 }
 
-.coverContainer.day{
-  .imageContainer{
-    background-color: rgba(242,242,242,0.5);
-    color: black;
-  }
-}
-
-.coverContainer.night{
-  .imageContainer{
-    background-color: rgba(31,29,40,0.5);
-    color: white;
-  }
-}
-
-
 .name {
   border-radius: inherit;
-  box-shadow: 0 0 20px 0 #000000;
   background-color: inherit;
   color: inherit;
   font-size: 4.75em;
@@ -49,6 +33,27 @@
   line-height: normal;
   text-align: center;
 }
+
+.coverContainer.day{
+  .imageContainer{
+    background-color: rgba(242,242,242,0.5);
+    color: black;
+    .name{
+      box-shadow: $dayBoxShadow;
+    }
+  }
+}
+
+.coverContainer.night{
+  .imageContainer{
+    background-color: rgba(31,29,40,0.5);
+    color: white;
+    .name{
+      box-shadow: $nightBoxShadow;
+    }
+  }
+}
+
 
 .compact .imageContainer{
   height: 10em;
@@ -78,10 +83,23 @@
 
 .detailsContainer{
   padding: 2em 3em;
-  color: textColor;
-  background-color: backColor;
   display: flex;
 }
+
+.coverContainer.day{
+  .detailsContainer{
+    color: #535168;
+    background-color: blindsTimerBackgroundInverted;
+  }
+}
+
+.coverContainer.night{
+  .detailsContainer{
+    color: textColor;
+    background-color: backColor;
+  }
+}
+
 
 .hidden{
   display: none;
