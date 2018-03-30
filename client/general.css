@@ -34,6 +34,11 @@ body{
 input, textarea, select, button{
     font-family: $contentFont;
 }
+
+label{
+  cursor: inherit;
+}
+
 ::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 10px;
