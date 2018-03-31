@@ -41,6 +41,11 @@ router.get('/spotGif', (req, res)=>{
         }).then(({browser, page})=>{
           return page.click('div[class*="share"]')
             .then(()=>{
+              return page.evaluate(()=>{
+                return document.querySelector('[name="downloadGif"]').style.display=''
+              })
+            })
+            .then(()=>{
               return page.click('[name="downloadGif"]')
             })
             .then(()=>({browser, page}))
