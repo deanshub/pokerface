@@ -49,9 +49,10 @@ router.get('/spotGif', (req, res)=>{
               return page.click('[name="downloadGif"]')
             })
             .then(()=>({browser, page}))
-        })
-        .then(({browser, page})=>{
+        }).then(({browser, page})=>{
           return page.waitFor('div[class*="overlay"]',{hidden:true, timeout: 120000}).then(()=>({browser, page}))
+        }).then(({browser, page})=>{
+          return page.waitFor(100).then(()=>({browser, page}))
         }).then(({browser})=>{
           return browser.close()
         }).then(()=>{
