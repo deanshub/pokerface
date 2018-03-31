@@ -6,7 +6,7 @@ import Button, {ButtonGroup} from '../basic/Button'
 import Image from '../basic/Image'
 import ResponsiveText from '../basic/ResponsiveText'
 import { observer, inject } from 'mobx-react'
-import DEFAULT_THEME from '../../constants/userSettings'
+import {THEMES} from '../../constants/userSettings'
 import classnames from 'classnames'
 import style from './style.css'
 import './fullscreen-api-polyfill.min'
@@ -41,7 +41,7 @@ export default class BlindsTimer extends Component {
   componentDidMount(){
     const {timer, auth} = this.props
     timer.startSubscription()
-    timer.inverted = DEFAULT_THEME !== auth.theme
+    timer.inverted = THEMES[0].toLowerCase() === auth.theme
   }
 
   resetTimer(){
