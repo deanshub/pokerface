@@ -15,6 +15,14 @@
   overflow-y: hidden;
 }
 
+.container.day{
+  background-color: $backgroundHeaderDay;
+}
+
+.container.night{
+  background-color: $backgroundHeaderNight;
+}
+
 .closed {
   height: 0px;
 }
@@ -151,6 +159,7 @@
   display: flex;
   flex-direction: row-reverse;
   text-transform: uppercase;
+  justify-content: space-around;
 }
 
 .footerItem {

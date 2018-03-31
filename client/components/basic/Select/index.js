@@ -22,7 +22,7 @@ export default class InputSelect extends Component{
     this.state = {
       filteredOptions:options,
       inputValue:'',
-      selectedItem:selectedItem,
+      selectedItem,
       showSelectedItem:true,
     }
   }
@@ -49,7 +49,7 @@ export default class InputSelect extends Component{
     onChange(suggestion.value)
   }
 
-  renderSuggestion(item, {query}){
+  renderSuggestion(item){
     const {labelKey} = this.props
     const {selectedItem} = this.state
     const currentSelectedItem = !!selectedItem && selectedItem.value === item.value
@@ -62,7 +62,6 @@ export default class InputSelect extends Component{
   }
 
   searchChange({value}){
-    const {inputValue} = this.state
     const {labelKey, options} = this.props
 
     const filteredOptions = options.filter(option => option[labelKey].toUpperCase().startsWith(value.toUpperCase()))
@@ -79,11 +78,9 @@ export default class InputSelect extends Component{
     const {
       id,
       label,
-      labelKey,
       options,
       error,
       warning,
-      value,
     } = this.props
 
     const {inputValue, filteredOptions, showSelectedItem} = this.state

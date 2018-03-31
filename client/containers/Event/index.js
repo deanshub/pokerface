@@ -69,7 +69,7 @@ export default class Event extends Component {
               <Logo />
             </a>
           </IsUserLoggedIn>
-          <Cover details={currentEventDetails}/>
+          <Cover details={currentEventDetails} theme={auth.theme}/>
           {editEvent.editEventModalOpen && <EditEvent/>}
           <IsUserLoggedIn opposite>
             <Button

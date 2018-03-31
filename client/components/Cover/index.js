@@ -25,6 +25,7 @@ export default class Cover extends Component {
   static propTypes = {
     compact: PropTypes.bool,
     imageFile: PropTypes.string,
+    theme: PropTypes.string,
     title: PropTypes.string,
   }
 
@@ -157,7 +158,7 @@ export default class Cover extends Component {
   }
 
   render() {
-    const {details, auth, compact, editEvent} = this.props
+    const {details, auth, compact, theme} = this.props
     const {expanded, qrOpen} = this.state
 
     let coverDivStyle = {}
@@ -172,7 +173,7 @@ export default class Cover extends Component {
 
 
     return (
-      <div className={classnames(style.coverContainer,{[style.compact]:compact})}>
+      <div className={classnames(style.coverContainer, style[theme], {[style.compact]:compact})}>
         <div
             className={classnames(style.imageContainer,{[style.coverImageNotExist]: details.fullname && !details.coverImage})}
             onClick={::this.visitEvent}

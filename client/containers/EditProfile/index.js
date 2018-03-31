@@ -61,7 +61,10 @@ export default class EditProfile extends Component {
     }
     profile.updatePersonalInfo(personalInfo).then((updatedUser)=>{
       auth.updateUserInfo(updatedUser)
-      profile.setCurrentUser(updatedUser)
+
+      if (profile.currentUser.username === auth.user.username){
+        profile.setCurrentUser(updatedUser)
+      }
       toggle()
     }).catch((err)=>{
       console.error(err);
@@ -80,64 +83,62 @@ export default class EditProfile extends Component {
     const {firstname, lastname, loadingCoverImage, loadingAvatar} = this.state
 
     return (
-        <Modal compact open={open}>
-          <ModalHeader>
-            Account Setting
-          </ModalHeader>
-          <ModalContent>
-            <div>
-              <div className={classnames(style.fieldsGroup)}>
-                <InputImage
-                    avatar
-                    label="Profile Picture"
-                    loading={loadingAvatar}
-                    onSelect={(image) => {
-                      this.avatarChangeHandler(image)
-                    }}
-                    src={this.avatarSrc}
-                />
-                <div className={classnames(style.name)}>
-                  <Input
-                      containerStyle={{justifyContent:'baseline'}}
-                      label="First name"
-                      name="firstname"
-                      onChange={::this.handleChange}
-                      padded
-                      placeholder="First name"
-                      value={firstname}
-                  />
-                  <div/>
-                  <Input
-                      label="Last name"
-                      name="lastname"
-                      onChange={::this.handleChange}
-                      padded
-                      placeholder="Last name"
-                      value={lastname}
-                  />
-                </div>
-              </div>
-              <InputImage
-                  label="Cover Photo"
-                  loading={loadingCoverImage}
-                  onSelect={(image) => {
-                    this.coverImageChangeHandler(image)
-                  }}
-                  src={this.coverSrc}
+      <Modal compact open={open}>
+        <ModalHeader>
+          Account Setting
+        </ModalHeader>
+        <ModalContent>
+          <div className={classnames(style.fieldsGroup)}>
+            <InputImage
+                avatar
+                label="Profile Picture"
+                loading={loadingAvatar}
+                onSelect={(image) => {
+                  this.avatarChangeHandler(image)
+                }}
+                src={this.avatarSrc}
+            />
+            <div className={classnames(style.name)}>
+              <Input
+                  containerStyle={{justifyContent:'baseline'}}
+                  label="First name"
+                  name="firstname"
+                  onChange={::this.handleChange}
+                  padded
+                  placeholder="First name"
+                  value={firstname}
+              />
+              <div/>
+              <Input
+                  label="Last name"
+                  name="lastname"
+                  onChange={::this.handleChange}
+                  padded
+                  placeholder="Last name"
+                  value={lastname}
               />
             </div>
-          </ModalContent>
-          <ModalFooter>
-            <ButtonGroup
-                horizontal
-                noEqual
-                reversed
-            >
-              <Button onClick={::this.update} primary>Save</Button>
-              <Button onClick={toggle}> Cancel </Button>
-            </ButtonGroup>
-          </ModalFooter>
-        </Modal>
+          </div>
+          <InputImage
+              label="Cover Photo"
+              loading={loadingCoverImage}
+              onSelect={(image) => {
+                this.coverImageChangeHandler(image)
+              }}
+              src={this.coverSrc}
+          />
+        </ModalContent>
+        <ModalFooter>
+          <ButtonGroup
+              horizontal
+              noEqual
+              reversed
+          >
+            <Button onClick={::this.update} primary>Save</Button>
+            <Button onClick={toggle}> Cancel </Button>
+          </ButtonGroup>
+        </ModalFooter>
+      </Modal>
     )
   }
 }

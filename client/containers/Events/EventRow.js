@@ -62,7 +62,7 @@ export default class EventRow extends Component {
     const isUnresponsive = details.unresponsive.find(user=>user.username===auth.user.username)!==undefined
 
     return (
-      <div className={classnames(style.eventRow)}>
+      <div className={classnames(style.eventRow, style[auth.theme])}>
         <div className={classnames(style.date)} onClick={::this.visitEvent}>
           <div className={classnames(style.month)}>
             {details.startDate.format('MMMM')}
@@ -70,7 +70,7 @@ export default class EventRow extends Component {
           <div className={classnames(style.day)}>
             {details.startDate.format('DD')}
           </div>
-          <div className={classnames(style.year)}>
+          <div className={classnames(style.yaer)}>
             {details.startDate.year()}
           </div>
         </div>

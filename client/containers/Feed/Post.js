@@ -249,10 +249,10 @@ export default class Post extends Component {
   }
 
   render() {
-    const { post, auth, standalone, routing, theme } = this.props
+    const { post, auth, standalone, routing } = this.props
     const {busy} = this.state
     const activeLike = post.likes.filter(user=>user.username===auth.user.username).length>0
-
+    const {theme} = auth
     return (
       <Dimmer
           busy={busy}

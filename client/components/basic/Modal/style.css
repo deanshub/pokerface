@@ -67,6 +67,7 @@
 
 .compact {
   height: min-content;
+  max-height: 84vh;
   width: min-content;
   margin: auto;
   min-width: 400px;

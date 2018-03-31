@@ -10,7 +10,6 @@ import {
 } from './mutations/timers'
 import { timerChanged } from './subscriptions/timers'
 import {fillBlinds} from './blindsUtils/utils'
-import debounce from '../utils/debounce'
 import logger from '../utils/logger'
 
 export class TimerStore {

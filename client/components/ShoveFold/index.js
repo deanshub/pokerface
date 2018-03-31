@@ -71,6 +71,7 @@ export default class ShoveFold extends Component {
   }
 
   render() {
+    const {theme} = this.props
     const {anteOption, stackOption, positionOption, shoveData} = this.state
     const selectedStack = stackOptions[stackOption-1]
 
@@ -112,6 +113,7 @@ export default class ShoveFold extends Component {
               label: 'All-In',
             }]}
             subtitle={`${bbData.percent}% - ${bbData.range}`}
+            theme={theme}
             title={`Shove\\ Fold on ${stack}BB ${ante?`with ${ante}% ante`:''} in ${positionLabel} position`}
         />
       </div>

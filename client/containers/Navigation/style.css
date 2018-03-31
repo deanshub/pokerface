@@ -4,19 +4,21 @@
 .header {
   width: 100%;
   display: flex;
-  box-shadow: 0 0 10px 0 #000000;
   position: fixed;
   z-index: 4;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
 }
 
 .header.day{
-  background-color: #ebebed;
+  background-color: $backgroundHeaderDay;
+  box-shadow: $dayBoxShadow;
 }
 
 .header.night{
-  background-color: #535168;
+  background-color: $backgroundHeaderNight;
+  box-shadow: $nightBoxShadow;
 }
 
 .title {
@@ -27,9 +29,8 @@
   font-weight: bold;
   display: flex;
   line-height: 1.1;
-  cursor: default;
+  cursor: pointer;
   text-transform: uppercase;
-  user-select: none;
 
   .titleImg {
     height: 1em;
@@ -162,14 +163,9 @@
   font-size: 0.85em;
 }
 
-.divider {
-  border-top: 1px solid #e4e4e4;
-}
-
 .content {
   flex: 4.5;
 }
-
 
 .mobileSearchBar {
   position: fixed;

@@ -113,6 +113,7 @@ export class AuthStore {
   @action
   setTheme(theme){
     this.userSettings.set('theme', theme)
+    localStorage.setItem('DEFAULT_THEME', theme)
   }
 
   @computed

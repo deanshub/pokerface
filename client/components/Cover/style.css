@@ -3,7 +3,13 @@
   background-color: backColor;
   border-radius: 10px;
   margin-bottom: 5vh;
-  box-shadow: 0 0 10px 0 #000000;
+
+}
+.coverContainer.day{
+  box-shadow: $dayBoxShadow;
+}
+.coverContainer.night{
+  box-shadow: $nightBoxShadow;
 }
 
 .imageContainer{
@@ -14,21 +20,40 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(31,29,40,0.5);
   border-radius: 0.625em;
 }
 
 .name {
   border-radius: inherit;
-  background-color: rgba(31,29,40,0.5);
-  box-shadow: 0 0 20px 0 #000000;
-  color: white;
+  background-color: inherit;
+  color: inherit;
   font-size: 4.75em;
   padding: 0.3em 0.5em;
   font-weight: bolder;
   line-height: normal;
   text-align: center;
 }
+
+.coverContainer.day{
+  .imageContainer{
+    background-color: rgba(242,242,242,0.5);
+    color: black;
+    .name{
+      box-shadow: $dayBoxShadow;
+    }
+  }
+}
+
+.coverContainer.night{
+  .imageContainer{
+    background-color: rgba(31,29,40,0.5);
+    color: white;
+    .name{
+      box-shadow: $nightBoxShadow;
+    }
+  }
+}
+
 
 .compact .imageContainer{
   height: 10em;
@@ -58,10 +83,23 @@
 
 .detailsContainer{
   padding: 2em 3em;
-  color: textColor;
-  background-color: backColor;
   display: flex;
 }
+
+.coverContainer.day{
+  .detailsContainer{
+    color: #535168;
+    background-color: blindsTimerBackgroundInverted;
+  }
+}
+
+.coverContainer.night{
+  .detailsContainer{
+    color: textColor;
+    background-color: backColor;
+  }
+}
+
 
 .hidden{
   display: none;
@@ -69,14 +107,22 @@
 
 .expandablePanel{
   color: textColor;
-  background-color: expandableBackColor;
   padding: 1em 0 1em 3em;
   display: flex;
   border-radius: 0 0 10px 10px;
   align-items: center;
 }
+
+
 .compact .expandablePanel{
   cursor: pointer;
+}
+
+.coverContainer.day{
+  background-color: qrBottomBorderColorInverted;
+}
+.coverContainer.night{
+  background-color: expandableBackColor;
 }
 
 .detailsLeftPane{
