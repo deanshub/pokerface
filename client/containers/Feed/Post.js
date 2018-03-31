@@ -132,6 +132,11 @@ export default class Post extends Component {
           busy: false,
         })
       })
+    }).catch(err=>{
+      console.error(err)
+      this.setState({
+        busy: false,
+      })
     })
   }
 
@@ -336,13 +341,13 @@ export default class Post extends Component {
                     </Button>
                   }
                   {
-                    post.spot!==undefined&&!navigator.share&&location.host.startsWith('localhost')&&
+                    post.spot!==undefined&&!navigator.share&&
                     <Button
                         name="downloadGif"
                         onClick={::this.clientDownloadGif}
                         simple
                         small
-                        style={{padding: '0.5em 0'}}
+                        style={{padding: '0.5em 0', display: 'none'}}
                     >
                         Client Download Gif
                     </Button>

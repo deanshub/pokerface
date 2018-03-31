@@ -109,8 +109,10 @@ export default class YouTube extends Component {
         autoplay: 1,
         fs: 0,
         modestbranding: 1,
-        loop:1,
+        loop: 1,
         rel: 0,
+        origin: 'pokerface.io',
+        widget_referrer: 'pokerface.io',
         ...playerVars,
       },
     }
