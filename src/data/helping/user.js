@@ -1,4 +1,5 @@
 import DB from '../db'
+import config from 'config'
 import {LOGIN, REBRANDING} from '../../utils/permissions'
 
 export const createUser = (user) => {
@@ -82,20 +83,19 @@ export const prepareAvatar = (user) => {
   const {avatar, username} = user
 
   if (!avatar){
-    return '/images/avatar.png'
+    return `${config.ROOT_URL}/images/avatar.png`
   }else if (!avatar){
-    return `/api/avatarGenerator?username=${username}`
+    return `${config.ROOT_URL}/api/avatarGenerator?username=${username}`
   }else if (!avatar.startsWith('http')) {
-    return `/images/${avatar}`
+    return `${config.ROOT_URL}/images/${avatar}`
   }
 
   return avatar
 }
 
 export const prepareCoverImage = (coverImage) => {
-
   if (coverImage && !coverImage.startsWith('http')) {
-    return `/images/${coverImage}`
+    return `${config.ROOT_URL}/images/${coverImage}`
   }
 
   return coverImage
@@ -103,7 +103,7 @@ export const prepareCoverImage = (coverImage) => {
 
 export const prepareGeneralImage = (image) => {
 
-  return image?`/images/${image}`:undefined
+  return image?`${config.ROOT_URL}/images/${image}`:undefined
 }
 
 export const prepareRebrandingDetails = (permissions, rebrandingDetails={},avatar, fullname) =>{

@@ -10,7 +10,7 @@ export const devMiddleware = ()=> webpackDevMiddleware(compiler,{
     colors: true,
   },
   // noInfo: true,
-  publicPath: webpackConfig.output.publicPath,
+  publicPath: webpackConfig[0].output.publicPath,
   watchOptions:{
     aggregateTimeout: 300,
   },
