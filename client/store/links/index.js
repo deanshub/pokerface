@@ -60,7 +60,7 @@ const hasUploadVariable = ({ query: { definitions } }) => {
 }
 
 const linkOptions = {
-  uri: '/graphql',
+  uri: `${__webpack_public_path__}graphql`,
   credentials: 'same-origin',
 }
 

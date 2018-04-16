@@ -4,11 +4,11 @@
 }
 
 .day {
-  background:url('../../assets/pattern-white.png');
+  background-image:url('../../assets/pattern-white.png');
   background-color: white;
 }
 
 .night {
-  background:url('../../assets/pattern-black.png');
+  background-image:url('../../assets/pattern-black.png');
   background-color: appBackgroundColor;
 }

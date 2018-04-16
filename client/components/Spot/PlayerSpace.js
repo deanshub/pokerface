@@ -62,7 +62,7 @@ export default class PlayerSpace extends Component {
         <div
             className={classnames(style.avatar)}
             onClick={::this.avatarClicked}
-            style={{backgroundImage:`url("${player.avatar}")`}}
+            style={{backgroundImage: player.avatar.startsWith('data')?`url("${player.avatar}")`:`url("${__webpack_public_path__}${player.avatar}")`}}
         />
         <div className={classnames(style.cards)}>
           <Cards

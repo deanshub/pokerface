@@ -3,6 +3,7 @@ let webpack = require('webpack')
 let path = require('path')
 let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 
+let publicPath
 let devtool
 let hotloaderEntries=[]
 let plugins = [
@@ -12,6 +13,7 @@ let plugins = [
 ]
 
 if (NODE_ENV==='"development"'){
+  publicPath='http://localhost:9031/'
   plugins.push(new webpack.NamedModulesPlugin())
   plugins.push(new webpack.HotModuleReplacementPlugin())
   plugins.push(new webpack.LoaderOptionsPlugin({
@@ -22,6 +24,7 @@ if (NODE_ENV==='"development"'){
     'webpack-hot-middleware/client',
   ]
 }else{
+  publicPath='https://pokerface.io/'
   plugins.push(new webpack.optimize.AggressiveMergingPlugin())
   plugins.push(new webpack.LoaderOptionsPlugin({
     minimize: true,
@@ -70,7 +73,8 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, './static'),
-    publicPath: '/',
+    // publicPath: '/',
+    publicPath: publicPath,
     filename: '[name].js',
     chunkFilename: '[id].[chunkhash].js',
   },
@@ -108,19 +112,19 @@ const config = {
       {
         test: /\.svg(\?.*)?$/,
         include: path.resolve(__dirname, 'client', 'assets'),
-        loader: 'url-loader?limit=1024h&outputPat=images&context=/images&name=[name].[ext]',
-        // loader: 'svg-url-loader?limit=1024&noquotes&outputPat=images&context=/images&name=[name].[ext]',
+        loader: 'url-loader?limit=1024h&context=images&outputPath=images&name=[name].[ext]',
+        // loader: 'svg-url-loader?limit=1024&noquotes&context=images&outputPath=images&name=[name].[ext]',
       }, {
         test: /\.png$/,
-        loader: 'url-loader?limit=8192&mimetype=image/png&outputPat=images&context=/images&name=[name].[ext]',
+        loader: 'url-loader?limit=8192&mimetype=image/png&context=images&outputPath=images&name=[name].[ext]',
         // include: path.resolve(__dirname, 'client', 'assets'),
       }, {
         test: /\.gif$/,
-        loader: 'url-loader?limit=8192&mimetype=image/gif&outputPat=images&context=/images&name=[name].[ext]',
+        loader: 'url-loader?limit=8192&mimetype=image/gif&context=images&outputPath=images&name=[name].[ext]',
         include: path.resolve(__dirname, 'client', 'assets'),
       }, {
         test: /\.jpg$/,
-        loader: 'url-loader?limit=8192&mimetype=image/jpg&outputPat=images&context=/images&name=[name].[ext]',
+        loader: 'url-loader?limit=8192&mimetype=image/jpg&context=images&outputPath=images&name=[name].[ext]',
         include: path.resolve(__dirname, 'client', 'assets'),
       },
       {
@@ -150,7 +154,22 @@ const config = {
   devServer: {
     contentBase: './client',
     hot: true,
-    publicPath: '/',
+    // publicPath: '/',
+    publicPath: publicPath,
   },
 }
-module.exports = config
+
+const sdkConfig = {
+  ...config,
+  entry: {
+    pokerface: './sdk.js',
+    vendor: config.entry.vendor,
+  },
+  output:{
+    ...config.output,
+    library: '[name]',
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
+  },
+}
+module.exports = [config, sdkConfig]

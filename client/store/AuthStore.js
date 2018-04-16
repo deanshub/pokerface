@@ -20,13 +20,13 @@ export class AuthStore {
   @observable fetchOptionalUsers: boolean
   @observable userSettings
 
-  constructor(){
+  constructor(theme){
     this.user = {}
     this.authenticating = true
     this.fetchOptionalUsers = true
     this.opensourceModalOpen = false
     this.modalModalOpen = false
-    this.userSettings = observable.map({theme:DEFAULT_THEME})
+    this.userSettings = observable.map({theme:theme||DEFAULT_THEME})
     this.optionalUsers = observable([])
   }
 
@@ -41,7 +41,7 @@ export class AuthStore {
   @action
   authenticate(){
     this.authenticating = true
-    return request.post('/login/isAuthenticated').set('Authorization', localStorage.getItem('jwt')).then((res)=>{
+    return request.post(`${__webpack_public_path__}login/isAuthenticated`).set('Authorization', localStorage.getItem('jwt')).then((res)=>{
       this.authenticating = false
 
       const {user} = res.body
