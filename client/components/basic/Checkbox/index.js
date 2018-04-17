@@ -9,15 +9,14 @@ export default class Checkbox extends Component {
 
   constructor(props){
     super(props)
-    const {defaultChecked} = props
-    this.state = {checked:defaultChecked}
+    const {checked} = props
+    this.state = {checked}
   }
 
   componentWillReceiveProps(nextProps){
-    const {defaultChecked} = this.props
-    const {defaultChecked:nextChecked} = nextProps
+    const {checked: nextChecked} = nextProps
     const {checked} = this.state
-    if (defaultChecked !== nextChecked && checked !== nextChecked){
+    if (checked !== nextChecked){
       this.setState({checked:nextChecked})
     }
   }

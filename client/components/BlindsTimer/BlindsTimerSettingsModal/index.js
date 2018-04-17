@@ -67,7 +67,7 @@ export default class BlindsTimer extends Component {
               id="autoSlides"
               onChange={::this.toggleAutoSlides}
               style={{flex:'none', alignSelf: 'flex-start', marginTop:'1em'}}
-              value={timer.autoSlides.on}
+              checked={timer.autoSlides.on}
           />
           <div className={classnames(style.autoSlidesContainer, {[style.hidden]:!timer.autoSlides.on})}>
             <Input
@@ -105,7 +105,7 @@ export default class BlindsTimer extends Component {
             id="enableYoutube"
             onChange={()=>timer.autoSlides.enableYoutube=!timer.autoSlides.enableYoutube}
             style={{flex:'none'}}
-            value={timer.autoSlides.enableYoutube}
+            checked={timer.autoSlides.enableYoutube}
         />
       </div>
     )
@@ -136,7 +136,7 @@ export default class BlindsTimer extends Component {
               checkboxLabel="Update blinds"
               id="blindsAutoUpdate"
               onChange={::this.toggleAutoUpdate}
-              value={timer.autoUpdateBlinds}
+              checked={timer.autoUpdateBlinds}
           />
         </ButtonGroup>
       </div>
