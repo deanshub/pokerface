@@ -45,7 +45,6 @@ app.use('/login', loginRoute)
 app.use(authentication.addUserToRequest)
 
 app.use('/graphql',
-  cors(),
   bodyParser.json(),
   fileUploadMiddleware({
     uploadDir: '../client/static/images',
