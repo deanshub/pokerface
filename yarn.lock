@@ -357,9 +357,9 @@ apollo-link@^1.2.1:
     apollo-utilities "^1.0.0"
     zen-observable-ts "^0.8.6"
 
-apollo-upload-client@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/apollo-upload-client/-/apollo-upload-client-7.1.0.tgz#13b48b24c6c5b454c6c62ee9c01726a6026ea0f4"
+apollo-upload-client@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-upload-client/-/apollo-upload-client-8.0.0.tgz#0067f3b426b3828f971964799bc31f8073bd0607"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.40"
     apollo-link-http-common "^0.2.3"

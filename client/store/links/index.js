@@ -4,7 +4,7 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { onError } from 'apollo-link-error'
 import {SubscriptionClient} from 'subscriptions-transport-ws'
 import { setContext } from 'apollo-link-context'
-import {createUploadLink} from 'apollo-upload-client/lib/index'
+import {createUploadLink} from 'apollo-upload-client'
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -50,12 +50,13 @@ const setAuthorizationLink = setContext((_, { headers }) => {
 
 const hasUploadVariable = ({ query: { definitions } }) => {
   return definitions.some(
-    ({ kind, operation, variableDefinitions}) =>
-      kind === 'OperationDefinition' && operation === 'mutation' &&
-      variableDefinitions.some(varDef => {
+    ({ kind, operation, variableDefinitions}) =>{
+      return kind === 'OperationDefinition' && operation === 'mutation' &&
+        variableDefinitions.some(varDef => {
         const {name} = varDef.type
-        return name && name.value === 'Upload'
+        return (name && name.value === 'Upload') || (varDef.type.kind==='ListType' && varDef.type.type && varDef.type.type.name && varDef.type.type.name.value=== 'Upload')
       })
+    }
   )
 }
 

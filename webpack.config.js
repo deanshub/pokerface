@@ -163,7 +163,6 @@ const sdkConfig = {
   ...config,
   entry: {
     pokerface: './sdk.js',
-    vendor: config.entry.vendor,
   },
   output:{
     ...config.output,
