@@ -6,6 +6,7 @@ let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 let publicPath
 let devtool
 let hotloaderEntries=[]
+let sdkHotReloadEntries=[]
 let plugins = [
   new webpack.DefinePlugin({
     'process.env': { NODE_ENV },
@@ -21,8 +22,10 @@ if (NODE_ENV==='"development"'){
   }))
   devtool = 'eval-source-map'
   hotloaderEntries = [
-    'webpack-hot-middleware/client',
+    `webpack-hot-middleware/client?path=${publicPath}__webpack_hmr&name=desktop`,
+    // 'webpack-hot-middleware/client',
   ]
+  sdkHotReloadEntries = [`webpack-hot-middleware/client?path=${publicPath}__webpack_hmr&name=sdk`]
 }else{
   publicPath='https://pokerface.io/'
   plugins.push(new webpack.optimize.AggressiveMergingPlugin())
@@ -32,6 +35,7 @@ if (NODE_ENV==='"development"'){
 }
 
 const config = {
+  target: 'web',
   mode: NODE_ENV==='"development"'?'development':'production',
   context: path.resolve(__dirname, './client'),
   entry: {
@@ -41,9 +45,9 @@ const config = {
     ],
     html: './index.html',
     vendor: [
+      ...hotloaderEntries,
       'babel-polyfill',
       'whatwg-fetch',
-      ...hotloaderEntries,
       'react',
       'react-dom',
       'react-router',
@@ -77,6 +81,10 @@ const config = {
     publicPath: publicPath,
     filename: '[name].js',
     chunkFilename: '[id].[chunkhash].js',
+    // hotUpdateChunkFilename: 'hot-update.js',
+    // hotUpdateMainFilename: 'hot-update.json',
+    // hotUpdateChunkFilename: '__webpack_hmr/[id].[hash].hot-update.js',
+    // hotUpdateMainFilename: '__webpack_hmr/[hash].hot-update.json',
   },
   module: {
     rules: [
@@ -162,7 +170,7 @@ const config = {
 const sdkConfig = {
   ...config,
   entry: {
-    pokerface: './sdk.js',
+    pokerface: [...sdkHotReloadEntries, './sdk.js'],
   },
   output:{
     ...config.output,
@@ -171,4 +179,5 @@ const sdkConfig = {
     umdNamedDefine: true,
   },
 }
+// module.exports = config
 module.exports = [config, sdkConfig]

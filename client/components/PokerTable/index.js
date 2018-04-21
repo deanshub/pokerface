@@ -62,7 +62,7 @@ export default class PokerTable extends Component {
             }
             {
               logo ?
-              <div className={style.logo} style={{backgroundImage:`url('${__webpack_public_path__}${logo}')`}}/>
+              <div className={style.logo} style={{backgroundImage:logo.startsWith('http')?`url('${logo}')`:`url('${__webpack_public_path__}${logo}')`}}/>
               : null
             }
           </div>
