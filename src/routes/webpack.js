@@ -11,9 +11,12 @@ export const devMiddleware = ()=> webpackDevMiddleware(compiler,{
     colors: true,
   },
   // noInfo: true,
-  publicPath: config.ROOT_URL,
+  // publicPath: '/',
+  publicPath: `${config.ROOT_URL}/`,
   watchOptions:{
     aggregateTimeout: 300,
   },
 })
-export const hotMiddleware = ()=> webpackHotMiddleware(compiler)
+export const hotMiddleware = ()=> webpackHotMiddleware(compiler, {
+  path: '/__webpack_hmr',
+})
