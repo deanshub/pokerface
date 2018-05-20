@@ -32,7 +32,7 @@ export default class StandalonePost extends Component {
   }
 
   render() {
-    const {auth, feed} = this.props
+    const {auth, feed, simple} = this.props
     const {loading, post} = feed.standalonePost
     const {theme} = auth
     return (
@@ -41,11 +41,13 @@ export default class StandalonePost extends Component {
           mobileClassName={classnames(style.mobileStandaloneContainer)}
       >
         <PhotoGallery/>
-        <div>
-          <a href="/" onClick={::this.goHome}>
-            <Logo theme={theme}/>
-          </a>
-        </div>
+        {!simple&&
+          <div>
+            <a href="/" onClick={::this.goHome}>
+              <Logo theme={theme}/>
+            </a>
+          </div>
+        }
         {
           loading?
           <Loader/>
@@ -58,26 +60,30 @@ export default class StandalonePost extends Component {
             :
             <NoMatch/>
         }
-        <IsUserLoggedIn opposite>
-          <div className={classnames(style.signupContainer)}>
-            <Button
+        {!simple&&(
+          <IsUserLoggedIn opposite>
+            <div className={classnames(style.signupContainer)}>
+              <Button
                 href={post?`/login?url=/post/${post.id}`:'/login'}
                 primary
                 style={{width:'30em', textTransform:'uppercase'}}
-            >
-              Join The Pokerface Community - Sign Up
-            </Button>
-          </div>
-        </IsUserLoggedIn>
-        <IsUserLoggedIn>
-          <div className={classnames(style.signupContainer)}>
-            <Button
-                href="/"
-            >
-              Back to the feed
-            </Button>
-          </div>
-        </IsUserLoggedIn>
+                >
+                  Join The Pokerface Community - Sign Up
+                </Button>
+              </div>
+            </IsUserLoggedIn>
+        )}
+        {!simple&&(
+          <IsUserLoggedIn>
+            <div className={classnames(style.signupContainer)}>
+              <Button
+                  href="/"
+              >
+                Back to the feed
+              </Button>
+            </div>
+          </IsUserLoggedIn>
+        )}
       </ResponsiveContainer>
     )
   }

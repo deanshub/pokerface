@@ -3,10 +3,14 @@
   "env": {
     "browser": true,
     "node": true,
-    "es6": true
+    "es6": true,
+    "commonjs": true
   },
   "plugins": [
     "react"
+  ],
+  "globals": [
+    "__webpack_public_path__": false
   ],
   "rules": {
     "indent": ["error", 2, { "ignoredNodes": ["JSXElement *"] }],

@@ -58,7 +58,7 @@ export default class SelectTheme extends Component {
                   </div>
                   <Checkbox
                       centered
-                      defaultChecked={theme!=='day'}
+                      checked={theme!=='day'}
                       id="themeToggle"
                       onChange={::this.onChangeTheme}
                       style={{'flex':0}}
