@@ -462,7 +462,7 @@ export class TimerStore {
       if (nextRound.ante&&nextRound.smallBlind&&nextRound.bigBlind){
         return `Next ${nextRound.ante}/${nextRound.smallBlind}/${nextRound.bigBlind}`
       }else if(nextRound.ante&&nextRound.smallBlind||nextRound.ante&&nextRound.bigBlind||nextRound.smallBlind&&nextRound.bigBlind){
-        return `Next ${nextRound.ante||nextRound.smallBlind}/${nextRound.smallBlind||nextRound.bigBlind}`
+        return `Next ${nextRound.ante||nextRound.smallBlind}/${nextRound.bigBlind||nextRound.smallBlind}`
       }else if(nextRound.ante||nextRound.bigBlind||nextRound.bigBlind){
         return `Next ${nextRound.ante||nextRound.smallBlind||nextRound.bigBlind}`
       }
