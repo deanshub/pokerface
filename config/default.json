@@ -13,5 +13,6 @@
   "GOOGLE_SECRET_ID": "bY6Rspl1uRf7dmePm9XuWnDi",
   "SSL_KEY_FILE": "./config/localhost.key",
   "SSL_CERT_FILE": "./config/localhost.cert",
+  "ROOT_URL": "http://localhost:9031",
   "DISABLE_MAIL_SENDING":true
 }

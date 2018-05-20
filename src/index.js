@@ -2,6 +2,7 @@
 
 import fs from 'fs'
 import express from 'express'
+import cors from 'cors'
 import fileUploadMiddleware from './utils/fileUploadMiddleware'
 import authentication from './routes/authentication'
 import cookieParser from 'cookie-parser'
@@ -21,6 +22,7 @@ const PORT = config.port || 9031
 
 app.use(compression())
 app.use(cookieParser())
+app.use(cors())
 // app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -49,7 +51,7 @@ app.use('/graphql',
     keepExtensions: true,
     maxFieldsSize: 5 * 1024 * 1024, // 5MB
   }),
-  graphqlExpressMiddleware
+  graphqlExpressMiddleware,
 )
 
 if (config.NODE_ENV==='development'){
@@ -59,12 +61,10 @@ if (config.NODE_ENV==='development'){
   }))
 }
 routes.apiRoutes.then(apiRoutes=>{
-
   apiRoutes.forEach((route)=>{
     app.use('/api', route)
   })
   app.use('/', routes.staticRoutes)
-
 })
 
 const wrappedServer = createGraphqlSubscriptionsServer(app)

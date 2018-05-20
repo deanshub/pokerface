@@ -2,6 +2,7 @@ import {withFilter} from 'graphql-subscriptions'
 import pubSub from './pubSub'
 import DB from '../../db'
 import path from 'path'
+import config from 'config'
 
 const POST_CHANGED = 'postChanged'
 
@@ -97,7 +98,7 @@ export const resolvers = {
     event: (post)=>DB.models.Game.findById(post.game),
   },
   File:{
-    path: (file) => `/images/${file.path}`,
+    path: (file) => `${config.ROOT_URL}/images/${file.path}`,
     type: (file) => file.type,
   },
   Query: {
