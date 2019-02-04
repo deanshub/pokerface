@@ -1,0 +1,7 @@
+db.createUser(
+   {
+     user: "mongo",
+     pwd: "admin",
+     roles: [ {role: "readWrite", db: "pokerface"}, {role: "dbAdmin", db: "pokerface"} ]
+   }
+)

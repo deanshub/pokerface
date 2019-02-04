@@ -1,0 +1,4 @@
+{
+  "presets": ["es2015", "stage-0", "react",  ["env", { "targets": { "node": "current" } }] ],
+  "plugins": ["transform-decorators-legacy", "transform-flow-strip-types", "react-hot-loader/babel"]
+}
