@@ -1,0 +1,8 @@
+@import '../Input/style.css';
+
+
+.textareaInput {
+  @extend .input;
+  resize: vertical;
+  max-height: 4em;
+}

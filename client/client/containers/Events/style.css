@@ -1,0 +1,160 @@
+@import "../../constants/styles";
+
+.events{
+  margin: 0 2em;
+}
+
+.containerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.containerHeaderText {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+}
+
+.containerHeaderButton {
+  position: absolute;
+  top: 0.3rem;
+  right: 0;
+  max-width: 100px;
+}
+
+.container{
+  line-height: normal;
+}
+
+.eventRow{
+  display: flex;
+  border-radius: 10px;
+  margin-bottom: 1.5em;
+  color: textColor;
+
+  &.day {
+    background-color: blindsTimerBackgroundInverted;
+    box-shadow: $dayBoxShadow;
+  }
+
+  &.night{
+    background-color: backColor;
+    box-shadow: $nightBoxShadow;
+  }
+
+  .date{
+    cursor: pointer;
+
+    width: 8em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px 0px 0px 10px;
+    padding: 1em 0;
+  }
+
+  &.day .date{
+    color: #535168;
+    background-color: qrBottomBorderColorInverted;
+  }
+
+  &.night .date{
+    color: white;
+    background-color: qrBottomBorderColor;
+  }
+
+  .month{
+  }
+
+  .day{
+    font-size: 3em;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    text-indent: 0.2em;
+  }
+
+  .yaer{
+    color: textColor;
+  }
+
+  .details{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1em 0em 1em 2em;
+  }
+
+  .titleRow{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .title{
+    flex: 1;
+    color: white;
+    font-weight: bold;
+  }
+
+  &.day .title{
+    color: #535168;
+  }
+
+  &.night .title{
+    color: white;
+  }
+
+  .actions{
+    display: flex;
+  }
+  .actionMenuItems{
+    width: 8em;
+  }
+
+  .attandanceContainer{
+    display: flex;
+  }
+  .attandanceAction{
+    padding: 0 1em;
+    cursor: pointer;
+  }
+
+  .invited{
+    &:hover{
+      color: #e3d357;
+    }
+    &.active{
+      color: #e3d357;
+    }
+  }
+  .notGoing{
+    &:hover{
+      color: #ff5a5a;
+    }
+    &.active{
+      color: #ff5a5a;
+    }
+  }
+  .going{
+    &:hover{
+      color: #41c86a;
+    }
+    &.active{
+      color: #41c86a;
+    }
+  }
+
+  .location{
+    margin-bottom: 1.5em;
+  }
+  .attendance{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .peopleDivider{
+    width: 1px;
+    height: 1em;
+    background-color: eventDividerColor;
+    margin: 0 1em;
+  }
+}

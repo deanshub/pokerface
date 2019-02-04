@@ -1,0 +1,12 @@
+@import '../Input/style.css';
+
+
+.datePickerContainer{
+  @extend .inputContainer;
+  display: block;
+}
+
+.datePickerInput{
+  @extend .input;
+  box-sizing: border-box;
+}

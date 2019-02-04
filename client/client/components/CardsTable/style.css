@@ -1,0 +1,101 @@
+@import '../../constants/styles.css';
+
+.container{
+  margin: 0 auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5em;
+  height: 100%;
+  user-select: none;
+  align-items: center;
+  line-height: normal;
+  width: 90vmin;
+  max-width: 60em;
+}
+.inFeed.container{
+  max-width: 18em;
+}
+
+.inFeed.container:not(.mobile){
+  width: 70vmin;
+}
+
+.inFeed.container.mobile{
+  width: 92vmin;
+}
+
+
+.title{
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.title.day{
+  color: #535168;
+}
+.maintitle{
+  font-size: 1.5em;
+}
+.inFeed.maintitle{
+  font-size: 1.3em;
+}
+
+.handchartContainer{
+  border-collapse: collapse;
+  font-weight: bold;
+  color: subtitleColor;
+  width: 100%;
+}
+.inFeed.handchartContainer{
+}
+.hand{
+  border:1px solid #d0d0da;
+  text-align: center;
+  cursor: pointer;
+  background-color: #f2f2f2;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transform-style: preserve-3d;
+}
+.hand:hover{
+  font-weight: bold;
+  background-color: #f2f2f2;
+  transform: scale(2.5);
+  position: absolute;
+  z-index: 1;
+}
+
+.legend{
+  font-size: 2.2vmin;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding:2em 0;
+}
+.legend.day{
+  color: #535168;
+}
+.label{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.label.disabled{
+  color: subtitleColor;
+}
+.labelColor{
+  height: 100%;
+  width: 15px;
+  margin-right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.labelColor:after{
+  content: '✓';
+  flex: 1;
+}
+.disabled>.labelColor:after{
+  content: '';
+}

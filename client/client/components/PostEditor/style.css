@@ -1,0 +1,26 @@
+.container{
+  border-radius: inherit;
+}
+
+.editor {
+  box-sizing: border-box;
+  cursor: text;
+  padding: 16px;
+  width: 100%;
+}
+
+.post :global(.public-DraftEditor-content){
+  min-height: 140px;
+}
+
+.cardsPreview{
+  display: inline-block;
+  position: absolute;
+  height: 1.7em;
+  top: -0.1em;
+  left: 0;
+}
+
+.container :global(.DraftEditor-editorContainer){
+  z-index: auto;
+}

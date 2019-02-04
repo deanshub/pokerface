@@ -1,0 +1,9 @@
+.name{
+  display: flex;
+  flex-direction: column;
+  flex:2;
+}
+
+.fieldsGroup {
+  display: flex;
+}

@@ -1,0 +1,144 @@
+.deck{
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
+  flex: 1;
+  justify-content: center;
+  align-items: stretch;
+  position: relative;
+  box-sizing: border-box;
+}
+.inline>li{
+  box-shadow: none;
+  margin: 0 1px;
+}
+.inline>li.red{
+  border: 1px solid red;
+}
+.inline>li.black{
+  border: 1px solid black;
+}
+.rotate>li{
+  margin: 0 -10px;
+  z-index: 3;
+}
+
+.dealer>li{
+  margin-right: 0.2vw;
+}
+.dealer>li:nth-child(3){
+  margin-right: 0.5vw;
+}
+.dealer>li:nth-child(4){
+  margin-right: 0.5vw;
+}
+
+.covered{
+  padding: 0.4em 0px;
+}
+
+.card {
+  max-width: 10vw;
+  border-radius: 10%;
+  box-shadow: 0 0 0.3vmin 0 rgba(0,0,0,0.3);
+  position: relative;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 80ms ease-in;
+  margin: 0 3px;
+  transform-style: preserve-3d;
+}
+.front{
+  border-radius: inherit;
+  background-color: white;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  /* backface-visibility: hidden; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(180deg);
+}
+.uncover{
+  transform: rotateX(0deg);
+  z-index: 2;
+}
+.hover:hover{
+  transform: scale(1.5) rotate(0deg) !important;
+  z-index: 5;
+}
+.activeHover{
+  transform: scale(1.5) rotate(0deg) !important;
+  z-index: 1;
+}
+.active{
+  margin-top: -2vh;
+}
+
+.front:before, .front:after {
+  position: absolute;
+  word-wrap: break-word;
+  line-height: 1;
+}
+
+.front:before {
+  content: attr(data-letter);
+  left: 3%;
+  top: 5%;
+  text-align: left;
+  letter-spacing: -0.2em;
+}
+
+.front:after {
+  content: attr(data-reverse-letter);
+  right: 10%;
+  bottom: 5%;
+  text-align: right;
+  letter-spacing: -0.2em;
+}
+
+.red {
+  color: red;
+}
+.black {
+  color: black;
+}
+
+.back{
+}
+
+.backContainer{
+  border-radius: inherit;
+  color: black;
+  background-color: #a0a0b5;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  transform-style: preserve-3d;
+}
+.backLogo{
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 25%;
+  margin: 25%;
+  flex: 1;
+  filter: brightness(2000%) opacity(0.6);
+}
+.backText{
+  flex:1;
+}

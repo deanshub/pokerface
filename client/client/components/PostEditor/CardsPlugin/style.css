@@ -1,0 +1,11 @@
+.container{
+  position: relative;
+}
+.cardBlock{
+  font-size: 1.1em;
+  cursor: pointer;
+  font-weight: bold;
+}
+.spaceKeeper{
+  display: inline-block;
+}

@@ -1,0 +1,31 @@
+.form{
+  width: 24.3em;
+  margin: auto;
+}
+
+.header{
+  font-size: 2em;
+  line-height: 1.5;
+  margin: 0 6px;
+  font-family: $titleFont;
+}
+
+.button{
+  margin-top: 10px;
+  height: 3.18em;
+  padding-top: 0.2em;
+}
+
+.failureContent{
+  width: 24.3em;
+  margin: auto;
+}
+
+.failureHeader{
+  font-size: 1.5em;
+  margin: auto;
+}
+
+.failureExplanation{
+  margin: 2em 0px;
+}

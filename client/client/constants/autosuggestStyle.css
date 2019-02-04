@@ -1,0 +1,102 @@
+@import "./styles";
+
+.autosuggest {
+  position: relative;
+  margin-right: 1em;
+  margin-left: 2em;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+.autosuggestInput,.autosuggestInput:disabled{
+  opacity: 0.6;
+  border-width: 0;
+  border-radius: 0.6em;
+  height: 2.3em;
+  width: 10em;
+  color: #535168;
+  background-color: inherit;
+}
+
+.autosuggestInput:focus{
+  outline: 0;
+}
+
+.autosuggestInputActive{
+  background-color: #535168;
+}
+
+
+.suggestionsContainer{
+  position: absolute;
+  display: none;
+  width: 100%;
+  background-color: $white;
+  max-height: 14.4em;
+  overflow-y:auto;
+  overflow-x: hidden;
+  border-radius: 0.45em;
+  margin-top: 1px;
+  z-index: 1;
+  border: 1px solid $divider;
+  font-size: 0.8em;
+  box-sizing: border-box;
+}
+.suggestionsContainerOpen{
+  display: block;
+}
+
+.sectionContainer {
+}
+
+.sectionContainerFirst {
+}
+
+.sectionTitle {
+  padding-left: 0.7em;
+  background-color: $divider;
+}
+
+.suggestionsList{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  border-radius: 0.45em;
+}
+
+.suggestion{
+  cursor: pointer;
+  border-top: 1px solid $divider;
+  /* border-radius: 0.45em; */
+}
+.suggestionFirst{
+  border-top: 0px;
+}
+
+.suggestionItem {
+  border: white solid .1em;
+  padding: 0.3em 0.7em;
+  border-radius: 0.45em;
+
+  .subheader{
+    color: #a0a0b5;
+    white-space: pre;
+  }
+
+  .subheader:hover{
+    color: white;
+  }
+}
+
+.suggestionHighlighted{
+  color: white;
+
+  .suggestionItem{
+    background-color: #41c86a;
+    border: white solid .1em;
+
+    .subheader{
+      color: white;
+    }
+  }
+}

@@ -1,0 +1,76 @@
+@import "../../constants/styles";
+@import "../../constants/autosuggestStyle";
+
+.autosuggest {
+  margin: 0px;
+  margin-top: 1.1em;
+  max-width: 15em;
+}
+
+.autosuggestMobile {
+  width: 100%;
+  height: 60px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.autosuggestInput{
+  background-image: url("../../assets/user-search.png");
+  background-repeat: no-repeat;
+  padding-left: 60px;
+  background-position: 16px;
+  min-width: 10em;
+}
+
+.autosuggestInput.day{
+  background-color: #d1d1dc;
+}
+
+.autosuggestInput.night{
+  background-color: darkBackgroundColor;
+}
+
+.autosuggestInput.day:focus{
+  background-color: #a0a0b5;
+  color: white;
+}
+
+.autosuggestInput.night:focus{
+  background-color:darkBackgroundFocusedColor;
+  color: darkBackgroundFontColor;
+}
+
+.autosuggestInputMobile {
+  @extend .autosuggestInput;
+  background-color: inherit;
+}
+
+.autosuggestInputMobile:focus {
+  background-color: inherit;
+  color: inherit;
+}
+
+
+.suggestion{
+  border-radius: 0.45em;
+}
+
+.suggestionsContainer{
+  width: 100%;
+  box-shadow: 0 0 10px 0 #000000;
+}
+
+.suggestionsContainerMobile{
+  @extend .suggestionsContainer;
+  top: 60px;
+  box-shadow: none;
+  max-height: calc(100% - 60px);
+  border-radius: 0px;
+  margin-top: 0px;
+}
+
+.suggestionItemMobile {
+  @extend .suggestionItem;
+  border-radius: 0px;
+}

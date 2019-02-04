@@ -1,0 +1,137 @@
+.spot{
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.playersList{
+  flex: 9;
+  display: flex;
+  justify-content: space-around;
+  -webkit-justify-content: space-around;
+  margin-bottom: -25px;
+  z-index: 1;
+}
+.reversed{
+  flex-direction: row-reverse;
+  margin-top: -25px;
+  margin-bottom: 0px;
+}
+
+.playerSpace{
+  width: 20%;
+  max-width: 7em;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  margin: 0 1%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 300ms ease-in;
+  z-index: 1;
+}
+
+.avatar{
+  background-color: rgba(255,255,255,0.95);
+  cursor: pointer;
+  flex: 39;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-position: top;
+  border-radius: 8px 8px 0 0;
+}
+
+.cards{
+  flex: 32;
+  border-bottom: 1px solid #e4e4e4;
+  border-top: 1px solid #e4e4e4;
+  display: flex;
+}
+
+.folded:after{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  border-radius: 8px;
+  content: '';
+  z-index: 1;
+}
+
+.myTurn{
+  box-shadow: -3px 3px 10px 0px black;
+  margin-top: -3px;
+  margin-bottom: 3px;
+}
+
+.descriptionContainer{
+  flex: 29;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: rgba(255,255,255,0.95);
+  border-radius: 0px 0px 8px 8px;
+  position: relative;
+}
+.currentAction{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #41c86a;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 300ms ease-in;
+  border-radius: 0 0 8px 8px;
+  z-index: 2;
+}
+
+.name{
+  color: #24222e;
+  flex: 1;
+  font-size: 0.8em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.bank{
+  color: #a0a0b5;
+  font-size: 0.9em;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-overflow: ellipsis;
+  /*white-space: nowrap;*/
+  overflow: hidden;
+}
+
+.symbol{
+  background-color: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  box-shadow: 0 0 6px 0 rgba(0,0,0, 0.5);
+  width: 2em;
+  height: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}

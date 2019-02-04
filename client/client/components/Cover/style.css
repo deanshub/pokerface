@@ -1,0 +1,217 @@
+@import "../../constants/styles.css";
+.coverContainer{
+  background-color: backColor;
+  border-radius: 10px;
+  margin-bottom: 5vh;
+
+}
+.coverContainer.day{
+  box-shadow: $dayBoxShadow;
+}
+.coverContainer.night{
+  box-shadow: $nightBoxShadow;
+}
+
+.imageContainer{
+  position: relative;
+  height: 30em;
+  background-size: cover;
+  background-position: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.625em;
+}
+
+.name {
+  border-radius: inherit;
+  background-color: inherit;
+  color: inherit;
+  font-size: 4.75em;
+  padding: 0.3em 0.5em;
+  font-weight: bolder;
+  line-height: normal;
+  text-align: center;
+}
+
+.coverContainer.day{
+  .imageContainer{
+    background-color: rgba(242,242,242,0.5);
+    color: black;
+    .name{
+      box-shadow: $dayBoxShadow;
+    }
+  }
+}
+
+.coverContainer.night{
+  .imageContainer{
+    background-color: rgba(31,29,40,0.5);
+    color: white;
+    .name{
+      box-shadow: $nightBoxShadow;
+    }
+  }
+}
+
+
+.compact .imageContainer{
+  height: 10em;
+  cursor: pointer;
+
+  .name {
+    padding: 0.15em 0.25em;
+    font-size: 3em;
+  }
+}
+
+.coverImageNotExist {
+  background-image: url('../../assets/bitmap.png');
+  background-size: auto;
+  background-position: 0px;
+
+  .name {
+    background-color: inherit;
+    box-shadow: none;
+  }
+}
+
+.avatar{
+  position: absolute;
+  bottom: -4em;
+}
+
+.detailsContainer{
+  padding: 2em 3em;
+  display: flex;
+}
+
+.coverContainer.day{
+  .detailsContainer{
+    color: #535168;
+    background-color: blindsTimerBackgroundInverted;
+  }
+}
+
+.coverContainer.night{
+  .detailsContainer{
+    color: textColor;
+    background-color: backColor;
+  }
+}
+
+
+.hidden{
+  display: none;
+}
+
+.expandablePanel{
+  color: textColor;
+  padding: 1em 0 1em 3em;
+  display: flex;
+  border-radius: 0 0 10px 10px;
+  align-items: center;
+}
+
+
+.compact .expandablePanel{
+  cursor: pointer;
+}
+
+.coverContainer.day{
+  background-color: qrBottomBorderColorInverted;
+}
+.coverContainer.night{
+  background-color: expandableBackColor;
+}
+
+.detailsLeftPane{
+  flex:1;
+}
+.detailsRightPane{
+  display: flex;
+}
+.imgIcon{
+  cursor: pointer;
+  width: 5em;
+  height: 5em;
+}
+
+.qrContainer{
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 2em 0;
+  border-bottom: 1px solid qrBottomBorderColor;
+  margin: 0 3em;
+}
+
+.detailsText{
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+}
+.peopleGoingDescription{
+  display: flex;
+  align-items: center;
+}
+.noTopMargin{
+  margin-top: 0;
+}
+
+.peopleDivider{
+  width: 1px;
+  height: 1em;
+  background-color: eventDividerColor;
+  margin: 0 1em;
+}
+
+.divider{
+  margin-top: 1.5em;
+  width: 6em;
+  height: 0.5em;
+  background-color: eventDividerColor;
+}
+
+.icon{
+  margin-right: 1em;
+}
+
+.actionMenuItems{
+  width: 8em;
+}
+
+.attandanceContainer{
+  display: flex;
+}
+.attandanceAction{
+  padding: 0 1em;
+  cursor: pointer;
+}
+
+.invited{
+  &:hover{
+    color: #e3d357;
+  }
+  &.active{
+    color: #e3d357;
+  }
+}
+.notGoing{
+  &:hover{
+    color: #ff5a5a;
+  }
+  &.active{
+    color: #ff5a5a;
+  }
+}
+.going{
+  &:hover{
+    color: #41c86a;
+  }
+  &.active{
+    color: #41c86a;
+  }
+}

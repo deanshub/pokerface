@@ -1,0 +1,13 @@
+
+.message {
+  text-align: left;
+  font-size: 1.3em;
+}
+
+.yes {
+  color: #41c86a;
+}
+
+.no {
+  color: #ff5a5a;
+}

@@ -1,0 +1,22 @@
+@import "../../../constants/styles.css";
+
+.label {
+  margin: 8px 12px;
+  font-weight: normal;
+}
+
+.success {
+  color: successColor;
+}
+
+.error {
+  color: errorColor;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.displayNone {
+  display: none;
+}

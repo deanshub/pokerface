@@ -1,0 +1,131 @@
+@import "../../constants/styles";
+
+.fullScreen{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: blindsTimerBackground;
+  flex-direction: column;
+  color: white;
+  line-height: normal;
+}
+.fullScreen.inverted{
+  color: black;
+  background-color: blindsTimerBackgroundInverted;
+}
+.fullScreen:fullscreen {
+  width: 100%;
+  height: 100%;
+}
+.fullScreen:fullscreen .redesign{
+  margin-right: 0;
+  margin-top: 0;
+}
+
+.redesign{
+  flex: 1;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.round{
+  flex: 1;
+  margin-top: 1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.time{
+  flex: 6;
+  font-weight: bold;
+  margin-top: -0.1em;
+  margin-bottom: 0.1em;
+  position: relative;
+}
+.timeText{
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  line-height: 1;
+}
+
+.progress{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1em;
+  background-color: hoverDeleteColor;
+  transition: width 200ms ease-in;
+}
+
+.brandLine{
+  height: 0em;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.brand{
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: black;
+  min-height: 5em;
+  min-width: 15%;
+  border-radius: 10px;
+  padding: 0.5em;
+  font-weight: bold;
+}
+.brandImage{
+  margin-right: unset;
+  max-width: 4em;
+  max-height: 4em;
+  height: auto;
+  width: auto;
+}
+
+.blindsContainer{
+  flex: 6;
+  color: textColor;
+  background-color: qrBottomBorderColor;
+  padding-top: 2em;
+  display: flex;
+  flex-direction: column;
+}
+.blindsContainer.inverted{
+  background-color: qrBottomBorderColorInverted;
+  color: textColorInverted;
+}
+.currentBlinds{
+  flex: 4;
+  margin-top: 2em;
+  /* text-transform: uppercase; */
+}
+.blinds{
+  display: flex;
+  justify-content: center;
+  /* display: table-caption; */
+}
+.slash{
+  display: flex;
+  align-items: flex-end;
+}
+.blindLabel{
+  font-size: 0.5em;
+}
+.blindContent{
+  font-size: 110%;
+}
+.nextBlinds{
+  flex: 1;
+  text-transform: uppercase;
+}

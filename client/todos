@@ -1,0 +1,149 @@
+FOR GA ONLY!!!
+--------------
+
+dont ask to reset when it's already reset (first round & 15 minutes ...)
+
+allow unsubscribe email for players (not including signup)
+
+error message (store), an error occurred please refresh or try again later
+use amazon cloudfront as cdn?
+
+-------------------------------------------------------------------------------
+change organzition details (send to zur)
+compare ranges send to zur (?)
+cache bug (nginx cache check)
+
+make standalone post act just like standalone event
+
+
+
+
+events
+  standalone event page (how to get to it)              - dean
+
+
+how to guide for sunday
+uri.elberg@powerpoker.co.il
+
+paid = private?
+public events
+can invite org in event
+tag organization
+private forum
+
+boomplayer
+* after ante should create a pot
+* delete preview and continue writting
+
+* make the cards preview entities normalize the text (when inserting [khkd] it will become [Kh Kd])
+* FeedStore addComment function uses dean image
+* /profile should not be used, only /profile/:username
+
+editor improvements
+* log to editor to spot parser
+* allow edit post
+
+spot wizard improvments
+* currency in spot wizard should be add-able Dropdown
+* all-in button
+* consider all-in both on wizard and on player
+* defaultly make the bank of players 100bb
+* onClose of modal should be implemented (when clicking out of the window)
+
+spot player imporvements
+* implement the back button
+* show who won at the end
+* use timeline to move around
+* create constants for all logger categories and such
+* re render of cards (images requested multiple times) when exporting gif
+* better responsiveness (vertical phone)
+
+
+
+leagal note on signup
+
+head
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Description of the page less than 150 characters">
+  <link rel="icon" type="image/png" href="https://example.com/favicon.png">
+  <link rel="apple-touch-icon" href="/custom-icon.png">
+
+
+
+change demo@pokerface.io password
+fix NODE_APP_INSTANCE bug, when running pm2 with -i 0 there is an error (http://pm2.keymetrics.io/docs/usage/environment/#specific-environment-variables)
+fix editor toolbar on RTL
+allow changing game details after creating one
+add to the steps player progress bar which states flop, turn and river (you can press it to go to a cartien moment)
+allow cards to move up on click
+allow this http://localhost:9031/favicon.ico  to work
+
+
+add graphql fregments
+add game statistics (maybe it should look like a poker table and you can click the players to see stats)
+
+remove dependencies from when webpack server side
+
+tournement managment
+-----------------------
+title and sub-title in the blinds timer
+saving game templates in the DB per user
+allowing user to connect from different computers (timer stays the same)
+prizes
+table and user sitting
+
+
+
+
+GAME
+-------
+owner - who created the game
+location
+from
+to
+game type and subtype
+players
+  buyins
+  winnings
+creation time
+
+creation of a game should also create a post
+
+
+POST CREATION - ADD GAME
+-------------------------
+have rich text header and selection toolbar
+  allow bold, link, add images (with preview), friend tagging, youtube\url embedding
+        italic, emojis, hashtag, linkify
+
+
+https://docs.google.com/spreadsheets/d/1zuSO8fMBcju5S-ZfDh3ffajnn2U2eau40CbtBnp4ubA/pubhtml#
+https://www.youtube.com/watch?v=x1AfQkoGHUk
+
+            Hand      Stacks(effective)     Blinds       Position
+
+PreFlop
+
+
+Flop
+
+
+Turn
+
+
+River
+
+
+Notes
+
+
+
+------------------------------------------------------------------------------------------
+
+People on table
+
+position
+description
+name
+(should see it throughout the notebook)

@@ -1,0 +1,193 @@
+@import "../../constants/styles.css";
+
+.landing{
+  min-height: 100vh;
+  color: landingTextColor;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  line-height: normal;
+  box-sizing: border-box;
+}
+.sectionOne{
+  width: 100%;
+  padding: 2.5vh 2vw 0 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+.sectionOne.mobile{
+  min-height: 100vh;
+}
+
+.header{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.title{
+  flex: 1;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: $titleFont;
+}
+
+.mainContent{
+  width: 100%;
+  max-width: 1300px;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2em;
+}
+
+.mobileMainContent{
+    flex-direction: column;
+    margin-top: 1em;
+}
+
+.leftMain{
+  flex-basis: 40%;
+}
+
+.rightMain{
+  flex-basis: 40%;
+}
+
+.line{
+  background-color: landingLineColor;
+  width: 116px;
+  height: 1em;
+  margin: 1em 0;
+}
+
+.smallHeader{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 2vw;
+  color: checkColor;
+}
+.sectionHeader{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 4.5vw;
+  margin: 0.2em 0;
+  color: white;
+}
+.sectionDescription{
+  text-transform: uppercase;
+  font-size: 1.5em;
+  color: landingLineColor;
+  margin-top: 2.1em;
+  margin-right: 8vw;
+  display: flex;
+  justify-content: space-around;
+}
+
+.link{
+  color: white;
+  text-transform: uppercase;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  font-weight: bold;
+  margin: 0.5em;
+  height: 3em;
+}
+.link:hover{
+  color: white;
+}
+
+.formDescription{
+  margin-left: 4em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.mobileDesc{
+  margin-top: 0.4em;
+  margin-bottom: 0.3em;
+}
+
+.terms{
+  margin: 0.5em 2em;
+}
+.mobileTerms{
+  font-size: 0.6em;
+  margin: 0.5em 0em;
+  text-align: center;
+}
+
+.login{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.loginButton{
+  margin: 0px;
+}
+.signupButton{
+  margin-top: 10px;
+  height: 3.18em;
+  padding-top: 0.2em;
+}
+
+.loginForm{
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.mobileLoginForm{
+  flex-direction: column;
+  margin-bottom: 2em;
+}
+
+.loginMessage{
+  position: absolute;
+  right: -6px;
+  top: 80%;
+}
+
+.forgotPassword{
+  margin: 0 12px;
+  color: #25aae1;
+  text-transform: none;
+  cursor: pointer;
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  font-size: 0.8em;
+}
+
+.mobileLoginForm{
+  .forgotPassword{
+    top: calc(100% + 0.5em);
+  }
+}
+
+.divider{
+  width: 1px;
+  background-color: landingLineColor;
+}
+
+.uppercase{
+  text-transform: uppercase;
+}
+
+.mobileShowLoginButton {
+  height: auto;
+  width: auto;
+  color: #bcbccb;
+  border: 1px solid #bcbccb;
+  padding: 1em 2em;
+  border-radius: 6px;
+  text-transform: uppercase;
+}

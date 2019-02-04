@@ -1,0 +1,23 @@
+.image{
+  height: 3em;
+  width: 3em;
+  margin-right: 12px;
+}
+
+.small{
+  height: 2em;
+  width: 2em;
+}
+
+.big{
+  height: 8em;
+  width: 8em;
+}
+
+.avatar{
+  border-radius: 50%;
+}
+
+.link{
+  cursor: pointer;
+}

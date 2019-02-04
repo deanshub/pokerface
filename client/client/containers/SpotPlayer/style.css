@@ -1,0 +1,19 @@
+@import '../../constants/styles.css';
+
+.spotPlayerContainer{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.spotContainer{
+  z-index: 0;
+  flex: 1;
+  background-color: $white;
+  display: flex;
+}
+.stepsPlayerContainer{
+  margin-top: 15px;
+  margin-bottom: 20px;
+  z-index: 0;
+}

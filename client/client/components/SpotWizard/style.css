@@ -1,0 +1,104 @@
+@import '../../constants/styles.css';
+@import "../../constants/autosuggestStyle";
+
+.spotContainer{
+}
+
+.stepTwoContainer{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.players{
+  flex: 1;
+}
+
+.playerRow{
+  display: flex;
+  margin-top: 7px;
+  padding-bottom: 1em;
+  align-items: flex-end;
+  border-bottom: 1px solid $divider;
+  flex-wrap: wrap;
+}
+
+.subPlayerRow{
+  display: flex;
+  flex: 1;
+  align-items: inherit;
+}
+
+.autosuggest{
+  position: relative;
+  flex: 1;
+  margin: 0 6px;
+}
+
+.suggestionsContainerOpen{
+  margin-top: -11px;
+}
+
+.suggestionItem{
+  display: flex;
+  align-items: center;
+  padding: 0.5em 0em 0.5em 0.7em;
+}
+
+.generalSettingsContainer{
+  display: flex;
+  flex-direction: column;
+}
+.globalSettings{
+  padding-top: 0.5em;
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid $divider;
+  padding-bottom: 1em;
+}
+.blinds{
+  min-width: 15em;
+  display: flex;
+  flex-wrap: nowrap;
+  flex: 2;
+}
+
+/* action bar */
+.actionBar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid $divider;
+}
+
+.action{
+    flex: 1;
+    padding: 1px 6px;
+}
+
+.actionBarLeftPane{
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+.actionBarMiddlePane{
+  flex: 2;
+  display: flex;
+  justify-content: center;
+}
+.actionBarRightPane{
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.divider{
+  width: 1px;
+  background-color: $divider;
+  margin: 20px 0;
+}
+
+.raiseBox{
+  min-width: 10em;
+}

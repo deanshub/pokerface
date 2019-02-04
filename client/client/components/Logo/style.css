@@ -1,0 +1,39 @@
+@import '../../constants/styles.css';
+
+.header{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-transform: uppercase;
+  margin: 5vh 0;
+  align-items: center;
+  line-height: 1.3;
+  box-sizing: border-box;
+  font-family: $titleFont;
+}
+
+.header.day{
+  color: #535168;
+}
+.header.night{
+  color: white;
+}
+
+.firstRow{
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-weight: bold;
+  font-size: 3em;
+  margin-left: 2px;
+}
+.title{
+  margin-left: 12px;
+}
+
+.secondRow{
+  font-size: 2.2em;
+  color: subtitleColor;
+  margin-top: -0.4em;
+  white-space: nowrap;
+}

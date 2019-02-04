@@ -1,0 +1,81 @@
+$gray: #dfdfdf;
+$titleColor: #fff;
+$lightGreen50: #F1F8E9;
+$white: #ffffff;
+$titleFont: 'Title Font';
+$contentFont: 'Content Font';
+
+/* App */
+@value appBackgroundColor: #24222e;
+
+/* Navigation */
+@value paddingTop: 5.3em;
+@value paddingTopMobile: 72px;
+$backgroundHeaderDay: #ebebed;
+$backgroundHeaderNight: #535168;
+
+/* spot player */
+$activeButton: #41c86a;
+$divider: #e4e4e4;
+$disabled: #24222e;
+
+/* player space current action */
+@value potColor: #74728c;
+@value callColor: #25aae1;
+@value foldColor: #a0a0b5;
+@value checkColor: #41c86a;
+@value allinColor: #e65cc5;
+@value raiseColor: #ae73e6;
+@value betColor: #e3d357;
+@value anteColor: #74728c;
+
+/* input */
+@value borderColor: #d8d8d8;
+@value errorColor: rgb(255, 90, 90);
+@value errorColorOpacitated: rgba(255, 90, 90, 0.1);
+@value warningColor: rgb(240, 158, 95);
+@value warningColorOpacitated: rgba(240, 158, 95, 0.1);
+@value focusColor: #a0a0b5;
+@value labelColor: #8c8aa1;
+@value placeholderColor: #a0a0b5;
+@value hoverSelectItemColor: rgba(65, 200, 106,0.5);
+@value disabledInputColor: #dfdfdf;
+
+
+/* login */
+@value landingTextColor: #bdbdce;
+@value landingLineColor: #bcbccb;
+@value successColor: #41c86a;
+
+/* standalone */
+@value subtitleColor: #88869f;
+
+/* profile, event and post  */
+@value textColor: #a0a0b5;
+@value backColor: #2c2938;
+@value eventDividerColor: #74728c;
+@value commentsDividerColor: #ebebed;
+@value commentsBackgroundColor: #ebebee;
+@value linkColor: #1f95c7;
+@value hoverLinkColor: #81dbff;
+@value hoverDeleteColor: #ff5a5a;
+@value expandableBackColor: #3f3c4d;
+@value qrBottomBorderColor: #535168;
+@value darkBackgroundColor: #0d0d0f;
+@value darkBackgroundFocusedColor: #403e50;
+@value darkBackgroundFontColor: #f0f0f0;
+@value nameLabelColor: #24222e;
+
+/* blinds timer */
+@value blindsTimerBackground: #2c2a38;
+@value blindsTimerBackgroundInverted: #f0f0f0;
+@value qrBottomBorderColorInverted: #d3d3d9;
+@value textColorInverted: #74728c;
+
+/* mobile */
+@value mobileMaxWidth: 800;
+$mobileMaxWidth: 800px;
+
+/* theme */
+$dayBoxShadow: 0 0 10px 0 rgba(0,0,0,0.3);
+$nightBoxShadow: 0 0 10px 0 black;

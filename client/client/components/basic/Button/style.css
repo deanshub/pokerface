@@ -1,0 +1,319 @@
+@import '../../../constants/styles.css';
+
+.button{
+  outline: none;
+  border: none;
+  background: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  height: 4em;
+  min-width: 4em;
+  color: placeholderColor;
+  font-weight: bold;
+}
+
+.content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.simple{
+  font-weight: normal;
+  color: $disabled;
+}
+.button:not(.primary):hover{
+  color: $activeButton;
+}
+.button.active{
+  color: $activeButton;
+}
+.button.small{
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.primary{
+  color: $white;
+  background: linear-gradient(111deg, #68cc90, #3ebd64);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  width: 8em;
+  margin-left: 1em;
+  height: 3em;
+  margin-top: 0.5em;
+  text-transform: uppercase;
+}
+.primary:hover{
+  color: $white;
+}
+
+.disable{
+  opacity: 0.3;
+  cursor: auto;
+}
+
+.hidden{
+  visibility: hidden;
+}
+
+.leftIcon{
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 34px;
+  width: 34px;
+}
+
+.leftIcon.smallIcon{
+  height: 2em;
+  width: 2em;
+  background-size: contain;
+}
+
+.stretch{
+  width: calc(100% - 12px);
+  box-sizing: border-box;
+  margin: 0 6px;
+}
+
+.leftIcon.back{
+  background-image: url('../../../assets/spotplayer/back-bottom.png');
+}
+
+.leftIcon.menu{
+  background-image: url('../../../assets/spotplayer/play-menu.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.menu{
+  background-image: url('../../../assets/spotplayer/play-menu-hover-open.png');
+}
+.active>.content>.leftIcon.menu{
+  background-image: url('../../../assets/spotplayer/play-menu-hover-open.png');
+}
+
+.leftIcon.fold{
+  background-image: url('../../../assets/spotplayer/fold.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.fold{
+  background-image: url('../../../assets/spotplayer/fold-hover.png');
+}
+.active>.content>.leftIcon.fold{
+  background-image: url('../../../assets/spotplayer/fold-hover.png');
+}
+
+.leftIcon.check{
+  background-image: url('../../../assets/spotplayer/check.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.check{
+  background-image: url('../../../assets/spotplayer/check-hover.png');
+}
+.active>.content>.leftIcon.check{
+  background-image: url('../../../assets/spotplayer/check-hover.png');
+}
+
+.leftIcon.call{
+  background-image: url('../../../assets/spotplayer/call.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.call{
+  background-image: url('../../../assets/spotplayer/call-hover.png');
+}
+.active>.content>.leftIcon.call{
+  background-image: url('../../../assets/spotplayer/call-hover.png');
+}
+
+.leftIcon.show{
+  background-image: url('../../../assets/spotplayer/show.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.show{
+  background-image: url('../../../assets/spotplayer/show-hover-selected.png');
+}
+.active>.content>.leftIcon.show{
+  background-image: url('../../../assets/spotplayer/show-hover.png');
+}
+
+.leftIcon.raise{
+  background-image: url('../../../assets/spotplayer/raise.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.raise{
+  background-image: url('../../../assets/spotplayer/raise-hover.png');
+}
+.active>.content>.leftIcon.raise{
+  background-image: url('../../../assets/spotplayer/raise-hover.png');
+}
+
+.leftIcon.dealer{
+  background-image: url('../../../assets/spotplayer/dealer.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.dealer{
+  background-image: url('../../../assets/spotplayer/dealer-hover.png');
+}
+.active>.content>.leftIcon.dealer{
+  background-image: url('../../../assets/spotplayer/dealer-selected.png');
+}
+
+.leftIcon.remove{
+  background-image: url('../../../assets/actions/delete.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.remove{
+  background-image: url('../../../assets/actions/delete-hover.png');
+}
+.active>.content>.leftIcon.remove{
+  background-image: url('../../../assets/actions/delete-hover.png');
+}
+
+.leftIcon.up{
+  background-image: url('../../../assets/spotplayer/up.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.up{
+  background-image: url('../../../assets/spotplayer/up-hover.png');
+}
+
+.leftIcon.down{
+  background-image: url('../../../assets/spotplayer/down.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.down{
+  background-image: url('../../../assets/spotplayer/down-hover.png');
+}
+
+.leftIcon.spot{
+  background-image: url('../../../assets/addpost/spot.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.spot{
+  background-image: url('../../../assets/addpost/spot-hover.png');
+}
+.active>.content>.leftIcon.spot{
+  background-image: url('../../../assets/addpost/spot-hover.png');
+}
+
+.leftIcon.photo{
+  background-image: url('../../../assets/addpost/photo.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.photo{
+  background-image: url('../../../assets/addpost/photo-hover.png');
+}
+.active>.content>.leftIcon.photo{
+  background-image: url('../../../assets/addpost/photo-hover.png');
+}
+
+.leftIcon.emoji{
+  background-image: url('../../../assets/addpost/emoji.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.emoji{
+  background-image: url('../../../assets/addpost/emoji-hover.png');
+}
+.active>.content>.leftIcon.emoji{
+  background-image: url('../../../assets/addpost/emoji-hover.png');
+}
+
+.leftIcon.card{
+  background-image: url('../../../assets/addpost/card.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.card{
+  background-image: url('../../../assets/addpost/card-hover.png');
+}
+.active>.content>.leftIcon.card{
+  background-image: url('../../../assets/addpost/card-hover.png');
+}
+
+.leftIcon.next{
+  background-image: url('../../../assets/actions/next.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.next{
+  background-image: url('../../../assets/actions/next-hover.png');
+}
+.active>.content>.leftIcon.next{
+  background-image: url('../../../assets/actions/next-hover.png');
+}
+
+.leftIcon.like{
+  background-image: url('../../../assets/post/like.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.like{
+  background-image: url('../../../assets/post/like-hover.png');
+}
+.active>.content>.leftIcon.like{
+  background-image: url('../../../assets/post/like-hover.png');
+}
+
+.leftIcon.share{
+  background-image: url('../../../assets/post/share.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.share{
+  background-image: url('../../../assets/post/share-hover-open.png');
+}
+.active>.content>.leftIcon.share{
+  background-image: url('../../../assets/post/share-hover-open.png');
+}
+
+.leftIcon.visit{
+  background-image: url('../../../assets/post/visit.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.visit{
+  background-image: url('../../../assets/post/visit-hover.png');
+}
+.active>.content>.leftIcon.visit{
+  background-image: url('../../../assets/post/visit-hover.png');
+}
+
+.leftIcon.actionMenu{
+  background-image: url('../../../assets/post/action-menu.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.actionMenu{
+  background-image: url('../../../assets/post/action-menu-hover-open.png');
+}
+.active>.content>.leftIcon.actionMenu{
+  background-image: url('../../../assets/post/action-menu-hover-open.png');
+}
+
+.leftIcon.previous{
+  background-image: url('../../../assets/actions/previous.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.previous{
+  background-image: url('../../../assets/actions/previous-hover.png');
+}
+.active>.content>.leftIcon.previous{
+  background-image: url('../../../assets/actions/previous-hover.png');
+}
+
+.leftIcon.cardSmallFrame{
+  background-image: url('../../../assets/spotplayer/card-small-frame.png');
+}
+.button:not(.disable):hover>.content>.leftIcon.cardSmallFrame{
+  background-image: url('../../../assets/spotplayer/card-small-frame-hover-open.png');
+}
+.active>.content>.leftIcon.cardSmallFrame{
+  background-image: url('../../../assets/spotplayer/card-small-frame-hover-open.png');
+}
+
+.buttonGroup{
+  display: flex;
+  flex-direction: column;
+
+  .button{
+    text-transform: uppercase;
+  }
+}
+.horizontal{
+  flex-direction: row;
+}
+.horizontal.reversed{
+  flex-direction: row-reverse;
+}
+.center{
+  justify-content: center;
+}
+.buttonGroup>*{
+  flex: 1;
+}
+.buttonGroup.noEqual>*{
+  flex: none;
+}
+.wrapReverse{
+  flex-flow: wrap-reverse;
+}

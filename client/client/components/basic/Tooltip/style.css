@@ -1,0 +1,102 @@
+@import '../../../constants/styles.css';
+@import '../Modal/style.css';
+
+.manager {
+  position: relative;
+  display: inline-block;
+}
+
+.triggerContainer{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  flex: 1;
+}
+
+.overlay{
+  background-color: rgba(0,0,0,0.3);
+  display: none;
+}
+.overlay.open{
+  display: flex;
+}
+.popperContainer{
+  z-index: 10;
+}
+
+.popper {
+  display: none;
+  background-color: white;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.overlay .popper{
+  position: relative;
+}
+.popper.open{
+  display: inline-block;
+}
+
+.popper>.viewport{
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 0.6em;
+}
+
+.popper .popper__arrow {
+  width: 0.8em;
+  height: 0.8em;
+  position: absolute;
+  color: white;
+  box-sizing: border-box;
+  transform-origin: 0 0;
+  transform: rotate(45deg) translate(0.25em, -0.25em);
+  background-color: white;
+  /* margin: 5px; */
+}
+
+[data-placement^="bottom"] > .popper {
+  margin-top: 0.5em;
+}
+
+[data-placement^="bottom"] > .popper .popper__arrow {
+  top: 0em;
+  left: calc(50% - 0.7em);
+  box-shadow: -4px -4px 10px -2.5px rgba(0,0,0,0.3);
+}
+
+.popperContainer[data-placement^="top"] .popper {
+  margin-bottom: 0.6em;
+}
+
+.popperContainer[data-placement^="top"] .popper .popper__arrow {
+  bottom: 0.4em;
+  left: calc(50% - 0.7em);
+  box-shadow: 4px 4px 10px -2.5px rgba(0,0,0,0.3);
+}
+
+.popperContainer[data-placement^="right"] .popper {
+  margin-left: 0.4em;
+}
+
+.popperContainer[data-placement^="right"] .popper .popper__arrow {
+  left: 0em;
+  top: calc(50% - 0.7em);
+  box-shadow: -4px 4px 10px -2.5px rgba(0,0,0,0.3);
+}
+
+.popperContainer[data-placement^="left"] .popper {
+  margin-right: 0.4em;
+}
+
+.popperContainer[data-placement^="left"] .popper .popper__arrow {
+  right: 0em;
+  top: calc(50% - 0.7em);
+  box-shadow: 4px -4px 10px -2.5px rgba(0,0,0,0.3);
+}
+
+.popper[data-x-out-of-boundaries] {
+    display: none;
+}

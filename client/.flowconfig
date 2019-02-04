@@ -1,0 +1,18 @@
+[ignore]
+.*/node_modules/.*
+
+[include]
+
+[libs]
+
+[options]
+esproposal.class_static_fields=enable
+esproposal.class_instance_fields=enable
+esproposal.decorators=ignore
+esproposal.export_star_as=enable
+module.name_mapper='.*\.css$' -> 'CSSModule'
+module.name_mapper='.*\(.png\)' -> 'PNGModule'
+module.name_mapper='.*\(.gif\)' -> 'PNGModule'
+module.name_mapper='.*\(.txt\)' -> 'TXTModule'
+module.name_mapper='\(mobx\)' ->  '\1/lib/mobx'
+unsafe.enable_getters_and_setters=true

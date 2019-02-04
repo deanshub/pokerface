@@ -1,0 +1,50 @@
+@import "../../constants/styles";
+@import "../../constants/autosuggestStyle";
+
+
+.navbarItem {
+  display: block;
+  text-transform: uppercase;
+  font-family: $titleFont;
+}
+
+.container.day{
+  .navbarRouteItem {
+    color: #535168;
+  }
+}
+
+.container.night{
+  .navbarRouteItem {
+    color: #f0f0f0;
+  }
+}
+
+.container {
+  position: fixed;
+  width: 20%;
+
+  .navbarRouteItem {
+    @extend .navbarItem;
+    margin-top: 1.1em;
+  }
+
+  .navbarRouteItem:hover {
+    color:$activeButton;
+  }
+
+  .navbarRouteItem.navbarRouteItemActive {
+    color:$activeButton;
+  }
+
+  .navbarSection {
+    @extend .navbarItem;
+
+    color: #a0a0b5;
+    margin-top: 2em;
+  }
+
+  .notification{
+    padding: 0.17em 0.5em;
+  }
+}

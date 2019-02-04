@@ -1,0 +1,113 @@
+@import '../../../constants/styles.css';
+
+.overlay{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 12;
+  background-color: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeModal{
+  z-index: 1;
+  position: absolute;
+  top: 10%;
+}
+.closeModal>div{
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.inverted{
+  background-color: rgba(0,0,0,0.7);
+}
+
+.modalContainer{
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  margin: 4vh auto;
+  width: 50%;
+  height: 84vh;
+  min-height: 0;
+  min-width: $mobileMaxWidth;
+  color: black;
+}
+
+.mobileModalContainer{
+  margin: 0.5em;
+  width: calc(100% - 1em);
+  height: calc(100% - 1em);
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  color: black;
+
+  > .modalHeader {
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
+    background-color: #f0f0f0;
+    font-family: $titleFont;
+    color: #535168;
+    padding: 0.5em 0.8em;
+  }
+
+  > .modalContent{
+    padding: 0.8em;
+  }
+
+  > .modalFooter{
+    padding: 0.8em;
+  }
+}
+
+.compact {
+  height: min-content;
+  max-height: 84vh;
+  width: min-content;
+  margin: auto;
+  min-width: 400px;
+}
+
+.mobileModalContainer.compact{
+  min-width: 90vw;
+}
+
+.mobileModalContainer.inverted{
+  background-color: black;
+}
+
+.modalBackground{
+  background-color: $white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 #000000;
+  overflow: hidden;
+}
+
+.modalHeader{
+  border-bottom: 1px solid $divider;
+  font-family: $titleFont;
+  font-weight: bold;
+  font-size: 1.5em;
+  padding-bottom: 0.4em;
+  text-align: left;
+  z-index: 1;
+}
+
+.modalContent{
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  padding: 0.7em 0em;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.modalFooter{
+  padding-top: 0.4em;
+  border-top: 1px solid $divider;
+}

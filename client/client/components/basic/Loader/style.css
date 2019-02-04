@@ -1,0 +1,51 @@
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes finishrotating {
+  0% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate3d(60, 5, 5, 120deg) translateZ(-1em) skew(10deg, -10deg);
+  }
+}
+
+.container{
+  /* display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center; */
+}
+.container li{
+  animation: rotating 2s linear infinite;
+}
+.container li:hover{
+  animation: finishrotating 1s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.container.fill{
+  height: fill;
+}
+
+.content{
+  flex-basis: 100%;
+  text-align: center;
+}
+.container ul{
+  height: 4em;
+}
+
+.container.large .content{
+  font-size: 1.5em;
+}

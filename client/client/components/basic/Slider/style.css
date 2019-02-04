@@ -1,0 +1,134 @@
+
+.fullSizeContainer {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  @extend .fullSizeContainer;
+  position: relative;
+}
+
+.sliderDisplay {
+  @extend .fullSizeContainer;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.allItems {
+  @extend .fullSizeContainer;
+  display: -webkit-box;
+}
+
+.playingItemContainer {
+  @extend .fullSizeContainer;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  /* TODO: this is because semantic-ui is shit */
+  box-sizing: unset;
+}
+
+.playingItemContainer > * {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.previousItemContainer {
+  left: -100%;
+}
+
+.nextItemContainer {
+  left: 100%;
+}
+
+.navButton{
+  position: absolute;
+  width: 10%;
+  height: 20%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  top: 40%;
+  cursor: pointer;
+}
+.navButton:hover{
+  background-color: rgba(0,0,0,0.3);
+  z-index: 1;
+}
+
+.previous{
+  @extend .navButton;
+  background-image: url('../../../assets/actions/previous-large.png');
+  left: 0%;
+}
+
+.next {
+  @extend .navButton;
+  background-image: url('../../../assets/actions/next-large.png');
+  right: 0%;
+}
+
+.disabledNavButton {
+  cursor: default;
+  opacity: 0.3;
+}
+
+.autoplay{
+  position: absolute;
+  font-size: 3em;
+  color: white;
+  width: 100%;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+}
+
+.autoplay:hover{
+  text-shadow: 0px 0px 0.5em white;
+}
+
+@keyframes left-out {
+  from {transform: translate(100%, 0px);}
+  to {transform: translate(0px, 0px);}
+}
+
+.leftOut {
+  animation: left-out 1s;
+}
+
+@keyframes left-in {
+    from {transform: translate(100%, 0px);}
+    to {transform: translate(0px, 0px);}
+}
+
+.leftIn {
+  animation: left-in 1s;
+}
+
+@keyframes right-out {
+  from {transform: translate(-100%, 0px);}
+  to {transform: translate(0px, 0px);}
+}
+
+.rightOut {
+  animation: right-out 1s;
+}
+
+@keyframes right-in {
+    from {transform: translate(-100%, 0px);}
+    to {transform: translate(0px, 0px);}
+}
+
+.rightIn {
+  animation: right-in 1s;
+}
+
+.hidden {
+  display: none;
+}

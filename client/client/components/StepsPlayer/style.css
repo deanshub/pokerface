@@ -1,0 +1,44 @@
+@import "../../constants/styles";
+
+.stepsPlayerContainer{
+  display: flex;
+  flex-direction: column;
+}
+
+.actions{
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+.timeline{
+  display: flex;
+  justify-content: center;
+  margin: 7px 0;
+}
+
+.button{
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  margin: 0 15px;
+  cursor: pointer;
+  outline: none;
+}
+
+.divider{
+  border-left: solid 1px $divider;
+}
+
+.buttonText{
+  font-size: 1.4em;
+  min-width: 34px;
+}
+
+.active{
+  color: $activeButton;
+}
+
+.disable{
+  opacity: 0.2;
+}
