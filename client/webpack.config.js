@@ -45,8 +45,7 @@ const config = {
     ],
     html: './index.html',
     vendor: [
-      ...hotloaderEntries,
-      'babel-polyfill',
+      // ...hotloaderEntries,
       'whatwg-fetch',
       'react',
       'react-dom',
@@ -113,9 +112,17 @@ const config = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader?cacheDirectory=true',
-        ],
+        use: {
+          loader: 'babel-loader',
+          options:{
+            presets: [["@babel/env", {
+                targets: {
+                  browsers: ["last 2 versions", "safari >= 7"]
+                }
+              }], "@babel/preset-react"],
+            plugins: [["@babel/plugin-proposal-decorators", { legacy: true }], ["@babel/plugin-proposal-class-properties", { "loose" : true }], "transform-function-bind", "@babel/plugin-syntax-dynamic-import", "transform-flow-strip-types", "react-hot-loader/babel", "@babel/transform-runtime"]
+          }
+        }
       },
       {
         test: /\.svg(\?.*)?$/,

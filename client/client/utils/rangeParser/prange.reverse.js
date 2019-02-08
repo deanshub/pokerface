@@ -3,7 +3,7 @@
 const reversePairs = require('./lib/reverse-pairs')
 const reverseNonPairs = require('./lib/reverse-non-pairs')
 
-function sortOut(combos) {
+export function sortOut(combos) {
   const offsuit = new Set()
   const suited = new Set()
   const pairs = new Set()
@@ -62,5 +62,6 @@ function reverse(combos) {
   return ps.concat(nonpairs).join(', ')
 }
 
-module.exports = reverse
-module.exports.sortOut = sortOut
+// module.exports = reverse
+// module.exports.sortOut = sortOut
+export default reverse

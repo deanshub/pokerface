@@ -1,4 +1,4 @@
 {
-  "presets": ["es2015", "stage-0", "react",  ["env", { "targets": { "node": "current" } }] ],
-  "plugins": ["transform-decorators-legacy", "transform-flow-strip-types", "react-hot-loader/babel"]
+  "presets": [["@babel/env", { "targets": { "node": "current" } }], "@babel/preset-react"],
+  "plugins": [["@babel/plugin-proposal-decorators", { "legacy": true }], ["@babel/plugin-proposal-class-properties", { "loose" : true }], "transform-function-bind", "@babel/plugin-syntax-dynamic-import", "transform-flow-strip-types", "react-hot-loader/babel"]
 }

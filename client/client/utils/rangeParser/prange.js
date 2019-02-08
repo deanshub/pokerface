@@ -217,6 +217,9 @@ function prange(s) {
   return Array.from(set).sort(byCodeRankDescending)
 }
 
-module.exports = prange
-module.exports.reverse = require('./prange.reverse')
-module.exports.categorize = module.exports.reverse.sortOut
+// module.exports = prange
+// module.exports.reverse = require('./prange.reverse')
+// module.exports.categorize = module.exports.reverse.sortOut
+
+export default prange
+export {default as reverse, sortOut as categorize} from './prange.reverse'
