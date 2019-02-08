@@ -1,13 +1,18 @@
 #!/bin/bash
 source ~/.bashrc
-PATH=$PATH:~/.nvm/versions/node/v9.3.0/bin:~/.nvm/
+PATH=$PATH:~/.nvm/versions/node/v11.9.0/bin:~/.nvm/
 ~/.nvm/nvm.sh
-nvm use 9.3.0
+nvm use 11.9.0
+GIT_WORK_TREE=~/Desktop/apps/pokerface git checkout -f
+pushd ~/Desktop/apps/pokerface/client
+yarn
+yarn add https://github.com/deanshub/draft-js#android-fix
+yarn run build
+popd
 pm2 delete pokerface
-GIT_WORK_TREE=~/Desktop/apps/pokerface/server git checkout -f
 pushd ~/Desktop/apps/pokerface/server
 yarn
-NODE_ENV=production yarn run migrate
+# NODE_ENV=production yarn run migrate
 NODE_ENV=production yarn run build
 NODE_ENV=production GMAIL_USER=user GMAIL_PASSWORD=password POSTGRES_USER=user POSTGRES_PASSWORD=password pm2 start dist/index.js --name pokerface -i 0
 popd
