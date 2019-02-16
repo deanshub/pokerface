@@ -43,6 +43,7 @@ export default class Navigation extends Component {
   onHomeClick(){
     const {feed} = this.props
     feed.pushNewReceivedPost()
+    this.props.onClose()
   }
 
   onProfileClick(){
@@ -131,6 +132,15 @@ export default class Navigation extends Component {
           >
             <div className={classnames(style.blindsTimer)}/>
             Blind Timer
+          </NavLink>
+          <NavLink
+              activeClassName={classnames(style.navbarRouteItemActive)}
+              className={classnames(style.navbarRouteItem)}
+              onClick={::this.onClose}
+              to="/tools/cash-calc"
+          >
+            <div className={classnames(style.cashCalculator)}/>
+            Cash Calculator
           </NavLink>
         </div>
         <div className={classnames(style.divider)}/>

@@ -118,6 +118,13 @@
   background-image:url('../../../assets/mobile/navbar/timer.png');
 }
 
+.cashCalculator {
+  @extend .icon;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image:url('../../../assets/mobile/navbar/dollar.png');
+}
+
 .navbarRouteItemActive, .navbarRouteItem:hover {
 
   color: #41c86a;
@@ -142,6 +149,9 @@
     background-image:url('../../../assets/mobile/navbar/timer-selected.png');
   }
 
+  .cashCalculator {
+    background-image:url('../../../assets/mobile/navbar/dollar-selected.png');
+  }
 }
 
 .navbarRouteItemActive{

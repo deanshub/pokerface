@@ -105,6 +105,13 @@ export default class Navbar extends Component {
         >
           Spot Note
         </NavLink>
+        <NavLink
+            activeClassName={classnames(style.navbarRouteItemActive)}
+            className={classnames(style.navbarRouteItem)}
+            to="/tools/cash-calc"
+        >
+          Cash Calculator
+        </NavLink>
         <div className={classnames(style.navbarSection)}>
           Search
         </div>
