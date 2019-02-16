@@ -7,6 +7,7 @@ import User from './dbModels/User'
 import Post from './dbModels/Post'
 import Comment from './dbModels/Comment'
 import Game from './dbModels/Game'
+import UserSettings from './dbModels/UserSettings'
 // import generateFakeData from './faker/generator'
 
 // import mongooseErd from 'mongoose-erd'
@@ -34,9 +35,6 @@ mongoose.connection.once('open', function() {
   })
 })
 
-  // return resolve();
-  // return server.start();
-
 mongoose.connect(connString,{
   useMongoClient: true,
   // socketTimeoutMS: 0,
@@ -52,6 +50,7 @@ const DB = {
     Post,
     Comment,
     Game,
+    UserSettings,
   },
 }
 

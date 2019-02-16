@@ -50,8 +50,7 @@ const initialize = () => {
       ]),
       secretOrKey: config.JWT_SECRET_KEY,
     },
-      function ({username, password}, done){
-
+      function ({username, password}, done) {
         DB.models.User.findOne({_id:username,password}).then((user)=>{
           if (!user){
             return done(null, false, {message: 'Wrong token was received'})

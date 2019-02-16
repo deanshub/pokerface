@@ -1,6 +1,7 @@
 import Db from '../data/db'
 import jwt  from 'jsonwebtoken'
 import config from 'config'
+import CryptoJS from 'crypto-js'
 
 export const isSuperAdmin = (user) => {
   return user.username === 'deanshub'
@@ -28,4 +29,13 @@ export const signTokenToUser = (user) => {
     const {username, password} = user
     return jwt.sign({username, password}, config.JWT_SECRET_KEY)
   }
+}
+
+export const encryptUsername = (username) => {
+  return CryptoJS.AES.encrypt(username, config.JWT_SECRET_KEY)
+}
+
+export const decryptUsername = (userKey) => {
+  const bytes = CryptoJS.AES.decrypt(userKey, config.JWT_SECRET_KEY)
+  return bytes.toString(CryptoJS.enc.Utf8)
 }

@@ -16,6 +16,7 @@ import { schema as UserSchema, resolvers as UserResolvers } from './graphqlModel
 import { schema as EventSchema, resolvers as EventResolvers } from './graphqlModels/Event'
 import { schema as UploadSchema, resolvers as UploadResolvers } from './graphqlModels/UploadedFile'
 import { schema as TimerSchema, resolvers as TimerResolvers } from './graphqlModels/Timer'
+import { schema as UserSettingsSchema, resolvers as UserSettingsResolvers } from './graphqlModels/UserSettings'
 
 const schema = makeExecutableSchema({
   typeDefs: [mergeStrings([
@@ -25,6 +26,7 @@ const schema = makeExecutableSchema({
     ...EventSchema,
     ...UploadSchema,
     ...TimerSchema,
+    ...UserSettingsSchema,
   ])],
   resolvers: merge(
     PostResolvers,
@@ -33,6 +35,7 @@ const schema = makeExecutableSchema({
     EventResolvers,
     UploadResolvers,
     TimerResolvers,
+    UserSettingsResolvers,
   ),
 })
 
