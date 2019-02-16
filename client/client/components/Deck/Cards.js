@@ -38,7 +38,7 @@ export default class Cards extends PureComponent {
           {...otherProps}
       >
         {cards.map((card, index)=>{
-          let key = `${card.suit}.${card.rank}`
+          let key = `${card.suit}.${card.rank}:${Math.random()}`
           const suit = card.suit
           const rank = card.rank
           if (card.suit===card.rank && card.rank==='?'){
