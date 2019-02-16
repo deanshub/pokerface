@@ -1,4 +1,4 @@
-import { observable, extendObservable } from 'mobx'
+import { observable } from 'mobx'
 import MOVES from './constants'
 import {getNextPlayer} from './players'
 import {stringToCards} from './cards'
@@ -10,7 +10,7 @@ export function getNextStep(spot, currentSpotPlayerState, ereaseDescription=true
   let newSpotPlayerState = observable(Object.assign({}, currentSpotPlayerState))
   let newPlayersState = currentSpotPlayerState.players.map((player, playerIndex)=>{
     if (ereaseDescription){
-      extendObservable(player,{description:null})
+      player.description = null
     }
     return player
   })
@@ -170,7 +170,7 @@ export function getNextStep(spot, currentSpotPlayerState, ereaseDescription=true
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
         player.lastAction=null
-        extendObservable(player,{description:null})
+        player.description = null
         totalPot += player.bet
         player.bet = 0
       })
@@ -188,7 +188,7 @@ export function getNextStep(spot, currentSpotPlayerState, ereaseDescription=true
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
         player.lastAction=null
-        extendObservable(player,{description:null})
+        player.description = null
         totalPot += player.bet
         player.bet = 0
       })
@@ -206,7 +206,7 @@ export function getNextStep(spot, currentSpotPlayerState, ereaseDescription=true
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
         player.lastAction=null
-        extendObservable(player,{description:null})
+        player.description = null
         totalPot += player.bet
         player.bet = 0
       })
@@ -223,7 +223,7 @@ export function getNextStep(spot, currentSpotPlayerState, ereaseDescription=true
       let totalPot = newSpotPlayerState.dealer.pot
       newPlayersState.forEach(player=>{
         player.lastAction=null
-        extendObservable(player,{description:null})
+        player.description = null
         totalPot += player.bet
         player.bet = 0
       })

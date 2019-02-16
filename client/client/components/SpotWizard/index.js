@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import Modal, {ModalHeader,ModalContent,ModalFooter} from '../basic/Modal'
 import { observer, inject } from 'mobx-react'
-import { extendObservable } from 'mobx'
 import Button, {ButtonGroup} from '../basic/Button'
 import Spot from '../Spot'
 import GeneralSettings from './GeneralSettings'
@@ -156,7 +155,7 @@ export default class SpotWizard extends Component {
       })
       spotPlayer.reset(spotPlayer.newSpot)
       const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-      extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+      spotPlayer.newSpot.spotPlayerState = newSpotPlayerState
 
       if (spotPlayer.newSpot.generalSettings.sb){
         this.smallBlind()
@@ -200,7 +199,7 @@ export default class SpotWizard extends Component {
       action: MOVES.PLAYER_META_ACTIONS.SHOWS,
     })
     const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+    spotPlayer.newSpot.spotPlayerState = newSpotPlayerState
   }
   smallBlind(){
     const {spotPlayer} = this.props
@@ -211,7 +210,7 @@ export default class SpotWizard extends Component {
       value: spotPlayer.newSpot.generalSettings.sb,
     })
     const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+    spotPlayer.newSpot.spotPlayerState = newSpotPlayerState
   }
   bigBlind(){
     const {spotPlayer} = this.props
@@ -222,7 +221,7 @@ export default class SpotWizard extends Component {
       value: spotPlayer.newSpot.generalSettings.bb,
     })
     const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+    spotPlayer.newSpot.spotPlayerState = newSpotPlayerState
   }
   call(){
     const {spotPlayer} = this.props
@@ -234,7 +233,7 @@ export default class SpotWizard extends Component {
       value: spotPlayer.newSpot.spotPlayerState.totalRaise - spotPlayer.newSpot.spotPlayerState.players[player].bet,
     })
     const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+    spotPlayer.newSpot.spotPlayerState = newSpotPlayerState
   }
   fold(){
     const {spotPlayer} = this.props
@@ -246,7 +245,7 @@ export default class SpotWizard extends Component {
     })
 
     const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+    spotPlayer.newSpot.spotPlayerState = newSpotPlayerState
   }
   check(){
     const {spotPlayer} = this.props
@@ -257,7 +256,7 @@ export default class SpotWizard extends Component {
       action:MOVES.PLAYER_ACTIONS.CHECK,
     })
     const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+    spotPlayer.newSpot.spotPlayerState = newSpotPlayerState
   }
   raise(value){
     const {spotPlayer} = this.props
@@ -269,7 +268,7 @@ export default class SpotWizard extends Component {
       value: value - spotPlayer.newSpot.spotPlayerState.players[player].bet,
     })
     const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+    spotPlayer.newSpot.spotPlayerState = newSpotPlayerState
   }
   dealer(cards){
     const {spotPlayer} = this.props
@@ -300,7 +299,7 @@ export default class SpotWizard extends Component {
       return undefined
     }
     const newSpotPlayerState = getNextStep(spotPlayer.newSpot.spot, spotPlayer.newSpot.spotPlayerState)
-    extendObservable(spotPlayer.newSpot, {spotPlayerState: newSpotPlayerState})
+    spotPlayer.newSpot.spotPlayerState = newSpotPlayerState
   }
 
   isSmallBlindDisabled(){

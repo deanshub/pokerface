@@ -238,7 +238,7 @@ export class FeedStore {
 
   @computed
   get parsedPosts(): Object[]{
-    return this.posts.values().sort((a,b)=>{
+    return Object.values(this.posts.toJSON()).sort((a,b)=>{
       return moment(new Date(b.createdAt)).diff(moment(new Date(a.createdAt)))
     })
   }
@@ -266,7 +266,7 @@ export class FeedStore {
       if(spot){
         rawPostContent = {...rawPostContent,spot}
       }
-      const photos = this.uploadedMedia.values().map(element => element.file)
+      const photos = Object.values(this.uploadedMedia.toJSON()).map(element => element.file)
       const {event} = this.newPost
       const eventId = event?event.id:null
       const newPostTempId = 9999999999+Math.floor(Math.random()*10000)
@@ -654,7 +654,7 @@ export class FeedStore {
 
   @computed
   get previewUploadedMedia(){
-    return this.uploadedMedia.values().map(({file, src}) => {
+    return Object.values(this.uploadedMedia.toJSON()).map(({file, src}) => {
       const {name, type} = file
       return {name, type, src}
     })

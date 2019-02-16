@@ -1,6 +1,6 @@
 // @flow
 
-import { observable, action, extendObservable } from 'mobx'
+import { observable, action } from 'mobx'
 import utils from '../containers/SpotPlayer/utils'
 import initialSpot from '../containers/SpotPlayer/initialSpot'
 import logger from '../utils/logger'
@@ -52,20 +52,20 @@ export class SpotPlayerStore{
   @action
   nextStep(post, stepsForward=1){
     const newSpotPlayerState = getNextSteps(post.spot, post.spotPlayerState, stepsForward)
-    extendObservable(post, {spotPlayerState: newSpotPlayerState})
+    post.spotPlayerState = newSpotPlayerState
     return newSpotPlayerState.nextMoveIndex<post.spot.moves.length
   }
 
   @action
   previousStep(post, stepsBack=1){
     const newSpotPlayerState = getPreviousStep(post.spot, post.spotPlayerState, stepsBack)
-    extendObservable(post, {spotPlayerState: newSpotPlayerState})
+    post.spotPlayerState = newSpotPlayerState
     return newSpotPlayerState.nextMoveIndex>0
   }
 
   @action
   reset(post){
-    extendObservable(post, {spotPlayerState: utils.generateInitialState(post.spot)})
+    post.spotPlayerState = utils.generateInitialState(post.spot)
     return post
   }
 }

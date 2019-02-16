@@ -29,7 +29,7 @@ export default class Events extends Component {
 
   render() {
     const {events, editEvent} = this.props
-    const eventRows = events.events.values()
+    const eventRows = Object.values(events.events.toJSON())
     .sort((a,b)=>{
       return moment.utc(new Date(a.from)).diff(moment.utc(new Date(b.from)))
     })

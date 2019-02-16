@@ -29,6 +29,8 @@ export class ProfileStore {
         const user = result.data.users[0]
         this.currentUser = observable(user)
       })
+    }else if (user === undefined){
+      this.currentUser = observable.box(user)
     }else{
       this.currentUser = observable(user)
     }

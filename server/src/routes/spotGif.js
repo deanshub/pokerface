@@ -9,7 +9,7 @@ const router = express.Router()
 router.get('/spotGif', (req, res)=>{
   const {id} = req.query
   if (id){
-    const gifPath = path.join(__dirname,`../../../client/static/images/spots/${id}/pokerface post.gif`)
+    const gifPath = path.join(__dirname,`../../../client/static/images/spots/${id}.gif`)
     // check if image exists for this spot
     //  if so send it
     // run puppeteer go to the standalone post url
@@ -28,6 +28,8 @@ router.get('/spotGif', (req, res)=>{
             return {browser, page}
           })
         }).then(({browser, page})=>{
+          return page._client.send('Page.setDownloadBehavior', { behavior: 'allow', downloadPath: path.dirname(gifPath) }).then(()=>({browser, page}))
+        }).then(({browser, page})=>{
           return page.setViewport({
             width: 1000,
             height: 1080,
@@ -36,8 +38,6 @@ router.get('/spotGif', (req, res)=>{
           return page.goto(config.NODE_ENV!=='development'?`https://pokerface.io/post/${id}`:`https://localhost:8443/post/${id}`).then(()=>({browser, page}))
         }).then(({browser, page})=>{
           return page.waitFor('div[class*="share"]').then(()=>({browser, page}))
-        }).then(({browser, page})=>{
-          return page._client.send('Page.setDownloadBehavior', { behavior: 'allow', downloadPath: path.dirname(gifPath) }).then(()=>({browser, page}))
         }).then(({browser, page})=>{
           return page.click('div[class*="share"]')
             .then(()=>{
