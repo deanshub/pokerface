@@ -25,6 +25,10 @@ const LoadableStandalonePost = Loadable({
   loader: () => import('../Feed/StandalonePost'),
   loading: Loader,
 })
+const LoadableSubscriptionTopics = Loadable({
+  loader: () => import('../SubscriptionTopics'),
+  loading: Loader,
+})
 
 @inject('auth')
 @observer
@@ -59,6 +63,11 @@ export default class RouterContent extends Component {
                 component={LoadableStandalonePost}
                 exact
                 path="/post/:id"
+            />
+            <Route
+                component={LoadableSubscriptionTopics}
+                exact
+                path="/settings/unsubscribe/:key?"
             />
             <PrivateRoute
                 component={LoadableNavigation}

@@ -2,7 +2,7 @@
   "short_name": "Pokerface.io",
   "name": "Pokerface.io social platform for poker players",
   "display": "standalone",
-  "orientation": "landscape",
+  "orientation": "portrait",
   "background_color":"#24222e",
   "theme_color":"#24222e",
   "icons": [

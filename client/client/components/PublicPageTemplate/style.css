@@ -4,6 +4,12 @@
   height: 100vh;
 }
 
+.hyprlinkLogo{
+  width: min-content;
+  align-self: center;
+  color: inherit;
+}
+
 .content{
   flex: 1;
   color: #bdbdce;

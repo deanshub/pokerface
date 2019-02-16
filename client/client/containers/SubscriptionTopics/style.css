@@ -1,0 +1,15 @@
+.container{
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form{
+  width: max-content;
+}
+
+.title{
+  font-size: 1.2em;
+  text-decoration: underline;
+}

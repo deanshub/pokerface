@@ -1,3 +1,4 @@
+
 // @flow
 
 import React, { Component } from 'react'
@@ -14,9 +15,9 @@ export default class PublicPageTemplate extends Component {
 
     return (
       <div className={classnames(style.container)}>
-        <div>
+        <a className={classnames(style.hyprlinkLogo)} href="/">
           <Logo/>
-        </div>
+        </a>
         <div className={classnames(style.content)}>
             {
               (Array.isArray(children) && horizontal)?

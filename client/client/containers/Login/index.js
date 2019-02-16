@@ -6,28 +6,37 @@ import { observer, inject } from 'mobx-react'
 import logger from '../../utils/logger'
 import request from 'superagent'
 import {viewParam} from '../../utils/generalUtils'
+import { parse } from 'qs'
 import Button, {ButtonGroup} from '../../components/basic/Button'
 import Input from '../../components/basic/Input'
 import Message from '../../components/basic/Message'
 import IsMobile from '../../components/IsMobile'
 import Logo from '../../components/Logo'
 import LoginForm from './LoginForm'
+import SelectUserModal from '../SelectUserModal'
 import PublicPageFooter from '../PublicPageFooter'
 import landingLogo from '../../assets/landing logo.png'
 import classnames from 'classnames'
 import style from './style.css'
 
+@inject('routing')
 @inject('auth')
 @observer
 export default class Login extends Component {
   constructor(props){
     super(props)
+
+    const { routing } = props
+    const query = parse(routing.location.search.substr(1))
+
     this.state = {
+      selectUserModalOpen: query.selectuser,
       signingupInPorgress: false,
       signingupSuccess: false,
       signingupInFail: false,
       signingupFailMessage: null,
       loginForm:false, // for mobile
+      redirectUrl: query.url || '/',
     }
   }
 
@@ -162,8 +171,13 @@ export default class Login extends Component {
     this.setState({loginForm:!loginForm})
   }
 
+  onCloseSelectUserModal(){
+    this.setState({selectUserModalOpen:false})
+    this.props.auth.logout()
+  }
+
   render(){
-    const {loginForm} = this.state
+    const {selectUserModalOpen, redirectUrl, loginForm} = this.state
 
     return(
       <IsMobile
@@ -225,6 +239,15 @@ export default class Login extends Component {
                       {!loginForm && <div className={classnames(style.terms, {[style.mobileTerms]:isMobile})}>
                         By signing up, I agree to Pokerface.io's <span style={{color:'#25aae1'}}>Terms of Service</span> and <span style={{color:'#25aae1'}}>Privacy Policy</span>.
                       </div>}
+                      {
+                        selectUserModalOpen &&
+                        <SelectUserModal
+                            login
+                            onClose={::this.onCloseSelectUserModal}
+                            open={selectUserModalOpen}
+                            redirectUrl={redirectUrl}
+                        />
+                      }
                     </div>
                   </div>
                 </div>

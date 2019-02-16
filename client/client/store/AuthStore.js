@@ -7,6 +7,8 @@ import logger from '../utils/logger'
 import {deleteCookie, getCookieByName} from '../utils/cookies'
 import {CREATE_PUBLIC_EVENT} from '../utils/permissions'
 import {optionalUsersSwitchQuery, optionalUsersLoginQuery} from './queries/users'
+import {subscriptionTopicsQuery} from './queries/userSettings'
+import {updateTopicsMutation} from './mutations/userSettings'
 import graphqlClient from './graphqlClient'
 import {DEFAULT_THEME} from '../constants/userSettings'
 
@@ -116,6 +118,29 @@ export class AuthStore {
     localStorage.setItem('DEFAULT_THEME', theme)
   }
 
+  @action
+  fetchSubscriptionTopics(userKey){
+    return graphqlClient.query({query:subscriptionTopicsQuery, variables:{userKey}}).then((result) => {
+      const subscriptionTopics = result.data.subscriptionTopics || []
+
+      const primtiveTopics = subscriptionTopics.map(({topic, subscribe}) => ({topic, subscribe}))
+
+      this.userSettings.set('subscriptionTopics', primtiveTopics)
+      return primtiveTopics
+    })
+  }
+
+  @action
+  setSubscriptionTopics(userKey, topics){
+    return graphqlClient.mutate({
+      mutation:updateTopicsMutation,
+      variables:{userKey, topics:{topics}},
+    }).then((result) => {
+      const {subscriptionTopics} = result.data
+      this.userSettings.set('subscriptionTopics', subscriptionTopics)
+    })
+  }
+
   @computed
   get publicEventPermission(){
     const {permissions} = this.user
@@ -129,6 +154,10 @@ export class AuthStore {
   @computed
   get theme(){
     return this.userSettings.get('theme').toLowerCase()
+  }
+
+  get subscriptionTopics(){
+    return this.userSettings.get('subscriptionTopics') || []
   }
 
   // When login from facebook and google plus the jwt is put in the cookies

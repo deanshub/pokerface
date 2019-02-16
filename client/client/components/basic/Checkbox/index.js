@@ -37,12 +37,16 @@ export default class Checkbox extends Component {
       centered,
       style: customStyle,
       toggleStyle,
+      transparent,
     } = this.props
     const {checked} = this.state
     return(
       <div className={classnames(style.field, {[style.centered]:centered})} style={customStyle}>
         {label&&<label className={classnames(style.label)} htmlFor={id}>{label}</label>}
-        <div className={classnames(style.checkboxContainer, {[style.toggle]: toggleStyle})}>
+        <div className={classnames(
+          style.checkboxContainer,
+          {[style.toggle]: toggleStyle, [style.transparent]:transparent}
+        )}>
           <input
               checked={checked}
               className={classnames(style.box)}
@@ -50,7 +54,9 @@ export default class Checkbox extends Component {
               onChange={::this.onToggle}
               type="checkbox"
           />
-          <label className={classnames(style.checkboxLabel,{[style.autoWidth]:autoWidth})} htmlFor={id}>{checkboxLabel}</label>
+          <label className={classnames(style.checkboxLabel,{[style.autoWidth]:autoWidth})} htmlFor={id}>
+            {checkboxLabel}
+          </label>
         </div>
       </div>
     )

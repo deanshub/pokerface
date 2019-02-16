@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import { parse } from 'qs'
 import request from 'superagent'
 import logger from '../../utils/logger'
 import {viewParam} from '../../utils/generalUtils'
@@ -8,28 +7,21 @@ import Button, {ButtonGroup} from '../../components/basic/Button'
 import Input from '../../components/basic/Input'
 import Message from '../../components/basic/Message'
 import ForgotPasswordModal from './ForgotPasswordModal'
-import SelectUserModal from '../SelectUserModal'
 import classnames from 'classnames'
 import style from './style.css'
 
-@inject('routing')
 @inject('auth')
 @observer
 export default class LoginForm extends Component{
 
   constructor(props){
     super(props)
-    const { routing } = this.props
-
-    const query = parse(routing.location.search.substr(1))
 
     this.state = {
       loggingInPorgress: false,
       loggingInFail: false,
       loginFailMessage: null,
       forgotPasswordModalOpen: false,
-      selectUserModalOpen: query.selectuser,
-      redirectUrl: query.url || '/',
     }
   }
 
@@ -83,19 +75,12 @@ export default class LoginForm extends Component{
       })
   }
 
-  onCloseSelectUserModal(){
-    this.setState({selectUserModalOpen:false})
-    this.props.auth.logout()
-  }
-
   render(){
     const {
       loggingInPorgress,
       loggingInFail,
       loginFailMessage,
       forgotPasswordModalOpen,
-      selectUserModalOpen,
-      redirectUrl,
       email,
     } = this.state
 
@@ -158,15 +143,6 @@ export default class LoginForm extends Component{
             <Message
                 error
                 message={loginFailMessage}
-            />
-          }
-          {
-            selectUserModalOpen &&
-            <SelectUserModal
-                login
-                onClose={::this.onCloseSelectUserModal}
-                open={selectUserModalOpen}
-                redirectUrl={redirectUrl}
             />
           }
           <ForgotPasswordModal

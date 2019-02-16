@@ -38,6 +38,9 @@ export const resolvers = {
     subscriptionTopics: (_, {userKey}, {user}) => {
       const username = userKey?decryptUsername(userKey):user._id
 
+      if (!username) {
+        return Promise.reject(new Error('No such subsciption'))
+      }
       return DB.models.UserSettings.findById(username).select('unsubscribe').then(topics => (
         SUBSCRIPTION_TOPICS.map(topic => ({topic, subscribe:!topics || !topics.unsubscribe || !topics.unsubscribe.includes(topic || [])}))
       ))
