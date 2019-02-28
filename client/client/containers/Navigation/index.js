@@ -48,10 +48,14 @@ const LoadableEvents = Loadable({
   loader: () => import('../Events'),
   loading: Loader,
 })
+const LoadableCashCalc = Loadable({
+  loader: () => import(/* webpackPrefetch: true */ '../CashCalculator'),
+  loading: Loader,
+})
 
 @inject('routing')
 @observer
-export default class Navigation extends Component {
+class Navigation extends Component {
   static propTypes={
     children: PropTypes.element,
     theme: PropTypes.string,
@@ -175,6 +179,11 @@ export default class Navigation extends Component {
                     exact
                     path="/tools/spotnote"
                 />
+                <Route
+                    component={LoadableCashCalc}
+                    exact
+                    path="/tools/cash-calc"
+                />
                 <Route component={LoadableNoMatch}/>
               </Switch>
             </div>
@@ -206,3 +215,5 @@ export default class Navigation extends Component {
     )
   }
 }
+
+export default Navigation

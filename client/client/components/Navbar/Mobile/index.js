@@ -49,6 +49,7 @@ export default class Navigation extends Component {
   onProfileClick(){
     const {feed} = this.props
     feed.pushNewReceivedPost(true)
+    this.props.onClose()
   }
 
   toggleEditPersonalInfo(){
@@ -149,7 +150,7 @@ export default class Navigation extends Component {
               Logout
           </div>
           <div className={classnames(style.footerItem)} onClick={::this.toggleEditPersonalInfo}>
-              Edit Details
+              Edit Profile
           </div>
           <SelectTheme className={style.footerItem}/>
         </div>

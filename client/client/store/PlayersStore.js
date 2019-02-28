@@ -8,19 +8,20 @@ import {usersQuery} from './queries/users'
 export class PlayersStore {
   @observable currentPlayers
   @observable searchPlayers
+  @observable initialBuyIn
 
-  initialBuyIn=100
   initialWin=0
 
   constructor(){
     this.currentPlayers = observable([])
     this.searchPlayers = observable.map({})
     this.searchLoading = false
+    this.initialBuyIn=100
   }
 
   extendPlayer(player){
     return Object.assign({},{
-      // buyIns: [{value: this.initialBuyIn, key:Math.random()}],
+      buyIns: [{value: this.initialBuyIn}],
       // winnings: [{value: this.initialWin, key:Math.random()}],
       guest: false,
       cards: '',
@@ -52,7 +53,6 @@ export class PlayersStore {
           this.searchPlayers.set(user.username, this.extendPlayer(user))
         })
       }
-
       this.searchLoading = false
     }).catch((err)=>{
       console.error(err)
@@ -62,10 +62,7 @@ export class PlayersStore {
   @computed
   get immutableAvailablePlayers(){
     // name, link, avatar
-    const suggestedPlayersObj = this.searchPlayers.toJS()
-    const suggestedPlayers = Object.keys(suggestedPlayersObj).map(playerKey=>{
-      const player = suggestedPlayersObj[playerKey]
-      // TODO: remove name
+    const suggestedPlayers = Array.from(this.searchPlayers.values()).map(player=>{
       return {
         name: player.fullname,
         fullname: player.fullname,
@@ -86,7 +83,7 @@ export class PlayersStore {
   setPlayer(playerIndex, newUser){
     if (newUser.guest){
       newUser.username = `guest-${Math.random().toString()}`
-      newUser.avatar = '/images/avatar.png'
+      newUser.avatar = avatarImage
     }
     this.currentPlayers[playerIndex] = newUser
   }
@@ -144,7 +141,9 @@ export class PlayersStore {
     if (user.username){
       const extendedUser = this.extendPlayer(user)
       this.searchPlayers.set(extendedUser.username, extendedUser)
-      this.currentPlayers.push(extendedUser)
+      if(!this.currentPlayers.some(player=>player.username===user.username)){
+        this.currentPlayers.push(extendedUser)
+      }
     }
   }
 }

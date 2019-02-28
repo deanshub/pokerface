@@ -9,9 +9,6 @@
   "plugins": [
     "react"
   ],
-  "globals": [
-    "__webpack_public_path__": false
-  ],
   "rules": {
     "indent": ["error", 2, { "ignoredNodes": ["JSXElement *"] }],
     "quotes": [2, "single"],
