@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import DocumentTitle from 'react-document-title'
 import DevTools from 'mobx-react-devtools'
 import { observer, inject } from 'mobx-react'
-import { Route, Switch, NavLink } from 'react-router-dom'
+import { Route, Switch, NavLink, Link } from 'react-router-dom'
 import Loadable from 'react-loadable'
 import Loader from '../../components/basic/Loader'
 import Feed from '../Feed'
@@ -88,7 +88,7 @@ class Navigation extends Component {
     return isMobile?
       <div className={classnames(style.header, style[theme])}>
         <div className={classnames(style.menu)} onClick={::this.openMobileNavbar}/>
-        <img className={classnames(style.logo)} src={logo}/>
+        <Link to="/"><img className={classnames(style.logo)} src={logo}/></Link>
         <div className={classnames(style.search)} onClick={::this.openMobileSearchBar}/>
       </div>
       :
