@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Tooltip from '../Tooltip'
 import CardSelectionTooltip from '../../CardSelection/CardSelectionTooltip'
 import Button from '../Button'
 import classnames from 'classnames'
@@ -9,6 +8,7 @@ export default class Input extends Component {
   static defaultProps = {
     amount: 1,
     disable: false,
+    value: '',
   }
 
   focus(){
@@ -89,9 +89,9 @@ export default class Input extends Component {
                 onCardSelected={::this.cardSelectChange}
                 trigger={
                   <Button
-                    leftIcon="cardSmallFrame"
-                    small
-                    smallIcon
+                      leftIcon="cardSmallFrame"
+                      small
+                      smallIcon
                   />
                 }
             />

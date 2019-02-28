@@ -84,6 +84,7 @@ class LoginForm extends Component{
       loginFailMessage,
       forgotPasswordModalOpen,
       email,
+      password,
     } = this.state
 
     const {isMobile} = this.props
@@ -115,6 +116,7 @@ class LoginForm extends Component{
                 padded
                 placeholder="Password"
                 type="password"
+                value={password}
             />
             <Button
                 className={style.signupButton}
