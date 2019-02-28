@@ -9,10 +9,12 @@ import Message from '../../components/basic/Message'
 import ForgotPasswordModal from './ForgotPasswordModal'
 import classnames from 'classnames'
 import style from './style.css'
+import { parse } from 'qs'
 
 @inject('auth')
+@inject('routing')
 @observer
-export default class LoginForm extends Component{
+class LoginForm extends Component{
 
   constructor(props){
     super(props)
@@ -33,7 +35,7 @@ export default class LoginForm extends Component{
 
   handleLogin(event){
     event.preventDefault()
-    const { routing } = this.props
+    const { routing, openSelectUserModal } = this.props
     const {email, password} = this.state
     const query = parse(routing.location.search.substr(1))
     this.setState({
@@ -53,8 +55,8 @@ export default class LoginForm extends Component{
         if (user.organizations > 0){
           this.setState({
             loggingInPorgress: false,
-            selectUserModalOpen: true,
           })
+          openSelectUserModal()
         }else{
           // const {avatar, fullname, username, organizations} = user
           // const users = [{avatar, fullname, username}, ...organizations]
@@ -153,3 +155,5 @@ export default class LoginForm extends Component{
     )
   }
 }
+
+export default LoginForm

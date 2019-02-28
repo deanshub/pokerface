@@ -22,7 +22,7 @@ import style from './style.css'
 @inject('routing')
 @inject('auth')
 @observer
-export default class Login extends Component {
+class Login extends Component {
   constructor(props){
     super(props)
 
@@ -176,6 +176,10 @@ export default class Login extends Component {
     this.props.auth.logout()
   }
 
+  openSelectUserModal() {
+    this.setState({selectUserModalOpen:true})
+  }
+
   render(){
     const {selectUserModalOpen, redirectUrl, loginForm} = this.state
 
@@ -200,7 +204,7 @@ export default class Login extends Component {
                           }
                         </Button>
                       :
-                        <LoginForm/>
+                        <LoginForm openSelectUserModal={::this.openSelectUserModal} />
                       }
                   </div>
                   <div className={classnames(style.mainContent,{[style.mobileMainContent]:isMobile})}>
@@ -208,7 +212,7 @@ export default class Login extends Component {
                     <div className={classnames(style.rightMain)}>
                       {
                         (loginForm && isMobile)?
-                          <LoginForm isMobile/>
+                          <LoginForm openSelectUserModal={::this.openSelectUserModal} isMobile/>
                         :
                           this.getSignupForm(isMobile)
                       }
@@ -259,3 +263,5 @@ export default class Login extends Component {
     )
   }
 }
+
+export default Login
