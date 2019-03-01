@@ -35,7 +35,7 @@ router.get('/spotGif', (req, res)=>{
             height: 1080,
           }).then(()=>({browser, page}))
         }).then(({browser, page})=>{
-          return page.goto(config.NODE_ENV!=='development'?`https://pokerface.io/post/${id}`:`https://localhost:8443/post/${id}`).then(()=>({browser, page}))
+          return page.goto(config.NODE_ENV!=='development'?`https://pokerface.io/post/${id}`:`http://localhost:9031/post/${id}`).then(()=>({browser, page}))
         }).then(({browser, page})=>{
           return page.waitFor('div[class*="share"]').then(()=>({browser, page}))
         }).then(({browser, page})=>{

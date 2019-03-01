@@ -142,6 +142,7 @@ export default class Post extends Component {
 
   clientDownloadGif(){
     // logger.logEvent({category:'Post',action:'Client Download gif'})
+    const { post } = this.props
     this.setState({
       busy: true,
     })
@@ -149,7 +150,7 @@ export default class Post extends Component {
       const link = document.createElement('a')
       link.style = 'visibility:hidden; display:none; position: fixed; left -10000px;'
       link.href = URL.createObjectURL(blob)
-      link.download = 'pokerface post.gif'
+      link.download = `${post.id}.gif`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
