@@ -117,7 +117,7 @@ const config = {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'url-loader?limit=1024&mimetype=application/font-woff',
       },
-
+      {
         test: /\.(svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader',
         exclude: path.resolve(__dirname, 'client', 'assets'),
