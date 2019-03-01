@@ -1,0 +1,14 @@
+Migration checklist
+-------------------
+- [ ]  upgrade node in aws 11.10.1
+- [ ]  copy content of post-receive hook (for passwords)
+- [ ]  copy server config directory (for backup)
+- [ ]  rename pokerface repo dir (for backup)
+- [ ]  pm2 delete pokerface
+- [ ]  rename pokerface app dir (for backup)
+- [ ]  push to prod
+- [ ]  change post-receive hook (if needed)
+- [ ]  chmod it (chmod u+x post-receive)
+- [ ]  add config files
+- [ ]  copy images from static\images
+- [ ]  re-push\ activate the hook
