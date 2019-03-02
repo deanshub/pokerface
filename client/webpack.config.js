@@ -2,6 +2,8 @@
 let webpack = require('webpack')
 let path = require('path')
 const WorkboxPlugin = require('workbox-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
 const manifest = require('./client/manifest.json')
 manifest.icons = manifest.icons.map(i=>{
@@ -16,6 +18,7 @@ let devtool
 let hotloaderEntries=[]
 let sdkHotReloadEntries=[]
 let plugins = [
+  new CleanWebpackPlugin(['static/'], {exclude: ['images']}),
   new webpack.DefinePlugin({
     'process.env': { NODE_ENV },
   }),
@@ -24,6 +27,9 @@ let plugins = [
     skipWaiting: true,
   }),
   new WebpackPwaManifest(manifest),
+  new HtmlWebpackPlugin({
+    template: 'index.html',
+  }),
 ]
 
 if (NODE_ENV==='"development"'){
@@ -56,7 +62,7 @@ const config = {
       ...hotloaderEntries,
       './index.js',
     ],
-    html: './index.html',
+    // html: './index.html',
   },
   output: {
     path: path.resolve(__dirname, './static'),
@@ -71,10 +77,10 @@ const config = {
   },
   module: {
     rules: [
-      {
-        test: /\.html$/,
-        loader: 'file-loader?name=[name].[ext]',
-      },
+      // {
+      //   test: /\.html$/,
+      //   loader: 'file-loader?name=[name].[ext]',
+      // },
       {
         test: /\.css$/,
         include: path.resolve(__dirname, 'client'),
