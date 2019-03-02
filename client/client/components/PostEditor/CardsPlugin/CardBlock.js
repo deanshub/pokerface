@@ -22,12 +22,14 @@ export default class CardBlock extends Component {
 
   resetWidth(){
     const element = ReactDOM.findDOMNode(this.cardsPreviewElement)
-    const cardsPreviewElementWidth = parseFloat(getComputedStyle(element).width)
-    if (!isNaN(cardsPreviewElementWidth)&&cardsPreviewElementWidth!==this.state.cardsPreviewElementWidth){
-      this.setState({
-        cardsPreviewElementWidth,
-      })
-    }
+    setTimeout(()=>{
+      const cardsPreviewElementWidth = element.offsetWidth
+      if (!isNaN(cardsPreviewElementWidth)&&cardsPreviewElementWidth!==this.state.cardsPreviewElementWidth){
+        this.setState({
+          cardsPreviewElementWidth,
+        })
+      }
+    },0)
   }
 
   render(){

@@ -6,7 +6,7 @@ nvm use 11.10.1
 GIT_WORK_TREE=~/Desktop/apps/pokerface git checkout -f
 pushd ~/Desktop/apps/pokerface/client
 yarn --ignore-engines
-yarn add https://github.com/deanshub/draft-js#android-fix --ignore-engines
+# yarn add https://github.com/deanshub/draft-js#android-fix --ignore-engines
 yarn run build
 popd
 pm2 delete pokerface

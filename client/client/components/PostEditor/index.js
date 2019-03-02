@@ -5,26 +5,24 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import { observer, inject } from 'mobx-react'
 
-import { EditorState } from 'draft-js'
-import Editor from 'draft-js-plugins-editor'
+import Editor, {createEditorStateWithText} from 'draft-js-plugins-editor'
 
 // import createFocusPlugin from 'draft-js-focus-plugin'
 import createInlineToolbarPlugin, {Separator}  from 'draft-js-inline-toolbar-plugin'
 import createMentionPlugin from 'draft-js-mention-plugin'
 import PlayerMention from './PlayerMention'
-// import createEmojiPlugin from 'draft-js-emoji-plugin'
 import createHashtagPlugin from 'draft-js-hashtag-plugin'
 import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import createVideoPlugin from 'draft-js-video-plugin'
 import createCardsPlugin from './CardsPlugin'
 import createRangePlugin from './RangePlugin'
+import createEmojiPlugin from 'draft-js-emoji-plugin'
 
 import {
   ItalicButton,
   BoldButton,
   UnderlineButton,
   CodeButton,
-  // HeadlineOneButton,
   // HeadlineTwoButton,
   // HeadlineThreeButton,
   // UnorderedListButton,
@@ -52,7 +50,7 @@ import Poll from '../Poll'
 @inject('globalPlayersSearch')
 @inject('auth')
 @observer
-export default class PostEditor extends Component {
+class PostEditor extends Component {
   static propTypes = {
     autoFocus: PropTypes.bool,
     onChange: PropTypes.func,
@@ -73,19 +71,10 @@ export default class PostEditor extends Component {
   constructor(props){
     super(props)
     // const focusPlugin = createFocusPlugin()
-    const inlineToolbarPlugin = createInlineToolbarPlugin({
-      structure: [
-        BoldButton,
-        ItalicButton,
-        UnderlineButton,
-        CodeButton,
-        Separator,
-        AddVideoButton,
-      ],
-    })
+    const inlineToolbarPlugin = createInlineToolbarPlugin()
     const { InlineToolbar } = inlineToolbarPlugin
-    // const emojiPlugin = createEmojiPlugin()
-    // const { EmojiSuggestions } = emojiPlugin
+    const emojiPlugin = createEmojiPlugin()
+    const { EmojiSuggestions } = emojiPlugin
     const mentionPlugin = createMentionPlugin({
       mentionComponent: PlayerMention,
     })
@@ -101,20 +90,20 @@ export default class PostEditor extends Component {
     this.plugins = [
       // focusPlugin,
       inlineToolbarPlugin,
-      // emojiPlugin,
       mentionPlugin,
       hashtagPlugin,
       linkifyPlugin,
       videoPlugin,
       cardsPlugin,
       rangePlugin,
+      emojiPlugin,
     ]
     this.InlineToolbar = InlineToolbar
-    // this.EmojiSuggestions =EmojiSuggestions
+    this.EmojiSuggestions = EmojiSuggestions
     this.MentionSuggestions= MentionSuggestions
 
     if (props.post.content===undefined){
-      props.post.content = EditorState.createEmpty()
+      props.post.content = createEditorStateWithText('')
     }
   }
 
@@ -180,8 +169,8 @@ export default class PostEditor extends Component {
     const {
       plugins,
       InlineToolbar,
-      // EmojiSuggestions,
-      MentionSuggestions
+      EmojiSuggestions,
+      MentionSuggestions,
     } = this
 
     return (
@@ -190,8 +179,7 @@ export default class PostEditor extends Component {
             [style.editor]: !readOnly,
             [style.post]: postEditor,
           })}
-          onClick={::this.focus}
-      >
+          onClick={::this.focus}>
         <Editor
             editorState={post.content}
             onChange={::this.postContentChange}
@@ -200,14 +188,25 @@ export default class PostEditor extends Component {
             readOnly={readOnly}
             ref={::this.refEditor}
         />
-        <InlineToolbar/>
+        <EmojiSuggestions/>
+        <InlineToolbar>
+          {(externalProps) => (
+            <div>
+              <BoldButton {...externalProps} />
+              <ItalicButton {...externalProps} />
+              <UnderlineButton {...externalProps} />
+              <CodeButton {...externalProps} />
+              <Separator {...externalProps} />
+              <AddVideoButton {...externalProps} />
+            </div>
+            )}
+        </InlineToolbar>
         <MentionSuggestions
             onAddMention={::this.onAddMention}
             onClose={::this.onClose}
             onSearchChange={::this.onSearchChange}
             suggestions={globalPlayersSearch.immutableAvailablePlayers}
         />
-        {/* <EmojiSuggestions/> */}
         {
           post.poll&&
           <Poll
@@ -219,14 +218,15 @@ export default class PostEditor extends Component {
         }
         {
           post.spot?(
-          <SpotPlayer
-              post={post}
-              standalone={standalone}
-              style={{height:'40em',minHeight:'40vw'}}
-          />
+            <SpotPlayer
+                post={post}
+                standalone={standalone}
+                style={{height:'40em',minHeight:'40vw'}}
+            />
           ):null
         }
       </div>
     )
   }
 }
+export default PostEditor
