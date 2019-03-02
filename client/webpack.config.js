@@ -2,6 +2,13 @@
 let webpack = require('webpack')
 let path = require('path')
 const WorkboxPlugin = require('workbox-webpack-plugin')
+const WebpackPwaManifest = require('webpack-pwa-manifest')
+const manifest = require('./client/manifest.json')
+manifest.icons = manifest.icons.map(i=>{
+  i.src = path.resolve(i.src)
+  return i
+})
+
 let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 
 let publicPath
@@ -16,6 +23,7 @@ let plugins = [
     clientsClaim: true,
     skipWaiting: true,
   }),
+  new WebpackPwaManifest(manifest),
 ]
 
 if (NODE_ENV==='"development"'){

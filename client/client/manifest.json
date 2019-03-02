@@ -1,25 +1,27 @@
 {
-  "short_name": "Pokerface.io",
-  "name": "Pokerface.io social platform for poker players",
+  "filename": "manifest.json",
+  "name": "Pokerface.io",
+  "short_name": "Pokerface",
+  "description": "Pokerface.io social platform for poker players",
   "display": "standalone",
   "orientation": "portrait",
   "background_color":"#24222e",
   "theme_color":"#24222e",
   "icons": [
     {
-      "src": "/images/logo.png",
+      "src": "../client/client/assets/logo.png",
       "type": "image/png",
-      "sizes": "48x48"
+      "size": "48x48"
     },
     {
-      "src": "/images/logo.png",
+      "src": "../client/client/assets/logo.png",
       "type": "image/png",
-      "sizes": "96x96"
+      "size": "96x96"
     },
     {
-      "src": "/images/logo.png",
+      "src": "../client/client/assets/logo.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "size": "192x192"
     }
   ],
   "start_url": "index.html"
