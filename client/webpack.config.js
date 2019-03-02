@@ -1,6 +1,7 @@
 // let rucksack = require('rucksack-css')
 let webpack = require('webpack')
 let path = require('path')
+const WorkboxPlugin = require('workbox-webpack-plugin')
 let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
 
 let publicPath
@@ -10,6 +11,10 @@ let sdkHotReloadEntries=[]
 let plugins = [
   new webpack.DefinePlugin({
     'process.env': { NODE_ENV },
+  }),
+  new WorkboxPlugin.GenerateSW({
+    clientsClaim: true,
+    skipWaiting: true,
   }),
 ]
 
