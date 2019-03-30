@@ -73,12 +73,12 @@ export default class Input extends Component {
               )}
               disabled={disable}
               id={id}
-              onChange={(e)=>onChange(e,e.target)}
+              onChange={onChange ? (e) => onChange(e,e.target): undefined}
               onClick={onClick}
               placeholder={placeholder||(cardSelection?'Select Cards...':'')}
               ref={el=>this.input=el}
               type={type}
-              value={value}
+              value={value===null?undefined: value}
               {...otherProps}
           />
           {

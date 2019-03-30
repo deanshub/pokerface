@@ -89,13 +89,9 @@ export default class YouTube extends Component {
     }
   }
 
-  seachChange(e){
-    this.inStatePhrase = e.target.value
-  }
-
   submitSearch(e){
     e.preventDefault()
-    this.phraseChange(this.inStatePhrase)
+    this.phraseChange(this.searchEl.input.value)
     this.videoPlayer.a.focus()
   }
 
@@ -125,9 +121,11 @@ export default class YouTube extends Component {
               className={classnames(style.search)}
               dir="auto"
               hideRightButtonDivider
-              onChange={::this.seachChange}
               padded
               placeholder="YouTube link \ Search..."
+              ref = {(el) => {
+                this.searchEl = el
+              }}
               rightButton={
                 <Button
                     small
@@ -137,6 +135,7 @@ export default class YouTube extends Component {
                 </Button>
               }
               transparent
+              value={null}
           />
         </div>
         <YouTubeComp

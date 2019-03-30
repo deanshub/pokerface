@@ -84,6 +84,11 @@
 
 .autoSlidesContainer{
   display: flex;
+  flex-direction: column;
+}
+.autoSlidesSettingsContainer{
+  display: flex;
+  width: 50%;
 }
 
 .hidden{

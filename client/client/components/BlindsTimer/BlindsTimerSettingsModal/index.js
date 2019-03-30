@@ -63,13 +63,21 @@ export default class BlindsTimer extends Component {
       <div className={classnames({[style.hidden]:activeTab!==SLIDESHOW_TAB})}>
         <div className={classnames(style.autoSlidesContainer)}>
           <Checkbox
+              autoWidth
+              checkboxLabel="Youtube slide"
+              id="enableYoutube"
+              onChange={()=>timer.autoSlides.enableYoutube=!timer.autoSlides.enableYoutube}
+              style={{flex:'none'}}
+              checked={timer.autoSlides.enableYoutube}
+          />
+          <Checkbox
               checkboxLabel="Auto slides"
               id="autoSlides"
               onChange={::this.toggleAutoSlides}
               style={{flex:'none', alignSelf: 'flex-start', marginTop:'1em'}}
               checked={timer.autoSlides.on}
           />
-          <div className={classnames(style.autoSlidesContainer, {[style.hidden]:!timer.autoSlides.on})}>
+          <div className={classnames(style.autoSlidesSettingsContainer, {[style.hidden]:!timer.autoSlides.on})}>
             <Input
                 label="Blinds time"
                 onChange={(e,{value})=>timer.autoSlides.times[0]=parseFloat(value)}
@@ -99,14 +107,6 @@ export default class BlindsTimer extends Component {
             }
           </div>
         </div>
-        <Checkbox
-            autoWidth
-            checkboxLabel="Youtube slide"
-            id="enableYoutube"
-            onChange={()=>timer.autoSlides.enableYoutube=!timer.autoSlides.enableYoutube}
-            style={{flex:'none'}}
-            checked={timer.autoSlides.enableYoutube}
-        />
       </div>
     )
   }
