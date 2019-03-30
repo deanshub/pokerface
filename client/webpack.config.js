@@ -1,6 +1,7 @@
 // let rucksack = require('rucksack-css')
 let webpack = require('webpack')
 let path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -11,7 +12,8 @@ manifest.icons = manifest.icons.map(i=>{
   return i
 })
 
-let NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
+const NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development')
+const devMode = NODE_ENV!=='"production"'
 
 let publicPath
 let devtool
@@ -27,12 +29,16 @@ let plugins = [
     skipWaiting: true,
   }),
   new WebpackPwaManifest(manifest),
+  new MiniCssExtractPlugin({
+    filename: devMode ? '[name].css' : '[name].[hash].css',
+    chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+  }),
   new HtmlWebpackPlugin({
     template: 'index.html',
   }),
 ]
 
-if (NODE_ENV==='"development"'){
+if (devMode){
   publicPath='http://localhost:9031/'
   plugins.push(new webpack.NamedModulesPlugin())
   plugins.push(new webpack.HotModuleReplacementPlugin())
@@ -55,7 +61,7 @@ if (NODE_ENV==='"development"'){
 
 const config = {
   target: 'web',
-  mode: NODE_ENV==='"development"'?'development':'production',
+  mode: devMode?'development':'production',
   context: path.resolve(__dirname, './client'),
   entry: {
     bundle: [
@@ -85,7 +91,7 @@ const config = {
         test: /\.css$/,
         include: path.resolve(__dirname, 'client'),
         use: [
-          'style-loader',
+          devMode?'style-loader':MiniCssExtractPlugin.loader,
           'css-loader?modules&sourceMap&importLoaders=1&localIdentName=[local]___[hash:base64:5]',
           'postcss-loader',
         ],
@@ -94,7 +100,7 @@ const config = {
         test: /\.css$/,
         exclude: path.resolve(__dirname, 'client'),
         use: [{
-          loader:'style-loader',
+          loader: devMode?'style-loader':MiniCssExtractPlugin.loader,
         },{
           loader:'css-loader',
         }],
