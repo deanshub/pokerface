@@ -51,7 +51,7 @@ export class TimerStore {
     this.offset = 0
     this.autoSlides = {
       on: false,
-      enableYoutube: false,
+      enableYoutube: true,
       times: [20, 20],
       currentSlide: 0,
     }
